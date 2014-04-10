@@ -158,11 +158,14 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 #ifndef GAME_EXECUTABLE
         tempDirectoryPath = getenv("TMPDIR");
 #endif
+        #ifndef DATA_DIR
+        #define DATA_DIR "/usr/share/My Little Investigations/"
+        #endif
 
-        commonAppDataPath = "/usr/share/My Little Investigations";
-        casesPath = commonAppDataPath+"/Cases";
-        userAppDataPath = "~/.config/My Little Investigations";
-        dialogSeenListsPath = userAppDataPath+"/DialogSeenLists";
+        commonAppDataPath = DATA_DIR;
+        casesPath = commonAppDataPath+"/Cases/";
+        userAppDataPath = "~/.config/My Little Investigations/";
+        dialogSeenListsPath = userAppDataPath+"/DialogSeenLists/";
         savesPath = userAppDataPath+"/Saves";
 #endif
 
