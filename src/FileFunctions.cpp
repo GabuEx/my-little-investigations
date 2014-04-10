@@ -71,14 +71,15 @@ tstring StringToTString(string str)
 
     return tstr;
 }
-#endif
-#ifdef __OSX
+#elif __OSX
 #include "../osx/ApplicationSupportBridge.h"
 
 #include <Security/Authorization.h>
 #include <Security/AuthorizationTags.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#else
+	#warning MAY NEED INCLUDES
 #endif
 
 string pathSeparator;
@@ -98,15 +99,15 @@ string tempDirectoryPath;
 
 void LoadFilePathsAndCaseUuids(string executableFilePath)
 {
-    #ifdef __WINDOWS
+#ifdef __WINDOWS
         pathSeparator = "\\";
         otherPathSeparator = "/";
 
-#ifndef GAME_EXECUTABLE
+	#ifndef GAME_EXECUTABLE
         TCHAR szTempPath[MAX_PATH] = { 0 };
         DWORD tempPathLength = GetTempPath(MAX_PATH, szTempPath);
         tempDirectoryPath = TStringToString(tstring(szTempPath, tempPathLength));
-#endif
+	#endif
 
         TCHAR szPath[MAX_PATH] = { 0 };
         if (SUCCEEDED(SHGetFolderPath(NULL, CSIDL_COMMON_APPDATA, NULL, 0, szPath)))
@@ -139,21 +140,23 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
             if (ftyp == INVALID_FILE_ATTRIBUTES) CreateDirectory(szPath, NULL);
             savesPath = TStringToString(tstring(szPath));
         }
-    #endif
-    #ifdef __OSX
+#elif __OSX
         pathSeparator = "/";
         otherPathSeparator = "\\";
 
-#ifndef GAME_EXECUTABLE
+	#ifndef GAME_EXECUTABLE
         tempDirectoryPath = getenv("TMPDIR");
-#endif
+	#endif
 
         commonAppDataPath = string(pLocalApplicationSupportPath);
         casesPath = string(pCasesPath);
         userAppDataPath = string(pUserApplicationSupportPath);
         dialogSeenListsPath = string(pDialogSeenListsPath);
         savesPath = string(pSavesPath);
-    #endif
+#else
+	#warning NOT IMPLEMENTED
+	std::cerr << "NOT IMPLEMENTED" << std::endl;
+#endif
 
     executableFilePath = ConvertSeparatorsInPath(executableFilePath);
     executionPath = executableFilePath.substr(0, executableFilePath.find_last_of(pathSeparator)) + pathSeparator;
@@ -196,8 +199,7 @@ vector<string> GetCaseFilePaths()
 
             FindClose(hFind);
         }
-    #endif
-    #ifdef __OSX
+    #elif __OSX
         unsigned int caseFileCount = 0;
 
         const char **ppCaseFilePaths = pfnGetCaseFilePathsOSX(&caseFileCount);
@@ -213,6 +215,9 @@ vector<string> GetCaseFilePaths()
         }
 
         free(ppCaseFilePaths);
+	#else
+		#warning NOT IMPLEMENTED
+		std::cerr << "NOT IMPLEMENTED" << std::endl;
     #endif
 
     return filePaths;
@@ -334,6 +339,9 @@ bool CopyCaseFileToCaseFolder(string caseFilePath, string caseUuid)
 
         success = CopyFileA(caseFilePath.c_str(), (filePath + string("\\") + caseUuid + string(".mlicase")).c_str(), false /* bFailIfExists */) == TRUE;
     }
+	#else
+		#warning NOT IMPLEMENTED
+		std::cerr << "NOT IMPLEMENTED" << std::endl;
     #endif
 
     return success;
@@ -389,9 +397,11 @@ Version GetCurrentVersion()
     }
 
     RegCloseKey(hKey);
-#endif
-#ifdef __OSX
+#elif __OSX
     versionString = pfnGetVersionStringOSX(GetPropertyListPath().c_str());
+#else
+	#warning NOT IMPLEMENTED
+	std::cerr << "NOT IMPLEMENTED" << std::endl;
 #endif
 
     if (versionString.length() > 0)
@@ -432,8 +442,7 @@ void WriteNewVersion(Version newVersion)
     }
 
     RegCloseKey(hKey);
-#endif
-#ifdef __OSX
+#elif __OSX
     unsigned long propertyListXmlDataLength = 0;
     char *pPropertyListXmlData = pfnGetPropertyListXMLForVersionStringOSX(GetPropertyListPath().c_str(), ((string)newVersion).c_str(), &propertyListXmlDataLength);
 
@@ -454,6 +463,9 @@ void WriteNewVersion(Version newVersion)
     }
 
     delete [] pPropertyListXmlData;
+#else
+	#warning NOT IMPLEMENTED
+	std::cerr << "NOT IMPLEMENTED" << std::endl;
 #endif
 }
 #endif
@@ -712,8 +724,7 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
 
             FindClose(hFind);
         }
-    #endif
-    #ifdef __OSX
+    #elif __OSX
         unsigned int saveFileCountLocal = 0;
 
         const char **ppSaveFilePaths = pfnGetSaveFilePathsForCaseOSX(caseUuid.c_str(), &saveFileCountLocal);
@@ -729,6 +740,9 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
         }
 
         free(ppSaveFilePaths);
+	#else
+		#warning NOT IMPLEMENTED
+		std::cerr << "NOT IMPLEMENTED" << std::endl;
     #endif
 
     return filePaths;
@@ -829,6 +843,9 @@ bool CheckForExistingInstance()
 
             existingInstanceExists = true;
         }
+	#else
+		#warning NOT IMPLEMENTED
+		std::cerr << "NOT IMPLEMENTED" << std::endl;
     #endif
 
     return existingInstanceExists;
@@ -1052,8 +1069,7 @@ bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArg
 
         success = ShellExecuteEx(&shExecInfo);
     }
-#endif
-#ifdef __OSX
+#elif __OSX
     if (asAdmin)
     {
         if (authorizationRef != NULL)
@@ -1133,6 +1149,9 @@ bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArg
             }
         }
     }
+#else
+	#warning NOT IMPLEMENTED
+	std::cerr << "NOT IMPLEMENTED" << std::endl;
 #endif
 
     return success;
@@ -1142,9 +1161,11 @@ void LaunchGameExecutable()
 {
 #ifdef __WINDOWS
     string executablePath = executionPath + "MyLittleInvestigations.exe";
-#endif
-#ifdef __OSX
+#elif __OSX
     string executablePath = executionPath + "MyLittleInvestigations";
+#else
+	#warning NOT IMPLEMENTED
+	std::cerr << "NOT IMPLEMENTED" << std::endl;
 #endif
 
     if (!LaunchExecutable(executablePath.c_str(), vector<string>(), false /* waitForCompletion */, false /* asAdmin */))
@@ -1171,8 +1192,7 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
     commandLineArguments.push_back(oldFilePath);
     commandLineArguments.push_back(deltaFilePath);
     commandLineArguments.push_back(newFilePath);
-#endif
-#ifdef __OSX
+#elif __OSX
     string executablePath = GetUpdaterHelperFilePath();
 
     vector<string> commandLineArguments;
@@ -1181,6 +1201,9 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
     commandLineArguments.push_back(oldFilePath);
     commandLineArguments.push_back(deltaFilePath);
     commandLineArguments.push_back(newFilePath);
+#else
+	#warning NOT IMPLEMENTED
+	std::cerr << "NOT IMPLEMENTED" << std::endl;
 #endif
 
     // On Windows, we can launch the entire update application in admin mode, so we don't need to run the update executable in admin mode.
@@ -1192,9 +1215,10 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
             true /* waitForCompletion */,
 #ifdef __WINDOWS
             false /* asAdmin */
-#endif
-#ifdef __OSX
+#elif __OSX
             true /* asAdmin */
+#else
+	#warning NOT IMPLEMENTED
 #endif
             );
 
@@ -1205,8 +1229,7 @@ bool RemoveFile(string filePath)
 {
 #ifdef __WINDOWS
     return remove(filePath.c_str()) == 0;
-#endif
-#ifdef __OSX
+#elif __OSX
     string executablePath = GetUpdaterHelperFilePath();
 
     vector<string> commandLineArguments;
@@ -1215,6 +1238,9 @@ bool RemoveFile(string filePath)
     commandLineArguments.push_back(filePath);
 
     return LaunchExecutable(executablePath.c_str(), commandLineArguments, true /* waitForCompletion */, true /* asAdmin */);
+#else
+	#warning NOT IMPLEMENTED
+	std::cerr << "NOT IMPLEMENTED" << std::endl;
 #endif
 }
 
@@ -1222,8 +1248,7 @@ bool RenameFile(string oldFilePath, string newFilePath)
 {
 #ifdef __WINDOWS
     return rename(oldFilePath.c_str(), newFilePath.c_str()) == 0;
-#endif
-#ifdef __OSX
+#elif __OSX
     string executablePath = GetUpdaterHelperFilePath();
 
     vector<string> commandLineArguments;
@@ -1233,6 +1258,9 @@ bool RenameFile(string oldFilePath, string newFilePath)
     commandLineArguments.push_back(newFilePath);
 
     return LaunchExecutable(executablePath.c_str(), commandLineArguments, true /* waitForCompletion */, true /* asAdmin */);
+#else
+	#warning NOT IMPLEMENTED
+	std::cerr << "NOT IMPLEMENTED" << std::endl;
 #endif
 }
 #endif
@@ -1241,9 +1269,11 @@ bool LaunchUpdater(string versionsXmlFilePath)
 {
 #ifdef __WINDOWS
     string executablePath = executionPath + "MyLittleInvestigationsUpdater.exe";
-#endif
-#ifdef __OSX
+#elif __OSX
     string executablePath = executionPath + "MyLittleInvestigationsUpdater";
+#else
+	#warning NOT IMPLEMENTED
+	std::cerr << "NOT IMPLEMENTED" << std::endl;
 #endif
 
     vector<string> commandLineArguments;
@@ -1258,9 +1288,11 @@ bool LaunchUpdater(string versionsXmlFilePath)
         false /* waitForCompletion */,
 #ifdef __WINDOWS
         true /* asAdmin */
-#endif
-#ifdef __OSX
+#elif __OSX
         false /* asAdmin */
+#else
+	#warning NOT IMPLEMENTED
+	std::cerr << "NOT IMPLEMENTED" << std::endl;
 #endif
         );
 }

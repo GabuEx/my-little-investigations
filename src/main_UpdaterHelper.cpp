@@ -27,6 +27,8 @@
  * SOFTWARE.
  */
 
+#ifdef __OSX
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -150,3 +152,4 @@ int main(int argc, char *argv[])
 
     PRINT_AND_RETURN();
 }
+#endif

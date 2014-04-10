@@ -66,7 +66,7 @@ extern "C"
 }
 #endif
 
-#ifndef LAUNCHER
+#if !defined LAUNCHER && defined __WINDOWS
 #include <SDL2/SDL_syswm.h>
 #endif
 
