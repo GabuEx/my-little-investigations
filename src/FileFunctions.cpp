@@ -1181,13 +1181,23 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
     commandLineArguments.push_back(oldFilePath);
     commandLineArguments.push_back(deltaFilePath);
     commandLineArguments.push_back(newFilePath);
-#endif
-#ifdef __OSX
+#elif defined(__OSX)
     string executablePath = GetUpdaterHelperFilePath();
 
     vector<string> commandLineArguments;
 
     commandLineArguments.push_back("update");
+    commandLineArguments.push_back(oldFilePath);
+    commandLineArguments.push_back(deltaFilePath);
+    commandLineArguments.push_back(newFilePath);
+#else
+    string executablePath = "xdelta3";
+
+    vector<string> commandLineArguments;
+
+    commandLineArguments.push_back("-f");
+    commandLineArguments.push_back("-d");
+    commandLineArguments.push_back("-s");
     commandLineArguments.push_back(oldFilePath);
     commandLineArguments.push_back(deltaFilePath);
     commandLineArguments.push_back(newFilePath);
@@ -1200,11 +1210,10 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
             executablePath.c_str(),
             commandLineArguments,
             true /* waitForCompletion */,
-#ifdef __WINDOWS
-            false /* asAdmin */
-#endif
 #ifdef __OSX
             true /* asAdmin */
+#else
+            false /* asAdmin */
 #endif
             );
 
@@ -1265,8 +1274,7 @@ bool LaunchUpdater(string versionsXmlFilePath)
         false /* waitForCompletion */,
 #ifdef __WINDOWS
         true /* asAdmin */
-#endif
-#ifdef __OSX
+#else
         false /* asAdmin */
 #endif
         );

@@ -148,21 +148,26 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-I/usr/local/include" />
 					<Add option="-DMLI_DEBUG" />
-					<Add option="-D__WINDOWS" />
 				</Compiler>
 				<Linker>
-					<Add option="-lshlwapi" />
 					<Add option="-lSDL2main" />
 					<Add option="-lSDL2" />
 					<Add option="-lSDL2_image" />
 					<Add option="-lSDL2_ttf" />
 					<Add option="-lSDL2_mixer" />
-					<Add option="-lavcodec" />
-					<Add option="-lavformat" />
-					<Add option="-lavutil" />
 					<Add option="-lswscale" />
 					<Add option="-lcryptopp" />
+					<Add option="-pthread" />
+					<Add option="-L/usr/local/lib" />
+					<Add option="-lavformat" />
+					<Add option="-lavcodec" />
+					<Add option="-lX11" />
+					<Add option="-lasound" />
+					<Add option="-lz" />
+					<Add option="-lavutil" />
+					<Add option="-lm" />
 				</Linker>
 			</Target>
 		</Build>
