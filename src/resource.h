@@ -1,0 +1,2 @@
+#define MANIFEST_RESOURCE_ID 1
+#define IDI_ICON 201
