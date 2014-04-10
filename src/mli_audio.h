@@ -30,11 +30,10 @@
 #include <string>
 #include <map>
 #include <SDL2/SDL.h>
-#ifdef __WINDOWS
-#include <SDL2/SDL_mixer.h>
-#endif
 #ifdef __OSX
 #include <SDL2_mixer/SDL_mixer.h>
+#else
+#include <SDL2/SDL_mixer.h>
 #endif
 #include <SDL2/SDL_thread.h>
 #include <iostream>

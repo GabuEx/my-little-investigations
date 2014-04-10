@@ -67,7 +67,7 @@ extern "C"
 #endif
 
 #ifndef LAUNCHER
-#include <SDL2/SDL_syswm.h>
+//#include <SDL2/SDL_syswm.h>
 #endif
 
 Game * Game::pInstance = NULL;

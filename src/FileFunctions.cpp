@@ -139,8 +139,19 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
             if (ftyp == INVALID_FILE_ATTRIBUTES) CreateDirectory(szPath, NULL);
             savesPath = TStringToString(tstring(szPath));
         }
-    #endif
-    #ifdef __OSX
+#elseif DEFINED(__OSX)
+        pathSeparator = "/";
+        otherPathSeparator = "\\";
+
+#ifndef GAME_EXECUTABLE
+        tempDirectoryPath = getenv("TMPDIR");
+#endif
+        commonAppDataPath = string(pLocalApplicationSupportPath);
+        casesPath = string(pCasesPath);
+        userAppDataPath = string(pUserApplicationSupportPath);
+        dialogSeenListsPath = string(pDialogSeenListsPath);
+        savesPath = string(pSavesPath);
+#else
         pathSeparator = "/";
         otherPathSeparator = "\\";
 
@@ -148,12 +159,12 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
         tempDirectoryPath = getenv("TMPDIR");
 #endif
 
-        commonAppDataPath = string(pLocalApplicationSupportPath);
-        casesPath = string(pCasesPath);
-        userAppDataPath = string(pUserApplicationSupportPath);
-        dialogSeenListsPath = string(pDialogSeenListsPath);
-        savesPath = string(pSavesPath);
-    #endif
+        commonAppDataPath = "/usr/share/My Little Investigations";
+        casesPath = commonAppDataPath+"/Cases";
+        userAppDataPath = "~/.config/My Little Investigations";
+        dialogSeenListsPath = userAppDataPath+"/DialogSeenLists";
+        savesPath = userAppDataPath+"/Saves";
+#endif
 
     executableFilePath = ConvertSeparatorsInPath(executableFilePath);
     executionPath = executableFilePath.substr(0, executableFilePath.find_last_of(pathSeparator)) + pathSeparator;
@@ -1142,8 +1153,7 @@ void LaunchGameExecutable()
 {
 #ifdef __WINDOWS
     string executablePath = executionPath + "MyLittleInvestigations.exe";
-#endif
-#ifdef __OSX
+#else
     string executablePath = executionPath + "MyLittleInvestigations";
 #endif
 
@@ -1203,9 +1213,6 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
 
 bool RemoveFile(string filePath)
 {
-#ifdef __WINDOWS
-    return remove(filePath.c_str()) == 0;
-#endif
 #ifdef __OSX
     string executablePath = GetUpdaterHelperFilePath();
 
@@ -1215,14 +1222,13 @@ bool RemoveFile(string filePath)
     commandLineArguments.push_back(filePath);
 
     return LaunchExecutable(executablePath.c_str(), commandLineArguments, true /* waitForCompletion */, true /* asAdmin */);
+#else
+    return remove(filePath.c_str()) == 0;
 #endif
 }
 
 bool RenameFile(string oldFilePath, string newFilePath)
 {
-#ifdef __WINDOWS
-    return rename(oldFilePath.c_str(), newFilePath.c_str()) == 0;
-#endif
 #ifdef __OSX
     string executablePath = GetUpdaterHelperFilePath();
 
@@ -1233,6 +1239,8 @@ bool RenameFile(string oldFilePath, string newFilePath)
     commandLineArguments.push_back(newFilePath);
 
     return LaunchExecutable(executablePath.c_str(), commandLineArguments, true /* waitForCompletion */, true /* asAdmin */);
+#else
+    return rename(oldFilePath.c_str(), newFilePath.c_str()) == 0;
 #endif
 }
 #endif
@@ -1241,8 +1249,7 @@ bool LaunchUpdater(string versionsXmlFilePath)
 {
 #ifdef __WINDOWS
     string executablePath = executionPath + "MyLittleInvestigationsUpdater.exe";
-#endif
-#ifdef __OSX
+#else
     string executablePath = executionPath + "MyLittleInvestigationsUpdater";
 #endif
 
