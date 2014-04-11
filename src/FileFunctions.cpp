@@ -174,7 +174,7 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
             if (ftyp == INVALID_FILE_ATTRIBUTES) CreateDirectory(szPath, NULL);
             savesPath = TStringToString(tstring(szPath));
         }
-#elseif DEFINED(__OSX)
+#elif defined(__OSX)
         pathSeparator = "/";
         otherPathSeparator = "\\";
 
