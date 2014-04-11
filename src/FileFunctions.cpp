@@ -81,6 +81,10 @@ tstring StringToTString(string str)
 #include <sys/types.h>
 #endif
 
+#ifdef __unix__
+#include <dirent.h>
+#endif
+
 string pathSeparator;
 string otherPathSeparator;
 
@@ -210,8 +214,7 @@ vector<string> GetCaseFilePaths()
 
             FindClose(hFind);
         }
-    #endif
-    #ifdef __OSX
+    #elif defined(__OSX)
         unsigned int caseFileCount = 0;
 
         const char **ppCaseFilePaths = pfnGetCaseFilePathsOSX(&caseFileCount);
@@ -227,6 +230,24 @@ vector<string> GetCaseFilePaths()
         }
 
         free(ppCaseFilePaths);
+    #else //if defined(__unix__)
+        DIR *dp;
+        dp = opendir (casesPath.c_str());
+
+        if (dp)
+        {
+            dirent *ep;
+            while (ep = readdir (dp))
+            {
+                string caseFilePath = string(ep->d_name);
+
+                if (caseFilePath.find(".mlicase") != string::npos)
+                {
+                    filePaths.push_back(casesPath+caseFilePath);
+                }
+            }
+            closedir(dp);
+        }
     #endif
 
     return filePaths;
