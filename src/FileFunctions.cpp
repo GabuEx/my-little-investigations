@@ -79,6 +79,8 @@ tstring StringToTString(string str)
 #include <sys/stat.h>
 #include <sys/types.h>
 #else
+#include <sys/types.h>
+#include <dirent.h>
 	#warning MAY NEED INCLUDES
 #endif
 
@@ -102,6 +104,12 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 #ifdef __WINDOWS
         pathSeparator = "\\";
         otherPathSeparator = "/";
+#else
+        pathSeparator = "/";
+        otherPathSeparator = "\\";
+#endif
+
+#ifdef __WINDOWS
 
 	#ifndef GAME_EXECUTABLE
         TCHAR szTempPath[MAX_PATH] = { 0 };
@@ -141,8 +149,6 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
             savesPath = TStringToString(tstring(szPath));
         }
 #elif __OSX
-        pathSeparator = "/";
-        otherPathSeparator = "\\";
 
 	#ifndef GAME_EXECUTABLE
         tempDirectoryPath = getenv("TMPDIR");
@@ -154,8 +160,27 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
         dialogSeenListsPath = string(pDialogSeenListsPath);
         savesPath = string(pSavesPath);
 #else
-	#warning NOT IMPLEMENTED
-	std::cerr << "NOT IMPLEMENTED" << std::endl;
+
+	#ifndef GAME_EXECUTABLE
+		tempDirectoryPath = "/tmp/";
+	#endif
+
+		char* sdlBasePath = SDL_GetBasePath();
+		char* sdlPrefPath = SDL_GetPrefPath("EquestrianDreamers", "MyLittleInvestigations");
+
+		string prefDir(sdlPrefPath);
+
+		commonAppDataPath	= prefDir + "common-data/";
+		casesPath			= commonAppDataPath + "Cases/";
+
+		userAppDataPath		= prefDir + "config/";
+		dialogSeenListsPath = userAppDataPath + "DialogSeenLists/";
+		savesPath			= userAppDataPath + "Saves/";
+
+		executionPath		= sdlBasePath;
+
+		SDL_free(sdlBasePath);
+		SDL_free(sdlPrefPath);
 #endif
 
     executableFilePath = ConvertSeparatorsInPath(executableFilePath);
@@ -216,8 +241,28 @@ vector<string> GetCaseFilePaths()
 
         free(ppCaseFilePaths);
 	#else
-		#warning NOT IMPLEMENTED
-		std::cerr << "NOT IMPLEMENTED" << std::endl;
+		DIR*			pCaseDir	= NULL;
+		struct dirent*	pDirFile	= NULL;
+
+		if( (pCaseDir = opendir(casesPath.c_str())) == NULL )
+		{
+			std::cerr << "CAN'T OPEN CASES FOLDER" << std::endl;
+			return filePaths;
+		}
+
+		while( (pDirFile = readdir(pCaseDir)) != NULL )
+		{
+			string	fileName		( pDirFile->d_name	);
+			string	seakedExtension	( ".mlicase"		);
+			size_t	foundPos		( string::npos		);
+
+			if( (foundPos = fileName.rfind(seakedExtension)) != string::npos &&	// Contains extension &&
+				foundPos == fileName.length() - seakedExtension.length()		// Extension at the end
+			)
+				filePaths.push_back(fileName);
+		}
+
+		closedir(pCaseDir);
     #endif
 
     return filePaths;
@@ -339,7 +384,7 @@ bool CopyCaseFileToCaseFolder(string caseFilePath, string caseUuid)
 
         success = CopyFileA(caseFilePath.c_str(), (filePath + string("\\") + caseUuid + string(".mlicase")).c_str(), false /* bFailIfExists */) == TRUE;
     }
-	#else
+	#elif !__OSX
 		#warning NOT IMPLEMENTED
 		std::cerr << "NOT IMPLEMENTED" << std::endl;
     #endif
@@ -741,6 +786,7 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
 
         free(ppSaveFilePaths);
 	#else
+		// TODO
 		#warning NOT IMPLEMENTED
 		std::cerr << "NOT IMPLEMENTED" << std::endl;
     #endif
@@ -843,7 +889,7 @@ bool CheckForExistingInstance()
 
             existingInstanceExists = true;
         }
-	#else
+	#elif !__OSX
 		#warning NOT IMPLEMENTED
 		std::cerr << "NOT IMPLEMENTED" << std::endl;
     #endif
@@ -1150,6 +1196,7 @@ bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArg
         }
     }
 #else
+	// TODO
 	#warning NOT IMPLEMENTED
 	std::cerr << "NOT IMPLEMENTED" << std::endl;
 #endif
@@ -1161,11 +1208,8 @@ void LaunchGameExecutable()
 {
 #ifdef __WINDOWS
     string executablePath = executionPath + "MyLittleInvestigations.exe";
-#elif __OSX
-    string executablePath = executionPath + "MyLittleInvestigations";
 #else
-	#warning NOT IMPLEMENTED
-	std::cerr << "NOT IMPLEMENTED" << std::endl;
+    string executablePath = executionPath + "MyLittleInvestigations";
 #endif
 
     if (!LaunchExecutable(executablePath.c_str(), vector<string>(), false /* waitForCompletion */, false /* asAdmin */))
@@ -1208,17 +1252,17 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
 
     // On Windows, we can launch the entire update application in admin mode, so we don't need to run the update executable in admin mode.
     // On OS X, however, we do need to run the update helper in admin mode.
+	// On Unix-likes the files to update are in user's home so we don't need any other rights.
+	// TODO Take a decision about that last one.
     bool success =
         LaunchExecutable(
             executablePath.c_str(),
             commandLineArguments,
             true /* waitForCompletion */,
-#ifdef __WINDOWS
-            false /* asAdmin */
-#elif __OSX
+#ifdef __OSX
             true /* asAdmin */
 #else
-	#warning NOT IMPLEMENTED
+            false /* asAdmin */
 #endif
             );
 
@@ -1269,11 +1313,8 @@ bool LaunchUpdater(string versionsXmlFilePath)
 {
 #ifdef __WINDOWS
     string executablePath = executionPath + "MyLittleInvestigationsUpdater.exe";
-#elif __OSX
-    string executablePath = executionPath + "MyLittleInvestigationsUpdater";
 #else
-	#warning NOT IMPLEMENTED
-	std::cerr << "NOT IMPLEMENTED" << std::endl;
+    string executablePath = executionPath + "MyLittleInvestigationsUpdater";
 #endif
 
     vector<string> commandLineArguments;
@@ -1282,17 +1323,16 @@ bool LaunchUpdater(string versionsXmlFilePath)
     // On Windows, we can launch the entire update application in admin mode.
     // On OS X, however, we need to instead launch it in standard mode and then acquire rights to run
     // the update applications as root.
+	// On Unix-likes the files to update are in user's home so we don't need any other rights.
+	// TODO Take a decision about that last one.
     return LaunchExecutable(
         executablePath.c_str(),
         commandLineArguments,
         false /* waitForCompletion */,
 #ifdef __WINDOWS
         true /* asAdmin */
-#elif __OSX
-        false /* asAdmin */
 #else
-	#warning NOT IMPLEMENTED
-	std::cerr << "NOT IMPLEMENTED" << std::endl;
+        false /* asAdmin */
 #endif
         );
 }
