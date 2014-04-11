@@ -17,7 +17,7 @@ set( CMAKE_MODULE_PATH	${CMAKE_CURRENT_SOURCE_DIR}/cmake	)
 
 # My Little Investigations -----------------------------------------------------
 
-set( PROJECT mli )
+set( PROJECT MyLittleInvestigations )
 
 # Definitions
 add_definitions( -DTIXML_USE_TICPP 			)
@@ -31,7 +31,7 @@ endif()
 # Game -------------------------------------------------------------------------
 
 # Project properties
-project(${PROJECT}-game)
+project(${PROJECT})
 
 # Dependencies
 find_package( SDL2			REQUIRED	)
@@ -245,7 +245,7 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES
 # Launcher ---------------------------------------------------------------------
 
 # Project properties
-project(${PROJECT}-launcher)
+project(${PROJECT}Launcher)
 
 # Dependencies
 find_package( SDL2			REQUIRED	)
@@ -304,7 +304,7 @@ set_target_properties( ${PROJECT_NAME} PROPERTIES
 # Updater ----------------------------------------------------------------------
 
 # Project properties
-project(${PROJECT}-updater)
+project(${PROJECT}Updater)
 
 # Dependencies
 find_package( SDL2			REQUIRED	)
