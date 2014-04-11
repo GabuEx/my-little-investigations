@@ -150,7 +150,7 @@
 					<Add option="-g" />
 					<Add option="-I/usr/local/include" />
 					<Add option="-DMLI_DEBUG" />
-					<Add option='-DDATA_DIR=\\&quot;/home/bazzy/src/my-little-investigations/data/\\&quot;' />
+					<Add option='-DDATA_DIR=\\&quot;$(PROJECT_DIR)/data/\\&quot;' />
 				</Compiler>
 				<Linker>
 					<Add option="-lSDL2main" />

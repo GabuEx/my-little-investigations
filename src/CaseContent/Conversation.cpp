@@ -279,7 +279,11 @@ void Conversation::Update(int delta)
         return;
     }
 
-    if (pState->GetFastForwardEnabled() && pState->GetCanFastForward())
+#ifdef MLI_DEBUG
+    if  ( true )
+#else
+    if ( pState->GetFastForwardEnabled() && pState->GetCanFastForward())
+#endif
     {
         pSkipTab->Update();
 
@@ -435,8 +439,9 @@ void Conversation::Draw(double xOffset, double yOffset)
     {
         pCurrentContinuousAction->Draw(xOffset, yOffset);
     }
-
-    if (pState->GetFastForwardEnabled() && pState->GetCanFastForward())
+#ifndef MLI_DEBUG
+    if ( pState->GetFastForwardEnabled() && pState->GetCanFastForward())
+#endif
     {
         pSkipTab->Draw();
     }
@@ -1177,7 +1182,9 @@ void Conversation::ShowDialogAction::Update(int delta)
     }
 
     if (((MouseHelper::ClickedAnywhere() || pState->GetIsFastForwarding()) &&
+    #ifndef MLI_DEBUG
          (pDialog->GetIsReadyToProgress() || hasBeenSeen) &&
+    #endif
          !pDialog->HandleClick() &&
          !pDialog->GetIsAutomatic() &&
          !GetShouldPresentEvidenceAutomatically()) ||

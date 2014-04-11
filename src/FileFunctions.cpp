@@ -83,6 +83,37 @@ tstring StringToTString(string str)
 
 #ifdef __unix__
 #include <dirent.h>
+#include <pwd.h>
+#include <unistd.h>
+#include <sys/stat.h>
+
+void ensure_dir ( std::string path )
+{
+    struct stat st;
+    if (stat(path.c_str(), &st) == -1)
+        mkdir(path.c_str(), 0700);
+}
+struct Dir_Autoclean
+{
+    DIR* dir;
+
+    Dir_Autoclean(std::string path) : dir ( opendir(path.c_str()) ) {}
+    Dir_Autoclean(const char* path) : dir ( opendir(path) ) {}
+
+    ~Dir_Autoclean() { if ( dir ) closedir(dir); }
+
+    operator void*() const { return dir; }
+};
+struct String_Hax : std::string
+{
+    String_Hax ( const char* s ) : std::string(s) {}
+    String_Hax ( const std::string& s ) : std::string(s) {}
+    operator bool() const { return true; }
+};
+#define FOR_EACH_FILE(name,dirpath) \
+     if (Dir_Autoclean dir = dirpath ) \
+         while(dirent *ep = readdir (dir.dir)) \
+             if ( String_Hax name = std::string(dirpath) + ep->d_name )
 #endif
 
 string pathSeparator;
@@ -168,9 +199,13 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 
         commonAppDataPath = DATA_DIR;
         casesPath = commonAppDataPath+"/Cases/";
-        userAppDataPath = "~/.config/My Little Investigations/";
+        string homedir = getpwuid(getuid())->pw_dir;
+        userAppDataPath = homedir+"/.My Little Investigations/";
+        ensure_dir(userAppDataPath);
         dialogSeenListsPath = userAppDataPath+"/DialogSeenLists/";
+        ensure_dir(dialogSeenListsPath);
         savesPath = userAppDataPath+"/Saves";
+        ensure_dir(savesPath);
 #endif
 
     executableFilePath = ConvertSeparatorsInPath(executableFilePath);
@@ -230,24 +265,12 @@ vector<string> GetCaseFilePaths()
         }
 
         free(ppCaseFilePaths);
-    #else //if defined(__unix__)
-        DIR *dp;
-        dp = opendir (casesPath.c_str());
-
-        if (dp)
-        {
-            dirent *ep;
-            while (ep = readdir (dp))
+    #elif defined(__unix__)
+        FOR_EACH_FILE(caseFilePath,casesPath)
+            if (caseFilePath.find(".mlicase") != string::npos)
             {
-                string caseFilePath = string(ep->d_name);
-
-                if (caseFilePath.find(".mlicase") != string::npos)
-                {
-                    filePaths.push_back(casesPath+caseFilePath);
-                }
+                filePaths.push_back(caseFilePath);
             }
-            closedir(dp);
-        }
     #endif
 
     return filePaths;
@@ -720,7 +743,11 @@ bool SaveFileExistsForCase(string caseUuid)
 
 string GetSaveFolderPathForCase(string caseUuid)
 {
-    return savesPath + caseUuid + pathSeparator;
+    string folder = savesPath + caseUuid + pathSeparator;
+    #ifdef __unix__
+        ensure_dir(folder);
+    #endif
+    return folder;
 }
 
 vector<string> GetSaveFilePathsForCase(string caseUuid)
@@ -747,8 +774,7 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
 
             FindClose(hFind);
         }
-    #endif
-    #ifdef __OSX
+    #elif defined(__OSX)
         unsigned int saveFileCountLocal = 0;
 
         const char **ppSaveFilePaths = pfnGetSaveFilePathsForCaseOSX(caseUuid.c_str(), &saveFileCountLocal);
@@ -764,6 +790,12 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
         }
 
         free(ppSaveFilePaths);
+    #elif defined(__unix__)
+        FOR_EACH_FILE(saveFilePath, GetSaveFolderPathForCase(caseUuid))
+            if (saveFilePath.find(".sav") != string::npos)
+            {
+                filePaths.push_back(saveFilePath);
+            }
     #endif
 
     return filePaths;
