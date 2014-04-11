@@ -1248,6 +1248,8 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
 #else
 	#warning NOT IMPLEMENTED
 	std::cerr << "NOT IMPLEMENTED" << std::endl;
+    string			executablePath			= "";
+    vector<string>	commandLineArguments;
 #endif
 
     // On Windows, we can launch the entire update application in admin mode, so we don't need to run the update executable in admin mode.
