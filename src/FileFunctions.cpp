@@ -479,6 +479,7 @@ void SaveConfigurations()
     configWriter.WriteBooleanElement("EnableTutorials", gEnableTutorials);
     configWriter.WriteBooleanElement("EnableHints", gEnableHints);
     configWriter.WriteBooleanElement("EnableFullscreen", gEnableFullscreen);
+    configWriter.WriteBooleanElement("EnableSkippingUnseenDialog", gEnableSkippingUnseenDialog);
 #ifdef ENABLE_DEBUG_MODE
     configWriter.WriteBooleanElement("EnableDebugMode", gEnableDebugMode);
 #endif
@@ -497,6 +498,7 @@ void LoadConfigurations()
             bool enableTutorials = gEnableTutorials;
             bool enableHints = gEnableHints;
             bool enableFullscreen = gEnableFullscreen;
+            bool enableSkippingUnseenDialog = gEnableSkippingUnseenDialog;
 #ifdef ENABLE_DEBUG_MODE
             bool enableDebugMode = gEnableDebugMode;
 #endif
@@ -523,6 +525,11 @@ void LoadConfigurations()
                 if (configReader.ElementExists("EnableFullscreen"))
                 {
                     enableFullscreen = configReader.ReadBooleanElement("EnableFullscreen");
+                }
+
+                if (configReader.ElementExists("EnableSkippingUnseenDialog"))
+                {
+                    enableSkippingUnseenDialog = configReader.ReadBooleanElement("EnableSkippingUnseenDialog");
                 }
 
 #ifdef ENABLE_DEBUG_MODE
@@ -553,6 +560,7 @@ void LoadConfigurations()
             gEnableTutorials = enableTutorials;
             gEnableHints = enableHints;
             gEnableFullscreen = enableFullscreen;
+            gEnableSkippingUnseenDialog = enableSkippingUnseenDialog;
 #ifdef ENABLE_DEBUG_MODE
             gEnableDebugMode = enableDebugMode;
 #endif

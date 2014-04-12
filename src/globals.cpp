@@ -59,6 +59,7 @@ string gSaveFilePath = "";
 bool gEnableTutorials = true;
 bool gEnableHints = true;
 bool gEnableFullscreen = false;
+bool gEnableSkippingUnseenDialog = false;
 #ifdef ENABLE_DEBUG_MODE
 bool gEnableDebugMode = false;
 #endif
@@ -69,6 +70,7 @@ double gVoiceVolume = 0.5;
 bool gEnableTutorialsDefault = gEnableTutorials;
 bool gEnableHintsDefault = gEnableHints;
 bool gEnableFullscreenDefault = gEnableFullscreen;
+bool gEnableSkippingUnseenDialogDefault = gEnableSkippingUnseenDialog;
 #ifdef ENABLE_DEBUG_MODE
 bool gEnableDebugModeDefault = gEnableDebugMode;
 #endif

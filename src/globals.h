@@ -77,6 +77,7 @@ extern string gSaveFilePath;
 extern bool gEnableTutorials;
 extern bool gEnableHints;
 extern bool gEnableFullscreen;
+extern bool gEnableSkippingUnseenDialog;
 #ifdef ENABLE_DEBUG_MODE
 extern bool gEnableDebugMode;
 #endif
@@ -87,6 +88,7 @@ extern double gVoiceVolume;
 extern bool gEnableTutorialsDefault;
 extern bool gEnableHintsDefault;
 extern bool gEnableFullscreenDefault;
+extern bool gEnableSkippingUnseenDialogDefault;
 #ifdef ENABLE_DEBUG_MODE
 extern bool gEnableDebugModeDefault;
 #endif

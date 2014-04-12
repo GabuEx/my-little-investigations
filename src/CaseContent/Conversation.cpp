@@ -1100,7 +1100,7 @@ Conversation::EndBranchOnConditionAction::EndBranchOnConditionAction(XmlReader *
 void Conversation::ShowDialogAction::Begin(State *pState)
 {
     ContinuousAction::Begin(pState);
-    pState->SetCanFastForward(hasBeenSeen);
+    pState->SetCanFastForward(hasBeenSeen || gEnableSkippingUnseenDialog);
 
     pState->SetSpeakerPosition(speakerPosition);
 
@@ -1177,7 +1177,7 @@ void Conversation::ShowDialogAction::Update(int delta)
     }
 
     if (((MouseHelper::ClickedAnywhere() || pState->GetIsFastForwarding()) &&
-         (pDialog->GetIsReadyToProgress() || hasBeenSeen) &&
+         (pDialog->GetIsReadyToProgress() || hasBeenSeen || gEnableSkippingUnseenDialog) &&
          !pDialog->HandleClick() &&
          !pDialog->GetIsAutomatic() &&
          !GetShouldPresentEvidenceAutomatically()) ||

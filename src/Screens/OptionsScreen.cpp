@@ -64,6 +64,8 @@ OptionsScreen::OptionsScreen()
     pEnableHintsButtonOn = NULL;
     pFullscreenModeButtonOff = NULL;
     pFullscreenModeButtonOn = NULL;
+    pEnableSkippingUnseenDialogButtonOff = NULL;
+    pEnableSkippingUnseenDialogButtonOn = NULL;
 #ifdef ENABLE_DEBUG_MODE
     pDebugModeButtonOff = NULL;
     pDebugModeButtonOn = NULL;
@@ -128,6 +130,10 @@ OptionsScreen::~OptionsScreen()
     pFullscreenModeButtonOff = NULL;
     delete pFullscreenModeButtonOn;
     pFullscreenModeButtonOn = NULL;
+    delete pEnableSkippingUnseenDialogButtonOff;
+    pEnableSkippingUnseenDialogButtonOff = NULL;
+    delete pEnableSkippingUnseenDialogButtonOn;
+    pEnableSkippingUnseenDialogButtonOn = NULL;
 #ifdef ENABLE_DEBUG_MODE
     delete pDebugModeButtonOff;
     pDebugModeButtonOff = NULL;
@@ -226,7 +232,7 @@ void OptionsScreen::LoadResources()
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/TutorialsCheckBoxOffMouseOver.png"),
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/TutorialsCheckBoxOffMouseDown.png"),
             354,
-            282
+            251
         );
     pTutorialsButtonOff->SetClickSoundEffect("ButtonClick2");
 
@@ -237,7 +243,7 @@ void OptionsScreen::LoadResources()
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/TutorialsCheckBoxOnMouseOver.png"),
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/TutorialsCheckBoxOnMouseDown.png"),
             354,
-            282
+            251
         );
     pTutorialsButtonOn->SetClickSoundEffect("ButtonClick2");
 
@@ -248,7 +254,7 @@ void OptionsScreen::LoadResources()
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/HintsCheckBoxOffMouseOver.png"),
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/HintsCheckBoxOffMouseDown.png"),
             354,
-            350
+            319
         );
     pEnableHintsButtonOff->SetClickSoundEffect("ButtonClick2");
 
@@ -259,7 +265,7 @@ void OptionsScreen::LoadResources()
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/HintsCheckBoxOnMouseOver.png"),
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/HintsCheckBoxOnMouseDown.png"),
             354,
-            350
+            319
         );
     pEnableHintsButtonOn->SetClickSoundEffect("ButtonClick2");
 
@@ -270,7 +276,7 @@ void OptionsScreen::LoadResources()
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/FullscreenCheckBoxOffMouseOver.png"),
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/FullscreenCheckBoxOffMouseDown.png"),
             354,
-            428
+            397
         );
     pFullscreenModeButtonOff->SetClickSoundEffect("ButtonClick2");
 
@@ -281,9 +287,31 @@ void OptionsScreen::LoadResources()
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/FullscreenCheckBoxOnMouseOver.png"),
             ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/FullscreenCheckBoxOnMouseDown.png"),
             354,
-            428
+            397
         );
     pFullscreenModeButtonOn->SetClickSoundEffect("ButtonClick2");
+
+    delete pEnableSkippingUnseenDialogButtonOff;
+    pEnableSkippingUnseenDialogButtonOff =
+        new ImageButton(
+            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOffMouseOff.png"),
+            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOffMouseOver.png"),
+            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOffMouseDown.png"),
+            354,
+            459
+        );
+    pEnableSkippingUnseenDialogButtonOff->SetClickSoundEffect("ButtonClick2");
+
+    delete pEnableSkippingUnseenDialogButtonOn;
+    pEnableSkippingUnseenDialogButtonOn =
+        new ImageButton(
+            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOnMouseOff.png"),
+            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOnMouseOver.png"),
+            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOnMouseDown.png"),
+            354,
+            459
+        );
+    pEnableSkippingUnseenDialogButtonOn->SetClickSoundEffect("ButtonClick2");
 
 #ifdef ENABLE_DEBUG_MODE
     delete pDebugModeButtonOff;
@@ -371,7 +399,9 @@ void OptionsScreen::Update(int delta)
         !pEnableHintsButtonOff->IsReady() ||
         !pEnableHintsButtonOn->IsReady() ||
         !pFullscreenModeButtonOff->IsReady() ||
-        !pFullscreenModeButtonOn->IsReady()
+        !pFullscreenModeButtonOn->IsReady() ||
+        !pEnableSkippingUnseenDialogButtonOff->IsReady() ||
+        !pEnableSkippingUnseenDialogButtonOn->IsReady()
 #ifdef ENABLE_DEBUG_MODE
         || !pDebugModeButtonOff->IsReady()
         || !pDebugModeButtonOn->IsReady()
@@ -484,6 +514,15 @@ void OptionsScreen::Update(int delta)
             pFullscreenModeButtonOff->Update(delta);
         }
 
+        if (gEnableSkippingUnseenDialog)
+        {
+            pEnableSkippingUnseenDialogButtonOn->Update(delta);
+        }
+        else
+        {
+            pEnableSkippingUnseenDialogButtonOff->Update(delta);
+        }
+
 #ifdef ENABLE_DEBUG_MODE
         if (gEnableDebugMode)
         {
@@ -548,7 +587,9 @@ void OptionsScreen::Draw()
         !pTutorialsButtonOff->IsReady() ||
         !pTutorialsButtonOn->IsReady() ||
         !pFullscreenModeButtonOff->IsReady() ||
-        !pFullscreenModeButtonOn->IsReady()
+        !pFullscreenModeButtonOn->IsReady() ||
+        !pEnableSkippingUnseenDialogButtonOff->IsReady() ||
+        !pEnableSkippingUnseenDialogButtonOn->IsReady()
 #ifdef ENABLE_DEBUG_MODE
         || !pDebugModeButtonOff->IsReady()
         || !pDebugModeButtonOn->IsReady()
@@ -605,6 +646,15 @@ void OptionsScreen::Draw()
         pFullscreenModeButtonOff->Draw(gameplayOpacity);
     }
 
+    if (gEnableSkippingUnseenDialog)
+    {
+        pEnableSkippingUnseenDialogButtonOn->Draw(gameplayOpacity);
+    }
+    else
+    {
+        pEnableSkippingUnseenDialogButtonOff->Draw(gameplayOpacity);
+    }
+
 #ifdef ENABLE_DEBUG_MODE
     if (gEnableDebugMode)
     {
@@ -654,6 +704,7 @@ void OptionsScreen::OnButtonClicked(ImageButton *pSender)
         }
 
         gEnableFullscreen = gEnableFullscreenDefault;
+        gEnableSkippingUnseenDialog = gEnableSkippingUnseenDialogDefault;
 
         #ifdef ENABLE_DEBUG_MODE
         gEnableDebugMode = gEnableDebugModeDefault;
@@ -718,6 +769,14 @@ void OptionsScreen::OnButtonClicked(ImageButton *pSender)
     {
         gToggleFullscreen = true;
         gEnableFullscreen = false;
+    }
+    else if (pSender == pEnableSkippingUnseenDialogButtonOff)
+    {
+        gEnableSkippingUnseenDialog = true;
+    }
+    else if (pSender == pEnableSkippingUnseenDialogButtonOn)
+    {
+        gEnableSkippingUnseenDialog = false;
     }
 #ifdef ENABLE_DEBUG_MODE
     else if (pSender == pDebugModeButtonOff)
