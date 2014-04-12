@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=My Little Investigations
+GenericName=Puzzle Game
+Icon=/usr/share/mylittleinvestigations/icon.png
+Exec=MyLittleInvestigations
+Terminal=false
+Categories=Game;
