@@ -24,7 +24,7 @@ add_definitions( -DTIXML_USE_TICPP 			)
 add_definitions( -D__STDC_CONSTANT_MACROS	)
 
 if( CMAKE_BUILD_TYPE MATCHES "Debug" )
-	add_definitions( -DENABLE_DEBUG_MODE	)
+	#add_definitions( -DENABLE_DEBUG_MODE	)
 	add_definitions( -DMLI_DEBUG			)
 endif()
 

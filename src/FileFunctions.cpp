@@ -71,17 +71,50 @@ tstring StringToTString(string str)
 
     return tstr;
 }
-#elif __OSX
+#endif
+#ifdef __OSX
 #include "../osx/ApplicationSupportBridge.h"
 
 #include <Security/Authorization.h>
 #include <Security/AuthorizationTags.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#else
-#include <sys/types.h>
+#endif
+
+#ifdef __unix__
 #include <dirent.h>
-	#warning MAY NEED INCLUDES
+#include <pwd.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+
+void ensure_dir ( std::string path )
+{
+    struct stat st;
+    if (stat(path.c_str(), &st) == -1)
+        mkdir(path.c_str(), 0700);
+}
+struct Dir_Autoclean
+{
+    DIR* dir;
+
+    Dir_Autoclean(std::string path) : dir ( opendir(path.c_str()) ) {}
+    Dir_Autoclean(const char* path) : dir ( opendir(path) ) {}
+
+    ~Dir_Autoclean() { if ( dir ) closedir(dir); }
+
+    operator void*() const { return dir; }
+};
+struct String_Hax : std::string
+{
+    String_Hax ( const char* s ) : std::string(s) {}
+    String_Hax ( const std::string& s ) : std::string(s) {}
+    operator bool() const { return true; }
+};
+#define FOR_EACH_FILE(name,dirpath) \
+     if (Dir_Autoclean dir = dirpath ) \
+         while(dirent *ep = readdir (dir.dir)) \
+             if ( String_Hax name = std::string(dirpath) + ep->d_name )
 #endif
 
 string pathSeparator;
@@ -148,7 +181,9 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
             if (ftyp == INVALID_FILE_ATTRIBUTES) CreateDirectory(szPath, NULL);
             savesPath = TStringToString(tstring(szPath));
         }
+
 #elif __OSX
+
 
 	#ifndef GAME_EXECUTABLE
         tempDirectoryPath = getenv("TMPDIR");
@@ -159,6 +194,7 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
         userAppDataPath = string(pUserApplicationSupportPath);
         dialogSeenListsPath = string(pDialogSeenListsPath);
         savesPath = string(pSavesPath);
+
 #else
 
 	#ifndef GAME_EXECUTABLE
@@ -181,6 +217,7 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 
 		SDL_free(sdlBasePath);
 		SDL_free(sdlPrefPath);
+
 #endif
 
     executableFilePath = ConvertSeparatorsInPath(executableFilePath);
@@ -240,29 +277,14 @@ vector<string> GetCaseFilePaths()
         }
 
         free(ppCaseFilePaths);
-	#else
-		DIR*			pCaseDir	= NULL;
-		struct dirent*	pDirFile	= NULL;
-
-		if( (pCaseDir = opendir(casesPath.c_str())) == NULL )
-		{
-			std::cerr << "CAN'T OPEN CASES FOLDER" << std::endl;
-			return filePaths;
-		}
-
-		while( (pDirFile = readdir(pCaseDir)) != NULL )
-		{
-			string	fileName		( pDirFile->d_name	);
-			string	seakedExtension	( ".mlicase"		);
-			size_t	foundPos		( string::npos		);
-
-			if( (foundPos = fileName.rfind(seakedExtension)) != string::npos &&	// Contains extension &&
-				foundPos == fileName.length() - seakedExtension.length()		// Extension at the end
-			)
-				filePaths.push_back(fileName);
-		}
-
-		closedir(pCaseDir);
+    #elif defined(__unix__)
+		size_t	foundPos	= string::npos;
+        FOR_EACH_FILE(caseFilePath,casesPath)
+            if( (foundPos = caseFilePath.find(".mlicase")) != string::npos &&	// Contains extension &&
+				foundPos == caseFilePath.length() - string(".mlicase").length())			// Extension at the end
+            {
+                filePaths.push_back(caseFilePath);
+            }
     #endif
 
     return filePaths;
@@ -742,7 +764,11 @@ bool SaveFileExistsForCase(string caseUuid)
 
 string GetSaveFolderPathForCase(string caseUuid)
 {
-    return savesPath + caseUuid + pathSeparator;
+    string folder = savesPath + caseUuid + pathSeparator;
+    #ifdef __unix__
+        ensure_dir(folder);
+    #endif
+    return folder;
 }
 
 vector<string> GetSaveFilePathsForCase(string caseUuid)
@@ -785,10 +811,14 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
         }
 
         free(ppSaveFilePaths);
-	#else
-		// TODO
-		#warning NOT IMPLEMENTED
-		std::cerr << "NOT IMPLEMENTED" << std::endl;
+    #elif defined(__unix__)
+		size_t	foundPos	= string::npos;
+        FOR_EACH_FILE(saveFilePath, GetSaveFolderPathForCase(caseUuid))
+            if( (foundPos = saveFilePath.find(".sav")) != string::npos &&		// Contains extension &&
+				foundPos == saveFilePath.length() - string(".sav").length())	// Extension at the end
+            {
+                filePaths.push_back(saveFilePath);
+            }
     #endif
 
     return filePaths;
@@ -1246,10 +1276,16 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
     commandLineArguments.push_back(deltaFilePath);
     commandLineArguments.push_back(newFilePath);
 #else
-	#warning NOT IMPLEMENTED
-	std::cerr << "NOT IMPLEMENTED" << std::endl;
-    string			executablePath			= "";
-    vector<string>	commandLineArguments;
+    string executablePath = "xdelta3";
+
+    vector<string> commandLineArguments;
+
+    commandLineArguments.push_back("-f");
+    commandLineArguments.push_back("-d");
+    commandLineArguments.push_back("-s");
+    commandLineArguments.push_back(oldFilePath);
+    commandLineArguments.push_back(deltaFilePath);
+    commandLineArguments.push_back(newFilePath);
 #endif
 
     // On Windows, we can launch the entire update application in admin mode, so we don't need to run the update executable in admin mode.
@@ -1273,9 +1309,7 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
 
 bool RemoveFile(string filePath)
 {
-#ifdef __WINDOWS
-    return remove(filePath.c_str()) == 0;
-#elif __OSX
+#ifdef __OSX
     string executablePath = GetUpdaterHelperFilePath();
 
     vector<string> commandLineArguments;
@@ -1285,16 +1319,13 @@ bool RemoveFile(string filePath)
 
     return LaunchExecutable(executablePath.c_str(), commandLineArguments, true /* waitForCompletion */, true /* asAdmin */);
 #else
-	#warning NOT IMPLEMENTED
-	std::cerr << "NOT IMPLEMENTED" << std::endl;
+    return remove(filePath.c_str()) == 0;
 #endif
 }
 
 bool RenameFile(string oldFilePath, string newFilePath)
 {
-#ifdef __WINDOWS
-    return rename(oldFilePath.c_str(), newFilePath.c_str()) == 0;
-#elif __OSX
+#ifdef __OSX
     string executablePath = GetUpdaterHelperFilePath();
 
     vector<string> commandLineArguments;
@@ -1305,8 +1336,7 @@ bool RenameFile(string oldFilePath, string newFilePath)
 
     return LaunchExecutable(executablePath.c_str(), commandLineArguments, true /* waitForCompletion */, true /* asAdmin */);
 #else
-	#warning NOT IMPLEMENTED
-	std::cerr << "NOT IMPLEMENTED" << std::endl;
+    return rename(oldFilePath.c_str(), newFilePath.c_str()) == 0;
 #endif
 }
 #endif
