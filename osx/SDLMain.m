@@ -448,9 +448,13 @@ const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
 
     unsigned int caseFileIndex = 0;
 
-    for (id object in pCaseFileList)
+    for (NSString *pStrCaseFileName object in pCaseFileList)
     {
-        NSString *pStrCaseFileName = (NSString *)object;
+       //Ignore UNIX hidden files, like OS X's .DS_Store
+        if ([pStrCaseFileName hasPrefix:@"."]) {
+            continue;
+        }
+        
         NSMutableString *pStrCaseFilePath = [[NSMutableString alloc] init];
 
         [pStrCaseFilePath setString:[NSString stringWithUTF8String:pCasesPath]];
@@ -488,9 +492,13 @@ const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pS
 
     unsigned int saveFileIndex = 0;
 
-    for (id object in pSaveFileList)
+    for (NSString *pStrSaveFileName object in pSaveFileList)
     {
-        NSString *pStrSaveFileName = (NSString *)object;
+       //Ignore UNIX hidden files, like OS X's .DS_Store
+        if ([pStrSaveFileName hasPrefix:@"."]) {
+            continue;
+        }
+
         NSMutableString *pStrSaveFilePath = [[NSMutableString alloc] init];
 
         [pStrSaveFilePath setString:pStrCaseSavesFilePath];
