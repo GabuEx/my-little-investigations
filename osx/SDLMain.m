@@ -463,7 +463,7 @@ const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
         ppCaseFileList[caseFileIndex++] = strdup([pStrCaseFilePath fileSystemRepresentation]);
     }
 
-    *pCaseFileCount = caseFileCount;
+    *pCaseFileCount = caseFileIndex;
     [pool drain];
     return ppCaseFileList;
 }
@@ -508,7 +508,7 @@ const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pS
         ppSaveFilePathList[saveFileIndex++] = strdup([pStrSaveFilePath fileSystemRepresentation]);
     }
 
-    *pSaveFileCount = saveFileCount;
+    *pSaveFileCount = saveFileIndex;
     [pool drain];
     return ppSaveFilePathList;
 }
