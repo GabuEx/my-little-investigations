@@ -432,8 +432,10 @@ int main (int argc, char **argv)
 
 const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
 {
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	NSError *error = nil;
     //TODO: use NSFileManager to get the path
+    // Or save the NSString as, say, a static pointer.
 	NSString *casesPath = [NSString stringWithUTF8String:pCasesPath];
 
     NSArray *pCaseFileList =
@@ -462,11 +464,13 @@ const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
     }
 
     *pCaseFileCount = caseFileCount;
+    [pool drain];
     return ppCaseFileList;
 }
 
 const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pSaveFileCount)
 {
+	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	NSError *error = nil;
 	NSFileManager *defaultManager = [NSFileManager defaultManager];
 
@@ -504,9 +508,8 @@ const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pS
         ppSaveFilePathList[saveFileIndex++] = strdup([pStrSaveFilePath fileSystemRepresentation]);
     }
 
-    [pStrCaseSavesFilePath release];
-
     *pSaveFileCount = saveFileCount;
+    [pool drain];
     return ppSaveFilePathList;
 }
 
