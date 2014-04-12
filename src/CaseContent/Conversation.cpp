@@ -1258,6 +1258,9 @@ void Conversation::ShowDialogAction::Reset()
     if (pDialog != NULL)
     {
         pDialog->Reset();
+
+        delete pDialog;
+        pDialog = NULL;
     }
 
     totalMillisecondsSinceMouthChange = 0;
