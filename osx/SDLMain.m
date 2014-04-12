@@ -358,6 +358,7 @@ static void CustomApplicationMain (int argc, char **argv)
 int main (int argc, char **argv)
 {
     NSAutoreleasePool *pPool = [[NSAutoreleasePool alloc] init];
+    NSFileManager *defaultManager = [NSFileManager defaultManager];
 
     /* Store the function pointers to our interop functions, first off. */
     pfnGetCaseFilePathsOSX = GetCaseFilePathsOSX;
@@ -366,8 +367,8 @@ int main (int argc, char **argv)
     pfnGetPropertyListXMLForVersionStringOSX = GetPropertyListXMLForVersionStringOSX;
 
     /* Create our Application Support folders if they don't exist yet and store the paths */
-    NSString *pStrLocalApplicationSupportPath = [[NSFileManager defaultManager] localApplicationSupportDirectory];
-    NSString *pStrUserApplicationSupportPath = [[NSFileManager defaultManager] userApplicationSupportDirectory];
+    NSString *pStrLocalApplicationSupportPath = [defaultManager localApplicationSupportDirectory];
+    NSString *pStrUserApplicationSupportPath = [defaultManager userApplicationSupportDirectory];
 
     /* Next, create the folders that the executable will need during execution if they don't already exist. */
     NSString *pStrLocalGameApplicationSupportPath = nil;
@@ -384,13 +385,13 @@ int main (int argc, char **argv)
 
 	NSError *error = nil;
 
-	[[NSFileManager defaultManager]
+	[defaultManager
 		createDirectoryAtPath:pStrDialogSeenListsPath
 		withIntermediateDirectories:YES
 		attributes:nil
 		error:&error];
 
-	[[NSFileManager defaultManager]
+	[defaultManager
 		createDirectoryAtPath:pStrSavesPath
 		withIntermediateDirectories:YES
 		attributes:nil
@@ -432,10 +433,12 @@ int main (int argc, char **argv)
 const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
 {
 	NSError *error = nil;
+    //TODO: use NSFileManager to get the path
+	NSString *casesPath = [NSString stringWithUTF8String:pCasesPath];
 
     NSArray *pCaseFileList =
         [[NSFileManager defaultManager]
-            contentsOfDirectoryAtPath:[NSString stringWithUTF8String:pCasesPath]
+            contentsOfDirectoryAtPath: casesPath
             error:&error];
 
     unsigned int caseFileCount = [pCaseFileList count];
@@ -450,12 +453,12 @@ const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
             continue;
         }
         
-        NSMutableString *pStrCaseFilePath = [[NSMutableString alloc] init];
+        NSString *pStrCaseFilePath = [casesPath stringByAppendingPathComponent:pStrCaseFileName];
 
-        [pStrCaseFilePath setString:[NSString stringWithUTF8String:pCasesPath]];
-        [pStrCaseFilePath appendString:pStrCaseFileName];
-
-        ppCaseFileList[caseFileIndex++] = [pStrCaseFilePath fileSystemRepresentation];
+        //Have to duplicate the string here because fileSystemRepresentation returns
+        // a pointer in memory that is from inside an NSString object:
+        // this data gets freed when the NSString object is dealloc'd
+        ppCaseFileList[caseFileIndex++] = strdup([pStrCaseFilePath fileSystemRepresentation]);
     }
 
     *pCaseFileCount = caseFileCount;
@@ -465,20 +468,19 @@ const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
 const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pSaveFileCount)
 {
 	NSError *error = nil;
+	NSFileManager *defaultManager = [NSFileManager defaultManager];
 
-    NSMutableString *pStrCaseSavesFilePath = [[NSMutableString alloc] init];
-    [pStrCaseSavesFilePath setString:[NSString stringWithUTF8String:pSavesPath]];
-    [pStrCaseSavesFilePath appendString:[NSString stringWithUTF8String:pCaseUuid]];
-    [pStrCaseSavesFilePath appendString:[NSString stringWithUTF8String:"/"]];
+    //TODO: use NSFileManager to get the path
+    NSString *pStrCaseSavesFilePath =  [@(pSavesPath) stringByAppendingPathComponent:@(pCaseUuid)];
 
-    [[NSFileManager defaultManager]
+    [defaultManager
         createDirectoryAtPath:pStrCaseSavesFilePath
         withIntermediateDirectories:YES
         attributes:nil
         error:&error];
 
     NSArray *pSaveFileList =
-        [[NSFileManager defaultManager]
+        [defaultManager
             contentsOfDirectoryAtPath:pStrCaseSavesFilePath
             error:&error];
 
@@ -494,12 +496,12 @@ const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pS
             continue;
         }
 
-        NSMutableString *pStrSaveFilePath = [[NSMutableString alloc] init];
+        NSString *pStrSaveFilePath = [pStrCaseSavesFilePath stringByAppendingPathComponent:pStrSaveFileName];
 
-        [pStrSaveFilePath setString:pStrCaseSavesFilePath];
-        [pStrSaveFilePath appendString:pStrSaveFileName];
-
-        ppSaveFilePathList[saveFileIndex++] = [pStrSaveFilePath fileSystemRepresentation];
+        //Have to duplicate the string here because fileSystemRepresentation returns
+        // a pointer in memory that is from inside an NSString object:
+        // this data gets freed when the NSString object is dealloc'd
+        ppSaveFilePathList[saveFileIndex++] = strdup([pStrSaveFilePath fileSystemRepresentation]);
     }
 
     [pStrCaseSavesFilePath release];
@@ -541,6 +543,7 @@ char * GetPropertyListXMLForVersionStringOSX(const char *pPropertyListFilePath, 
 
     NSString *pErrorDesc = nil;
     NSPropertyListFormat format;
+    //TODO: use NSFileManager to get the path
     NSString *pProperyListPath = [NSString stringWithUTF8String:pPropertyListFilePath];
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:pProperyListPath])

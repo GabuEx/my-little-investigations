@@ -214,6 +214,8 @@ vector<string> GetCaseFilePaths()
             {
                 filePaths.push_back(caseFilePath);
             }
+            //Clean up after ourselves
+            free((void*)ppCaseFilePaths[i]);
         }
 
         free(ppCaseFilePaths);
@@ -730,6 +732,8 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
             {
                 filePaths.push_back(saveFilePath);
             }
+            //Clean up after ourselves
+            free((void*)ppSaveFilePaths[j]);
         }
 
         free(ppSaveFilePaths);
