@@ -1163,7 +1163,7 @@ void Conversation::ShowDialogAction::Begin(State *pState)
 
 void Conversation::ShowDialogAction::Update(int delta)
 {
-    if (GetIsFinished())
+    if (GetIsFinished() || pDialog == NULL)
     {
         return;
     }
@@ -1243,12 +1243,18 @@ void Conversation::ShowDialogAction::Update(int delta)
 
 void Conversation::ShowDialogAction::Draw(double xOffset, double yOffset)
 {
-    pDialog->Draw(xOffset, yOffset);
+    if (pDialog != NULL)
+    {
+        pDialog->Draw(xOffset, yOffset);
+    }
 }
 
 void Conversation::ShowDialogAction::DrawBackground(double xOffset, double yOffset)
 {
-    pDialog->DrawBackground(xOffset, yOffset);
+    if (pDialog != NULL)
+    {
+        pDialog->DrawBackground(xOffset, yOffset);
+    }
 }
 
 void Conversation::ShowDialogAction::Reset()
