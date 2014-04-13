@@ -208,7 +208,7 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 		char* sdlPrefPath = SDL_GetPrefPath("EquestrianDreamers", "MyLittleInvestigations");
 
 		#ifndef DATA_DIR
-		#define DATA_DIR "/usr/share/MyLittleInvestigations"
+		#define DATA_DIR "/usr/share/MyLittleInvestigations/"
 		#endif
 
 		commonAppDataPath	= DATA_DIR;
