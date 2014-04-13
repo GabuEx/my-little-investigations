@@ -279,11 +279,7 @@ void Conversation::Update(int delta)
         return;
     }
 
-#ifdef MLI_DEBUG
-    if  ( true )
-#else
     if ( pState->GetFastForwardEnabled() && pState->GetCanFastForward())
-#endif
     {
         pSkipTab->Update();
 
@@ -439,9 +435,7 @@ void Conversation::Draw(double xOffset, double yOffset)
     {
         pCurrentContinuousAction->Draw(xOffset, yOffset);
     }
-#ifndef MLI_DEBUG
     if ( pState->GetFastForwardEnabled() && pState->GetCanFastForward())
-#endif
     {
         pSkipTab->Draw();
     }
@@ -1105,7 +1099,7 @@ Conversation::EndBranchOnConditionAction::EndBranchOnConditionAction(XmlReader *
 void Conversation::ShowDialogAction::Begin(State *pState)
 {
     ContinuousAction::Begin(pState);
-    pState->SetCanFastForward(hasBeenSeen);
+    pState->SetCanFastForward(hasBeenSeen || gEnableSkippingUnseenDialog);
 
     pState->SetSpeakerPosition(speakerPosition);
 
@@ -1168,7 +1162,7 @@ void Conversation::ShowDialogAction::Begin(State *pState)
 
 void Conversation::ShowDialogAction::Update(int delta)
 {
-    if (GetIsFinished())
+    if (GetIsFinished() || pDialog == NULL)
     {
         return;
     }
@@ -1182,9 +1176,7 @@ void Conversation::ShowDialogAction::Update(int delta)
     }
 
     if (((MouseHelper::ClickedAnywhere() || pState->GetIsFastForwarding()) &&
-    #ifndef MLI_DEBUG
-         (pDialog->GetIsReadyToProgress() || hasBeenSeen) &&
-    #endif
+         (pDialog->GetIsReadyToProgress() || hasBeenSeen || gEnableSkippingUnseenDialog) &&
          !pDialog->HandleClick() &&
          !pDialog->GetIsAutomatic() &&
          !GetShouldPresentEvidenceAutomatically()) ||
@@ -1250,12 +1242,18 @@ void Conversation::ShowDialogAction::Update(int delta)
 
 void Conversation::ShowDialogAction::Draw(double xOffset, double yOffset)
 {
-    pDialog->Draw(xOffset, yOffset);
+    if (pDialog != NULL)
+    {
+        pDialog->Draw(xOffset, yOffset);
+    }
 }
 
 void Conversation::ShowDialogAction::DrawBackground(double xOffset, double yOffset)
 {
-    pDialog->DrawBackground(xOffset, yOffset);
+    if (pDialog != NULL)
+    {
+        pDialog->DrawBackground(xOffset, yOffset);
+    }
 }
 
 void Conversation::ShowDialogAction::Reset()
@@ -1265,6 +1263,9 @@ void Conversation::ShowDialogAction::Reset()
     if (pDialog != NULL)
     {
         pDialog->Reset();
+
+        delete pDialog;
+        pDialog = NULL;
     }
 
     totalMillisecondsSinceMouthChange = 0;

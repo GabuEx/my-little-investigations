@@ -84,6 +84,8 @@ private:
     ImageButton *pEnableHintsButtonOn;
     ImageButton *pFullscreenModeButtonOff;
     ImageButton *pFullscreenModeButtonOn;
+    ImageButton *pEnableSkippingUnseenDialogButtonOff;
+    ImageButton *pEnableSkippingUnseenDialogButtonOn;
 #ifdef ENABLE_DEBUG_MODE
     ImageButton *pDebugModeButtonOff;
     ImageButton *pDebugModeButtonOn;
