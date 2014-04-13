@@ -12,8 +12,6 @@
 #include <sys/param.h> /* for MAXPATHLEN */
 #include <unistd.h>
 
-/* Define these interop methods for calling into Objective-C from C++ at the top, */
-
 using namespace std;
 
 /* For some reaon, Apple removed setAppleMenu from the headers in 10.4,
@@ -447,10 +445,6 @@ vector<string> GetCaseFilePathsOSX()
         }
 
         NSString *pStrCaseFilePath = [casesPath stringByAppendingPathComponent:pStrCaseFileName];
-
-        //Have to duplicate the string here because fileSystemRepresentation returns
-        // a pointer in memory that is from inside an NSString object:
-        // this data gets freed when the NSString object is dealloc'd
 		ppCaseFileList.push_back(string([pStrCaseFilePath fileSystemRepresentation]));
     }
 
@@ -488,10 +482,6 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
         }
 
         NSString *pStrSaveFilePath = [pStrCaseSavesFilePath stringByAppendingPathComponent:pStrSaveFileName];
-
-        //Have to duplicate the string here because fileSystemRepresentation returns
-        // a pointer in memory that is from inside an NSString object:
-        // this data gets freed when the NSString object is dealloc'd
 		ppSaveFilePathList.push_back(string([pStrSaveFilePath fileSystemRepresentation]));
     }
 
