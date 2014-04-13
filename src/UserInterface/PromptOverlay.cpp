@@ -322,12 +322,14 @@ void PromptOverlay::Draw()
                 (int)pTextEntryFont->GetLineHeight()
             };
 
+            // If we're in fullscreen mode, then we'll want to apply the screen scale and offsets,
+            // rounding to the nearest pixel.
             if (gIsFullscreen)
             {
-                rect.x = (int)(rect.x * gScreenScale);
-                rect.y = (int)(rect.y * gScreenScale);
-                rect.w = (int)(rect.w * gScreenScale);
-                rect.h = (int)(rect.h * gScreenScale);
+                rect.x = (int)(rect.x * gScreenScale + gHorizontalOffset + 0.5);
+                rect.y = (int)(rect.y * gScreenScale + gVerticalOffset + 0.5);
+                rect.w = (int)(rect.w * gScreenScale + 0.5);
+                rect.h = (int)(rect.h * gScreenScale + 0.5);
             }
 
             SDL_SetRenderDrawColor(gpRenderer, 255, 255, 255, (Uint8)(fadeOpacity * 255));
