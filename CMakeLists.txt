@@ -28,6 +28,10 @@ if( CMAKE_BUILD_TYPE MATCHES "Debug" )
 	add_definitions( -DMLI_DEBUG			)
 endif()
 
+if(COMMON_DATA_DIR)
+	add_definitions(-DCOMMON_DATA_DIR="${COMMON_DATA_DIR}")
+endif()
+
 # Game -------------------------------------------------------------------------
 
 # Project properties

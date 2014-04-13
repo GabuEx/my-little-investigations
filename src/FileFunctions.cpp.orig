@@ -184,19 +184,17 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 
 #elif __OSX
 
+
 	#ifndef GAME_EXECUTABLE
         tempDirectoryPath = getenv("TMPDIR");
 	#endif
 
-        // The file system representation Objective C function seems to omit the
-        // trailing slash unless it's explicit.
-        // stringByAppendingPathComponent has no way of doing this
-        // explicitly, though.
-        commonAppDataPath = string(pLocalApplicationSupportPath) + "/";
-        casesPath = string(pCasesPath) + "/";
-        userAppDataPath = string(pUserApplicationSupportPath) + "/";
-        dialogSeenListsPath = string(pDialogSeenListsPath) + "/";
-        savesPath = string(pSavesPath) + "/";
+<<<<<<< HEAD
+        commonAppDataPath = string(pLocalApplicationSupportPath);
+        casesPath = string(pCasesPath);
+        userAppDataPath = string(pUserApplicationSupportPath);
+        dialogSeenListsPath = string(pDialogSeenListsPath);
+        savesPath = string(pSavesPath);
 
 #else
 
@@ -207,11 +205,11 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 		char* sdlBasePath = SDL_GetBasePath();
 		char* sdlPrefPath = SDL_GetPrefPath("EquestrianDreamers", "MyLittleInvestigations");
 
-		#ifndef COMMON_DATA_DIR
-		#define COMMON_DATA_DIR "/usr/share/MyLittleInvestigations/"
+		#ifndef DATA_DIR
+		#define DATA_DIR "/usr/share/MyLittleInvestigations"
 		#endif
 
-		commonAppDataPath	= COMMON_DATA_DIR;
+		commonAppDataPath	= DATA_DIR;
 		casesPath			= commonAppDataPath + "Cases/";
 
 		userAppDataPath		= sdlPrefPath;
@@ -227,6 +225,17 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 		SDL_free(sdlBasePath);
 		SDL_free(sdlPrefPath);
 
+=======
+        // The file system representation Objective C function seems to omit the
+        // trailing slash unless it's explicit.
+        // stringByAppendingPathComponent has no way of doing this
+        // explicitly, though.
+        commonAppDataPath = string(pLocalApplicationSupportPath) + "/";
+        casesPath = string(pCasesPath) + "/";
+        userAppDataPath = string(pUserApplicationSupportPath) + "/";
+        dialogSeenListsPath = string(pDialogSeenListsPath) + "/";
+        savesPath = string(pSavesPath) + "/";
+>>>>>>> official/master
 #endif
 
     executableFilePath = ConvertSeparatorsInPath(executableFilePath);
