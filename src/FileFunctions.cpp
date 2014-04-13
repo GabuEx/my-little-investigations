@@ -204,14 +204,20 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 		char* sdlBasePath = SDL_GetBasePath();
 		char* sdlPrefPath = SDL_GetPrefPath("EquestrianDreamers", "MyLittleInvestigations");
 
-		string prefDir(sdlPrefPath);
+		#ifndef DATA_DIR
+		#define DATA_DIR "/usr/share/MyLittleInvestigations"
+		#endif
 
-		commonAppDataPath	= prefDir + "common-data/";
+		commonAppDataPath	= DATA_DIR;
 		casesPath			= commonAppDataPath + "Cases/";
 
-		userAppDataPath		= prefDir + "config/";
+		userAppDataPath		= sdlPrefPath;
 		dialogSeenListsPath = userAppDataPath + "DialogSeenLists/";
 		savesPath			= userAppDataPath + "Saves/";
+
+		ensure_dir(userAppDataPath);
+		ensure_dir(dialogSeenListsPath);
+		ensure_dir(savesPath);
 
 		executionPath		= sdlBasePath;
 
@@ -280,8 +286,8 @@ vector<string> GetCaseFilePaths()
     #elif defined(__unix__)
 		size_t	foundPos	= string::npos;
         FOR_EACH_FILE(caseFilePath,casesPath)
-            if( (foundPos = caseFilePath.find(".mlicase")) != string::npos &&	// Contains extension &&
-				foundPos == caseFilePath.length() - string(".mlicase").length())			// Extension at the end
+            if( (foundPos = caseFilePath.find(".mlicase")) != string::npos &&		// Contains extension &&
+				foundPos == caseFilePath.length() - string(".mlicase").length())	// Extension at the end
             {
                 filePaths.push_back(caseFilePath);
             }
