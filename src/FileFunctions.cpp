@@ -148,12 +148,16 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
         tempDirectoryPath = getenv("TMPDIR");
 #endif
 
-        commonAppDataPath = string(pLocalApplicationSupportPath);
-        casesPath = string(pCasesPath);
-        userAppDataPath = string(pUserApplicationSupportPath);
-        dialogSeenListsPath = string(pDialogSeenListsPath);
-        savesPath = string(pSavesPath);
-    #endif
+        // The file system representation Objective C function seems to omit the
+        // trailing slash unless it's explicit.
+        // stringByAppendingPathComponent has no way of doing this
+        // explicitly, though.
+        commonAppDataPath = string(pLocalApplicationSupportPath) + "/";
+        casesPath = string(pCasesPath) + "/";
+        userAppDataPath = string(pUserApplicationSupportPath) + "/";
+        dialogSeenListsPath = string(pDialogSeenListsPath) + "/";
+        savesPath = string(pSavesPath) + "/";
+#endif
 
     executableFilePath = ConvertSeparatorsInPath(executableFilePath);
     executionPath = executableFilePath.substr(0, executableFilePath.find_last_of(pathSeparator)) + pathSeparator;
@@ -210,6 +214,8 @@ vector<string> GetCaseFilePaths()
             {
                 filePaths.push_back(caseFilePath);
             }
+            //Clean up after ourselves
+            free((void*)ppCaseFilePaths[i]);
         }
 
         free(ppCaseFilePaths);
@@ -734,6 +740,8 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
             {
                 filePaths.push_back(saveFilePath);
             }
+            //Clean up after ourselves
+            free((void*)ppSaveFilePaths[j]);
         }
 
         free(ppSaveFilePaths);
