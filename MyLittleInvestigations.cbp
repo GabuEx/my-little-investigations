@@ -149,7 +149,7 @@
 					<Add option="-g" />
 					<Add option="-I/usr/local/include" />
 					<Add option="-DMLI_DEBUG" />
-					<Add option='-DDATA_DIR=\\&quot;$(PROJECT_DIR)/data/\\&quot;' />
+					<Add option='-DCOMMON_DATA_DIR=\\&quot;$(PROJECT_DIR)/data/\\&quot;' />
 				</Compiler>
 				<Linker>
 					<Add option="-lSDL2main" />
@@ -179,7 +179,7 @@
 				<Compiler>
 					<Add option="-O3" />
 					<Add option="-I/usr/local/include" />
-					<Add option='-DDATA_DIR=\\&quot;$(PROJECT_DIR)/data/\\&quot;' />
+					<Add option='-DCOMMON_DATA_DIR=\\&quot;$(PROJECT_DIR)/data/\\&quot;' />
 				</Compiler>
 				<Linker>
 					<Add option="-lSDL2main" />
