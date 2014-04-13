@@ -340,6 +340,10 @@ DialogCharacter::OneTimeEmotion::OneTimeEmotion(XmlReader *pReader)
     {
         leadInTime = pReader->ReadIntElement("LeadInTime");
     }
+    else
+    {
+        leadInTime = 0;
+    }
 
     videoId = pReader->ReadTextElement("VideoId");
     pReader->EndElement();
