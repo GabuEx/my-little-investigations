@@ -448,13 +448,13 @@ const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
 
     unsigned int caseFileIndex = 0;
 
-    for (NSString *pStrCaseFileName object in pCaseFileList)
+    for (NSString *pStrCaseFileName in pCaseFileList)
     {
        //Ignore UNIX hidden files, like OS X's .DS_Store
         if ([pStrCaseFileName hasPrefix:@"."]) {
             continue;
         }
-        
+
         NSString *pStrCaseFilePath = [casesPath stringByAppendingPathComponent:pStrCaseFileName];
 
         //Have to duplicate the string here because fileSystemRepresentation returns
@@ -475,7 +475,7 @@ const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pS
 	NSFileManager *defaultManager = [NSFileManager defaultManager];
 
     //TODO: use NSFileManager to get the path
-    NSString *pStrCaseSavesFilePath =  [@(pSavesPath) stringByAppendingPathComponent:@(pCaseUuid)];
+    NSString *pStrCaseSavesFilePath =  [[NSString stringWithUTF8String:pSavesPath] stringByAppendingPathComponent:[NSString stringWithUTF8String:pCaseUuid]];
 
     [defaultManager
         createDirectoryAtPath:pStrCaseSavesFilePath
@@ -493,7 +493,7 @@ const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pS
 
     unsigned int saveFileIndex = 0;
 
-    for (NSString *pStrSaveFileName object in pSaveFileList)
+    for (NSString *pStrSaveFileName in pSaveFileList)
     {
        //Ignore UNIX hidden files, like OS X's .DS_Store
         if ([pStrSaveFileName hasPrefix:@"."]) {
