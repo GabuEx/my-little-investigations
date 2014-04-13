@@ -329,9 +329,11 @@ bool CheckIfUpdatesExist(string *pVersionsXmlContent)
                         {
                         #ifdef __WINDOWS
                             deltaSize = versionReader.ReadIntElement("DeltaSizeWindows");
-                        #endif
-                        #ifdef __OSX
+                        #elif __OSX
                             deltaSize = versionReader.ReadIntElement("DeltaSizeOSX");
+						#else
+							#warning NOT IMPLEMENTED
+							std::cerr << "NOT IMPLEMENTED" << std::endl;
                         #endif
                         }
                     }

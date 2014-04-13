@@ -30,12 +30,12 @@
 #ifndef FONT_H
 #define FONT_H
 
-#ifdef __WINDOWS
-#include <SDL2/SDL_ttf.h>
-#endif
 #ifdef __OSX
 #include <SDL2_ttf/SDL_ttf.h>
+#else
+#include <SDL2/SDL_ttf.h>
 #endif
+
 #include <map>
 
 #include "Color.h"

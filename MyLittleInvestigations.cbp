@@ -139,6 +139,67 @@
 					<Mode after="always" />
 				</ExtraCommands>
 			</Target>
+			<Target title="Debug (POSIX)">
+				<Option platforms="Unix;" />
+				<Option output="bin/Debug/posix/MyLittleInvestigations" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/posix" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-I/usr/local/include" />
+					<Add option="-DMLI_DEBUG" />
+					<Add option='-DDATA_DIR=\\&quot;$(PROJECT_DIR)/data/\\&quot;' />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL2main" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_image" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lSDL2_mixer" />
+					<Add option="-lswscale" />
+					<Add option="-lcryptopp" />
+					<Add option="-pthread" />
+					<Add option="-L/usr/local/lib" />
+					<Add option="-lavformat" />
+					<Add option="-lavcodec" />
+					<Add option="-lX11" />
+					<Add option="-lasound" />
+					<Add option="-lz" />
+					<Add option="-lavutil" />
+					<Add option="-lm" />
+				</Linker>
+			</Target>
+			<Target title="Release (POSIX)">
+				<Option platforms="Unix;" />
+				<Option output="bin/Release/posix/MyLittleInvestigations" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/posix" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-I/usr/local/include" />
+					<Add option='-DDATA_DIR=\\&quot;$(PROJECT_DIR)/data/\\&quot;' />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL2main" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_image" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lSDL2_mixer" />
+					<Add option="-lswscale" />
+					<Add option="-lcryptopp" />
+					<Add option="-pthread" />
+					<Add option="-L/usr/local/lib" />
+					<Add option="-lavformat" />
+					<Add option="-lavcodec" />
+					<Add option="-lX11" />
+					<Add option="-lasound" />
+					<Add option="-lz" />
+					<Add option="-lavutil" />
+					<Add option="-lm" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -340,11 +401,15 @@
 		<Unit filename="src/resource.h">
 			<Option target="Debug (Win32)" />
 			<Option target="Release (Win32)" />
+			<Option target="Debug (POSIX)" />
+			<Option target="Release (POSIX)" />
 		</Unit>
 		<Unit filename="src/resource.rc">
 			<Option compilerVar="WINDRES" />
 			<Option target="Debug (Win32)" />
 			<Option target="Release (Win32)" />
+			<Option target="Debug (POSIX)" />
+			<Option target="Release (POSIX)" />
 		</Unit>
 		<Unit filename="src/ticpp/ticpp.cpp" />
 		<Unit filename="src/ticpp/ticpp.h" />
