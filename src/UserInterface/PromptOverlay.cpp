@@ -316,11 +316,19 @@ void PromptOverlay::Draw()
         {
             SDL_Rect rect =
             {
-                (int)((textEnteredPosition.GetX() + pTextEntryFont->GetWidth(textEntered.substr(0, TextInputHelper::GetCaretPosition()))) * gScreenScale),
-                (int)(textEnteredPosition.GetY() * gScreenScale),
-                (int)(2 * gScreenScale),
-                (int)(pTextEntryFont->GetLineHeight() * gScreenScale)
+                (int)(textEnteredPosition.GetX() + pTextEntryFont->GetWidth(textEntered.substr(0, TextInputHelper::GetCaretPosition()))),
+                (int)textEnteredPosition.GetY(),
+                2,
+                (int)pTextEntryFont->GetLineHeight()
             };
+
+            if (gIsFullscreen)
+            {
+                rect.x = (int)(rect.x * gScreenScale);
+                rect.y = (int)(rect.y * gScreenScale);
+                rect.w = (int)(rect.w * gScreenScale);
+                rect.h = (int)(rect.h * gScreenScale);
+            }
 
             SDL_SetRenderDrawColor(gpRenderer, 255, 255, 255, (Uint8)(fadeOpacity * 255));
             SDL_SetRenderDrawBlendMode(gpRenderer, SDL_BLENDMODE_BLEND);
