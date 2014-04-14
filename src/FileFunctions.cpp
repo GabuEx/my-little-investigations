@@ -478,8 +478,13 @@ Version GetCurrentVersion()
 #elif __OSX
     versionString = pfnGetVersionStringOSX(GetPropertyListPath().c_str());
 #else
-	#warning NOT IMPLEMENTED
-	std::cerr << "NOT IMPLEMENTED" << std::endl;
+	string		versionPath	= commonAppDataPath + "version";
+	ifstream	versionFile	( versionPath.c_str() );
+
+	if(versionFile.is_open())
+		versionFile >> versionString;
+
+	versionFile.close();
 #endif
 
     if (versionString.length() > 0)
