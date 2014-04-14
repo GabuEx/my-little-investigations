@@ -723,7 +723,7 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
         }
     #endif
     #ifdef __OSX
-        vector<string> ppSaveFilePaths = pfnGetSaveFilePathsForCaseOSX(caseUuid);
+        vector<string> ppSaveFilePaths = GetSaveFilePathsForCaseOSX(caseUuid);
 
         for (unsigned int j = 0; j < ppSaveFilePaths.size(); j++)
         {

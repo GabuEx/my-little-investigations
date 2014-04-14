@@ -11,7 +11,7 @@ extern const char *pDialogSeenListsPath;
 extern const char *pSavesPath;
 
 std::vector<std::string> GetCaseFilePathsOSX();
-std::vector<std::string> (*pfnGetSaveFilePathsForCaseOSX)(std::string pCaseUuid);
+std::vector<std::string> GetSaveFilePathsForCaseOSX(std::string pCaseUuid);
 std::string GetVersionStringOSX(std::string pPropertyListFilePath);
 char * GetPropertyListXMLForVersionStringOSX(std::string pPropertyListFilePath, std::string pVersionString, unsigned long *pVersionStringLength);
 
