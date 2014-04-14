@@ -279,7 +279,7 @@ void Conversation::Update(int delta)
         return;
     }
 
-    if (pState->GetFastForwardEnabled() && pState->GetCanFastForward())
+    if ( pState->GetFastForwardEnabled() && pState->GetCanFastForward())
     {
         pSkipTab->Update();
 
@@ -435,8 +435,7 @@ void Conversation::Draw(double xOffset, double yOffset)
     {
         pCurrentContinuousAction->Draw(xOffset, yOffset);
     }
-
-    if (pState->GetFastForwardEnabled() && pState->GetCanFastForward())
+    if ( pState->GetFastForwardEnabled() && pState->GetCanFastForward())
     {
         pSkipTab->Draw();
     }

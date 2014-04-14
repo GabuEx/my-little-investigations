@@ -109,6 +109,25 @@
 					<Add directory="osx" />
 				</Linker>
 			</Target>
+			<Target title="Debug (Posix)">
+				<Option platforms="Unix;" />
+				<Option output="bin/Debug/posix/MyLittleInvestigationsUpdater" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/posix/updater/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-DMLI_DEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL2main" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_image" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lcryptopp" />
+					<Add option="-lcurl" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -185,11 +204,13 @@
 		<Unit filename="src/resource.h">
 			<Option target="Debug (Win32)" />
 			<Option target="Release (Win32)" />
+			<Option target="Debug (Posix)" />
 		</Unit>
 		<Unit filename="src/resource.rc">
 			<Option compilerVar="WINDRES" />
 			<Option target="Debug (Win32)" />
 			<Option target="Release (Win32)" />
+			<Option target="Debug (Posix)" />
 		</Unit>
 		<Unit filename="src/ticpp/ticpp.cpp" />
 		<Unit filename="src/ticpp/ticpp.h" />

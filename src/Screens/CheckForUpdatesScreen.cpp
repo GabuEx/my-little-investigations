@@ -320,9 +320,11 @@ void CheckForUpdatesScreen::CheckForUpdates()
                     {
                     #ifdef __WINDOWS
                         fileName = versionReader.ReadTextElement("FileNameWindows");
-                    #endif
-                    #ifdef __OSX
+                    #elif __OSX
                         fileName = versionReader.ReadTextElement("FileNameOSX");
+					#else
+						#warning NOT IMPLEMENTED
+						std::cerr << "NOT IMPLEMENTED" << std::endl;
                     #endif
                     }
 
@@ -341,9 +343,11 @@ void CheckForUpdatesScreen::CheckForUpdates()
                         {
                         #ifdef __WINDOWS
                             deltaSize = versionReader.ReadIntElement("DeltaSizeWindows");
-                        #endif
-                        #ifdef __OSX
+                        #elif __OSX
                             deltaSize = versionReader.ReadIntElement("DeltaSizeOSX");
+						#else
+							#warning NOT IMPLEMENTED
+							std::cerr << "NOT IMPLEMENTED" << std::endl;
                         #endif
                         }
                     }
@@ -360,9 +364,11 @@ void CheckForUpdatesScreen::CheckForUpdates()
                         {
                         #ifdef __WINDOWS
                             deltaLocation = versionReader.ReadTextElement("DeltaLocationWindows");
-                        #endif
-                        #ifdef __OSX
+                        #elif __OSX
                             deltaLocation = versionReader.ReadTextElement("DeltaLocationOSX");
+						#else
+							#warning NOT IMPLEMENTED
+							std::cerr << "NOT IMPLEMENTED" << std::endl;
                         #endif
                         }
                     }
@@ -379,9 +385,11 @@ void CheckForUpdatesScreen::CheckForUpdates()
                         {
                         #ifdef __WINDOWS
                             signature = versionReader.ReadTextElement("SignatureWindows");
-                        #endif
-                        #ifdef __OSX
+                        #elif __OSX
                             signature = versionReader.ReadTextElement("SignatureOSX");
+						#else
+							#warning NOT IMPLEMENTED
+							std::cerr << "NOT IMPLEMENTED" << std::endl;
                         #endif
                         }
                     }
