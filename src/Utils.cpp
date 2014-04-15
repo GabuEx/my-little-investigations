@@ -328,12 +328,12 @@ bool CheckIfUpdatesExist(string *pVersionsXmlContent)
                         {
                         #ifdef __WINDOWS
                             deltaSize = versionReader.ReadIntElement("DeltaSizeWindows");
-                        #endif
-                        #ifdef __OSX
+                        #elif __OSX
                             deltaSize = versionReader.ReadIntElement("DeltaSizeOSX");
-                        #endif
-                        #ifdef __unix
+                        #elif __unix
                             deltaSize = versionReader.ReadIntElement("DeltaSizeUnix");
+                        #else
+                        #error NOT IMPLEMENTED
                         #endif
                         }
                     }

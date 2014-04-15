@@ -31,15 +31,10 @@
 #define RESOURCELOADER_H
 
 #include <SDL2/SDL.h>
-#ifdef __WINDOWS
-#include <SDL2/SDL_ttf.h>
-#include <SDL2/SDL_image.h>
-#endif
 #ifdef __OSX
 #include <SDL2_ttf/SDL_ttf.h>
 #include <SDL2_image/SDL_image.h>
-#endif
-#ifdef __unix
+#else
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
 #endif

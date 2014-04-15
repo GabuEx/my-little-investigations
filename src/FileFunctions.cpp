@@ -71,16 +71,14 @@ tstring StringToTString(string str)
 
     return tstr;
 }
-#endif
-#ifdef __OSX
+#elif __OSX
 #include "../osx/ApplicationSupportBridge.h"
 
 #include <Security/Authorization.h>
 #include <Security/AuthorizationTags.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#endif
-#ifdef __unix
+#elif __unix
 #include <dirent.h>
 #include <pwd.h>
 #include <unistd.h>
@@ -143,7 +141,7 @@ string tempDirectoryPath;
 
 void LoadFilePathsAndCaseUuids(string executableFilePath)
 {
-    #ifdef __WINDOWS
+#ifdef __WINDOWS
         pathSeparator = "\\";
         otherPathSeparator = "/";
 
@@ -184,8 +182,7 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
             if (ftyp == INVALID_FILE_ATTRIBUTES) CreateDirectory(szPath, NULL);
             savesPath = TStringToString(tstring(szPath));
         }
-#endif
-#ifdef __OSX
+#elif __OSX
         pathSeparator = "/";
         otherPathSeparator = "\\";
 
@@ -202,8 +199,7 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
         userAppDataPath = string(pUserApplicationSupportPath) + "/";
         dialogSeenListsPath = string(pDialogSeenListsPath) + "/";
         savesPath = string(pSavesPath) + "/";
-#endif
-#ifdef __unix
+#elif __unix
         pathSeparator = "/";
         otherPathSeparator = "\\";
 
@@ -226,6 +222,8 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
         MakeDirIfNotExists(dialogSeenListsPath);
         savesPath = userAppDataPath + "/Saves/";
         MakeDirIfNotExists(savesPath);
+#else
+#error NOT IMPLEMENTED
 #endif
 
     executableFilePath = ConvertSeparatorsInPath(executableFilePath);
@@ -253,7 +251,7 @@ vector<string> GetCaseFilePaths()
 {
     vector<string> filePaths;
 
-    #ifdef __WINDOWS
+#ifdef __WINDOWS
         tstring tstrPath = StringToTString(casesPath) + tstring(TEXT("*.mlicase"));
 
         WIN32_FIND_DATA ffd;
@@ -269,8 +267,7 @@ vector<string> GetCaseFilePaths()
 
             FindClose(hFind);
         }
-    #endif
-    #ifdef __OSX
+#elif __OSX
         unsigned int caseFileCount = 0;
 
         const char **ppCaseFilePaths = pfnGetCaseFilePathsOSX(&caseFileCount);
@@ -288,14 +285,15 @@ vector<string> GetCaseFilePaths()
         }
 
         free(ppCaseFilePaths);
-    #endif
-    #ifdef __unix
+#elif __unix
         FOR_EACH_FILE(caseFilePath,casesPath)
             if (caseFilePath.find(".mlicase") != string::npos)
             {
                 filePaths.push_back(caseFilePath);
             }
-    #endif
+#else
+#error NOT IMPLEMENTED
+#endif
 
     return filePaths;
 }
@@ -471,11 +469,9 @@ Version GetCurrentVersion()
     }
 
     RegCloseKey(hKey);
-#endif
-#ifdef __OSX
+#elif __OSX
     versionString = pfnGetVersionStringOSX(GetPropertyListPath().c_str());
-#endif
-#ifdef __unix
+#elif __unix
     string versionFilePath = commonAppDataPath + string(".version");
     if(Exists(versionFilePath))
     {
@@ -487,6 +483,8 @@ Version GetCurrentVersion()
 
 		versionFile.close();
     }
+#else
+#error NOT IMPLEMENTED
 #endif
 
     if (versionString.length() > 0)
@@ -527,8 +525,7 @@ void WriteNewVersion(Version newVersion)
     }
 
     RegCloseKey(hKey);
-#endif
-#ifdef __OSX
+#elif __OSX
     unsigned long propertyListXmlDataLength = 0;
     char *pPropertyListXmlData = pfnGetPropertyListXMLForVersionStringOSX(GetPropertyListPath().c_str(), ((string)newVersion).c_str(), &propertyListXmlDataLength);
 
@@ -549,8 +546,7 @@ void WriteNewVersion(Version newVersion)
     }
 
     delete [] pPropertyListXmlData;
-#endif
-#ifdef __unix
+#elif __unix
     string versionFilePath = commonAppDataPath + string(".version");
     ofstream versionFile (versionFilePath.c_str());
     if(versionFile.is_open())
@@ -563,6 +559,8 @@ void WriteNewVersion(Version newVersion)
         XmlWriter versionWriter(GetVersionFilePath().c_str());
         newVersion.SaveToXml(&versionWriter);
     }
+#else
+#error NOT IMPLEMENTED
 #endif
 }
 #endif
@@ -809,7 +807,7 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
 {
     vector<string> filePaths;
 
-    #ifdef __WINDOWS
+#ifdef __WINDOWS
         string caseSavesPath = savesPath + caseUuid + pathSeparator;
         tstring tstrPath = StringToTString(caseSavesPath);
         DWORD ftyp = GetFileAttributes(tstrPath.c_str());
@@ -829,8 +827,7 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
 
             FindClose(hFind);
         }
-    #endif
-    #ifdef __OSX
+#elif __OSX
         unsigned int saveFileCountLocal = 0;
 
         const char **ppSaveFilePaths = pfnGetSaveFilePathsForCaseOSX(caseUuid.c_str(), &saveFileCountLocal);
@@ -848,14 +845,15 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
         }
 
         free(ppSaveFilePaths);
-    #endif
-    #ifdef __unix
+#elif __unix
         FOR_EACH_FILE(saveFilePath, GetSaveFolderPathForCase(caseUuid))
             if (saveFilePath.find(".sav") != string::npos)
             {
                 filePaths.push_back(saveFilePath);
             }
-    #endif
+#else
+#error NOT IMPLEMENTED
+#endif
 
     return filePaths;
 }
@@ -1178,8 +1176,7 @@ bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArg
 
         success = ShellExecuteEx(&shExecInfo);
     }
-#endif
-#ifdef __OSX
+#elif __OSX
     if (asAdmin)
     {
         if (authorizationRef != NULL)
@@ -1259,8 +1256,7 @@ bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArg
             }
         }
     }
-#endif
-#ifdef __unix
+#elif __unix
     pid_t pid = fork();
     ostringstream result;
     for (typename vector<string>::const_iterator i = commandLineArguments.begin(); i != commandLineArguments.end(); i++){
@@ -1292,6 +1288,8 @@ bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArg
                 success = true;
             }
     }
+#else
+#error NOT IMPLEMENTED
 #endif
 
     return success;
@@ -1301,12 +1299,10 @@ void LaunchGameExecutable()
 {
 #ifdef __WINDOWS
     string executablePath = executionPath + "MyLittleInvestigations.exe";
-#endif
-#ifdef __OSX
+#elif defined(__OSX) || defined(__unix)
     string executablePath = executionPath + "MyLittleInvestigations";
-#endif
-#ifdef __unix
-    string executablePath = executionPath + "MyLittleInvestigations";
+#else
+#error NOT IMPLEMENTED
 #endif
 
     if (!LaunchExecutable(executablePath.c_str(), vector<string>(), false /* waitForCompletion */, false /* asAdmin */))
@@ -1333,8 +1329,7 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
     commandLineArguments.push_back(oldFilePath);
     commandLineArguments.push_back(deltaFilePath);
     commandLineArguments.push_back(newFilePath);
-#endif
-#ifdef __OSX
+#elif __OSX
     string executablePath = GetUpdaterHelperFilePath();
 
     vector<string> commandLineArguments;
@@ -1343,8 +1338,7 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
     commandLineArguments.push_back(oldFilePath);
     commandLineArguments.push_back(deltaFilePath);
     commandLineArguments.push_back(newFilePath);
-#endif
-#ifdef __unix
+#elif __unix
     string executablePath = "xdelta3";
 
     vector<string> commandLineArguments;
@@ -1355,6 +1349,8 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
     commandLineArguments.push_back(oldFilePath);
     commandLineArguments.push_back(deltaFilePath);
     commandLineArguments.push_back(newFilePath);
+#else
+#error NOT IMPLEMENTED
 #endif
 
     // On Windows, we can launch the entire update application in admin mode, so we don't need to run the update executable in admin mode.
@@ -1367,12 +1363,13 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
             true /* waitForCompletion */,
 #ifdef __WINDOWS
             false /* asAdmin */
-#endif
-#ifdef __OSX
+#elif __OSX
             true /* asAdmin */
-#endif
-#ifdef __unix
+#elif __unix
             false /* asAdmin */
+#else
+            false /* asAdmin */
+#error NOT IMPLEMENTED
 #endif
             );
 
@@ -1381,10 +1378,9 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
 
 bool RemoveFile(string filePath)
 {
-#ifdef __WINDOWS
+#if defined(__WINDOWS) || defined(__unix)
     return remove(filePath.c_str()) == 0;
-#endif
-#ifdef __OSX
+#elif __OSX
     string executablePath = GetUpdaterHelperFilePath();
 
     vector<string> commandLineArguments;
@@ -1393,18 +1389,16 @@ bool RemoveFile(string filePath)
     commandLineArguments.push_back(filePath);
 
     return LaunchExecutable(executablePath.c_str(), commandLineArguments, true /* waitForCompletion */, true /* asAdmin */);
-#endif
-#ifdef __unix
-    return remove(filePath.c_str()) == 0;
+#else
+#error NOT IMPLEMENTED
 #endif
 }
 
 bool RenameFile(string oldFilePath, string newFilePath)
 {
-#ifdef __WINDOWS
+#if defined(__WINDOWS) || defined(__unix)
     return rename(oldFilePath.c_str(), newFilePath.c_str()) == 0;
-#endif
-#ifdef __OSX
+#elif __OSX
     string executablePath = GetUpdaterHelperFilePath();
 
     vector<string> commandLineArguments;
@@ -1414,9 +1408,8 @@ bool RenameFile(string oldFilePath, string newFilePath)
     commandLineArguments.push_back(newFilePath);
 
     return LaunchExecutable(executablePath.c_str(), commandLineArguments, true /* waitForCompletion */, true /* asAdmin */);
-#endif
-#ifdef __unix
-    return rename(oldFilePath.c_str(), newFilePath.c_str()) == 0;
+#else
+#error NOT IMPLEMENTED
 #endif
 }
 #endif
@@ -1425,12 +1418,10 @@ bool LaunchUpdater(string versionsXmlFilePath)
 {
 #ifdef __WINDOWS
     string executablePath = executionPath + "MyLittleInvestigationsUpdater.exe";
-#endif
-#ifdef __OSX
+#elif defined(__OSX) || defined(__unix)
     string executablePath = executionPath + "MyLittleInvestigationsUpdater";
-#endif
-#ifdef __unix
-    string executablePath = executionPath + "MyLittleInvestigationsUpdater";
+#else
+#error NOT IMPLEMENTED
 #endif
 
     vector<string> commandLineArguments;
@@ -1444,14 +1435,13 @@ bool LaunchUpdater(string versionsXmlFilePath)
         executablePath.c_str(),
         commandLineArguments,
         false /* waitForCompletion */,
-#ifdef __WINDOWS
+#if defined(__WINDOWS) || defined(__unix)
         true /* asAdmin */
-#endif
-#ifdef __OSX
+#elif __OSX
         false /* asAdmin */
-#endif
-#ifdef __unix
-        true /* asAdmin */
+#else
+        false /* asAdmin */
+#error NOT IMPLEMENTED
 #endif
         );
 }
