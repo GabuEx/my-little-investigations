@@ -31,18 +31,18 @@
 
 FontManager::~FontManager()
 {
-    for (map<string, Font *>::iterator iter = fontByIdMap.begin(); iter != fontByIdMap.end(); ++iter)
+    for (map<string, MLIFont *>::iterator iter = fontByIdMap.begin(); iter != fontByIdMap.end(); ++iter)
     {
         delete iter->second;
     }
 }
 
-Font * FontManager::GetFontFromId(string id)
+MLIFont * FontManager::GetFontFromId(string id)
 {
     return fontByIdMap[id];
 }
 
-void FontManager::AddFont(string id, Font *pFont)
+void FontManager::AddFont(string id, MLIFont *pFont)
 {
     fontByIdMap[id] = pFont;
 }

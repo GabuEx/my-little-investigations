@@ -31,7 +31,7 @@
 #define NOTIFICATION_H
 
 #include "../EasingFunctions.h"
-#include "../Font.h"
+#include "../MLIFont.h"
 #include "../UserInterface/Arrow.h"
 #include "../UserInterface/EvidenceDescription.h"
 #include "../UserInterface/PartnerInformation.h"
@@ -45,7 +45,7 @@ public:
         int textAreaWidth,
         int textAreaHeight,
         double desiredPadding,
-        Font *pTextFont,
+        MLIFont *pTextFont,
         int evidenceCenterPointX,
         int evidenceCenterPointY,
         Image *pDirectionArrow);
@@ -73,7 +73,7 @@ private:
 
     static RectangleWH textAreaRect;
     static double desiredPadding;
-    static Font *pTextFont;
+    static MLIFont *pTextFont;
 
     static Vector2 evidenceCenterPoint;
     static Image *pDirectionArrow;

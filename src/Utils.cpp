@@ -293,7 +293,6 @@ bool CheckIfUpdatesExist(string *pVersionsXmlContent)
             {
                 versionReader.StartElement("VersionNumber");
                 Version newVersion(&versionReader);
-
                 if (gVersion < newVersion)
                 {
                     if (newVersion > newestVersion)
@@ -332,6 +331,9 @@ bool CheckIfUpdatesExist(string *pVersionsXmlContent)
                         #endif
                         #ifdef __OSX
                             deltaSize = versionReader.ReadIntElement("DeltaSizeOSX");
+                        #endif
+                        #ifdef __unix
+                            deltaSize = versionReader.ReadIntElement("DeltaSizeUnix");
                         #endif
                         }
                     }

@@ -31,13 +31,13 @@
 #define PROMPTOVERLAY_H
 
 #include "../EasingFunctions.h"
-#include "../Font.h"
+#include "../MLIFont.h"
 #include "../Vector2.h"
 
 class PromptButton
 {
 public:
-    static void Initialize(Font *pTextFont);
+    static void Initialize(MLIFont *pTextFont);
 
     PromptButton(Vector2 position, string text)
     {
@@ -72,7 +72,7 @@ public:
     void Reset();
 
 private:
-    static Font *pTextFont;
+    static MLIFont *pTextFont;
 
     Vector2 position;
     string text;
@@ -86,7 +86,7 @@ private:
 class PromptOverlay
 {
 public:
-    static void Initialize(Font *pTextFont, Font *pTextEntryFont, Image *pDarkeningImage);
+    static void Initialize(MLIFont *pTextFont, MLIFont *pTextEntryFont, Image *pDarkeningImage);
 
     PromptOverlay(string headerText, bool allowsTextEntry);
     ~PromptOverlay();
@@ -103,12 +103,12 @@ public:
     void Draw();
     void Reset();
 
-    void SetMaxPixelWidth(int pixelWidth, Font *pFontToCheckAgainst) { this->maxPixelWidth = pixelWidth; this->pFontToCheckAgainst = pFontToCheckAgainst; }
+    void SetMaxPixelWidth(int pixelWidth, MLIFont *pFontToCheckAgainst) { this->maxPixelWidth = pixelWidth; this->pFontToCheckAgainst = pFontToCheckAgainst; }
     void KeepOpen();
 
 private:
-    static Font *pTextFont;
-    static Font *pTextEntryFont;
+    static MLIFont *pTextFont;
+    static MLIFont *pTextEntryFont;
     static Image *pDarkeningImage;
 
     deque<string> headerTextLines;
@@ -126,7 +126,7 @@ private:
     bool stayOnScreen;
 
     int maxPixelWidth;
-    Font *pFontToCheckAgainst;
+    MLIFont *pFontToCheckAgainst;
 
     double yOffset;
 };

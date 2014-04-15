@@ -54,7 +54,7 @@ map<string, vector<Conversation::ShowDialogAction *> > Conversation::showDialogA
 
 Image *Confrontation::pBackgroundDarkeningImage = NULL;
 Image *Confrontation::pConfrontationHealthCircleImage = NULL;
-Font *Confrontation::pConfrontationHealthNumberingFont = NULL;
+MLIFont *Confrontation::pConfrontationHealthNumberingFont = NULL;
 map<string, Confrontation::Topic *> *Confrontation::pCurrentConfrontationTopicsById = NULL;
 
 Conversation::UnlockCondition * Conversation::UnlockCondition::LoadFromXml(XmlReader *pReader)
@@ -3138,7 +3138,7 @@ DialogCharacter * Confrontation::GetOpponentCharacter()
     return pOpponentCharacter;
 }
 
-void Confrontation::Initialize(Image *pBackgroundDarkeningImage, Image *pConfrontationHealthCircleImage, Font *pConfrontationHealthNumberingFont)
+void Confrontation::Initialize(Image *pBackgroundDarkeningImage, Image *pConfrontationHealthCircleImage, MLIFont *pConfrontationHealthNumberingFont)
 {
     Confrontation::pBackgroundDarkeningImage = pBackgroundDarkeningImage;
     Confrontation::pConfrontationHealthCircleImage = pConfrontationHealthCircleImage;

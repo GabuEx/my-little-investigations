@@ -36,6 +36,9 @@
 #ifdef __OSX
 #include <SDL2_mixer/SDL_mixer.h>
 #endif
+#ifdef __unix
+#include <SDL2/SDL_mixer.h>
+#endif
 #include <SDL2/SDL_thread.h>
 #include <iostream>
 

@@ -82,7 +82,7 @@ void LogoScreen::UnloadResources()
 
 void LogoScreen::Init()
 {
-    Screen::Init();
+    MLIScreen::Init();
 
     imageOpacity = 0;
     timeShownDisclaimer = 0;

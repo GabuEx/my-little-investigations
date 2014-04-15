@@ -39,6 +39,10 @@
 #include <SDL2_ttf/SDL_ttf.h>
 #include <SDL2_image/SDL_image.h>
 #endif
+#ifdef __unix
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
+#endif
 
 #include "Image.h"
 #include "miniz.h"

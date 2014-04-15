@@ -31,7 +31,7 @@
 #define SELECTOR_H
 
 #include "Arrow.h"
-#include "../Font.h"
+#include "../MLIFont.h"
 #include "../Rectangle.h"
 #include "../Image.h"
 #include "../Version.h"
@@ -237,9 +237,9 @@ public:
 private:
     static void EnsureFonts();
 
-    static Font *pLargeFont;
-    static Font *pMediumFont;
-    static Font *pSmallFont;
+    static MLIFont *pLargeFont;
+    static MLIFont *pMediumFont;
+    static MLIFont *pSmallFont;
 
     static Image *pDividerSprite;
     static Image *pHighlightSprite;

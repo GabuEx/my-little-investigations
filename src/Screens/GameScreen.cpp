@@ -91,7 +91,7 @@ void GameScreen::UnloadResources()
 
 void GameScreen::Init()
 {
-    Screen::Init();
+    MLIScreen::Init();
     caseNeedsReset = true;
     isFinishing = false;
 }
@@ -226,7 +226,7 @@ void GameScreen::Draw()
             loadingString += " " + loadStage;
         }
 
-        Font *pFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("MouseOverFont");
+        MLIFont *pFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("MouseOverFont");
         int stringWidth = pFont->GetWidth(loadingString);
 
         for (int i = 0; i < numLoadingDots; i++)

@@ -217,7 +217,6 @@ int main(int argc, char * argv[])
     double lastSecond = 0; // Updated once per second, used to keep track of how long a second actually is. (If now>=(lastSecond+1000), new second.) Used for FPS.
     Uint32 frame = 0; // Keeps track of the number of frames rendered during the current second. Used for FPS calculation later.
     double remainder = 0.0f; // Keeps track of amount of milliseconds lost to whole number rounding, to ensure a smooth and perfectly-accurate framerate.
-
     // Define event handler. Used later to poll the event queue.
     SDL_Event event;
 

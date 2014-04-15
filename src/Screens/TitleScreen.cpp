@@ -240,7 +240,7 @@ void TitleScreen::UnloadResources()
 
 void TitleScreen::Init()
 {
-    Screen::Init();
+    MLIScreen::Init();
 
     if (SaveFileExists())
     {
@@ -253,8 +253,8 @@ void TitleScreen::Init()
 
     fadeOpacity = 1;
 
-    if (Screen::GetLastScreenId() == LOGO_SCREEN_ID ||
-        Screen::GetLastScreenId() == GAME_SCREEN_ID)
+    if (MLIScreen::GetLastScreenId() == LOGO_SCREEN_ID ||
+        MLIScreen::GetLastScreenId() == GAME_SCREEN_ID)
     {
         CommonCaseResources::GetInstance()->GetAudioManager()->PlayBgmWithId("MenuBGM");
         pLongFadeInEase->Begin();

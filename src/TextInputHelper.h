@@ -35,7 +35,7 @@
 
 using namespace std;
 
-class Font;
+class MLIFont;
 
 class TextInputHelper
 {
@@ -55,7 +55,7 @@ public:
     static void SetCurrentText(string currentText) { TextInputHelper::currentText = currentText; caretPosition = currentText.length(); }
     static unsigned int GetCaretPosition() { return caretPosition; }
     static bool GetIsCaretShowing() { return isCaretShowing; }
-    static void SetMaxPixelWidth(int pixelWidth, Font *pFontToCheckAgainst) { maxPixelWidth = pixelWidth; TextInputHelper::pFontToCheckAgainst = pFontToCheckAgainst; }
+    static void SetMaxPixelWidth(int pixelWidth, MLIFont *pFontToCheckAgainst) { maxPixelWidth = pixelWidth; TextInputHelper::pFontToCheckAgainst = pFontToCheckAgainst; }
 
     static bool GetUserHasConfirmed() { return userHasConfirmed; }
     static bool GetUserHasCanceled() { return userHasCanceled; }
@@ -75,7 +75,7 @@ private:
     static bool isRepeating;
 
     static int maxPixelWidth;
-    static Font *pFontToCheckAgainst;
+    static MLIFont *pFontToCheckAgainst;
 
     static bool userHasConfirmed;
     static bool userHasCanceled;

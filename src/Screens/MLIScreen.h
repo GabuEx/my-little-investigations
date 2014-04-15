@@ -34,16 +34,16 @@
 
 using namespace std;
 
-class Screen
+class MLIScreen
 {
 public:
-    static string GetCurrentScreenId() { return Screen::currentScreenId; }
-    static void SetCurrentScreenId(string currentScreenId) { Screen::currentScreenId = currentScreenId; }
+    static string GetCurrentScreenId() { return MLIScreen::currentScreenId; }
+    static void SetCurrentScreenId(string currentScreenId) { MLIScreen::currentScreenId = currentScreenId; }
 
-    static string GetLastScreenId() { return Screen::lastScreenId; }
-    static void SetLastScreenId(string lastScreenId) { Screen::lastScreenId = lastScreenId; }
+    static string GetLastScreenId() { return MLIScreen::lastScreenId; }
+    static void SetLastScreenId(string lastScreenId) { MLIScreen::lastScreenId = lastScreenId; }
 
-    virtual ~Screen() {}
+    virtual ~MLIScreen() {}
 
     bool GetIsFinished() const { return this->isFinished; }
     string GetNextScreenId() const { return this->nextScreenId; }

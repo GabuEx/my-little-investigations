@@ -27,7 +27,7 @@
  * SOFTWARE.
  */
 
-#include "Font.h"
+#include "MLIFont.h"
 #include "globals.h"
 #include "Image.h"
 #include "ResourceLoader.h"
@@ -37,7 +37,7 @@
 const int minCharValue = 32;
 const int maxCharValue = 128;
 
-Font::Font(string ttfFilePath, int fontSize, int strokeWidth, bool isBold)
+MLIFont::MLIFont(string ttfFilePath, int fontSize, int strokeWidth, bool isBold)
 {
 #ifdef GAME_EXECUTABLE
     pTtfFont = ResourceLoader::GetInstance()->LoadFont(ttfFilePath, fontSize);
@@ -55,7 +55,7 @@ Font::Font(string ttfFilePath, int fontSize, int strokeWidth, bool isBold)
     Reinit();
 }
 
-Font::~Font()
+MLIFont::~MLIFont()
 {
     TTF_CloseFont(pTtfFont);
     pTtfFont = NULL;
@@ -64,7 +64,7 @@ Font::~Font()
     pTextSpriteSheet = NULL;
 }
 
-void Font::Reinit()
+void MLIFont::Reinit()
 {
     SDL_Surface *pRenderedText[maxCharValue - minCharValue];
     SDL_Surface *pRenderedTextOutlines[maxCharValue - minCharValue];
@@ -226,32 +226,32 @@ void Font::Reinit()
     }
 }
 
-void Font::Draw(string s, Vector2 position)
+void MLIFont::Draw(string s, Vector2 position)
 {
     Draw(s, position, Color::White, RectangleWH(-1, -1, -1, -1), 1.0);
 }
 
-void Font::Draw(string s, Vector2 position, double scale)
+void MLIFont::Draw(string s, Vector2 position, double scale)
 {
     Draw(s, position, Color::White, RectangleWH(-1, -1, -1, -1), scale);
 }
 
-void Font::Draw(string s, Vector2 position, Color color)
+void MLIFont::Draw(string s, Vector2 position, Color color)
 {
     Draw(s, position, color, RectangleWH(-1, -1, -1, -1), 1.0);
 }
 
-void Font::Draw(string s, Vector2 position, Color color, double scale)
+void MLIFont::Draw(string s, Vector2 position, Color color, double scale)
 {
     Draw(s, position, color, RectangleWH(-1, -1, -1, -1), scale);
 }
 
-void Font::Draw(string s, Vector2 position, Color color, RectangleWH clipRect)
+void MLIFont::Draw(string s, Vector2 position, Color color, RectangleWH clipRect)
 {
     Draw(s, position, color, clipRect, 1.0);
 }
 
-void Font::Draw(string s, Vector2 position, Color color, RectangleWH clipRect, double scale)
+void MLIFont::Draw(string s, Vector2 position, Color color, RectangleWH clipRect, double scale)
 {
     // If we're trying to draw an empty string, we can just return -
     // we're not gonna draw anything anyhow.
@@ -285,7 +285,7 @@ void Font::Draw(string s, Vector2 position, Color color, RectangleWH clipRect, d
     DrawInternal(s, position, color, clipRect, scale, &charPairToKernedWidthMap, &pRenderedTextClipRectMap, &pRenderedTextClipRectMap);
 }
 
-void Font::DrawInternal(string s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, map<char, RectangleWH> *pClipRectMapForWidth)
+void MLIFont::DrawInternal(string s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, map<char, RectangleWH> *pClipRectMapForWidth)
 {
     for (unsigned int i = 0; i < s.length(); i++)
     {
@@ -357,7 +357,7 @@ void Font::DrawInternal(string s, Vector2 position, Color color, RectangleWH cli
     }
 }
 
-int Font::GetWidth(string s)
+int MLIFont::GetWidth(string s)
 {
     Vector2 position(0, 0);
 
@@ -411,12 +411,12 @@ int Font::GetWidth(string s)
     return (int)position.GetX();
 }
 
-int Font::GetKerningDelta(map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, char c1, char c2)
+int MLIFont::GetKerningDelta(map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, char c1, char c2)
 {
     return (int)((*pKernedWidthMap)[string(&c1, 1) + string(&c2, 1)] - ((*pClipRectMap)[c1].GetWidth() + (*pClipRectMap)[c2].GetWidth()));
 }
 
-int Font::GetHeight(string s)
+int MLIFont::GetHeight(string s)
 {
     int w, h;
 
@@ -424,12 +424,12 @@ int Font::GetHeight(string s)
     return h;
 }
 
-int Font::GetLineHeight()
+int MLIFont::GetLineHeight()
 {
     return TTF_FontHeight(pTtfFont);
 }
 
-int Font::GetLineAscent()
+int MLIFont::GetLineAscent()
 {
     return TTF_FontAscent(pTtfFont);
 }

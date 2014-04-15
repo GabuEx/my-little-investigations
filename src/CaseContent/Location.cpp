@@ -37,7 +37,7 @@
 #include "../TransitionRequest.h"
 #include "../CaseInformation/Case.h"
 #include "../CaseInformation/CommonCaseResources.h"
-#include "../Screens/Screen.h"
+#include "../Screens/MLIScreen.h"
 #include <algorithm>
 #include <limits>
 #include <math.h>
@@ -47,6 +47,9 @@
 #endif
 #ifdef __OSX
 #include <SDL2_image/SDL_image.h>
+#endif
+#ifdef __unix
+#include <SDL2/SDL_image.h>
 #endif
 
 const int MinDistanceToRevealHiddenElements = 200; // px

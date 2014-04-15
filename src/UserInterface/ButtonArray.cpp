@@ -39,12 +39,12 @@
 
 const int ButtonCascadeDelay = 125;
 
-Font *Button::pTextFont = NULL;
+MLIFont *Button::pTextFont = NULL;
 Image *Button::pCheckMarkImage = NULL;
 Sprite *Button::pLockSprite = NULL;
 Animation *Button::pUnlockingAnimation = NULL;
 
-Font *ButtonArray::pTextFont = NULL;
+MLIFont *ButtonArray::pTextFont = NULL;
 
 const Color NormalTextColor = Color(1.0, 1.0, 1.0, 1.0);
 const Color MouseOverTextColor = Color(1.0, 1.0, 1.0, 0.0);
@@ -76,7 +76,7 @@ const string lockAnimationSpriteId20 = "__LockAnimationSprite20";
 
 const string lockAnimationId = "__LockAnimation";
 
-void Button::Initialize(Font *pTextFont, Image *pCheckMarkImage)
+void Button::Initialize(MLIFont *pTextFont, Image *pCheckMarkImage)
 {
     Button::pTextFont = pTextFont;
     Button::pCheckMarkImage = pCheckMarkImage;
@@ -340,7 +340,7 @@ void Button::OnClicked()
     playSound(GetClickSoundEffect());
 }
 
-void ButtonArray::Initialize(Font *pTextFont)
+void ButtonArray::Initialize(MLIFont *pTextFont)
 {
     ButtonArray::pTextFont = pTextFont;
 }

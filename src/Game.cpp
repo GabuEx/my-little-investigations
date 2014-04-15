@@ -50,7 +50,7 @@
 #include "UserInterface/Slider.h"
 #include "UserInterface/Selector.h"
 #else
-#include "Font.h"
+#include "MLIFont.h"
 #include "Screens/CheckForUpdatesScreen.h"
 #endif
 
@@ -71,8 +71,8 @@ extern "C"
 #endif
 
 Game * Game::pInstance = NULL;
-string Screen::currentScreenId = "";
-string Screen::lastScreenId = "";
+string MLIScreen::currentScreenId = "";
+string MLIScreen::lastScreenId = "";
 
 #ifdef GAME_EXECUTABLE
 string bgmIdList[] =
@@ -341,8 +341,8 @@ void Game::Update(int delta)
             }
             else if (screenFromIdMap.count(nextScreenId) > 0)
             {
-                Screen::SetLastScreenId(Screen::GetCurrentScreenId());
-                Screen::SetCurrentScreenId(nextScreenId);
+                MLIScreen::SetLastScreenId(MLIScreen::GetCurrentScreenId());
+                MLIScreen::SetCurrentScreenId(nextScreenId);
 
                 pCurrentScreen = screenFromIdMap[nextScreenId];
                 pCurrentScreen->Init();
@@ -433,7 +433,7 @@ void Game::Finish()
 
 Game::~Game()
 {
-    for (map<string, Screen *>::iterator iter = screenFromIdMap.begin(); iter != screenFromIdMap.end(); ++iter)
+    for (map<string, MLIScreen *>::iterator iter = screenFromIdMap.begin(); iter != screenFromIdMap.end(); ++iter)
     {
         delete iter->second;
     }
@@ -444,18 +444,18 @@ void Game::Init()
     isFinished = false;
 
 #ifdef GAME_EXECUTABLE
-    Font *pMouseOverFont = new Font("fonts/CelestiaMediumRedux1.5.ttf", 30, 1);
-    Font *pDialogFont = new Font("fonts/FayesMousewriting_quotemapped.ttf", 37);
-    Font *pEvidenceSelectorNameFont = new Font("fonts/CelestiaMediumRedux1.5.ttf", 20, 0);
-    Font *pEvidenceSelectorDescriptionFont = new Font("fonts/FayesMousewriting_quotemapped.ttf", 24);
-    Font *pPartnerInformationFont = new Font("fonts/FayesMousewriting_quotemapped.ttf", 22);
-    Font *pConfrontationNumberingFont = new Font("fonts/CelestiaMediumRedux1.5.ttf", 100);
-    Font *pTabFont = new Font("fonts/CelestiaMediumRedux1.5.ttf", 21);
-    Font *pHandwritingLargeFont = new Font("fonts/JennaSue.ttf", 48);
-    Font *pHandwritingMediumFont = new Font("fonts/JennaSue.ttf", 36);
-    Font *pHandwritingSmallFont = new Font("fonts/JennaSue.ttf", 22);
-    Font *pPromptOverlayFont = new Font("fonts/FayesMousewriting_quotemapped.ttf", 42);
-    Font *pPromptOverlayTextFont = new Font("fonts/FayesMousewriting_quotemapped.ttf", 48);
+    MLIFont *pMouseOverFont = new MLIFont("fonts/CelestiaMediumRedux1.5.ttf", 30, 1);
+    MLIFont *pDialogFont = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 37);
+    MLIFont *pEvidenceSelectorNameFont = new MLIFont("fonts/CelestiaMediumRedux1.5.ttf", 20, 0);
+    MLIFont *pEvidenceSelectorDescriptionFont = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 24);
+    MLIFont *pPartnerInformationFont = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 22);
+    MLIFont *pConfrontationNumberingFont = new MLIFont("fonts/CelestiaMediumRedux1.5.ttf", 100);
+    MLIFont *pTabFont = new MLIFont("fonts/CelestiaMediumRedux1.5.ttf", 21);
+    MLIFont *pHandwritingLargeFont = new MLIFont("fonts/JennaSue.ttf", 48);
+    MLIFont *pHandwritingMediumFont = new MLIFont("fonts/JennaSue.ttf", 36);
+    MLIFont *pHandwritingSmallFont = new MLIFont("fonts/JennaSue.ttf", 22);
+    MLIFont *pPromptOverlayFont = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 42);
+    MLIFont *pPromptOverlayTextFont = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 48);
 
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("MouseOverFont", pMouseOverFont);
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("DialogFont", pDialogFont);
@@ -565,21 +565,21 @@ void Game::Init()
     screenFromIdMap[SAVE_SCREEN_ID] = new SelectionScreen(SelectionScreenTypeSaveGame);
 #endif
 #ifdef UPDATER
-    screenFromIdMap[CHECK_FOR_UPDATES_SCREEN_ID] = new CheckForUpdatesScreen(new Font(GetLauncherFontFilePath(), 30, 1));
+    screenFromIdMap[CHECK_FOR_UPDATES_SCREEN_ID] = new CheckForUpdatesScreen(new MLIFont(GetLauncherFontFilePath(), 30, 1));
 #endif
 
 #ifdef GAME_EXECUTABLE
     screenFromIdMap[LOGO_SCREEN_ID]->LoadResources();
     screenFromIdMap[TITLE_SCREEN_ID]->LoadResources();
 
-    Screen::SetCurrentScreenId(LOGO_SCREEN_ID);
+    MLIScreen::SetCurrentScreenId(LOGO_SCREEN_ID);
     pCurrentScreen = screenFromIdMap[LOGO_SCREEN_ID];
     pOverlayScreen = NULL;
 #endif
 #ifdef UPDATER
     screenFromIdMap[CHECK_FOR_UPDATES_SCREEN_ID]->LoadResources();
 
-    Screen::SetCurrentScreenId(CHECK_FOR_UPDATES_SCREEN_ID);
+    MLIScreen::SetCurrentScreenId(CHECK_FOR_UPDATES_SCREEN_ID);
     pCurrentScreen = screenFromIdMap[CHECK_FOR_UPDATES_SCREEN_ID];
 #endif
 

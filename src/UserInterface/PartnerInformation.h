@@ -30,7 +30,7 @@
 #ifndef PARTNERINFORMATION_H
 #define PARTNERINFORMATION_H
 
-#include "../Font.h"
+#include "../MLIFont.h"
 #include "../Rectangle.h"
 #include "../Image.h"
 #include "../Vector2.h"
@@ -42,7 +42,7 @@ using namespace std;
 class PartnerInformation
 {
 public:
-    static void Initialize(Image *pBackgroundImage, Font *pHeadingFont, Font *pBodyFont);
+    static void Initialize(Image *pBackgroundImage, MLIFont *pHeadingFont, MLIFont *pBodyFont);
 
     PartnerInformation();
 
@@ -64,8 +64,8 @@ private:
     static Vector2 activeAbilityDescriptionPosition;
 
     static Image *pBackgroundImage;
-    static Font *pHeadingFont;
-    static Font *pBodyFont;
+    static MLIFont *pHeadingFont;
+    static MLIFont *pBodyFont;
 
     Partner *pPartner;
     string partnerId;

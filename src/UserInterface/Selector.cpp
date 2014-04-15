@@ -36,9 +36,9 @@
 #include "../CaseInformation/CommonCaseResources.h"
 #include "../Events/SelectorEventProvider.h"
 
-Font *Selector::pLargeFont = NULL;
-Font *Selector::pMediumFont = NULL;
-Font *Selector::pSmallFont = NULL;
+MLIFont *Selector::pLargeFont = NULL;
+MLIFont *Selector::pMediumFont = NULL;
+MLIFont *Selector::pSmallFont = NULL;
 
 Image *Selector::pDividerSprite = NULL;
 Image *Selector::pHighlightSprite = NULL;

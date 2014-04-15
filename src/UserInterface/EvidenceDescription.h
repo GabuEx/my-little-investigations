@@ -30,14 +30,14 @@
 #ifndef EVIDENCEDESCRIPTION_H
 #define EVIDENCEDESCRIPTION_H
 
-#include "../Font.h"
+#include "../MLIFont.h"
 #include "../Image.h"
 #include "../Sprite.h"
 
 class EvidenceDescription
 {
 public:
-    static void Initialize(Image *pBackgroundImage, Font *pNameFont, Font *pDescriptionFont);
+    static void Initialize(Image *pBackgroundImage, MLIFont *pNameFont, MLIFont *pDescriptionFont);
 
     EvidenceDescription()
     {
@@ -53,8 +53,8 @@ public:
 
 private:
     static Image *pBackgroundImage;
-    static Font *pNameFont;
-    static Font *pDescriptionFont;
+    static MLIFont *pNameFont;
+    static MLIFont *pDescriptionFont;
 
     void EnsureEvidenceInformation();
 

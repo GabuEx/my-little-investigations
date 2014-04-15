@@ -30,7 +30,7 @@
 #ifndef SELECTIONSCREEN_H
 #define SELECTIONSCREEN_H
 
-#include "Screen.h"
+#include "MLIScreen.h"
 #include "../Animation.h"
 #include "../EasingFunctions.h"
 #include "../Image.h"
@@ -41,7 +41,7 @@
 #include "../UserInterface/PromptOverlay.h"
 #include "../UserInterface/Selector.h"
 
-class SelectionScreen : public Screen, public ImageButtonEventListener, public PromptOverlayEventListener, public SelectorEventListener
+class SelectionScreen : public MLIScreen, public ImageButtonEventListener, public PromptOverlayEventListener, public SelectorEventListener
 {
 public:
     SelectionScreen(SelectionScreenType type);
@@ -62,9 +62,9 @@ private:
 
     void DeleteSelectorItems();
 
-    static Font *pLargeFont;
-    static Font *pMediumFont;
-    static Font *pSmallFont;
+    static MLIFont *pLargeFont;
+    static MLIFont *pMediumFont;
+    static MLIFont *pSmallFont;
 
     Image *pFadeSprite;
 

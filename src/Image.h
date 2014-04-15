@@ -37,6 +37,9 @@
 #ifdef __OSX
 #include <SDL2_image/SDL_image.h>
 #endif
+#ifdef __unix
+#include <SDL2/SDL_image.h>
+#endif
 #include <SDL2/SDL_opengl.h>
 #include <SDL2/SDL_thread.h>
 #include <vector>
@@ -48,7 +51,7 @@
 
 using namespace std;
 
-class Font;
+class MLIFont;
 
 class Image
 {
@@ -68,7 +71,7 @@ public:
 
     void ReloadFromSource();
     void FlagResourceLoaderSource(string originFilePath);
-    void FlagFontSource(Font *pFont);
+    void FlagFontSource(MLIFont *pFont);
     void FlagVideoSource(Video::Frame *pVideoFrame);
 
     void Draw(Vector2 position);
@@ -137,7 +140,7 @@ private:
     class FontSource : public Source
     {
     public:
-        FontSource(Font *pFont)
+        FontSource(MLIFont *pFont)
         {
             this->pFont = pFont;
         }
@@ -150,7 +153,7 @@ private:
         void DoReload();
 
     private:
-        Font *pFont;
+        MLIFont *pFont;
     };
 
     Source *pSource;
