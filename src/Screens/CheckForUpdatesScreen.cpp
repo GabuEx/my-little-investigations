@@ -390,7 +390,7 @@ void CheckForUpdatesScreen::CheckForUpdates()
                             signature = versionReader.ReadTextElement("SignatureWindows");
                         #elif __OSX
                             signature = versionReader.ReadTextElement("SignatureOSX");
-                        #elif __OSX
+                        #elif __unix
                             signature = versionReader.ReadTextElement("SignatureUnix");
                         #else
                         #error NOT IMPLEMENTED

@@ -122,6 +122,7 @@ struct String_Hax : std::string
          while(dirent *ep = readdir (dir.dir)) \
              if ( String_Hax name = std::string(dirpath) + ep->d_name )
 
+string graphicalSudo = "xdg-su ";
 #endif
 
 string pathSeparator;
@@ -222,6 +223,20 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
         MakeDirIfNotExists(dialogSeenListsPath);
         savesPath = userAppDataPath + "/Saves/";
         MakeDirIfNotExists(savesPath);
+        graphicalSudo = "xdg-su";
+        const char* desktopEnvironment = getenv("XDG_CURRENT_DESKTOP");
+        if (desktopEnvironment != NULL)
+        {
+            string de(desktopEnvironment);
+            if (de == "GNOME")
+            {
+                graphicalSudo = "gksudo ";
+            }
+            else if (de == "KDE")
+            {
+                graphicalSudo = "kdesu ";
+            }
+        }
 #else
 #error NOT IMPLEMENTED
 #endif
@@ -475,13 +490,13 @@ Version GetCurrentVersion()
     string versionFilePath = commonAppDataPath + string(".version");
     if(Exists(versionFilePath))
     {
-		ifstream versionFile (versionFilePath.c_str());
-		if (versionFile.is_open() && !versionFile.eof())
-		{
-			versionFile >> versionString;
-		}
+        ifstream versionFile (versionFilePath.c_str());
+        if (versionFile.is_open() && !versionFile.eof())
+        {
+            versionFile >> versionString;
+        }
 
-		versionFile.close();
+        versionFile.close();
     }
 #else
 #error NOT IMPLEMENTED
@@ -551,8 +566,8 @@ void WriteNewVersion(Version newVersion)
     ofstream versionFile (versionFilePath.c_str());
     if(versionFile.is_open())
     {
-    	versionFile << (string)newVersion;
-    	versionFile.close();
+        versionFile << (string)newVersion;
+        versionFile.close();
     }
     else
     {
@@ -1259,8 +1274,10 @@ bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArg
 #elif __unix
     pid_t pid = fork();
     ostringstream result;
-    for (typename vector<string>::const_iterator i = commandLineArguments.begin(); i != commandLineArguments.end(); i++){
-        if (i != commandLineArguments.begin()) {
+    for (typename vector<string>::const_iterator i = commandLineArguments.begin(); i != commandLineArguments.end(); i++)
+    {
+        if (i != commandLineArguments.begin())
+        {
             result << " ";
         }
 
@@ -1268,23 +1285,30 @@ bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArg
     }
 
     string args = result.str();
-    switch (pid) {
+    switch (pid)
+    {
         case 0:
-	        if(asAdmin) {
-                execl(strcat(const_cast<char *>("gksudo "), pExecutablePath), args.c_str(), (char*) NULL);
-            } else {
+            if (asAdmin)
+            {
+                execl(strcat(const_cast<char *>(graphicalSudo.c_str()), pExecutablePath), args.c_str(), (char*) NULL);
+            } else
+            {
                 execl(pExecutablePath, args.c_str(), (char*) NULL);
             }
             exit(1);
         default:
-            if(waitForCompletion) {
+            if(waitForCompletion)
+            {
                 int status;
-                while (!WIFEXITED(status)) {
+                while (!WIFEXITED(status))
+                {
                     waitpid(pid, &status, 0);
                 }
 
                 success = status == 0;
-            } else {
+            }
+            else
+            {
                 success = true;
             }
     }
