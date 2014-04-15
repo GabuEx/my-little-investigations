@@ -637,7 +637,7 @@ void Dialog::Update(int delta)
     }
 
     // We'll only play the letter blips if voice acting isn't enabled.
-    if (!gVoiceVolume > 0 && !GetIsReadyToProgress())
+    if (gVoiceVolume <= 0 && !GetIsReadyToProgress())
     {
         timeSinceLetterBlipPlayed += delta;
 
