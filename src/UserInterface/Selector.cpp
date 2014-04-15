@@ -35,6 +35,7 @@
 #include "../ResourceLoader.h"
 #include "../CaseInformation/CommonCaseResources.h"
 #include "../Events/SelectorEventProvider.h"
+#include <algorithm>
 
 Font *Selector::pLargeFont = NULL;
 Font *Selector::pMediumFont = NULL;

@@ -41,6 +41,7 @@
 #ifdef GAME_EXECUTABLE
 #include "ResourceLoader.h"
 #include "TextInputHelper.h"
+#include <cryptopp/sha.h>
 #endif
 
 #ifdef LAUNCHER

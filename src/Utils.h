@@ -36,7 +36,7 @@
 #include <sstream>
 #include <deque>
 
-#include <cryptopp/sha.h>
+typedef unsigned char byte;
 
 using namespace std;
 
@@ -49,7 +49,7 @@ deque<string> split(const string &s, char delim);
 
 bool SignatureIsValid(const byte *pFileData, unsigned int fileSize, string hexEncodedSignature);
 
-string UuidFromSHA256Hash(byte hash[CryptoPP::SHA256::DIGESTSIZE]);
+string UuidFromSHA256Hash(byte hash[]);
 
 #ifndef GAME_EXECUTABLE
 bool RetrieveDataFromUriHttp(string uri, byte **ppByteDataFromUriHttp, size_t *pByteDataSize, PFNPROGRESSCALLBACK pfnProgressCallback = NULL, void *pProgressCallbackData = NULL);

@@ -47,12 +47,12 @@
 #include <vector>
 #include <deque>
 
-#include <cryptopp/sha.h>
-
 extern "C"
 {
     #include <libavformat/avformat.h>
 }
+
+typedef unsigned char byte;
 
 class ArchiveSource;
 
@@ -245,7 +245,7 @@ public:
     void UnloadDialog(string id);
 
     void * LoadFileToMemory(string relativeFilePath, unsigned int *pFileSize);
-    void HashFile(string relativeFilePath, byte hash[CryptoPP::SHA256::DIGESTSIZE]);
+    void HashFile(string relativeFilePath, byte hash[]);
 
     void AddImage(Image *pImage);
     void RemoveImage(Image *pImage);

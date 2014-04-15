@@ -35,6 +35,7 @@
 
 #include <cryptopp/hex.h>
 #include <cryptopp/rsa.h>
+#include <cryptopp/sha.h>
 
 using namespace CryptoPP;
 
