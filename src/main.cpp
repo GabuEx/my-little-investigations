@@ -53,6 +53,10 @@
 #include <string>
 #include <math.h>
 
+#ifdef __unix
+#include <unistd.h>
+#endif
+
 using namespace std;
 
 #ifdef GAME_EXECUTABLE
@@ -97,6 +101,14 @@ int main(int argc, char * argv[])
     {
         gVersionsXmlFilePath = string(argv[1]);
     }
+#ifdef __unix
+    // Grab the real user id passed by the launcher so we can exit root privileges after we're done.
+    int uid = getuid();
+    if(argc >= 3)
+    {
+        uid = atoi(argv[2]);
+    }
+#endif
 #endif
 
 #ifdef LAUNCHER
@@ -456,6 +468,10 @@ int main(int argc, char * argv[])
 #ifdef UPDATER
     // If we're currently in the updater and everything has gone smoothly,
     // then we want to launch the game executable now.
+#ifdef __unix
+    // If we're running under Unix, we need to drop our root privileges now.
+    setuid(uid);
+#endif
     LaunchGameExecutable();
 #endif
 #endif

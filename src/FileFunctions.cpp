@@ -1387,12 +1387,10 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
             executablePath.c_str(),
             commandLineArguments,
             true /* waitForCompletion */,
-#ifdef __WINDOWS
+#if defined(__WINDOWS) || defined(__unix)
             false /* asAdmin */
 #elif __OSX
             true /* asAdmin */
-#elif __unix
-            false /* asAdmin */
 #else
             false /* asAdmin */
 #error NOT IMPLEMENTED
@@ -1452,6 +1450,13 @@ bool LaunchUpdater(string versionsXmlFilePath)
 
     vector<string> commandLineArguments;
     commandLineArguments.push_back(versionsXmlFilePath);
+#ifdef __unix
+    // If we're on Unix, we need to pass the current user id to the updater so it can drop root privileges
+    // before launching the game.
+    std::stringstream out;
+    out << getuid();
+    commandLineArguments.push_back(out.str());
+#endif
 
     // On Windows, we can launch the entire update application in admin mode.
     // On OS X, however, we need to instead launch it in standard mode and then acquire rights to run
