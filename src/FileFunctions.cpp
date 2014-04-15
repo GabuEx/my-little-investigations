@@ -93,8 +93,9 @@ bool Exists(string path)
 
 void MakeDirIfNotExists(string path)
 {
-    if(!Exists(path)) {
-        mkdir(path.c_str(), 0700);
+    if(!Exists(path))
+    {
+        mkdir(path.c_str(), 0755);
     }
 }
 
@@ -302,10 +303,12 @@ vector<string> GetCaseFilePaths()
         free(ppCaseFilePaths);
 #elif __unix
         FOR_EACH_FILE(caseFilePath,casesPath)
+        {
             if (caseFilePath.find(".mlicase") != string::npos)
             {
                 filePaths.push_back(caseFilePath);
             }
+        }
 #else
 #error NOT IMPLEMENTED
 #endif
@@ -862,10 +865,12 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
         free(ppSaveFilePaths);
 #elif __unix
         FOR_EACH_FILE(saveFilePath, GetSaveFolderPathForCase(caseUuid))
+        {
             if (saveFilePath.find(".sav") != string::npos)
             {
                 filePaths.push_back(saveFilePath);
             }
+        }
 #else
 #error NOT IMPLEMENTED
 #endif
@@ -1291,7 +1296,8 @@ bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArg
             if (asAdmin)
             {
                 execl(strcat(const_cast<char *>(graphicalSudo.c_str()), pExecutablePath), args.c_str(), (char*) NULL);
-            } else
+            }
+            else
             {
                 execl(pExecutablePath, args.c_str(), (char*) NULL);
             }
@@ -1300,11 +1306,7 @@ bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArg
             if(waitForCompletion)
             {
                 int status;
-                while (!WIFEXITED(status))
-                {
-                    waitpid(pid, &status, 0);
-                }
-
+                waitpid(pid, &status, 0);
                 success = status == 0;
             }
             else
