@@ -2405,15 +2405,15 @@ Conversation::BeginMultipleChoiceAction::BeginMultipleChoiceAction(XmlReader *pR
         throw Exception("optionTexts and optionIndexes must be the same size.");
     }
 
-    pButtonArray = new ButtonArray(optionTexts.size(), 0, 0, 960, 360, 30);
+    pButtonArray = new ButtonArray((int)optionTexts.size(), 0, 0, 960, 360, 30);
     shouldCloseButtonArray = false;
     nextIndex = -1;
     pStaticDialog = NULL;
 
     pDarkeningImage = CommonCaseResources::GetInstance()->GetSpriteManager()->GetImageFromId("MultipleChoiceDarkening");
     darkeningImageOpacity = 0;
-    pDarkeningImageEaseIn = new LinearEase(0.0, 1.0, 125 * optionTexts.size());
-    pDarkeningImageEaseOut = new LinearEase(1.0, 0.0, 125 * optionTexts.size());
+    pDarkeningImageEaseIn = new LinearEase(0.0, 1.0, 125 * (int)optionTexts.size());
+    pDarkeningImageEaseOut = new LinearEase(1.0, 0.0, 125 * (int)optionTexts.size());
 }
 
 void Conversation::BeginMultipleChoiceOptionAction::Execute(State *pState)

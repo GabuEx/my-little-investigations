@@ -129,7 +129,7 @@
 			<Option target="Debug (OS X)" />
 			<Option target="Release (OS X)" />
 		</Unit>
-		<Unit filename="osx/SDLMain.m">
+		<Unit filename="osx/SDLMain.mm">
 			<Option compilerVar="CC" />
 			<Option compile="1" />
 			<Option link="1" />

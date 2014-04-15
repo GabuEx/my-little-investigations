@@ -6,18 +6,13 @@
 */
 
 #include "SDL2/SDL.h"
-#include "SDLMain.h"
-#include "NSFileManagerDirectoryLocations.h"
+#import "SDLMain.h"
+#import "NSFileManagerDirectoryLocations.h"
 #include "ApplicationSupportBridge.h"
 #include <sys/param.h> /* for MAXPATHLEN */
 #include <unistd.h>
 
-/* Define these interop methods for calling into Objective-C from C++ at the top, */
-/* so they can be referenced from anywhere in this file. */
-const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount);
-const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pSaveFileCount);
-const char * GetVersionStringOSX(const char *pPropertyListFilePath);
-char * GetPropertyListXMLForVersionStringOSX(const char *pPropertyListFilePath, const char *pVersionString, unsigned long *pVersionStringLength);
+using namespace std;
 
 /* For some reaon, Apple removed setAppleMenu from the headers in 10.4,
  but the method still is there and works. To avoid warnings, we declare
@@ -39,9 +34,11 @@ typedef struct CPSProcessSerNum
 	UInt32		hi;
 } CPSProcessSerNum;
 
+extern "C" {
 extern OSErr	CPSGetCurrentProcess( CPSProcessSerNum *psn);
 extern OSErr 	CPSEnableForegroundOperation( CPSProcessSerNum *psn, UInt32 _arg2, UInt32 _arg3, UInt32 _arg4, UInt32 _arg5);
 extern OSErr	CPSSetFrontProcess( CPSProcessSerNum *psn);
+}
 
 #endif /* SDL_USE_CPS */
 
@@ -52,11 +49,10 @@ static BOOL   gCalledAppMainline = FALSE;
 
 static NSString *getApplicationName(void)
 {
-    const NSDictionary *dict;
-    NSString *appName = 0;
+    NSDictionary *dict = [[NSBundle mainBundle] infoDictionary];
+    NSString *appName;
 
     /* Determine the application name */
-    dict = (const NSDictionary *)CFBundleGetInfoDictionary(CFBundleGetMainBundle());
     if (dict)
         appName = [dict objectForKey: @"CFBundleName"];
 
@@ -360,12 +356,6 @@ int main (int argc, char **argv)
     NSAutoreleasePool *pPool = [[NSAutoreleasePool alloc] init];
     NSFileManager *defaultManager = [NSFileManager defaultManager];
 
-    /* Store the function pointers to our interop functions, first off. */
-    pfnGetCaseFilePathsOSX = GetCaseFilePathsOSX;
-    pfnGetSaveFilePathsForCaseOSX = GetSaveFilePathsForCaseOSX;
-    pfnGetVersionStringOSX = GetVersionStringOSX;
-    pfnGetPropertyListXMLForVersionStringOSX = GetPropertyListXMLForVersionStringOSX;
-
     /* Create our Application Support folders if they don't exist yet and store the paths */
     NSString *pStrLocalApplicationSupportPath = [defaultManager localApplicationSupportDirectory];
     NSString *pStrUserApplicationSupportPath = [defaultManager userApplicationSupportDirectory];
@@ -430,10 +420,11 @@ int main (int argc, char **argv)
     return 0;
 }
 
-const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
+vector<string> GetCaseFilePathsOSX()
 {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	NSError *error = nil;
+	
     //TODO: use NSFileManager to get the path
     // Or save the NSString as, say, a static pointer.
 	NSString *casesPath = [NSString stringWithUTF8String:pCasesPath];
@@ -443,10 +434,7 @@ const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
             contentsOfDirectoryAtPath: casesPath
             error:&error];
 
-    unsigned int caseFileCount = [pCaseFileList count];
-    const char **ppCaseFileList = (const char **)malloc((size_t)(caseFileCount * sizeof(const char *)));
-
-    unsigned int caseFileIndex = 0;
+    vector<string> ppCaseFileList;
 
     for (NSString *pStrCaseFileName in pCaseFileList)
     {
@@ -456,26 +444,21 @@ const char ** GetCaseFilePathsOSX(unsigned int *pCaseFileCount)
         }
 
         NSString *pStrCaseFilePath = [casesPath stringByAppendingPathComponent:pStrCaseFileName];
-
-        //Have to duplicate the string here because fileSystemRepresentation returns
-        // a pointer in memory that is from inside an NSString object:
-        // this data gets freed when the NSString object is dealloc'd
-        ppCaseFileList[caseFileIndex++] = strdup([pStrCaseFilePath fileSystemRepresentation]);
+		ppCaseFileList.push_back(string([pStrCaseFilePath fileSystemRepresentation]));
     }
 
-    *pCaseFileCount = caseFileIndex;
     [pool drain];
     return ppCaseFileList;
 }
 
-const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pSaveFileCount)
+vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
 {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	NSError *error = nil;
 	NSFileManager *defaultManager = [NSFileManager defaultManager];
 
     //TODO: use NSFileManager to get the path
-    NSString *pStrCaseSavesFilePath =  [[NSString stringWithUTF8String:pSavesPath] stringByAppendingPathComponent:[NSString stringWithUTF8String:pCaseUuid]];
+    NSString *pStrCaseSavesFilePath =  [[NSString stringWithUTF8String:pSavesPath] stringByAppendingPathComponent:[NSString stringWithUTF8String:pCaseUuid.c_str()]];
 
     [defaultManager
         createDirectoryAtPath:pStrCaseSavesFilePath
@@ -488,10 +471,7 @@ const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pS
             contentsOfDirectoryAtPath:pStrCaseSavesFilePath
             error:&error];
 
-    unsigned int saveFileCount = [pSaveFileList count];
-    const char **ppSaveFilePathList = (const char **)malloc((size_t)(saveFileCount * sizeof(const char *)));
-
-    unsigned int saveFileIndex = 0;
+    vector<string> ppSaveFilePathList;
 
     for (NSString *pStrSaveFileName in pSaveFileList)
     {
@@ -501,27 +481,23 @@ const char ** GetSaveFilePathsForCaseOSX(const char *pCaseUuid, unsigned int *pS
         }
 
         NSString *pStrSaveFilePath = [pStrCaseSavesFilePath stringByAppendingPathComponent:pStrSaveFileName];
-
-        //Have to duplicate the string here because fileSystemRepresentation returns
-        // a pointer in memory that is from inside an NSString object:
-        // this data gets freed when the NSString object is dealloc'd
-        ppSaveFilePathList[saveFileIndex++] = strdup([pStrSaveFilePath fileSystemRepresentation]);
+		ppSaveFilePathList.push_back(string([pStrSaveFilePath fileSystemRepresentation]));
     }
 
-    *pSaveFileCount = saveFileIndex;
     [pool drain];
     return ppSaveFilePathList;
 }
 
-const char * GetVersionStringOSX(const char *pPropertyListFilePath)
+string GetVersionStringOSX(string PropertyListFilePath)
 {
     NSString *pErrorDesc = nil;
     NSPropertyListFormat format;
+	const char *pPropertyListFilePath = PropertyListFilePath.c_str();
     NSString *pProperyListPath = [NSString stringWithUTF8String:pPropertyListFilePath];
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:pProperyListPath])
     {
-        return "";
+        return string();
     }
 
     NSData *pPropertyListXML = [[NSFileManager defaultManager] contentsAtPath:pProperyListPath];
@@ -533,21 +509,21 @@ const char * GetVersionStringOSX(const char *pPropertyListFilePath)
 
     if (pPropertyListDictionary == NULL)
     {
-        return "";
+        return string();
     }
 
     NSString *pVersionString = [pPropertyListDictionary objectForKey:@"VersionString"];
     return [pVersionString UTF8String];
 }
 
-char * GetPropertyListXMLForVersionStringOSX(const char *pPropertyListFilePath, const char *pVersionString, unsigned long *pVersionStringLength)
+char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, string pVersionString, unsigned long *pVersionStringLength)
 {
     *pVersionStringLength = 0;
 
     NSString *pErrorDesc = nil;
     NSPropertyListFormat format;
     //TODO: use NSFileManager to get the path
-    NSString *pProperyListPath = [NSString stringWithUTF8String:pPropertyListFilePath];
+    NSString *pProperyListPath = [NSString stringWithUTF8String:pPropertyListFilePath.c_str()];
 
     if (![[NSFileManager defaultManager] fileExistsAtPath:pProperyListPath])
     {
@@ -568,7 +544,7 @@ char * GetPropertyListXMLForVersionStringOSX(const char *pPropertyListFilePath, 
 
     NSMutableDictionary *pPropertyListDictionaryMutable = [pPropertyListDictionary mutableCopy];
 
-    [pPropertyListDictionaryMutable setObject:[NSString stringWithUTF8String:pVersionString] forKey:@"VersionString"];
+    [pPropertyListDictionaryMutable setObject:[NSString stringWithUTF8String:pVersionString.c_str()] forKey:@"VersionString"];
 
     NSData *pData = [NSPropertyListSerialization
         dataFromPropertyList:(id)pPropertyListDictionaryMutable

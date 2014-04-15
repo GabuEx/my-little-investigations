@@ -662,7 +662,7 @@ void ButtonArray::UpdateButtons()
     }
     else if (topButtonIndex > (int)buttonList.size() - maxVisibleButtonCount)
     {
-        topButtonIndex = buttonList.size() - maxVisibleButtonCount;
+        topButtonIndex = (int)(buttonList.size() - maxVisibleButtonCount);
     }
 
     visibleButtonCount = min((unsigned int)buttonList.size(), maxVisibleButtonCount);
