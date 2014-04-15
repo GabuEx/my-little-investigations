@@ -371,7 +371,7 @@ void SelectionScreen::Update(int delta)
 
     pSelector->UpdateAnimation(delta);
 
-    if (pFullSizeScreenshotFadeInEase->GetIsStarted() && pFullSizeScreenshotFadeInEase->GetIsStarted())
+    if (pFullSizeScreenshotFadeInEase->GetIsStarted())
     {
         pFullSizeScreenshotFadeInEase->Update(delta);
         fullSizeScreenshotFadeOpacity = pFullSizeScreenshotFadeInEase->GetCurrentValue();
