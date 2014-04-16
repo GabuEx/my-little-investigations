@@ -30,6 +30,7 @@
 #include "ZoomedView.h"
 #include "../globals.h"
 #include "../MouseHelper.h"
+#include "../XmlReader.h"
 #include "../CaseInformation/Case.h"
 
 ZoomedView::ZoomedView(XmlReader *pReader)

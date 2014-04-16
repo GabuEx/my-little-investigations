@@ -29,6 +29,7 @@
 
 #include "Polygon.h"
 #include "Line.h"
+#include "XmlReader.h"
 #include <limits>
 
 GeometricPolygon::GeometricPolygon(XmlReader *pReader)

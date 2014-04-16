@@ -29,8 +29,9 @@
 
 #include "SpriteManager.h"
 #include "Case.h"
-#include <stdio.h>
 #include "../ResourceLoader.h"
+#include "../XmlReader.h"
+#include <stdio.h>
 
 SpriteManager::SpriteManager(ManagerSource managerSource)
 {

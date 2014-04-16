@@ -31,6 +31,7 @@
 #include "ForegroundElement.h"
 #include "Crowd.h"
 #include "../MouseHelper.h"
+#include "../XmlReader.h"
 #include "../CaseInformation/Case.h"
 
 FieldCharacter::FieldCharacter()

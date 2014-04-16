@@ -31,8 +31,10 @@
 #define AREA_H
 
 #include "Location.h"
-#include "../XmlReader.h"
 #include "../Events/LocationEventProvider.h"
+
+class XmlReader;
+class XmlWriter;
 
 class Area : public LocationEventListener
 {

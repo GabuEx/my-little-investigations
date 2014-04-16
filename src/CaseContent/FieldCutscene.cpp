@@ -31,6 +31,8 @@
 #include "../FileFunctions.h"
 #include "../Interfaces.h"
 #include "../PositionalSound.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 #include "../CaseInformation/Case.h"
 
 const int WalkingSpeed = 300;

@@ -30,8 +30,9 @@
 #ifndef LINE_H
 #define LINE_H
 
-#include "XmlReader.h"
 #include "Vector2.h"
+
+class XmlReader;
 
 class Line
 {

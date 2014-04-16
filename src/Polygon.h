@@ -30,10 +30,13 @@
 #ifndef POLYGON_H
 #define POLYGON_H
 
-#include "XmlReader.h"
 #include "Rectangle.h"
 #include "Vector2.h"
 #include <vector>
+
+using namespace std;
+
+class XmlReader;
 
 class GeometricPolygon
 {

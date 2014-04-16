@@ -31,6 +31,7 @@
 #include "AudioManager.h"
 #include "../globals.h"
 #include "../ResourceLoader.h"
+#include "../XmlReader.h"
 
 const int FadeDurationMs = 1000;
 const double VolumePercentageDuringDialog = 0.4;

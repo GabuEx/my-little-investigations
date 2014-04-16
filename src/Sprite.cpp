@@ -30,6 +30,7 @@
 #include "Sprite.h"
 #include "CaseInformation/Case.h"
 #include "CaseInformation/CommonCaseResources.h"
+#include "XmlReader.h"
 
 const string CommonFilesId = "CommonFiles";
 

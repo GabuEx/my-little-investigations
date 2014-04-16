@@ -33,6 +33,7 @@
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
+#include "../XmlReader.h"
 #include "../CaseInformation/CommonCaseResources.h"
 #include "../Events/SelectorEventProvider.h"
 #include <algorithm>

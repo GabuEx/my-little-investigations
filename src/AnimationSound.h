@@ -30,8 +30,9 @@
 #ifndef ANIMATIONSOUND_H
 #define ANIMATIONSOUND_H
 
-#include "XmlReader.h"
 #include <string>
+
+class XmlReader;
 
 using namespace std;
 

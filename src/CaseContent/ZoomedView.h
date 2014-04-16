@@ -38,6 +38,8 @@
 
 using namespace std;
 
+class XmlReader;
+
 class ZoomedView
 {
 public:

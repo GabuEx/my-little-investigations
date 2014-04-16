@@ -30,6 +30,8 @@
 #include "Area.h"
 #include "../MouseHelper.h"
 #include "../CaseInformation/Case.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 
 Area::Area(XmlReader *pReader)
 {

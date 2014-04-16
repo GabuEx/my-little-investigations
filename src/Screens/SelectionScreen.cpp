@@ -34,6 +34,7 @@
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
 #include "../Utils.h"
+#include "../XmlReader.h"
 #include "../CaseInformation/Case.h"
 #include "../CaseInformation/CommonCaseResources.h"
 

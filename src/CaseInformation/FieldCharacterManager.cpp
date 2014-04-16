@@ -28,6 +28,7 @@
  */
 
 #include "FieldCharacterManager.h"
+#include "../XmlReader.h"
 
 FieldCharacterManager::FieldCharacterManager()
 {

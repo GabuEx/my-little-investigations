@@ -30,7 +30,7 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
 
-#include "XmlReader.h"
+class XmlReader;
 
 class RectangleWH
 {

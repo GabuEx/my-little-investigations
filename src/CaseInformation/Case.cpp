@@ -33,6 +33,7 @@
 #include "../miniz.h"
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
+#include "../XmlReader.h"
 #include "../XmlWriter.h"
 #include "../Events/EventProviders.h"
 #include "../Events/CaseParsingEventProvider.h"

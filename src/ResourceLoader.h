@@ -42,6 +42,8 @@
 
 #include "Image.h"
 #include "miniz.h"
+#include "ticpp/ticpp.h"
+using namespace ticpp;
 
 #include <map>
 #include <vector>

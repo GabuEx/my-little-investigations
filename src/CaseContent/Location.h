@@ -44,10 +44,13 @@
 #include <list>
 #include <map>
 #include <queue>
+#include <stack>
 #include <vector>
 
 class FieldCharacter;
 class HeightMap;
+class XmlReader;
+class XmlWriter;
 
 class Location : public PromptOverlayEventListener
 {

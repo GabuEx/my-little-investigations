@@ -30,6 +30,7 @@
 #include "Animation.h"
 #include "CaseInformation/Case.h"
 #include "CaseInformation/CommonCaseResources.h"
+#include "XmlReader.h"
 
 Animation::Animation(XmlReader *pReader, ManagerSource managerSource)
 {

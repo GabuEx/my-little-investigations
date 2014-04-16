@@ -32,6 +32,8 @@
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
 #include "../State.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 #include "../CaseInformation/Case.h"
 #include "../CaseInformation/CommonCaseResources.h"
 #include "../CaseInformation/DialogCharacterManager.h"
