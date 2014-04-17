@@ -217,12 +217,12 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 #endif
         string homedir = getenv("HOME");
         commonAppDataPath = "/usr/share/MyLittleInvestigations/";
-        casesPath = commonAppDataPath + "/Cases/";
+        casesPath = commonAppDataPath + "Cases/";
         userAppDataPath = homedir + "/.MyLittleInvestigations/";
         MakeDirIfNotExists(userAppDataPath);
-        dialogSeenListsPath = userAppDataPath + "/DialogSeenLists/";
+        dialogSeenListsPath = userAppDataPath + "DialogSeenLists/";
         MakeDirIfNotExists(dialogSeenListsPath);
-        savesPath = userAppDataPath + "/Saves/";
+        savesPath = userAppDataPath + "Saves/";
         MakeDirIfNotExists(savesPath);
         graphicalSudo = "xdg-su";
         const char* desktopEnvironment = getenv("XDG_CURRENT_DESKTOP");
@@ -818,7 +818,11 @@ bool SaveFileExistsForCase(string caseUuid)
 
 string GetSaveFolderPathForCase(string caseUuid)
 {
-    return savesPath + caseUuid + pathSeparator;
+    string path = savesPath + caseUuid + pathSeparator;
+#ifdef __unix
+    MakeDirIfNotExists(path);
+#endif
+    return path;
 }
 
 vector<string> GetSaveFilePathsForCase(string caseUuid)
