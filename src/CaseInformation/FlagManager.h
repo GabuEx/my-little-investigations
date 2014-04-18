@@ -30,9 +30,13 @@
 #ifndef FLAGMANAGER_H
 #define FLAGMANAGER_H
 
-#include "../XmlReader.h"
-#include "../XmlWriter.h"
 #include <map>
+#include <string>
+
+using namespace std;
+
+class XmlReader;
+class XmlWriter;
 
 class FlagManager
 {

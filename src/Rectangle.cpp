@@ -28,6 +28,7 @@
  */
 
 #include "Rectangle.h"
+#include "XmlReader.h"
 
 RectangleWH::RectangleWH()
 {

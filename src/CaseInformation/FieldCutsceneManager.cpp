@@ -28,6 +28,8 @@
  */
 
 #include "FieldCutsceneManager.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 
 FieldCutsceneManager::~FieldCutsceneManager()
 {

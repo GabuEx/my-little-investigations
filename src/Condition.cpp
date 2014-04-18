@@ -30,6 +30,7 @@
 #include "Condition.h"
 #include "globals.h"
 #include "CaseInformation/Case.h"
+#include "XmlReader.h"
 
 Condition::Condition(XmlReader *pReader)
 {

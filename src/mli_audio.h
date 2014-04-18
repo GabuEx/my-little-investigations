@@ -27,8 +27,10 @@
  * SOFTWARE.
  */
 
+#ifndef MLI_AUDIO_H
+#define MLI_AUDIO_H
+
 #include <string>
-#include <map>
 #include <SDL2/SDL.h>
 #ifdef __WINDOWS
 #include <SDL2/SDL_mixer.h>
@@ -37,10 +39,6 @@
 #include <SDL2_mixer/SDL_mixer.h>
 #endif
 #include <SDL2/SDL_thread.h>
-#include <iostream>
-
-#ifndef MLI_AUDIO_H
-#define MLI_AUDIO_H
 
 using namespace std;
 

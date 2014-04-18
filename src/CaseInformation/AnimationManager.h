@@ -32,12 +32,12 @@
 
 #include "../Animation.h"
 #include "../Video.h"
-#include "../XmlReader.h"
 #include <map>
 
 using namespace std;
 
 class Animation;
+class XmlReader;
 
 class AnimationManager
 {

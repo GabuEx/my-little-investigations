@@ -28,6 +28,7 @@
  */
 
 #include "Collisions.h"
+#include "XmlReader.h"
 #include <math.h>
 #include <limits>
 

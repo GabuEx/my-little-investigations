@@ -37,8 +37,6 @@
 #include "../HeightMap.h"
 #include "../Interfaces.h"
 #include "../Line.h"
-#include "../XmlReader.h"
-#include <map>
 
 using namespace std;
 
@@ -47,6 +45,7 @@ class Encounter;
 class FieldCutscene;
 class ForegroundElement;
 class Crowd;
+class XmlReader;
 
 class FieldCharacter : public InteractiveElement, public ZOrderableObject
 {

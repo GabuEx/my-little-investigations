@@ -30,13 +30,15 @@
 #ifndef COLLISIONS_H
 #define COLLISIONS_H
 
-#include "XmlReader.h"
 #include "Rectangle.h"
 #include "Vector2.h"
 #include <vector>
 
+using namespace std;
+
 class CollidableObject;
 class CollisionParameter;
+class XmlReader;
 
 class HitBox
 {

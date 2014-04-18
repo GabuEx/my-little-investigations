@@ -29,6 +29,8 @@
 
 #include "EvidenceManager.h"
 #include "Case.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 
 Evidence::Evidence(XmlReader *pReader)
 {

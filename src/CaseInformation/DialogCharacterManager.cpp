@@ -32,6 +32,7 @@
 #include "CommonCaseResources.h"
 #include "../globals.h"
 #include "../ResourceLoader.h"
+#include "../XmlReader.h"
 #include "../CaseContent/Dialog.h"
 #include <algorithm>
 

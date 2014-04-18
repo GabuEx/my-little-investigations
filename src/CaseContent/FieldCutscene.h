@@ -34,13 +34,14 @@
 #include "FieldCharacter.h"
 #include "../EasingFunctions.h"
 #include "../TransitionRequest.h"
-#include "../XmlReader.h"
-#include "../XmlWriter.h"
 #include "../CaseInformation/SpriteManager.h"
 #include <map>
 #include <vector>
 
 using namespace std;
+
+class XmlReader;
+class XmlWriter;
 
 class FieldCutscene
 {

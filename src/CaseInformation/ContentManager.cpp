@@ -28,6 +28,8 @@
  */
 
 #include "ContentManager.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 
 ContentManager::~ContentManager()
 {

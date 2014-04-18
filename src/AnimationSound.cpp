@@ -29,6 +29,7 @@
 
 #include "AnimationSound.h"
 #include "CaseInformation/Case.h"
+#include "XmlReader.h"
 
 AnimationSound * AnimationSound::LoadSoundFromXml(XmlReader *pReader)
 {

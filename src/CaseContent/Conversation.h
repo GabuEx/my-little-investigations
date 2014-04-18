@@ -34,7 +34,6 @@
 #include "Notification.h"
 #include "../Condition.h"
 #include "../enums.h"
-#include "../XmlReader.h"
 #include "../Events/DialogEventProvider.h"
 #include "../Events/ButtonArrayEventProvider.h"
 #include "../UserInterface/SkipArrow.h"
@@ -46,6 +45,8 @@ using namespace std;
 class State;
 class ButtonArray;
 class DialogCharacter;
+class XmlReader;
+class XmlWriter;
 
 class Conversation
 {
