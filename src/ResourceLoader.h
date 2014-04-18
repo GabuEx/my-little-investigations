@@ -46,7 +46,6 @@
 using namespace ticpp;
 
 #include <map>
-#include <vector>
 #include <deque>
 
 extern "C"

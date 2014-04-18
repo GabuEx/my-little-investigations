@@ -28,6 +28,7 @@
  */
 
 #include "Dialog.h"
+#include "../globals.h"
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
 #include "../Utils.h"
@@ -40,7 +41,6 @@
 
 #ifdef ENABLE_DEBUG_MODE
 #include "../FileFunctions.h"
-#include "../globals.h"
 #include "../CaseInformation/CommonCaseResources.h"
 #endif
 

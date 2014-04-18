@@ -35,7 +35,6 @@
 #include "Rectangle.h"
 #include "Vector2.h"
 #include "Image.h"
-#include <vector>
 
 class XmlReader;
 

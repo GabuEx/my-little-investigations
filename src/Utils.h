@@ -33,7 +33,6 @@
 #include "Version.h"
 
 #include <string>
-#include <sstream>
 #include <deque>
 
 typedef unsigned char byte;

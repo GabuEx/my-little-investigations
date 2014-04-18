@@ -29,7 +29,6 @@
  */
 
 #include "HeightMap.h"
-#include "Polygon.h"
 #include "Rectangle.h"
 #include "XmlReader.h"
 #include <math.h>

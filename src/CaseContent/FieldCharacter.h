@@ -37,7 +37,6 @@
 #include "../HeightMap.h"
 #include "../Interfaces.h"
 #include "../Line.h"
-#include <map>
 
 using namespace std;
 

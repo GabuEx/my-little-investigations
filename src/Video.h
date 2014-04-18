@@ -35,7 +35,6 @@
 #include "Rectangle.h"
 #include "Vector2.h"
 #include "SDL2/SDL.h"
-#include <deque>
 #include <vector>
 
 class XmlReader;

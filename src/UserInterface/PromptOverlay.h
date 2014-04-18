@@ -33,6 +33,9 @@
 #include "../EasingFunctions.h"
 #include "../Font.h"
 #include "../Vector2.h"
+#include <deque>
+
+using namespace std;
 
 class PromptButton
 {

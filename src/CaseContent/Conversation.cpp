@@ -31,6 +31,7 @@
 #include "../FileFunctions.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../globals.h"
 #include "../State.h"
 #include "../XmlReader.h"
 #include "../XmlWriter.h"

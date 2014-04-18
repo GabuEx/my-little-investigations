@@ -29,6 +29,7 @@
 
 #include "FieldCutscene.h"
 #include "../FileFunctions.h"
+#include "../globals.h"
 #include "../Interfaces.h"
 #include "../PositionalSound.h"
 #include "../XmlReader.h"

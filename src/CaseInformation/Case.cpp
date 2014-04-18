@@ -31,6 +31,7 @@
 #include "Case.h"
 #include "../FileFunctions.h"
 #include "../miniz.h"
+#include "../globals.h"
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
 #include "../XmlReader.h"

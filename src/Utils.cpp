@@ -32,6 +32,7 @@
 #include "globals.h"
 #include "XmlReader.h"
 #include "ticpp/ticpp.h"
+#include <sstream>
 
 #include <cryptopp/hex.h>
 #include <cryptopp/rsa.h>
