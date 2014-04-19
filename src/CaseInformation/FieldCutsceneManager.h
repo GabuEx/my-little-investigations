@@ -30,12 +30,13 @@
 #ifndef FIELDCUTSCENEMANAGER_H
 #define FIELDCUTSCENEMANAGER_H
 
-#include "../XmlReader.h"
-#include "../XmlWriter.h"
 #include "../CaseContent/FieldCutscene.h"
 #include <map>
 
 using namespace std;
+
+class XmlReader;
+class XmlWriter;
 
 class FieldCutsceneManager
 {

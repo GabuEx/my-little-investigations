@@ -34,6 +34,7 @@
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
 #include "../Utils.h"
+#include "../XmlReader.h"
 #include "../CaseInformation/Case.h"
 #include "../CaseInformation/CommonCaseResources.h"
 
@@ -371,7 +372,7 @@ void SelectionScreen::Update(int delta)
 
     pSelector->UpdateAnimation(delta);
 
-    if (pFullSizeScreenshotFadeInEase->GetIsStarted() && pFullSizeScreenshotFadeInEase->GetIsStarted())
+    if (pFullSizeScreenshotFadeInEase->GetIsStarted())
     {
         pFullSizeScreenshotFadeInEase->Update(delta);
         fullSizeScreenshotFadeOpacity = pFullSizeScreenshotFadeInEase->GetCurrentValue();

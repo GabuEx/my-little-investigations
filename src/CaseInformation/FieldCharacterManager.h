@@ -35,6 +35,8 @@
 
 using namespace std;
 
+class XmlReader;
+
 class FieldCharacterManager
 {
     friend class Case;

@@ -35,6 +35,8 @@
 #include "../MouseHelper.h"
 #include "../PositionalSound.h"
 #include "../TransitionRequest.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 #include "../CaseInformation/Case.h"
 #include "../CaseInformation/CommonCaseResources.h"
 #include "../Screens/MLIScreen.h"

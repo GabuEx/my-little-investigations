@@ -31,6 +31,7 @@
 #include "globals.h"
 #include "ResourceLoader.h"
 #include "CaseInformation/Case.h"
+#include "XmlReader.h"
 #include <math.h>
 
 #ifndef AVPixelFormat

@@ -31,7 +31,6 @@
 #define DIALOG_H
 
 #include "../Color.h"
-#include "../globals.h"
 #include "../mli_audio.h"
 #include "../CaseInformation/PartnerManager.h"
 #include "../Events/DialogEventProvider.h"
@@ -39,6 +38,7 @@
 #include "../UserInterface/Arrow.h"
 #include "../UserInterface/EvidenceSelector.h"
 #include "../UserInterface/Tab.h"
+#include <deque>
 #include <string>
 
 using namespace std;

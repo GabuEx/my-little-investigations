@@ -28,6 +28,7 @@
  */
 
 #include "Dialog.h"
+#include "../globals.h"
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
 #include "../Utils.h"
@@ -40,7 +41,6 @@
 
 #ifdef ENABLE_DEBUG_MODE
 #include "../FileFunctions.h"
-#include "../globals.h"
 #include "../CaseInformation/CommonCaseResources.h"
 #endif
 
@@ -637,7 +637,7 @@ void Dialog::Update(int delta)
     }
 
     // We'll only play the letter blips if voice acting isn't enabled.
-    if (!gVoiceVolume > 0 && !GetIsReadyToProgress())
+    if (gVoiceVolume <= 0 && !GetIsReadyToProgress())
     {
         timeSinceLetterBlipPlayed += delta;
 

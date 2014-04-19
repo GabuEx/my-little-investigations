@@ -30,6 +30,7 @@
 #ifdef UPDATER
 
 #include "CheckForUpdatesScreen.h"
+#include "../XmlReader.h"
 #include "../FileFunctions.h"
 #include "../globals.h"
 #include "../CaseInformation/CommonCaseResources.h"

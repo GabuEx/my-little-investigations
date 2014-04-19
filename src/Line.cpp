@@ -28,6 +28,7 @@
  */
 
 #include "Line.h"
+#include "XmlReader.h"
 #include <math.h>
 
 Line::Line(XmlReader *pReader)

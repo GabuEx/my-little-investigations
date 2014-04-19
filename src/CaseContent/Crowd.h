@@ -38,6 +38,7 @@
 #include "../Video.h"
 
 class Encounter;
+class XmlReader;
 
 class Crowd : public InteractiveElement, public ZOrderableObject
 {

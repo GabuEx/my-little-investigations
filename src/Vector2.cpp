@@ -28,6 +28,7 @@
  */
 
 #include "Vector2.h"
+#include "XmlReader.h"
 #include <math.h>
 
 Vector2::Vector2()

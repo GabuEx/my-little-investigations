@@ -30,6 +30,7 @@
 
 #include "ButtonArray.h"
 #include "../mli_audio.h"
+#include "../globals.h"
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
 #include "../CaseInformation/Case.h"
@@ -133,6 +134,37 @@ void Button::Initialize(MLIFont *pTextFont, Image *pCheckMarkImage)
     pUnlockingAnimation->AddFrame(42, lockAnimationSpriteId18);
     pUnlockingAnimation->AddFrame(42, lockAnimationSpriteId19);
     pUnlockingAnimation->AddFrame(0, lockAnimationSpriteId20);
+}
+
+Button::Button(int id, string text)
+{
+    this->id = id;
+    this->text = text;
+    this->showCheckMark = false;
+    this->lockCount = 0;
+    this->unlockedLockCount = 0;
+    this->isDisabled = false;
+
+    this->pInEase = new LinearEase(gScreenWidth, 0, AnimationDuration);
+    this->pOutEase = new LinearEase(0, -gScreenWidth, AnimationDuration);
+
+    this->pCustomIconSprite = NULL;
+
+    this->xPosition = 0;
+    this->yPosition = 0;
+
+    this->isHiding = false;
+    this->lockCount = 0;
+
+    this->Reset();
+}
+
+Button::~Button()
+{
+    delete pInEase;
+    pInEase = NULL;
+    delete pOutEase;
+    pOutEase = NULL;
 }
 
 void Button::SetCustomIconId(string customIconId)

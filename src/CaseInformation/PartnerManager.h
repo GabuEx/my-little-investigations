@@ -34,14 +34,14 @@
 #include "SpriteManager.h"
 #include "../enums.h"
 #include "../Vector2.h"
-#include "../XmlReader.h"
-#include "../XmlWriter.h"
 #include <map>
 
 class Partner;
 
 class Condition;
 class Encounter;
+class XmlReader;
+class XmlWriter;
 
 class PartnerManager
 {

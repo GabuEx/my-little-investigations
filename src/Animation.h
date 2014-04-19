@@ -33,8 +33,9 @@
 #include "AnimationSound.h"
 #include "Sprite.h"
 #include "Vector2.h"
-#include "XmlReader.h"
 #include <vector>
+
+class XmlReader;
 
 class Animation
 {

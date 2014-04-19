@@ -35,8 +35,8 @@
 #include "Rectangle.h"
 #include "Vector2.h"
 #include "Image.h"
-#include "XmlReader.h"
-#include <vector>
+
+class XmlReader;
 
 class Sprite
 {

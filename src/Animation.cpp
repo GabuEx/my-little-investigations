@@ -30,6 +30,7 @@
 #include "Animation.h"
 #include "CaseInformation/Case.h"
 #include "CaseInformation/CommonCaseResources.h"
+#include "XmlReader.h"
 
 Animation::Animation(XmlReader *pReader, ManagerSource managerSource)
 {
@@ -68,7 +69,7 @@ void Animation::AddFrame(int msDuration, string spriteId)
 
 void Animation::AddSound(string sfxId)
 {
-    frameList[frameList.size() - 1]->pSound = new SpecifiedSound(sfxId);
+    frameList.back()->pSound = new SpecifiedSound(sfxId);
 }
 
 Vector2 Animation::GetSize()

@@ -29,7 +29,6 @@
 
 #include "MLIFont.h"
 #include "globals.h"
-#include "Image.h"
 #include "ResourceLoader.h"
 
 #define MAX_WIDTH 512

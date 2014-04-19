@@ -41,12 +41,14 @@
 #ifdef GAME_EXECUTABLE
 #include "ResourceLoader.h"
 #include "TextInputHelper.h"
+#include <cryptopp/sha.h>
 #endif
 
 #ifdef LAUNCHER
 #include "XmlReader.h"
-#include "ticpp/ticpp.h"
 #endif
+
+#include "ticpp/ticpp.h"
 
 #include <SDL2/SDL.h>
 

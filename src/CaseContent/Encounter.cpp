@@ -30,6 +30,7 @@
 #include "Encounter.h"
 #include "../globals.h"
 #include "../MouseHelper.h"
+#include "../XmlReader.h"
 #include "../CaseContent/Dialog.h"
 #include "../CaseInformation/Case.h"
 

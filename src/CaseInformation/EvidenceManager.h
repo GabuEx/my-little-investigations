@@ -31,11 +31,12 @@
 #define EVIDENCEMANAGER_H
 
 #include "../Sprite.h"
-#include "../XmlReader.h"
-#include "../XmlWriter.h"
 #include "../CaseContent/Conversation.h"
 #include <map>
 #include <vector>
+
+class XmlReader;
+class XmlWriter;
 
 class Evidence
 {

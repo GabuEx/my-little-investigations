@@ -50,7 +50,7 @@ static BOOL   gCalledAppMainline = FALSE;
 static NSString *getApplicationName(void)
 {
     NSDictionary *dict = [[NSBundle mainBundle] infoDictionary];
-    NSString *appName;
+    NSString *appName = NULL;
 
     /* Determine the application name */
     if (dict)
@@ -424,7 +424,7 @@ vector<string> GetCaseFilePathsOSX()
 {
 	NSAutoreleasePool *pool = [NSAutoreleasePool new];
 	NSError *error = nil;
-	
+
     //TODO: use NSFileManager to get the path
     // Or save the NSString as, say, a static pointer.
 	NSString *casesPath = [NSString stringWithUTF8String:pCasesPath];

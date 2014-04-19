@@ -31,6 +31,8 @@
 #include "Case.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 
 PartnerManager::PartnerManager()
 {

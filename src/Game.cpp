@@ -70,6 +70,8 @@ extern "C"
 #include <SDL2/SDL_syswm.h>
 #endif
 
+#include "ticpp/ticpp.h"
+
 Game * Game::pInstance = NULL;
 string MLIScreen::currentScreenId = "";
 string MLIScreen::lastScreenId = "";
@@ -349,7 +351,7 @@ void Game::Update(int delta)
             }
             else
             {
-                throw Exception("Unknown screen ID.");
+                throw ticpp::Exception("Unknown screen ID.");
             }
         }
     }

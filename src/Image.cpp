@@ -33,9 +33,9 @@
 
 #ifdef GAME_EXECUTABLE
 #include "ResourceLoader.h"
-#include "Video.h"
 #endif
 
+#include <iostream>
 #include <algorithm>
 
 using namespace std;

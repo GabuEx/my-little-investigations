@@ -28,6 +28,8 @@
  */
 
 #include "FlagManager.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 
 bool FlagManager::IsFlagSet(string flagName)
 {

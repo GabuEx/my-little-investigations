@@ -33,14 +33,17 @@
 #include "../Color.h"
 #include "../EasingFunctions.h"
 #include "../Vector2.h"
-#include "../XmlReader.h"
-
 #include <map>
+#include <string>
+#include <vector>
+
+using namespace std;
 
 class Sprite;
 class DialogCutsceneAnimation;
 class DialogCutsceneAnimationElement;
 class DialogCutsceneAnimationFrame;
+class XmlReader;
 
 class DialogCutsceneManager
 {

@@ -30,6 +30,7 @@
 #include "AnimationManager.h"
 #include "Case.h"
 #include "../ResourceLoader.h"
+#include "../XmlReader.h"
 
 AnimationManager::~AnimationManager()
 {

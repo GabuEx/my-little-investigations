@@ -30,7 +30,8 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-#include "XmlReader.h"
+#include "SDL2/SDL_stdinc.h"
+class XmlReader;
 
 class Color
 {

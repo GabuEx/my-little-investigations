@@ -33,7 +33,6 @@
 #include "Arrow.h"
 #include "Tab.h"
 #include "../MLIFont.h"
-#include "../globals.h"
 #include "../Rectangle.h"
 #include "../Image.h"
 #include "../Sprite.h"
@@ -47,36 +46,9 @@ class Button
 public:
     static void Initialize(MLIFont *pTextFont, Image *pCheckMarkImage);
 
-    Button(int id, string text)
-    {
-        this->id = id;
-        this->text = text;
-        this->showCheckMark = false;
-        this->lockCount = 0;
-        this->unlockedLockCount = 0;
-        this->isDisabled = false;
+    Button(int id, string text);
 
-        this->pInEase = new LinearEase(gScreenWidth, 0, AnimationDuration);
-        this->pOutEase = new LinearEase(0, -gScreenWidth, AnimationDuration);
-
-        this->pCustomIconSprite = NULL;
-
-        this->xPosition = 0;
-        this->yPosition = 0;
-
-        this->isHiding = false;
-        this->lockCount = 0;
-
-        this->Reset();
-    }
-
-    ~Button()
-    {
-        delete pInEase;
-        pInEase = NULL;
-        delete pOutEase;
-        pOutEase = NULL;
-    }
+    ~Button();
 
     int GetId() const { return this->id; }
 
