@@ -74,6 +74,7 @@ public:
         , preserveAmbiance(false)
         , pCurrentAnimation(NULL)
         , pCurrentConversation(NULL)
+        , pCurrentConfrontation(NULL)
         , pCurrentConfrontationTopic(NULL)
         , pInterjectionSprite(NULL)
         , interjectionElapsedTime(0)
@@ -203,7 +204,8 @@ public:
     Conversation * GetCurrentConversation() { return this->pCurrentConversation; }
     void SetCurrentConversation(Conversation *pCurrentConversation) { this->pCurrentConversation = pCurrentConversation; }
 
-    Confrontation * GetCurrentConfrontation() { return dynamic_cast<Confrontation *>(this->pCurrentConversation); }
+    Confrontation * GetCurrentConfrontation() { return this->pCurrentConfrontation; }
+    void SetCurrentConfrontation(Confrontation *pCurrentConfrontation) { this->pCurrentConfrontation = pCurrentConfrontation; }
 
     Confrontation::Topic * GetCurrentConfrontationTopic() { return this->pCurrentConfrontationTopic; }
     void SetCurrentConfrontationTopic(Confrontation::Topic *pCurrentConfrontationTopic) { this->pCurrentConfrontationTopic = pCurrentConfrontationTopic; }
@@ -330,6 +332,7 @@ private:
     bool preserveAmbiance;
     DialogCutsceneAnimation *pCurrentAnimation;
     Conversation *pCurrentConversation;
+    Confrontation *pCurrentConfrontation;
     Confrontation::Topic *pCurrentConfrontationTopic;
     TransitionRequest transitionRequest;
     Sprite *pInterjectionSprite;

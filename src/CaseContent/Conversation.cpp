@@ -254,6 +254,8 @@ void Conversation::Begin(State *pState)
         this->GetRequiredPartnerId() != Case::GetInstance()->GetPartnerManager()->GetCurrentPartnerId());
 
     pState->SetCurrentConversation(this);
+    pState->SetCurrentConfrontation(NULL);
+
     pSkipTab->Reset();
     pSkipTab->SetText(pFastForwardText);
     pSkipArrow->Reset();
@@ -3195,6 +3197,8 @@ void Confrontation::Begin(State *pState)
     playerHealthNumberNotRedRgbValue = 255;
     opponentHealthNumberScale = 1;
     opponentHealthNumberNotRedRgbValue = 255;
+
+    pState->SetCurrentConfrontation(this);
 }
 
 void Confrontation::Update(int delta)
@@ -3314,8 +3318,8 @@ void Confrontation::Draw(double xOffset, double yOffset)
         Vector2 healthNumberOffset = Vector2(0, 3);
         Vector2 horizontalOffset = Vector2(iconOffset, 0);
 
-        char playerHealthCStr[16];
-        char opponentHealthCStr[16];
+        char playerHealthCStr[16] = { '\0' };
+        char opponentHealthCStr[16] = { '\0' };
 
         sprintf(&playerHealthCStr[0], "%d", GetPlayerHealth());
         sprintf(&opponentHealthCStr[0], "%d", GetOpponentHealth());
