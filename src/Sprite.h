@@ -82,6 +82,8 @@ public:
 
     string spriteSheetImageId;
     Image *pSpriteSheetImage;
+    Vector2 spriteDrawOffset;
+    Vector2 originalSize;
     RectangleWH spriteClipRect;
 
     ManagerSource managerSource;

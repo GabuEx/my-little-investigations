@@ -36,15 +36,31 @@ const string CommonFilesId = "CommonFiles";
 Sprite::Sprite(XmlReader *pReader)
 {
     pSpriteSheetImage = NULL;
+    spriteDrawOffset = Vector2(0, 0);
     pSpriteSheetSemaphore = SDL_CreateSemaphore(1);
     managerSource = ManagerSourceCommonResources;
 
     pReader->StartElement("Sprite");
-    spriteSheetImageId = pReader->ReadTextElement("SpriteSheetImageId");
 
-    pReader->StartElement("SpriteClipRect");
-    spriteClipRect = RectangleWH(pReader);
-    pReader->EndElement();
+    if (pReader->ElementExists("SpriteSheetImageId"))
+    {
+        spriteSheetImageId = pReader->ReadTextElement("SpriteSheetImageId");
+
+        pReader->StartElement("SpriteClipRect");
+        spriteClipRect = RectangleWH(pReader);
+        pReader->EndElement();
+
+        if (pReader->ElementExists("Offset"))
+        {
+            pReader->StartElement("Offset");
+            spriteDrawOffset = Vector2(pReader);
+            pReader->EndElement();
+
+            pReader->StartElement("OriginalSize");
+            originalSize = Vector2(pReader);
+            pReader->EndElement();
+        }
+    }
 
     pReader->EndElement();
 }
@@ -92,7 +108,10 @@ void Sprite::Draw(Vector2 position, Color color, double scale, bool flipHorizont
         return;
     }
 
-    Vector2 pixelSnappedPosition = Vector2((int)position.GetX(), (int)position.GetY());
+    Vector2 pixelSnappedPosition =
+        Vector2(
+            (int)(position.GetX() + (originalSize.GetX() > 0 && flipHorizontally ? originalSize.GetX() - GetWidth() - spriteDrawOffset.GetX() : spriteDrawOffset.GetX())),
+            (int)(position.GetY() + spriteDrawOffset.GetY()));
 
     GetSpriteSheetImage()->Draw(
         pixelSnappedPosition,
@@ -120,7 +139,32 @@ void Sprite::DrawClipped(Vector2 position, RectangleWH clipRect, bool flipHorizo
         return;
     }
 
-    Vector2 pixelSnappedPosition = Vector2((int)position.GetX(), (int)position.GetY());
+    // Adjust the clip rect to account for the fact that we've eliminated blank space
+    // that was around the source image.
+    if (spriteDrawOffset.GetX() > 0 || spriteDrawOffset.GetY() > 0)
+    {
+        Vector2 oldClipRectPosition(clipRect.GetX(), clipRect.GetY());
+
+        clipRect.SetX(clipRect.GetX() - spriteDrawOffset.GetX());
+        clipRect.SetY(clipRect.GetY() - spriteDrawOffset.GetY());
+
+        position += Vector2(clipRect.GetX(), clipRect.GetY()) - oldClipRectPosition;
+
+        if (clipRect.GetX() + clipRect.GetWidth() > GetWidth())
+        {
+            clipRect.SetWidth(GetWidth() - clipRect.GetX());
+        }
+
+        if (clipRect.GetY() + clipRect.GetHeight() > GetHeight())
+        {
+            clipRect.SetHeight(GetHeight() - clipRect.GetY());
+        }
+    }
+
+    Vector2 pixelSnappedPosition =
+        Vector2(
+            (int)(position.GetX() + (originalSize.GetX() > 0 && flipHorizontally ? originalSize.GetX() - GetWidth() - spriteDrawOffset.GetX() : spriteDrawOffset.GetX())),
+            (int)(position.GetY() + spriteDrawOffset.GetY()));
 
     GetSpriteSheetImage()->Draw(
         pixelSnappedPosition,
