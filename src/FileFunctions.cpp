@@ -78,6 +78,7 @@ tstring StringToTString(string str)
 #include <Security/AuthorizationTags.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <unistd.h>
 #elif __unix
 #include <dirent.h>
 #include <pwd.h>
@@ -284,23 +285,17 @@ vector<string> GetCaseFilePaths()
             FindClose(hFind);
         }
 #elif __OSX
-        unsigned int caseFileCount = 0;
+        vector<string> caseFilePaths = GetCaseFilePathsOSX();
 
-        const char **ppCaseFilePaths = pfnGetCaseFilePathsOSX(&caseFileCount);
-
-        for (unsigned int i = 0; i < caseFileCount; i++)
+        for (unsigned int i = 0; i < caseFilePaths.size(); i++)
         {
-            string caseFilePath = string(ppCaseFilePaths[i]);
+            string caseFilePath = caseFilePaths[i];
 
             if (caseFilePath.find(".mlicase") != string::npos)
             {
                 filePaths.push_back(caseFilePath);
             }
-            //Clean up after ourselves
-            free((void*)ppCaseFilePaths[i]);
         }
-
-        free(ppCaseFilePaths);
 #elif __unix
         FOR_EACH_FILE(caseFilePath,casesPath)
         {
@@ -488,7 +483,7 @@ Version GetCurrentVersion()
 
     RegCloseKey(hKey);
 #elif __OSX
-    versionString = pfnGetVersionStringOSX(GetPropertyListPath().c_str());
+    versionString = GetVersionStringOSX(GetPropertyListPath());
 #elif __unix
     string versionFilePath = commonAppDataPath + string(".version");
     if(Exists(versionFilePath))
@@ -545,7 +540,7 @@ void WriteNewVersion(Version newVersion)
     RegCloseKey(hKey);
 #elif __OSX
     unsigned long propertyListXmlDataLength = 0;
-    char *pPropertyListXmlData = pfnGetPropertyListXMLForVersionStringOSX(GetPropertyListPath().c_str(), ((string)newVersion).c_str(), &propertyListXmlDataLength);
+    char *pPropertyListXmlData = GetPropertyListXMLForVersionStringOSX(GetPropertyListPath(), newVersion, &propertyListXmlDataLength);
 
     if (pPropertyListXmlData != NULL && propertyListXmlDataLength > 0)
     {
@@ -850,23 +845,17 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
             FindClose(hFind);
         }
 #elif __OSX
-        unsigned int saveFileCountLocal = 0;
+        vector<string> saveFilePaths = GetSaveFilePathsForCaseOSX(caseUuid);
 
-        const char **ppSaveFilePaths = pfnGetSaveFilePathsForCaseOSX(caseUuid.c_str(), &saveFileCountLocal);
-
-        for (unsigned int j = 0; j < saveFileCountLocal; j++)
+        for (unsigned int j = 0; j < saveFilePaths.size(); j++)
         {
-            string saveFilePath = string(ppSaveFilePaths[j]);
+            string saveFilePath = saveFilePaths[j];
 
             if (saveFilePath.find(".sav") != string::npos)
             {
                 filePaths.push_back(saveFilePath);
             }
-            //Clean up after ourselves
-            free((void*)ppSaveFilePaths[j]);
         }
-
-        free(ppSaveFilePaths);
 #elif __unix
         FOR_EACH_FILE(saveFilePath, GetSaveFolderPathForCase(caseUuid))
         {
