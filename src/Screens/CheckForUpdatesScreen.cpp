@@ -30,6 +30,7 @@
 #ifdef UPDATER
 
 #include "CheckForUpdatesScreen.h"
+#include "../XmlReader.h"
 #include "../FileFunctions.h"
 #include "../globals.h"
 #include "../CaseInformation/CommonCaseResources.h"
@@ -187,7 +188,7 @@ void CheckForUpdatesScreen::ScheduledRemove::Complete()
     RemoveFile(stagingFilePath);
 }
 
-CheckForUpdatesScreen::CheckForUpdatesScreen(Font *pTextDisplayFont)
+CheckForUpdatesScreen::CheckForUpdatesScreen(MLIFont *pTextDisplayFont)
 {
     this->pTextDisplayFont = pTextDisplayFont;
 
@@ -215,7 +216,7 @@ void CheckForUpdatesScreen::UnloadResources()
 
 void CheckForUpdatesScreen::Init()
 {
-    Screen::Init();
+    MLIScreen::Init();
 
     drawnOnce = false;
     currentState = StateCheckingForUpdates;
@@ -320,9 +321,12 @@ void CheckForUpdatesScreen::CheckForUpdates()
                     {
                     #ifdef __WINDOWS
                         fileName = versionReader.ReadTextElement("FileNameWindows");
-                    #endif
-                    #ifdef __OSX
+                    #elif __OSX
                         fileName = versionReader.ReadTextElement("FileNameOSX");
+                    #elif __unix
+                        fileName = versionReader.ReadTextElement("FileNameUnix");
+                    #else
+                    #error NOT IMPLEMENTED
                     #endif
                     }
 
@@ -341,9 +345,12 @@ void CheckForUpdatesScreen::CheckForUpdates()
                         {
                         #ifdef __WINDOWS
                             deltaSize = versionReader.ReadIntElement("DeltaSizeWindows");
-                        #endif
-                        #ifdef __OSX
+                        #elif __OSX
                             deltaSize = versionReader.ReadIntElement("DeltaSizeOSX");
+                        #elif __unix
+                            fileName = versionReader.ReadTextElement("DeltaSizeUnix");
+                        #else
+                        #error NOT IMPLEMENTED
                         #endif
                         }
                     }
@@ -360,9 +367,12 @@ void CheckForUpdatesScreen::CheckForUpdates()
                         {
                         #ifdef __WINDOWS
                             deltaLocation = versionReader.ReadTextElement("DeltaLocationWindows");
-                        #endif
-                        #ifdef __OSX
+                        #elif __OSX
                             deltaLocation = versionReader.ReadTextElement("DeltaLocationOSX");
+                        #elif __unix
+                            deltaLocation = versionReader.ReadTextElement("DeltaLocationUnix");
+                        #else
+                        #error NOT IMPLEMENTED
                         #endif
                         }
                     }
@@ -379,9 +389,12 @@ void CheckForUpdatesScreen::CheckForUpdates()
                         {
                         #ifdef __WINDOWS
                             signature = versionReader.ReadTextElement("SignatureWindows");
-                        #endif
-                        #ifdef __OSX
+                        #elif __OSX
                             signature = versionReader.ReadTextElement("SignatureOSX");
+                        #elif __unix
+                            signature = versionReader.ReadTextElement("SignatureUnix");
+                        #else
+                        #error NOT IMPLEMENTED
                         #endif
                         }
                     }

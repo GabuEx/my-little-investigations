@@ -29,7 +29,7 @@
 
 #include "TextInputHelper.h"
 
-#include "Font.h"
+#include "MLIFont.h"
 
 string TextInputHelper::currentText = "";
 unsigned int TextInputHelper::caretPosition = 0;
@@ -41,7 +41,7 @@ int TextInputHelper::msSinceKeyDown = -1;
 bool TextInputHelper::isRepeating = false;
 
 int TextInputHelper::maxPixelWidth = -1;
-Font *TextInputHelper::pFontToCheckAgainst = NULL;
+MLIFont *TextInputHelper::pFontToCheckAgainst = NULL;
 
 bool TextInputHelper::userHasConfirmed = false;
 bool TextInputHelper::userHasCanceled = false;

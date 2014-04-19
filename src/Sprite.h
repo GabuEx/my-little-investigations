@@ -35,8 +35,8 @@
 #include "Rectangle.h"
 #include "Vector2.h"
 #include "Image.h"
-#include "XmlReader.h"
-#include <vector>
+
+class XmlReader;
 
 class Sprite
 {
@@ -82,6 +82,8 @@ public:
 
     string spriteSheetImageId;
     Image *pSpriteSheetImage;
+    Vector2 spriteDrawOffset;
+    Vector2 originalSize;
     RectangleWH spriteClipRect;
 
     ManagerSource managerSource;

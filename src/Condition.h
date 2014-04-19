@@ -30,7 +30,11 @@
 #ifndef CONDITION_H
 #define CONDITION_H
 
-#include "XmlReader.h"
+#include <string>
+
+using namespace std;
+
+class XmlReader;
 
 class Condition
 {

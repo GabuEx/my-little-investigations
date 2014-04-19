@@ -31,7 +31,10 @@
 #include "../FileFunctions.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../globals.h"
 #include "../State.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 #include "../CaseInformation/Case.h"
 #include "../CaseInformation/CommonCaseResources.h"
 #include "../CaseInformation/DialogCharacterManager.h"
@@ -54,7 +57,7 @@ map<string, vector<Conversation::ShowDialogAction *> > Conversation::showDialogA
 
 Image *Confrontation::pBackgroundDarkeningImage = NULL;
 Image *Confrontation::pConfrontationHealthCircleImage = NULL;
-Font *Confrontation::pConfrontationHealthNumberingFont = NULL;
+MLIFont *Confrontation::pConfrontationHealthNumberingFont = NULL;
 map<string, Confrontation::Topic *> *Confrontation::pCurrentConfrontationTopicsById = NULL;
 
 Conversation::UnlockCondition * Conversation::UnlockCondition::LoadFromXml(XmlReader *pReader)
@@ -254,6 +257,8 @@ void Conversation::Begin(State *pState)
         this->GetRequiredPartnerId() != Case::GetInstance()->GetPartnerManager()->GetCurrentPartnerId());
 
     pState->SetCurrentConversation(this);
+    pState->SetCurrentConfrontation(NULL);
+
     pSkipTab->Reset();
     pSkipTab->SetText(pFastForwardText);
     pSkipArrow->Reset();
@@ -3138,7 +3143,7 @@ DialogCharacter * Confrontation::GetOpponentCharacter()
     return pOpponentCharacter;
 }
 
-void Confrontation::Initialize(Image *pBackgroundDarkeningImage, Image *pConfrontationHealthCircleImage, Font *pConfrontationHealthNumberingFont)
+void Confrontation::Initialize(Image *pBackgroundDarkeningImage, Image *pConfrontationHealthCircleImage, MLIFont *pConfrontationHealthNumberingFont)
 {
     Confrontation::pBackgroundDarkeningImage = pBackgroundDarkeningImage;
     Confrontation::pConfrontationHealthCircleImage = pConfrontationHealthCircleImage;
@@ -3195,6 +3200,8 @@ void Confrontation::Begin(State *pState)
     playerHealthNumberNotRedRgbValue = 255;
     opponentHealthNumberScale = 1;
     opponentHealthNumberNotRedRgbValue = 255;
+
+    pState->SetCurrentConfrontation(this);
 }
 
 void Confrontation::Update(int delta)
@@ -3314,8 +3321,8 @@ void Confrontation::Draw(double xOffset, double yOffset)
         Vector2 healthNumberOffset = Vector2(0, 3);
         Vector2 horizontalOffset = Vector2(iconOffset, 0);
 
-        char playerHealthCStr[16];
-        char opponentHealthCStr[16];
+        char playerHealthCStr[16] = { '\0' };
+        char opponentHealthCStr[16] = { '\0' };
 
         sprintf(&playerHealthCStr[0], "%d", GetPlayerHealth());
         sprintf(&opponentHealthCStr[0], "%d", GetOpponentHealth());

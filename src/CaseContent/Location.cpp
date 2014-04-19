@@ -35,18 +35,19 @@
 #include "../MouseHelper.h"
 #include "../PositionalSound.h"
 #include "../TransitionRequest.h"
+#include "../XmlReader.h"
+#include "../XmlWriter.h"
 #include "../CaseInformation/Case.h"
 #include "../CaseInformation/CommonCaseResources.h"
-#include "../Screens/Screen.h"
+#include "../Screens/MLIScreen.h"
 #include <algorithm>
 #include <limits>
 #include <math.h>
 
-#ifdef __WINDOWS
-#include <SDL2/SDL_image.h>
-#endif
 #ifdef __OSX
 #include <SDL2_image/SDL_image.h>
+#else
+#include <SDL2/SDL_image.h>
 #endif
 
 const int MinDistanceToRevealHiddenElements = 200; // px

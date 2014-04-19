@@ -42,6 +42,7 @@
 class FieldCharacter;
 class ForegroundElementAnimation;
 class Encounter;
+class XmlReader;
 
 class ForegroundElement : public InteractiveElement, public ZOrderableObject
 {

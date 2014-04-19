@@ -31,7 +31,6 @@
 #define DIALOGCHARACTERMANAGER_H
 
 #include "../State.h"
-#include "../XmlReader.h"
 
 #include <deque>
 #include <vector>
@@ -39,6 +38,7 @@
 using namespace std;
 
 class DialogCharacter;
+class XmlReader;
 
 class DialogCharacterManager
 {

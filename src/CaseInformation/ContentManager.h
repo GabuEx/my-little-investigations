@@ -30,11 +30,13 @@
 #ifndef CONTENTMANAGER_H
 #define CONTENTMANAGER_H
 
-#include "../XmlReader.h"
 #include "../CaseContent/Area.h"
 #include "../CaseContent/Location.h"
 #include "../CaseContent/Encounter.h"
 #include "../CaseContent/Conversation.h"
+
+class XmlReader;
+class XmlWriter;
 
 class ContentManager
 {

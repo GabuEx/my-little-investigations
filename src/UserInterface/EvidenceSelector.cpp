@@ -28,6 +28,7 @@
  */
 
 #include "EvidenceSelector.h"
+#include "../globals.h"
 #include "../MouseHelper.h"
 #include "../Utils.h"
 #include "../CaseInformation/Case.h"

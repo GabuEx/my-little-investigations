@@ -34,7 +34,6 @@
 #include "Notification.h"
 #include "../Condition.h"
 #include "../enums.h"
-#include "../XmlReader.h"
 #include "../Events/DialogEventProvider.h"
 #include "../Events/ButtonArrayEventProvider.h"
 #include "../UserInterface/SkipArrow.h"
@@ -46,6 +45,8 @@ using namespace std;
 class State;
 class ButtonArray;
 class DialogCharacter;
+class XmlReader;
+class XmlWriter;
 
 class Conversation
 {
@@ -1561,7 +1562,7 @@ public:
     int GetConfrontationBeginIndex() { return this->confrontationBeginIndex; }
     void SetConfrontationBeginIndex(int confrontationBeginIndex) { this->confrontationBeginIndex = confrontationBeginIndex; }
 
-    static void Initialize(Image *pBackgroundDarkeningImage, Image *pConfrontationHealthCircleImage, Font *pConfrontationHealthNumberingFont);
+    static void Initialize(Image *pBackgroundDarkeningImage, Image *pConfrontationHealthCircleImage, MLIFont *pConfrontationHealthNumberingFont);
     static Topic * GetConfrontationTopicFromId(string id);
     static int GetEnabledConfrontationTopicCount();
 
@@ -1597,7 +1598,7 @@ private:
 
     static Image *pBackgroundDarkeningImage;
     static Image *pConfrontationHealthCircleImage;
-    static Font *pConfrontationHealthNumberingFont;
+    static MLIFont *pConfrontationHealthNumberingFont;
     static map<string, Topic *> *pCurrentConfrontationTopicsById;
 
     map<string, string> confrontationTopicNamesById;

@@ -34,9 +34,10 @@
 #include "Color.h"
 #include "Rectangle.h"
 #include "Vector2.h"
-#include "XmlReader.h"
-#include <deque>
+#include "SDL2/SDL.h"
 #include <vector>
+
+class XmlReader;
 
 extern "C"
 {

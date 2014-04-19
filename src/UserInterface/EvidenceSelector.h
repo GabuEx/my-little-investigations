@@ -34,7 +34,7 @@
 #include "EvidenceDescription.h"
 #include "Tab.h"
 #include "../EasingFunctions.h"
-#include "../Font.h"
+#include "../MLIFont.h"
 #include "../Image.h"
 
 class Conversation;

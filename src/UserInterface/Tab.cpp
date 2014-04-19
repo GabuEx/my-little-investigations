@@ -49,14 +49,14 @@ int Tab::width = 0;
 int Tab::height = 0;
 int Tab::textAreaWidth = 0;
 int Tab::textAreaHeight = 0;
-Font *Tab::pFont = NULL;
+MLIFont *Tab::pFont = NULL;
 
 int Tab::pulseAnimationCount = 0;
 
 const string pulseSpriteSheetId = "__TabPulseSpriteSheet";
 const string pulseSpriteIdFormat = "__TabPulseSprite%0d";
 
-void Tab::Initialize(int dialogRowYPosition, int bottomRowYPosition, Image *pDownSprite, Image *pUpSprite, Font *pFont)
+void Tab::Initialize(int dialogRowYPosition, int bottomRowYPosition, Image *pDownSprite, Image *pUpSprite, MLIFont *pFont)
 {
     Tab::dialogRowYPosition = dialogRowYPosition;
     Tab::bottomRowYPosition = bottomRowYPosition;

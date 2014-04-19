@@ -33,8 +33,9 @@
 #include "../enums.h"
 #include "../Image.h"
 #include "../Sprite.h"
-#include "../XmlReader.h"
 #include <map>
+
+class XmlReader;
 
 class SpriteManager
 {

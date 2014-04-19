@@ -29,6 +29,7 @@
 
 #include "DialogCutsceneManager.h"
 #include "../CaseInformation/Case.h"
+#include "../XmlReader.h"
 
 DialogCutsceneManager::~DialogCutsceneManager()
 {

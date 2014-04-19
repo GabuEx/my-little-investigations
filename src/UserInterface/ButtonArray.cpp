@@ -30,6 +30,7 @@
 
 #include "ButtonArray.h"
 #include "../mli_audio.h"
+#include "../globals.h"
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
 #include "../CaseInformation/Case.h"
@@ -39,12 +40,12 @@
 
 const int ButtonCascadeDelay = 125;
 
-Font *Button::pTextFont = NULL;
+MLIFont *Button::pTextFont = NULL;
 Image *Button::pCheckMarkImage = NULL;
 Sprite *Button::pLockSprite = NULL;
 Animation *Button::pUnlockingAnimation = NULL;
 
-Font *ButtonArray::pTextFont = NULL;
+MLIFont *ButtonArray::pTextFont = NULL;
 
 const Color NormalTextColor = Color(1.0, 1.0, 1.0, 1.0);
 const Color MouseOverTextColor = Color(1.0, 1.0, 1.0, 0.0);
@@ -76,7 +77,7 @@ const string lockAnimationSpriteId20 = "__LockAnimationSprite20";
 
 const string lockAnimationId = "__LockAnimation";
 
-void Button::Initialize(Font *pTextFont, Image *pCheckMarkImage)
+void Button::Initialize(MLIFont *pTextFont, Image *pCheckMarkImage)
 {
     Button::pTextFont = pTextFont;
     Button::pCheckMarkImage = pCheckMarkImage;
@@ -133,6 +134,37 @@ void Button::Initialize(Font *pTextFont, Image *pCheckMarkImage)
     pUnlockingAnimation->AddFrame(42, lockAnimationSpriteId18);
     pUnlockingAnimation->AddFrame(42, lockAnimationSpriteId19);
     pUnlockingAnimation->AddFrame(0, lockAnimationSpriteId20);
+}
+
+Button::Button(int id, string text)
+{
+    this->id = id;
+    this->text = text;
+    this->showCheckMark = false;
+    this->lockCount = 0;
+    this->unlockedLockCount = 0;
+    this->isDisabled = false;
+
+    this->pInEase = new LinearEase(gScreenWidth, 0, AnimationDuration);
+    this->pOutEase = new LinearEase(0, -gScreenWidth, AnimationDuration);
+
+    this->pCustomIconSprite = NULL;
+
+    this->xPosition = 0;
+    this->yPosition = 0;
+
+    this->isHiding = false;
+    this->lockCount = 0;
+
+    this->Reset();
+}
+
+Button::~Button()
+{
+    delete pInEase;
+    pInEase = NULL;
+    delete pOutEase;
+    pOutEase = NULL;
 }
 
 void Button::SetCustomIconId(string customIconId)
@@ -340,7 +372,7 @@ void Button::OnClicked()
     playSound(GetClickSoundEffect());
 }
 
-void ButtonArray::Initialize(Font *pTextFont)
+void ButtonArray::Initialize(MLIFont *pTextFont)
 {
     ButtonArray::pTextFont = pTextFont;
 }

@@ -32,8 +32,7 @@
 
 #include "Arrow.h"
 #include "Tab.h"
-#include "../Font.h"
-#include "../globals.h"
+#include "../MLIFont.h"
 #include "../Rectangle.h"
 #include "../Image.h"
 #include "../Sprite.h"
@@ -45,38 +44,11 @@ const int TextHeight = 29;
 class Button
 {
 public:
-    static void Initialize(Font *pTextFont, Image *pCheckMarkImage);
+    static void Initialize(MLIFont *pTextFont, Image *pCheckMarkImage);
 
-    Button(int id, string text)
-    {
-        this->id = id;
-        this->text = text;
-        this->showCheckMark = false;
-        this->lockCount = 0;
-        this->unlockedLockCount = 0;
-        this->isDisabled = false;
+    Button(int id, string text);
 
-        this->pInEase = new LinearEase(gScreenWidth, 0, AnimationDuration);
-        this->pOutEase = new LinearEase(0, -gScreenWidth, AnimationDuration);
-
-        this->pCustomIconSprite = NULL;
-
-        this->xPosition = 0;
-        this->yPosition = 0;
-
-        this->isHiding = false;
-        this->lockCount = 0;
-
-        this->Reset();
-    }
-
-    ~Button()
-    {
-        delete pInEase;
-        pInEase = NULL;
-        delete pOutEase;
-        pOutEase = NULL;
-    }
+    ~Button();
 
     int GetId() const { return this->id; }
 
@@ -130,7 +102,7 @@ public:
 private:
     void OnClicked();
 
-    static Font *pTextFont;
+    static MLIFont *pTextFont;
     static Image *pCheckMarkImage;
     static Sprite *pLockSprite;
     static Animation *pUnlockingAnimation;
@@ -185,7 +157,7 @@ public:
 class ButtonArray : public ButtonEventListener
 {
 public:
-    static void Initialize(Font *pTextFont);
+    static void Initialize(MLIFont *pTextFont);
 
     ButtonArray();
     ButtonArray(int maxVisibleButtonCount, int x, int y, int width, int height, int desiredPadding);
@@ -214,7 +186,7 @@ private:
     void UpdateButtons();
     void OnCanceled();
 
-    static Font *pTextFont;
+    static MLIFont *pTextFont;
 
     RectangleWH dialogRect;
     int desiredPadding;

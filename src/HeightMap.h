@@ -33,6 +33,8 @@
 #include "Line.h"
 #include "Polygon.h"
 
+class XmlReader;
+
 class HeightMap
 {
 public:
@@ -72,13 +74,7 @@ protected:
             heightAtLine = 0;
         }
 
-        HeightLine(XmlReader *pReader)
-        {
-            pReader->StartElement("HeightLine");
-            LoadFromXmlCore(pReader);
-            heightAtLine = pReader->ReadIntElement("HeightAtLine");
-            pReader->EndElement();
-        }
+        HeightLine(XmlReader *pReader);
 
         int GetHeightAtLine() { return this->heightAtLine; }
 

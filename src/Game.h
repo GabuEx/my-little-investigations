@@ -34,7 +34,7 @@
 #include <SDL2/SDL_thread.h>
 
 #include "Image.h"
-#include "Screens/Screen.h"
+#include "Screens/MLIScreen.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -78,11 +78,11 @@ private:
 
     static Game *pInstance;
 
-    map<string, Screen *> screenFromIdMap;
-    Screen *pCurrentScreen;
+    map<string, MLIScreen *> screenFromIdMap;
+    MLIScreen *pCurrentScreen;
 
 #ifdef GAME_EXECUTABLE
-    Screen *pOverlayScreen;
+    MLIScreen *pOverlayScreen;
 #endif
 
     bool isFinished;

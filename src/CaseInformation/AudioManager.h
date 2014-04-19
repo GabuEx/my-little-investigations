@@ -33,11 +33,12 @@
 #include "../EasingFunctions.h"
 #include "../enums.h"
 #include "../mli_audio.h"
-#include "../XmlReader.h"
 #include <map>
 #include <vector>
 
 using namespace std;
+
+class XmlReader;
 
 class AudioManager
 {

@@ -30,11 +30,11 @@
 #ifndef GAMESCREEN_H
 #define GAMESCREEN_H
 
-#include "Screen.h"
+#include "MLIScreen.h"
 #include "../CaseContent/Area.h"
 #include "../Events/CaseParsingEventProvider.h"
 
-class GameScreen : public Screen, public CaseParsingEventListener
+class GameScreen : public MLIScreen, public CaseParsingEventListener
 {
 private:
     class LoadCaseParameters

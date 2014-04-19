@@ -28,6 +28,7 @@
  */
 
 #include "Color.h"
+#include "XmlReader.h"
 #include <math.h>
 
 Color Color::White = Color(1.0, 1.0, 1.0, 1.0);

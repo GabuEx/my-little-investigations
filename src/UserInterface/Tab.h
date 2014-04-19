@@ -33,7 +33,7 @@
 #include "../Animation.h"
 #include "../EasingFunctions.h"
 #include "../enums.h"
-#include "../Font.h"
+#include "../MLIFont.h"
 #include "../Rectangle.h"
 #include "../Image.h"
 #include "../Sprite.h"
@@ -47,7 +47,7 @@ const int TabHeight = 38; // px
 class Tab
 {
 public:
-    static void Initialize(int dialogRowYPosition, int bottomRowYPosition, Image *pDownImage, Image *pUpImage, Font *pFont);
+    static void Initialize(int dialogRowYPosition, int bottomRowYPosition, Image *pDownImage, Image *pUpImage, MLIFont *pFont);
 
     Tab();
     Tab(int xPosition, bool isClickable);
@@ -101,7 +101,7 @@ private:
     static int height;
     static int textAreaWidth;
     static int textAreaHeight;
-    static Font *pFont;
+    static MLIFont *pFont;
 
     int xPosition;
     TabRow row;

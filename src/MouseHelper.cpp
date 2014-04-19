@@ -857,7 +857,7 @@ void MouseHelper::MouseOverText::Update(int delta)
 
 void MouseHelper::MouseOverText::Draw(Vector2 cursorPosition)
 {
-    Font *pMouseOverFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("MouseOverFont");
+    MLIFont *pMouseOverFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("MouseOverFont");
     Vector2 cursorSize = GetCursorSize();
     Vector2 mouseOverTextPosition = cursorPosition + Vector2(cursorSize.GetX() / 2, cursorSize.GetY()) - Vector2(pMouseOverFont->GetWidth(text) / 2, 0);
 

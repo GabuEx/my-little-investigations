@@ -38,7 +38,7 @@ const int PartnerAnimationDelay = 200;
 
 RectangleWH Notification::textAreaRect = RectangleWH(0, 0, 0, 0);
 double Notification::desiredPadding = 0;
-Font *Notification::pTextFont = NULL;
+MLIFont *Notification::pTextFont = NULL;
 
 Vector2 Notification::evidenceCenterPoint;
 Image *Notification::pDirectionArrow = NULL;
@@ -49,7 +49,7 @@ void Notification::Initialize(
         int textAreaWidth,
         int textAreaHeight,
         double desiredPadding,
-        Font *pTextFont,
+        MLIFont *pTextFont,
         int evidenceCenterPointX,
         int evidenceCenterPointY,
         Image *pDirectionArrow)

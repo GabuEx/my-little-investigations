@@ -27,14 +27,13 @@
  * SOFTWARE.
  */
 
-#ifndef FONT_H
-#define FONT_H
+#ifndef MLIFONT_H
+#define MLIFONT_H
 
-#ifdef __WINDOWS
-#include <SDL2/SDL_ttf.h>
-#endif
 #ifdef __OSX
 #include <SDL2_ttf/SDL_ttf.h>
+#else
+#include <SDL2/SDL_ttf.h>
 #endif
 #include <map>
 
@@ -45,11 +44,11 @@
 
 using namespace std;
 
-class Font
+class MLIFont
 {
 public:
-    Font(string ttfFilePath, int fontSize, int strokeWidth = 0, bool isBold = false);
-    ~Font();
+    MLIFont(string ttfFilePath, int fontSize, int strokeWidth = 0, bool isBold = false);
+    ~MLIFont();
 
     void Reinit();
     void Draw(string s, Vector2 position);

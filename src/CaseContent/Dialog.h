@@ -31,7 +31,6 @@
 #define DIALOG_H
 
 #include "../Color.h"
-#include "../globals.h"
 #include "../mli_audio.h"
 #include "../CaseInformation/PartnerManager.h"
 #include "../Events/DialogEventProvider.h"
@@ -39,6 +38,7 @@
 #include "../UserInterface/Arrow.h"
 #include "../UserInterface/EvidenceSelector.h"
 #include "../UserInterface/Tab.h"
+#include <deque>
 #include <string>
 
 using namespace std;
@@ -61,7 +61,7 @@ public:
         int textAreaWidth,
         int textAreaHeight,
         double desiredPadding,
-        Font *pDialogFont);
+        MLIFont *pDialogFont);
 
     static Dialog * CreateForString(string dialogText);
     static Dialog * CreateForString(string dialogText, string filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence);
@@ -807,7 +807,7 @@ private:
 
     static RectangleWH textAreaRect;
     static double desiredPadding;
-    static Font *pDialogFont;
+    static MLIFont *pDialogFont;
 
     Arrow *pInterrogationUpArrow;
     Arrow *pInterrogationDownArrow;

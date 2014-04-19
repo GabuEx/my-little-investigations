@@ -32,9 +32,11 @@
 #include "globals.h"
 #include "XmlReader.h"
 #include "ticpp/ticpp.h"
+#include <sstream>
 
 #include <cryptopp/hex.h>
 #include <cryptopp/rsa.h>
+#include <cryptopp/sha.h>
 
 using namespace CryptoPP;
 
@@ -293,7 +295,6 @@ bool CheckIfUpdatesExist(string *pVersionsXmlContent)
             {
                 versionReader.StartElement("VersionNumber");
                 Version newVersion(&versionReader);
-
                 if (gVersion < newVersion)
                 {
                     if (newVersion > newestVersion)
@@ -329,9 +330,12 @@ bool CheckIfUpdatesExist(string *pVersionsXmlContent)
                         {
                         #ifdef __WINDOWS
                             deltaSize = versionReader.ReadIntElement("DeltaSizeWindows");
-                        #endif
-                        #ifdef __OSX
+                        #elif __OSX
                             deltaSize = versionReader.ReadIntElement("DeltaSizeOSX");
+                        #elif __unix
+                            deltaSize = versionReader.ReadIntElement("DeltaSizeUnix");
+                        #else
+                        #error NOT IMPLEMENTED
                         #endif
                         }
                     }

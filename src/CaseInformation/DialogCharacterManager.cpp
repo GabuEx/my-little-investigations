@@ -32,6 +32,7 @@
 #include "CommonCaseResources.h"
 #include "../globals.h"
 #include "../ResourceLoader.h"
+#include "../XmlReader.h"
 #include "../CaseContent/Dialog.h"
 #include <algorithm>
 
@@ -712,7 +713,7 @@ void DialogCharacter::Draw(string emotionId, bool isTalking, bool shouldChangeMo
 
     if (pBaseSprite != NULL)
     {
-        Vector2 position((isRightSide ? gScreenWidth - pBaseSprite->GetWidth() : 0) + xOffset, gScreenHeight - Dialog::Height - pBaseSprite->GetHeight());
+        Vector2 position((isRightSide ? gScreenWidth / 2 : 0) + xOffset, 0);
 
         pBaseSprite->Draw(position, Color::White, 1.0, !isRightSide);
 

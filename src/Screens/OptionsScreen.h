@@ -30,7 +30,7 @@
 #ifndef OPTIONSSCREEN_H
 #define OPTIONSSCREEN_H
 
-#include "Screen.h"
+#include "MLIScreen.h"
 #include "../Animation.h"
 #include "../EasingFunctions.h"
 #include "../Image.h"
@@ -44,7 +44,7 @@ enum SelectedPage
     SelectedPageAudio,
 };
 
-class OptionsScreen : public Screen, public ImageButtonEventListener
+class OptionsScreen : public MLIScreen, public ImageButtonEventListener
 {
 public:
     OptionsScreen();

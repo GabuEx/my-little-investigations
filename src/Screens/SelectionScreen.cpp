@@ -34,15 +34,16 @@
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
 #include "../Utils.h"
+#include "../XmlReader.h"
 #include "../CaseInformation/Case.h"
 #include "../CaseInformation/CommonCaseResources.h"
 
 #include <stdlib.h>
 #include <algorithm>
 
-Font *SelectionScreen::pLargeFont = NULL;
-Font *SelectionScreen::pMediumFont = NULL;
-Font *SelectionScreen::pSmallFont = NULL;
+MLIFont *SelectionScreen::pLargeFont = NULL;
+MLIFont *SelectionScreen::pMediumFont = NULL;
+MLIFont *SelectionScreen::pSmallFont = NULL;
 
 const int FadeFromBlackDurationMs = 300;
 const int SelectorWidth = 248;
@@ -285,7 +286,7 @@ void SelectionScreen::UnloadResources()
 
 void SelectionScreen::Init()
 {
-    Screen::Init();
+    MLIScreen::Init();
 
     fadeOpacity = 1;
     pFadeInEase->Begin();
@@ -371,7 +372,7 @@ void SelectionScreen::Update(int delta)
 
     pSelector->UpdateAnimation(delta);
 
-    if (pFullSizeScreenshotFadeInEase->GetIsStarted() && pFullSizeScreenshotFadeInEase->GetIsStarted())
+    if (pFullSizeScreenshotFadeInEase->GetIsStarted())
     {
         pFullSizeScreenshotFadeInEase->Update(delta);
         fullSizeScreenshotFadeOpacity = pFullSizeScreenshotFadeInEase->GetCurrentValue();

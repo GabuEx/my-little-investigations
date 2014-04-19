@@ -28,6 +28,7 @@
  */
 
 #include "Dialog.h"
+#include "../globals.h"
 #include "../MouseHelper.h"
 #include "../ResourceLoader.h"
 #include "../Utils.h"
@@ -40,7 +41,6 @@
 
 #ifdef ENABLE_DEBUG_MODE
 #include "../FileFunctions.h"
-#include "../globals.h"
 #include "../CaseInformation/CommonCaseResources.h"
 #endif
 
@@ -59,7 +59,7 @@ const string LetterBlipSoundEffect = "LetterBlip";
 
 RectangleWH Dialog::textAreaRect = RectangleWH(0, 0, 0, 0);
 double Dialog::desiredPadding = 0;
-Font *Dialog::pDialogFont = NULL;
+MLIFont *Dialog::pDialogFont = NULL;
 
 Dialog::Dialog(string filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence)
 {
@@ -158,7 +158,7 @@ void Dialog::Initialize(
     int textAreaWidth,
     int textAreaHeight,
     double desiredPadding,
-    Font *pDialogFont)
+    MLIFont *pDialogFont)
 {
     NormalTextColor = Color::White;
     Dialog::textAreaRect = RectangleWH(textAreaLeft, textAreaTop, textAreaWidth, textAreaHeight);
@@ -637,7 +637,7 @@ void Dialog::Update(int delta)
     }
 
     // We'll only play the letter blips if voice acting isn't enabled.
-    if (!gVoiceVolume > 0 && !GetIsReadyToProgress())
+    if (gVoiceVolume <= 0 && !GetIsReadyToProgress())
     {
         timeSinceLetterBlipPlayed += delta;
 

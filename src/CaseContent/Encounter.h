@@ -35,7 +35,6 @@
 #include "../State.h"
 #include "../Events/ButtonArrayEventProvider.h"
 #include "../Events/EvidenceSelectorEventProvider.h"
-#include "../XmlReader.h"
 #include "../UserInterface/ButtonArray.h"
 #include "../UserInterface/EvidenceSelector.h"
 #include "../UserInterface/Tab.h"
@@ -47,6 +46,7 @@ using namespace std;
 class Conversation;
 class Interrogation;
 class Confrontation;
+class XmlReader;
 
 class Encounter : public ButtonArrayEventListener, public EvidenceSelectorEventListener
 {
