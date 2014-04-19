@@ -32,7 +32,7 @@
 
 #include "Arrow.h"
 #include "Tab.h"
-#include "../Font.h"
+#include "../MLIFont.h"
 #include "../globals.h"
 #include "../Rectangle.h"
 #include "../Image.h"
@@ -45,7 +45,7 @@ const int TextHeight = 29;
 class Button
 {
 public:
-    static void Initialize(Font *pTextFont, Image *pCheckMarkImage);
+    static void Initialize(MLIFont *pTextFont, Image *pCheckMarkImage);
 
     Button(int id, string text)
     {
@@ -130,7 +130,7 @@ public:
 private:
     void OnClicked();
 
-    static Font *pTextFont;
+    static MLIFont *pTextFont;
     static Image *pCheckMarkImage;
     static Sprite *pLockSprite;
     static Animation *pUnlockingAnimation;
@@ -185,7 +185,7 @@ public:
 class ButtonArray : public ButtonEventListener
 {
 public:
-    static void Initialize(Font *pTextFont);
+    static void Initialize(MLIFont *pTextFont);
 
     ButtonArray();
     ButtonArray(int maxVisibleButtonCount, int x, int y, int width, int height, int desiredPadding);
@@ -214,7 +214,7 @@ private:
     void UpdateButtons();
     void OnCanceled();
 
-    static Font *pTextFont;
+    static MLIFont *pTextFont;
 
     RectangleWH dialogRect;
     int desiredPadding;

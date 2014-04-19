@@ -40,9 +40,9 @@
 #include <stdlib.h>
 #include <algorithm>
 
-Font *SelectionScreen::pLargeFont = NULL;
-Font *SelectionScreen::pMediumFont = NULL;
-Font *SelectionScreen::pSmallFont = NULL;
+MLIFont *SelectionScreen::pLargeFont = NULL;
+MLIFont *SelectionScreen::pMediumFont = NULL;
+MLIFont *SelectionScreen::pSmallFont = NULL;
 
 const int FadeFromBlackDurationMs = 300;
 const int SelectorWidth = 248;
@@ -285,7 +285,7 @@ void SelectionScreen::UnloadResources()
 
 void SelectionScreen::Init()
 {
-    Screen::Init();
+    MLIScreen::Init();
 
     fadeOpacity = 1;
     pFadeInEase->Begin();

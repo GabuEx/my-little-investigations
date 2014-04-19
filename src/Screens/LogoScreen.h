@@ -30,13 +30,13 @@
 #ifndef LOGOSCREEN_H
 #define LOGOSCREEN_H
 
-#include "Screen.h"
+#include "MLIScreen.h"
 #include "../Animation.h"
 #include "../EasingFunctions.h"
 #include "../Image.h"
 #include "../Video.h"
 
-class LogoScreen : public Screen
+class LogoScreen : public MLIScreen
 {
 public:
     LogoScreen();

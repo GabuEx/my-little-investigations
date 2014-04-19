@@ -30,7 +30,7 @@
 #ifndef FONTMANAGER_H
 #define FONTMANAGER_H
 
-#include "../Font.h"
+#include "../MLIFont.h"
 #include <map>
 
 class FontManager
@@ -38,11 +38,11 @@ class FontManager
 public:
     ~FontManager();
 
-    Font * GetFontFromId(string id);
-    void AddFont(string id, Font *pFont);
+    MLIFont * GetFontFromId(string id);
+    void AddFont(string id, MLIFont *pFont);
 
 private:
-    map<string, Font *> fontByIdMap;
+    map<string, MLIFont *> fontByIdMap;
 };
 
 #endif

@@ -30,13 +30,13 @@
 #ifndef SLIDER_H
 #define SLIDER_H
 
-#include "../Font.h"
+#include "../MLIFont.h"
 #include "../Image.h"
 
 class Slider
 {
 public:
-    static void Initialize(Font *pHeaderFont, Image *pTrackSprite, Image *pThumbSprite);
+    static void Initialize(MLIFont *pHeaderFont, Image *pTrackSprite, Image *pThumbSprite);
 
     Slider(string headerText, int xPosition, int yPosition);
 
@@ -58,7 +58,7 @@ public:
     void Reset();
 
 private:
-    static Font *pHeaderFont;
+    static MLIFont *pHeaderFont;
     static Image *pTrackSprite;
     static Image *pThumbSprite;
 

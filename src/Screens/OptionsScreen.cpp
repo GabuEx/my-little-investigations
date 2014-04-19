@@ -349,7 +349,7 @@ void OptionsScreen::LoadResources()
 
 void OptionsScreen::Init()
 {
-    Screen::Init();
+    MLIScreen::Init();
 
     fadeOpacity = 1;
     pFadeInEase->Begin();

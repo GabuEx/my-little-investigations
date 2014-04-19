@@ -1561,7 +1561,7 @@ public:
     int GetConfrontationBeginIndex() { return this->confrontationBeginIndex; }
     void SetConfrontationBeginIndex(int confrontationBeginIndex) { this->confrontationBeginIndex = confrontationBeginIndex; }
 
-    static void Initialize(Image *pBackgroundDarkeningImage, Image *pConfrontationHealthCircleImage, Font *pConfrontationHealthNumberingFont);
+    static void Initialize(Image *pBackgroundDarkeningImage, Image *pConfrontationHealthCircleImage, MLIFont *pConfrontationHealthNumberingFont);
     static Topic * GetConfrontationTopicFromId(string id);
     static int GetEnabledConfrontationTopicCount();
 
@@ -1597,7 +1597,7 @@ private:
 
     static Image *pBackgroundDarkeningImage;
     static Image *pConfrontationHealthCircleImage;
-    static Font *pConfrontationHealthNumberingFont;
+    static MLIFont *pConfrontationHealthNumberingFont;
     static map<string, Topic *> *pCurrentConfrontationTopicsById;
 
     map<string, string> confrontationTopicNamesById;

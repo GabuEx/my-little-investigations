@@ -53,6 +53,10 @@
 #include <string>
 #include <math.h>
 
+#ifdef __unix
+#include <unistd.h>
+#endif
+
 using namespace std;
 
 #ifdef GAME_EXECUTABLE
@@ -97,6 +101,14 @@ int main(int argc, char * argv[])
     {
         gVersionsXmlFilePath = string(argv[1]);
     }
+#ifdef __unix
+    // Grab the real user id passed by the launcher so we can exit root privileges after we're done.
+    int uid = getuid();
+    if(argc >= 3)
+    {
+        uid = atoi(argv[2]);
+    }
+#endif
 #endif
 
 #ifdef LAUNCHER
@@ -217,7 +229,6 @@ int main(int argc, char * argv[])
     double lastSecond = 0; // Updated once per second, used to keep track of how long a second actually is. (If now>=(lastSecond+1000), new second.) Used for FPS.
     Uint32 frame = 0; // Keeps track of the number of frames rendered during the current second. Used for FPS calculation later.
     double remainder = 0.0f; // Keeps track of amount of milliseconds lost to whole number rounding, to ensure a smooth and perfectly-accurate framerate.
-
     // Define event handler. Used later to poll the event queue.
     SDL_Event event;
 
@@ -457,6 +468,10 @@ int main(int argc, char * argv[])
 #ifdef UPDATER
     // If we're currently in the updater and everything has gone smoothly,
     // then we want to launch the game executable now.
+#ifdef __unix
+    // If we're running under Unix, we need to drop our root privileges now.
+    setuid(uid);
+#endif
     LaunchGameExecutable();
 #endif
 #endif

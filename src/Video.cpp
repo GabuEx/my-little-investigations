@@ -33,6 +33,19 @@
 #include "CaseInformation/Case.h"
 #include <math.h>
 
+#ifndef AVPixelFormat
+#define AVPixelFormat PixelFormat
+#define AV_PIX_FMT_YUVJ420P PIX_FMT_YUVJ420P
+#define AV_PIX_FMT_YUV420P PIX_FMT_YUV420P
+#define AV_PIX_FMT_YUV444P PIX_FMT_YUV444P
+#define AV_PIX_FMT_YUVJ420P PIX_FMT_YUVJ420P
+#define AV_PIX_FMT_BGRA PIX_FMT_BGRA
+#define AV_PIX_FMT_ARGB PIX_FMT_ARGB
+#endif
+#ifndef av_frame_alloc
+#define av_frame_alloc avcodec_alloc_frame
+#endif
+
 const string CommonFilesId = "CommonFiles";
 
 bool IsYUVFormat(AVPixelFormat pixelFormat)

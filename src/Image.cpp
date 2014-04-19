@@ -28,7 +28,7 @@
  */
 
 #include "Image.h"
-#include "Font.h"
+#include "MLIFont.h"
 #include "globals.h"
 
 #ifdef GAME_EXECUTABLE
@@ -220,7 +220,7 @@ void Image::FlagResourceLoaderSource(string originFilePath)
     pSource = new ResourceLoaderSource(this, originFilePath);
 }
 
-void Image::FlagFontSource(Font *pFont)
+void Image::FlagFontSource(MLIFont *pFont)
 {
     delete pSource;
     pSource = new FontSource(pFont);

@@ -31,7 +31,7 @@
 #define CHECKFORUPDATESSCREEN_H
 
 #ifdef UPDATER
-#include "Screen.h"
+#include "MLIScreen.h"
 #include "../Utils.h"
 #include "../Version.h"
 
@@ -43,9 +43,9 @@
 
 using namespace std;
 
-class Font;
+class MLIFont;
 
-class CheckForUpdatesScreen : public Screen
+class CheckForUpdatesScreen : public MLIScreen
 {
 private:
     enum State
@@ -267,7 +267,7 @@ private:
     };
 
 public:
-    CheckForUpdatesScreen(Font *pTextDisplayFont);
+    CheckForUpdatesScreen(MLIFont *pTextDisplayFont);
     ~CheckForUpdatesScreen();
 
     void LoadResources();
@@ -304,7 +304,7 @@ public:
     bool GetShowCursor() { return true; }
 
 private:
-    Font *pTextDisplayFont;
+    MLIFont *pTextDisplayFont;
     SDL_sem *pInteropSemaphore;
 
     bool drawnOnce;

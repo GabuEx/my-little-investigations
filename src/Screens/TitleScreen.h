@@ -30,7 +30,7 @@
 #ifndef TITLESCREEN_H
 #define TITLESCREEN_H
 
-#include "Screen.h"
+#include "MLIScreen.h"
 #include "../Animation.h"
 #include "../EasingFunctions.h"
 #include "../Image.h"
@@ -38,7 +38,7 @@
 #include "../Events/ImageButtonEventProvider.h"
 #include "../UserInterface/PromptOverlay.h"
 
-class TitleScreen : public Screen, public ImageButtonEventListener
+class TitleScreen : public MLIScreen, public ImageButtonEventListener
 {
 public:
     TitleScreen();

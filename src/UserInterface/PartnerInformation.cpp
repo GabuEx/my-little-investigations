@@ -41,14 +41,14 @@ Vector2 PartnerInformation::activeAbilityHeadingPosition = Vector2(305, 185);
 Vector2 PartnerInformation::activeAbilityDescriptionPosition = Vector2(312, 228);
 
 Image *PartnerInformation::pBackgroundImage = NULL;
-Font *PartnerInformation::pHeadingFont = NULL;
-Font *PartnerInformation::pBodyFont = NULL;
+MLIFont *PartnerInformation::pHeadingFont = NULL;
+MLIFont *PartnerInformation::pBodyFont = NULL;
 
 const int AbilityDescriptionWidth = 558;
 const int AbilityDescriptionHeight = 63;
 const int AbilityDescriptionExtraLineHeight = 5;
 
-void PartnerInformation::Initialize(Image *pBackgroundImage, Font *pHeadingFont, Font *pBodyFont)
+void PartnerInformation::Initialize(Image *pBackgroundImage, MLIFont *pHeadingFont, MLIFont *pBodyFont)
 {
     PartnerInformation::pBackgroundImage = pBackgroundImage;
     PartnerInformation::pHeadingFont = pHeadingFont;

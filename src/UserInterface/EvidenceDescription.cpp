@@ -36,10 +36,10 @@ const int descriptionWidth = 669;
 const int descriptionLineSeparationHeight = 0;
 
 Image *EvidenceDescription::pBackgroundImage = NULL;
-Font *EvidenceDescription::pNameFont = NULL;
-Font *EvidenceDescription::pDescriptionFont = NULL;
+MLIFont *EvidenceDescription::pNameFont = NULL;
+MLIFont *EvidenceDescription::pDescriptionFont = NULL;
 
-void EvidenceDescription::Initialize(Image *pBackgroundImage, Font *pNameFont, Font *pDescriptionFont)
+void EvidenceDescription::Initialize(Image *pBackgroundImage, MLIFont *pNameFont, MLIFont *pDescriptionFont)
 {
     EvidenceDescription::pBackgroundImage = pBackgroundImage;
     EvidenceDescription::pNameFont = pNameFont;

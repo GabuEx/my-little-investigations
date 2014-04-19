@@ -38,9 +38,9 @@
 #include "../Utils.h"
 #include "../Events/PromptOverlayEventProvider.h"
 
-Font *PromptButton::pTextFont = NULL;
-Font *PromptOverlay::pTextFont = NULL;
-Font *PromptOverlay::pTextEntryFont = NULL;
+MLIFont *PromptButton::pTextFont = NULL;
+MLIFont *PromptOverlay::pTextFont = NULL;
+MLIFont *PromptOverlay::pTextEntryFont = NULL;
 Image *PromptOverlay::pDarkeningImage = NULL;
 
 const Color NormalTextColor = Color(1.0, 1.0, 1.0, 1.0);
@@ -51,7 +51,7 @@ const Color DisabledTextColor = Color(1.0, 0.5, 0.5, 0.5);
 const int FadeMsDuration = 300;
 const double ButtonSpacing = 50;
 
-void PromptButton::Initialize(Font *pTextFont)
+void PromptButton::Initialize(MLIFont *pTextFont)
 {
     PromptButton::pTextFont = pTextFont;
 }
@@ -116,7 +116,7 @@ void PromptButton::Reset()
     isMouseOver = false;
 }
 
-void PromptOverlay::Initialize(Font *pTextFont, Font *pTextEntryFont, Image *pDarkeningImage)
+void PromptOverlay::Initialize(MLIFont *pTextFont, MLIFont *pTextEntryFont, Image *pDarkeningImage)
 {
     PromptOverlay::pTextFont = pTextFont;
     PromptOverlay::pTextEntryFont = pTextEntryFont;

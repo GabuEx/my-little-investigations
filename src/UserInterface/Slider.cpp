@@ -31,13 +31,13 @@
 #include "Slider.h"
 #include "../MouseHelper.h"
 
-Font *Slider::pHeaderFont = NULL;
+MLIFont *Slider::pHeaderFont = NULL;
 Image *Slider::pTrackSprite = NULL;
 Image *Slider::pThumbSprite = NULL;
 
 const Vector2 TrackPositionOffset = Vector2(17, 38);
 
-void Slider::Initialize(Font *pHeaderFont, Image *pTrackSprite, Image *pThumbSprite)
+void Slider::Initialize(MLIFont *pHeaderFont, Image *pTrackSprite, Image *pThumbSprite)
 {
     Slider::pHeaderFont = pHeaderFont;
     Slider::pTrackSprite = pTrackSprite;

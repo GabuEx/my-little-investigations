@@ -59,7 +59,7 @@ const string LetterBlipSoundEffect = "LetterBlip";
 
 RectangleWH Dialog::textAreaRect = RectangleWH(0, 0, 0, 0);
 double Dialog::desiredPadding = 0;
-Font *Dialog::pDialogFont = NULL;
+MLIFont *Dialog::pDialogFont = NULL;
 
 Dialog::Dialog(string filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence)
 {
@@ -158,7 +158,7 @@ void Dialog::Initialize(
     int textAreaWidth,
     int textAreaHeight,
     double desiredPadding,
-    Font *pDialogFont)
+    MLIFont *pDialogFont)
 {
     NormalTextColor = Color::White;
     Dialog::textAreaRect = RectangleWH(textAreaLeft, textAreaTop, textAreaWidth, textAreaHeight);

@@ -139,6 +139,64 @@
 					<Mode after="always" />
 				</ExtraCommands>
 			</Target>
+			<Target title="Debug (Unix)">
+				<Option platforms="Unix;" />
+				<Option output="bin/Debug/unix/MyLittleInvestigations" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/unix" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-I/usr/local/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL2main" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_image" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lSDL2_mixer" />
+					<Add option="-lswscale" />
+					<Add option="-lcryptopp" />
+					<Add option="-pthread" />
+					<Add option="-L/usr/local/lib" />
+					<Add option="-lavformat" />
+					<Add option="-lavcodec" />
+					<Add option="-lX11" />
+					<Add option="-lasound" />
+					<Add option="-lz" />
+					<Add option="-lavutil" />
+					<Add option="-lm" />
+				</Linker>
+			</Target>
+			<Target title="Release (Unix)">
+				<Option platforms="Unix;" />
+				<Option output="bin/Release/unix/MyLittleInvestigations" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/unix/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-I/usr/local/include" />
+				</Compiler>
+				<Linker>
+					<Add option="-lSDL2main" />
+					<Add option="-lSDL2" />
+					<Add option="-lSDL2_image" />
+					<Add option="-lSDL2_ttf" />
+					<Add option="-lSDL2_mixer" />
+					<Add option="-lswscale" />
+					<Add option="-lcryptopp" />
+					<Add option="-pthread" />
+					<Add option="-L/usr/local/lib" />
+					<Add option="-lavformat" />
+					<Add option="-lavcodec" />
+					<Add option="-lX11" />
+					<Add option="-lasound" />
+					<Add option="-lz" />
+					<Add option="-lavutil" />
+					<Add option="-lm" />
+				</Linker>
+			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
@@ -253,8 +311,6 @@
 		<Unit filename="src/Events/SelectorEventProvider.h" />
 		<Unit filename="src/FileFunctions.cpp" />
 		<Unit filename="src/FileFunctions.h" />
-		<Unit filename="src/Font.cpp" />
-		<Unit filename="src/Font.h" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Game.h" />
 		<Unit filename="src/HeightMap.cpp" />
@@ -265,6 +321,8 @@
 		<Unit filename="src/Interfaces.h" />
 		<Unit filename="src/Line.cpp" />
 		<Unit filename="src/Line.h" />
+		<Unit filename="src/MLIFont.cpp" />
+		<Unit filename="src/MLIFont.h" />
 		<Unit filename="src/MouseHelper.cpp" />
 		<Unit filename="src/MouseHelper.h" />
 		<Unit filename="src/Polygon.cpp" />
@@ -278,9 +336,9 @@
 		<Unit filename="src/Screens/GameScreen.h" />
 		<Unit filename="src/Screens/LogoScreen.cpp" />
 		<Unit filename="src/Screens/LogoScreen.h" />
+		<Unit filename="src/Screens/MLIScreen.h" />
 		<Unit filename="src/Screens/OptionsScreen.cpp" />
 		<Unit filename="src/Screens/OptionsScreen.h" />
-		<Unit filename="src/Screens/Screen.h" />
 		<Unit filename="src/Screens/SelectionScreen.cpp" />
 		<Unit filename="src/Screens/SelectionScreen.h" />
 		<Unit filename="src/Screens/TitleScreen.cpp" />
@@ -340,11 +398,15 @@
 		<Unit filename="src/resource.h">
 			<Option target="Debug (Win32)" />
 			<Option target="Release (Win32)" />
+			<Option target="Debug (Unix)" />
+			<Option target="Release (Unix)" />
 		</Unit>
 		<Unit filename="src/resource.rc">
 			<Option compilerVar="WINDRES" />
 			<Option target="Debug (Win32)" />
 			<Option target="Release (Win32)" />
+			<Option target="Debug (Unix)" />
+			<Option target="Release (Unix)" />
 		</Unit>
 		<Unit filename="src/ticpp/ticpp.cpp" />
 		<Unit filename="src/ticpp/ticpp.h" />
