@@ -48,7 +48,7 @@ public:
     void SetYPosition(int yPosition) { this->yPosition = yPosition; }
 
     string GetClickSoundEffect() { return this->clickSoundEffect; }
-    void SetClickSoundEffect(string clickSoundEffect) { this->clickSoundEffect = clickSoundEffect; }
+    void SetClickSoundEffect(const string &clickSoundEffect) { this->clickSoundEffect = clickSoundEffect; }
 
     bool GetIsEnabled() { return this->isEnabled; }
     void SetIsEnabled(bool isEnabled) { this->isEnabled = isEnabled;}

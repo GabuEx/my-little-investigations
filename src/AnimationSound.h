@@ -58,7 +58,7 @@ public:
 class SpecifiedSound : public AnimationSound
 {
 public:
-    SpecifiedSound(string sfxId);
+    SpecifiedSound(const string &sfxId);
     SpecifiedSound(XmlReader *pReader);
     void Play(double volume);
     AnimationSound * Clone();

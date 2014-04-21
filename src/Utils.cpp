@@ -118,7 +118,7 @@ string UuidFromSHA256Hash(byte hash[CryptoPP::SHA256::DIGESTSIZE])
     return uuid;
 }
 
-bool SignatureIsValid(const byte *pFileData, unsigned int fileSize, string hexEncodedSignature)
+bool SignatureIsValid(const byte *pFileData, unsigned int fileSize, const string &hexEncodedSignature)
 {
     Integer modulus("23568332026097843589330224341232423824489227725618860714509096199525106220740317569413957190650367349886057276376951603027658474222300018538090882724127806422184385919973062121722991179344505183372523752666554302712122813070863946812173550830454356506133615226034873458142962497061909667034748542366872519001572246306747534032691513595335005177558602926751208654397458873075388398851331968483672593974371591236988537248649056651919444044050631175982858540930336744213602080363401671845205556669413373412866688398634151430976573005566658278720024181234244924513150893829727777179327452060753074929344789195138168478643");
     Integer publicExponent("17");
@@ -169,7 +169,7 @@ size_t WriteByteData(void *buffer, size_t size, size_t nmemb, void *userp)
     return transferCanceled ? 0 : newByteDataSize;
 }
 
-bool RetrieveDataFromUriHttp(string uri, byte **ppByteDataFromUriHttp, size_t *pByteDataSize, PFNPROGRESSCALLBACK pfnProgressCallback, void *pProgressCallbackData)
+bool RetrieveDataFromUriHttp(const string &uri, byte **ppByteDataFromUriHttp, size_t *pByteDataSize, PFNPROGRESSCALLBACK pfnProgressCallback, void *pProgressCallbackData)
 {
     pByteDataFromUriHttp = NULL;
     byteDataSize = 0;
@@ -219,7 +219,7 @@ size_t WriteStringData(void *buffer, size_t size, size_t nmemb, void *userp)
     return newContent.length();
 }
 
-bool RetrieveStringFromUriHttp(string uri, string *pReturnString, PFNPROGRESSCALLBACK pfnProgressCallback, void *pProgressCallbackData)
+bool RetrieveStringFromUriHttp(const string &uri, string *pReturnString, PFNPROGRESSCALLBACK pfnProgressCallback, void *pProgressCallbackData)
 {
     stringFromUriHttp = "";
 

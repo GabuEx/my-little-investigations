@@ -64,7 +64,7 @@ public:
     class FlagSetCondition : public ConditionCriterion
     {
     public:
-        FlagSetCondition(string flagId);
+        FlagSetCondition(const string &flagId);
         FlagSetCondition(XmlReader *pReader);
         ~FlagSetCondition();
 
@@ -78,7 +78,7 @@ public:
     class EvidencePresentCondition : public ConditionCriterion
     {
     public:
-        EvidencePresentCondition(string partnerId);
+        EvidencePresentCondition(const string &partnerId);
         EvidencePresentCondition(XmlReader *pReader);
         ~EvidencePresentCondition();
 
@@ -92,7 +92,7 @@ public:
     class PartnerPresentCondition : public ConditionCriterion
     {
     public:
-        PartnerPresentCondition(string partnerId);
+        PartnerPresentCondition(const string &partnerId);
         PartnerPresentCondition(XmlReader *pReader);
         ~PartnerPresentCondition();
 
@@ -106,7 +106,7 @@ public:
     class ConversationLockedCondition : public ConditionCriterion
     {
     public:
-        ConversationLockedCondition(string conversationId);
+        ConversationLockedCondition(const string &conversationId);
         ConversationLockedCondition(XmlReader *pReader);
         ~ConversationLockedCondition();
 

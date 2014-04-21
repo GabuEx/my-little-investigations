@@ -31,7 +31,7 @@
 #include "../XmlReader.h"
 #include "../XmlWriter.h"
 
-bool FlagManager::IsFlagSet(string flagName)
+bool FlagManager::IsFlagSet(const string &flagName)
 {
     if (namedFlagMap.count(flagName) == 0)
     {
@@ -41,12 +41,12 @@ bool FlagManager::IsFlagSet(string flagName)
     return namedFlagMap[flagName];
 }
 
-void FlagManager::SetFlag(string flagName)
+void FlagManager::SetFlag(const string &flagName)
 {
     namedFlagMap[flagName] = true;
 }
 
-void FlagManager::ClearFlag(string flagName)
+void FlagManager::ClearFlag(const string &flagName)
 {
     namedFlagMap[flagName] = false;
 }

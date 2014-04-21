@@ -43,7 +43,7 @@ class FieldCutsceneManager
 public:
     ~FieldCutsceneManager();
 
-    FieldCutscene * GetCutsceneFromId(string id);
+    FieldCutscene * GetCutsceneFromId(const string &id);
 
     void Reset();
 

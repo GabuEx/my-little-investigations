@@ -60,14 +60,14 @@ Animation::~Animation()
     }
 }
 
-void Animation::AddFrame(int msDuration, string spriteId)
+void Animation::AddFrame(int msDuration, const string &spriteId)
 {
     Frame *pFrame = new Frame(msDuration, spriteId);
     pFrame->SetManagerSource(managerSource);
     frameList.push_back(pFrame);
 }
 
-void Animation::AddSound(string sfxId)
+void Animation::AddSound(const string &sfxId)
 {
     frameList.back()->pSound = new SpecifiedSound(sfxId);
 }

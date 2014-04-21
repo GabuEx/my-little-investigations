@@ -80,7 +80,7 @@ public:
     static bool GetDrawCursor() { return MouseHelper::drawCursor; }
 
     static string GetMouseOverText() { return MouseHelper::mouseOverText; }
-    static void SetMouseOverText(string mouseOverText) { MouseHelper::mouseOverText = mouseOverText; }
+    static void SetMouseOverText(const string &mouseOverText) { MouseHelper::mouseOverText = mouseOverText; }
 
 private:
 
@@ -91,7 +91,7 @@ private:
     class MouseOverText
     {
     public:
-        MouseOverText(string text);
+        MouseOverText(const string &text);
         MouseOverText(const MouseOverText &other);
         ~MouseOverText();
 

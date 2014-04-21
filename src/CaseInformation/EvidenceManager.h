@@ -97,7 +97,7 @@ public:
     {
     }
 
-    EvidenceIdPair(string evidenceId1, string evidenceId2)
+    EvidenceIdPair(const string &evidenceId1, const string &evidenceId2)
         : evidenceId1(evidenceId1)
         , evidenceId2(evidenceId2)
     {
@@ -106,10 +106,10 @@ public:
     EvidenceIdPair(XmlReader *pReader);
 
     string GetEvidenceId1() const { return this->evidenceId1; }
-    void SetEvidenceId1(string evidenceId1) { this->evidenceId1 = evidenceId1; }
+    void SetEvidenceId1(const string &evidenceId1) { this->evidenceId1 = evidenceId1; }
 
     string GetEvidenceId2() const { return this->evidenceId2; }
-    void SetEvidenceId2(string evidenceId2) { this->evidenceId2 = evidenceId2; }
+    void SetEvidenceId2(const string &evidenceId2) { this->evidenceId2 = evidenceId2; }
 
     bool operator==(const EvidenceIdPair &other) const;
     bool operator!=(const EvidenceIdPair &other) const;
@@ -141,19 +141,19 @@ public:
     bool GetAreEvidenceCombinations() const { return this->areEvidenceCombinations; }
     vector<string> * GetIds() { return &this->idList; }
 
-    Sprite * GetSmallSpriteForId(string id);
-    Sprite * GetLargeSpriteForId(string id);
-    string GetNameForId(string id);
-    string GetDescriptionForId(string id);
+    Sprite * GetSmallSpriteForId(const string &id);
+    Sprite * GetLargeSpriteForId(const string &id);
+    string GetNameForId(const string &id);
+    string GetDescriptionForId(const string &id);
 
-    bool IsEvidenceWithIdProfile(string id);
-    bool IsEvidenceWithIdEnabled(string id);
-    bool IsEvidenceWithIdVisible(string id);
+    bool IsEvidenceWithIdProfile(const string &id);
+    bool IsEvidenceWithIdEnabled(const string &id);
+    bool IsEvidenceWithIdVisible(const string &id);
 
-    void EnableEvidenceWithId(string id);
-    void DisableEvidenceWithId(string id);
+    void EnableEvidenceWithId(const string &id);
+    void DisableEvidenceWithId(const string &id);
 
-    Conversation * GetConversationForEvidenceCombination(string evidenceId1, string evidenceId2);
+    Conversation * GetConversationForEvidenceCombination(const string &evidenceId1, const string &evidenceId2);
     void Reset();
 
     void CacheState();

@@ -103,7 +103,7 @@ void musicToPartB()
     Mix_PlayMusic(music[currentMusic + "_B"], -1);
 }
 
-bool preloadMusic(string id, SDL_RWops *pFileOpsA, SDL_RWops *pFileOpsB)
+bool preloadMusic(const string &id, SDL_RWops *pFileOpsA, SDL_RWops *pFileOpsB)
 {
     if(!audioEnabled) return false;
     Mix_Music *pMusicA = Mix_LoadMUS_RW(pFileOpsA, true);
@@ -115,7 +115,7 @@ bool preloadMusic(string id, SDL_RWops *pFileOpsA, SDL_RWops *pFileOpsB)
     return true;
 }
 
-void unloadMusic(string id)
+void unloadMusic(const string &id)
 {
     Mix_Music *pMusicA = music[id + "_A"];
     Mix_Music *pMusicB = music[id + "_B"];
@@ -134,7 +134,7 @@ void unloadMusic(string id)
     music.erase(id + "_B");
 }
 
-bool preloadSound(string id, SDL_RWops *pFileOps)
+bool preloadSound(const string &id, SDL_RWops *pFileOps)
 {
     if(!audioEnabled) return false;
     Mix_Chunk *pSound = Mix_LoadWAV_RW(pFileOps, 1);
@@ -144,7 +144,7 @@ bool preloadSound(string id, SDL_RWops *pFileOps)
     return true;
 }
 
-void unloadSound(string id)
+void unloadSound(const string &id)
 {
     Mix_Chunk *pSound = sfx[id];
 
@@ -156,7 +156,7 @@ void unloadSound(string id)
     sfx.erase(id);
 }
 
-bool preloadDialog(string id,SDL_RWops *pFileOps)
+bool preloadDialog(const string &id,SDL_RWops *pFileOps)
 {
     if (!audioEnabled) return false;
     Mix_Chunk *pSound = Mix_LoadWAV_RW(pFileOps, 1);
@@ -165,7 +165,7 @@ bool preloadDialog(string id,SDL_RWops *pFileOps)
     return true;
 }
 
-void unloadDialog(string id)
+void unloadDialog(const string &id)
 {
     Mix_Chunk *pSound = dialog[id];
 
@@ -177,7 +177,7 @@ void unloadDialog(string id)
     dialog.erase(id);
 }
 
-bool playMusic(string id)
+bool playMusic(const string &id)
 {
     if (!audioEnabled) return false;
     Mix_Music *pMusicA = music[id + "_A"];
@@ -236,12 +236,12 @@ bool resumeMusic()
     return true;
 }
 
-bool playSound(string id)
+bool playSound(const string &id)
 {
     return playSound(id, 1.0);
 }
 
-bool playSound(string id, double volume)
+bool playSound(const string &id, double volume)
 {
     if (!audioEnabled) return false;
     Mix_Chunk *pSound = sfx[id];
@@ -253,7 +253,7 @@ bool playSound(string id, double volume)
     return Mix_PlayChannel(-1, pSound, 0) >= 0;
 }
 
-bool playAmbiance(string id)
+bool playAmbiance(const string &id)
 {
     if (!audioEnabled) return false;
     Mix_Chunk *pSound = sfx[id];
@@ -285,7 +285,7 @@ bool stopAmbiance()
     return true;
 }
 
-bool playPartnerAbilityLoop(string id)
+bool playPartnerAbilityLoop(const string &id)
 {
     if (!audioEnabled) return false;
 
@@ -317,7 +317,7 @@ void stopPartnerAbilityLoop()
     Mix_HaltChannel(PARTNER_ABILITY_LOOP_CHANNEL);
 }
 
-bool playLoopingSound(string id, int relativeChannel)
+bool playLoopingSound(const string &id, int relativeChannel)
 {
     if (!audioEnabled) return false;
     if (relativeChannel >= NUM_SOUND_LOOP_CHANNELS) return false;
@@ -352,7 +352,7 @@ void stopLoopingSounds()
     }
 }
 
-bool playDialog(string id)
+bool playDialog(const string &id)
 {
     if (!audioEnabled) return false;
     if (currentDialog.length() > 0) Mix_HaltChannel(DIALOG_CHANNEL);

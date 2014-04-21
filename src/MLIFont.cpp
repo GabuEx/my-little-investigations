@@ -36,7 +36,7 @@
 const int minCharValue = 32;
 const int maxCharValue = 128;
 
-MLIFont::MLIFont(string ttfFilePath, int fontSize, int strokeWidth, bool isBold)
+MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool isBold)
 {
 #ifdef GAME_EXECUTABLE
     pTtfFont = ResourceLoader::GetInstance()->LoadFont(ttfFilePath, fontSize);
@@ -225,32 +225,32 @@ void MLIFont::Reinit()
     }
 }
 
-void MLIFont::Draw(string s, Vector2 position)
+void MLIFont::Draw(const string &s, Vector2 position)
 {
     Draw(s, position, Color::White, RectangleWH(-1, -1, -1, -1), 1.0);
 }
 
-void MLIFont::Draw(string s, Vector2 position, double scale)
+void MLIFont::Draw(const string &s, Vector2 position, double scale)
 {
     Draw(s, position, Color::White, RectangleWH(-1, -1, -1, -1), scale);
 }
 
-void MLIFont::Draw(string s, Vector2 position, Color color)
+void MLIFont::Draw(const string &s, Vector2 position, Color color)
 {
     Draw(s, position, color, RectangleWH(-1, -1, -1, -1), 1.0);
 }
 
-void MLIFont::Draw(string s, Vector2 position, Color color, double scale)
+void MLIFont::Draw(const string &s, Vector2 position, Color color, double scale)
 {
     Draw(s, position, color, RectangleWH(-1, -1, -1, -1), scale);
 }
 
-void MLIFont::Draw(string s, Vector2 position, Color color, RectangleWH clipRect)
+void MLIFont::Draw(const string &s, Vector2 position, Color color, RectangleWH clipRect)
 {
     Draw(s, position, color, clipRect, 1.0);
 }
 
-void MLIFont::Draw(string s, Vector2 position, Color color, RectangleWH clipRect, double scale)
+void MLIFont::Draw(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale)
 {
     // If we're trying to draw an empty string, we can just return -
     // we're not gonna draw anything anyhow.
@@ -284,7 +284,7 @@ void MLIFont::Draw(string s, Vector2 position, Color color, RectangleWH clipRect
     DrawInternal(s, position, color, clipRect, scale, &charPairToKernedWidthMap, &pRenderedTextClipRectMap, &pRenderedTextClipRectMap);
 }
 
-void MLIFont::DrawInternal(string s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, map<char, RectangleWH> *pClipRectMapForWidth)
+void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, map<char, RectangleWH> *pClipRectMapForWidth)
 {
     for (unsigned int i = 0; i < s.length(); i++)
     {
@@ -356,7 +356,7 @@ void MLIFont::DrawInternal(string s, Vector2 position, Color color, RectangleWH 
     }
 }
 
-int MLIFont::GetWidth(string s)
+int MLIFont::GetWidth(const string &s)
 {
     Vector2 position(0, 0);
 
@@ -415,7 +415,7 @@ int MLIFont::GetKerningDelta(map<string, int> *pKernedWidthMap, map<char, Rectan
     return (int)((*pKernedWidthMap)[string(&c1, 1) + string(&c2, 1)] - ((*pClipRectMap)[c1].GetWidth() + (*pClipRectMap)[c2].GetWidth()));
 }
 
-int MLIFont::GetHeight(string s)
+int MLIFont::GetHeight(const string &s)
 {
     int w, h;
 

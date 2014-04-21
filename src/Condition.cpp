@@ -111,7 +111,7 @@ Condition::ConditionCriterion * Condition::ConditionCriterion::LoadFromXml(XmlRe
     }
 }
 
-Condition::FlagSetCondition::FlagSetCondition(string flagId)
+Condition::FlagSetCondition::FlagSetCondition(const string &flagId)
     : flagId(flagId)
 {
 }
@@ -137,7 +137,7 @@ Condition::ConditionCriterion * Condition::FlagSetCondition::Clone()
     return new FlagSetCondition(flagId);
 }
 
-Condition::EvidencePresentCondition::EvidencePresentCondition(string evidenceId)
+Condition::EvidencePresentCondition::EvidencePresentCondition(const string &evidenceId)
     : evidenceId(evidenceId)
 {
 }
@@ -164,7 +164,7 @@ Condition::ConditionCriterion * Condition::EvidencePresentCondition::Clone()
     return new EvidencePresentCondition(evidenceId);
 }
 
-Condition::PartnerPresentCondition::PartnerPresentCondition(string partnerId)
+Condition::PartnerPresentCondition::PartnerPresentCondition(const string &partnerId)
     : partnerId(partnerId)
 {
 }
@@ -190,7 +190,7 @@ Condition::ConditionCriterion * Condition::PartnerPresentCondition::Clone()
     return new PartnerPresentCondition(partnerId);
 }
 
-Condition::ConversationLockedCondition::ConversationLockedCondition(string conversationId)
+Condition::ConversationLockedCondition::ConversationLockedCondition(const string &conversationId)
     : conversationId(conversationId)
 {
 }

@@ -793,7 +793,7 @@ bool MouseHelper::IsMouseInViewport()
     return IsMouseInRect(RectangleWH(0, 0, gScreenWidth, gScreenHeight));
 }
 
-MouseHelper::MouseOverText::MouseOverText(string text)
+MouseHelper::MouseOverText::MouseOverText(const string &text)
     : text(text)
     , fadeOutMousePosition(Vector2(0, 0))
 {

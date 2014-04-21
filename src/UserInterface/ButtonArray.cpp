@@ -136,7 +136,7 @@ void Button::Initialize(MLIFont *pTextFont, Image *pCheckMarkImage)
     pUnlockingAnimation->AddFrame(0, lockAnimationSpriteId20);
 }
 
-Button::Button(int id, string text)
+Button::Button(int id, const string &text)
 {
     this->id = id;
     this->text = text;
@@ -167,7 +167,7 @@ Button::~Button()
     pOutEase = NULL;
 }
 
-void Button::SetCustomIconId(string customIconId)
+void Button::SetCustomIconId(const string &customIconId)
 {
     this->customIconId = customIconId;
 

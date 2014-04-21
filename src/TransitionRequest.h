@@ -53,7 +53,7 @@ public:
     {
     }
 
-    TransitionRequest(string newAreaRequestedId, string newLocationRequestedId, string transitionId)
+    TransitionRequest(const string &newAreaRequestedId, const string &newLocationRequestedId, const string &transitionId)
         : newAreaRequestedId(newAreaRequestedId)
         , newLocationRequestedId(newLocationRequestedId)
         , transitionId(transitionId)
@@ -62,7 +62,7 @@ public:
     {
     }
 
-    TransitionRequest(string zoomedViewId)
+    TransitionRequest(const string &zoomedViewId)
         : newAreaRequestedId("")
         , newLocationRequestedId("")
         , transitionId("")

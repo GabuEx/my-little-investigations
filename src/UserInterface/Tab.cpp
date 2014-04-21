@@ -94,22 +94,22 @@ Tab::Tab(int xPosition, bool isClickable)
     Init(xPosition, isClickable, "", false, TabRowDialog, false);
 }
 
-Tab::Tab(int xPosition, bool isClickable, string text)
+Tab::Tab(int xPosition, bool isClickable, const string &text)
 {
     Init(xPosition, isClickable, text, false, TabRowDialog, false);
 }
 
-Tab::Tab(int xPosition, bool isClickable, string text, bool useCancelClickSoundEffect)
+Tab::Tab(int xPosition, bool isClickable, const string &text, bool useCancelClickSoundEffect)
 {
     Init(xPosition, isClickable, text, useCancelClickSoundEffect, TabRowDialog, false);
 }
 
-Tab::Tab(int xPosition, bool isClickable, string text, bool useCancelClickSoundEffect, TabRow row)
+Tab::Tab(int xPosition, bool isClickable, const string &text, bool useCancelClickSoundEffect, TabRow row)
 {
     Init(xPosition, isClickable, text, useCancelClickSoundEffect, row, false);
 }
 
-Tab::Tab(int xPosition, bool isClickable, string text, bool useCancelClickSoundEffect, TabRow row, bool canPulse)
+Tab::Tab(int xPosition, bool isClickable, const string &text, bool useCancelClickSoundEffect, TabRow row, bool canPulse)
 {
     Init(xPosition, isClickable, text, useCancelClickSoundEffect, row, canPulse);
 }
@@ -383,7 +383,7 @@ void Tab::Reset()
     isClicked = false;
 }
 
-void Tab::Init(int xPosition, bool isClickable, string text, bool useCancelClickSoundEffect, TabRow row, bool canPulse)
+void Tab::Init(int xPosition, bool isClickable, const string &text, bool useCancelClickSoundEffect, TabRow row, bool canPulse)
 {
     this->xPosition = xPosition;
     this->row = row;

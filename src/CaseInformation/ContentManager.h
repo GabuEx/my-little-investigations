@@ -48,15 +48,15 @@ public:
     ~ContentManager();
 
     string GetInitialAreaId() const { return this->initialAreaId; }
-    void SetInitialAreaId(string initialAreaId) { this->initialAreaId = initialAreaId; }
+    void SetInitialAreaId(const string &initialAreaId) { this->initialAreaId = initialAreaId; }
 
     string GetInitialLocationId() const { return this->initialLocationId; }
-    void SetInitialLocationId(string initialLocationId) { this->initialLocationId = initialLocationId; }
+    void SetInitialLocationId(const string &initialLocationId) { this->initialLocationId = initialLocationId; }
 
-    Area * GetAreaFromId(string areaId);
-    Location * GetLocationFromId(string locationId);
-    Encounter * GetEncounterFromId(string encounterId);
-    Conversation * GetConversationFromId(string conversationId);
+    Area * GetAreaFromId(const string &areaId);
+    Location * GetLocationFromId(const string &locationId);
+    Encounter * GetEncounterFromId(const string &encounterId);
+    Conversation * GetConversationFromId(const string &conversationId);
 
     void Reset();
 

@@ -95,7 +95,7 @@ public:
         UnlockCondition * Clone();
 
     private:
-        FlagSetUnlockCondition(string flagId);
+        FlagSetUnlockCondition(const string &flagId);
         FlagSetUnlockCondition(XmlReader *pReader);
 
         string flagId;
@@ -113,7 +113,7 @@ public:
         UnlockCondition * Clone();
 
     private:
-        PartnerPresentUnlockCondition(string partnerId);
+        PartnerPresentUnlockCondition(const string &partnerId);
         PartnerPresentUnlockCondition(XmlReader *pReader);
 
         string partnerId;
@@ -137,15 +137,15 @@ public:
     virtual ~Conversation();
 
     string GetId() const { return this->id; }
-    void SetId(string id) { this->id = id; }
+    void SetId(const string &id) { this->id = id; }
 
     string GetName() const { return this->name; }
-    void SetName(string name) { this->name = name; }
+    void SetName(const string &name) { this->name = name; }
 
     vector<UnlockCondition *> * GetUnlockConditions() { return &this->unlockConditions; }
 
     string GetRequiredPartnerId() const { return this->requiredPartnerId; }
-    void SetRequiredPartnerId(string requiredPartnerId) { this->requiredPartnerId = requiredPartnerId; }
+    void SetRequiredPartnerId(const string &requiredPartnerId) { this->requiredPartnerId = requiredPartnerId; }
 
     bool GetIsEnabled() const { return this->isEnabled; }
     void SetIsEnabled(bool isEnabled) { this->isEnabled = isEnabled; }
@@ -439,8 +439,8 @@ protected:
         virtual void DrawBackground(double xOffset, double yOffset);
         virtual void Reset();
 
-        virtual void OnDialogSpeakerEmotionChanged(Dialog *pSender, string newEmotionId);
-        virtual void OnDialogOtherEmotionChanged(Dialog *pSender, string newEmotionId);
+        virtual void OnDialogSpeakerEmotionChanged(Dialog *pSender, const string &newEmotionId);
+        virtual void OnDialogOtherEmotionChanged(Dialog *pSender, const string &newEmotionId);
         virtual void OnDialogNextFrame(Dialog *pSender);
         virtual void OnDialogPlayerDamaged(Dialog *pSender);
         virtual void OnDialogOpponentDamaged(Dialog *pSender);
@@ -455,7 +455,7 @@ protected:
         virtual void OnDialogDirectlyNavigated(Dialog *pSender, DirectNavigationDirection direction) { }
         virtual void OnDialogPressForInfoClicked(Dialog *pSender) { }
         virtual void OnDialogUsePartner(Dialog *pSender) { }
-        virtual void OnDialogEvidencePresented(Dialog *pSender, string evidenceId) { }
+        virtual void OnDialogEvidencePresented(Dialog *pSender, const string &evidenceId) { }
         virtual void OnDialogEndRequested(Dialog *pSender) { }
 
         virtual void SetIsFinished(bool isFinished);
@@ -560,7 +560,7 @@ protected:
         void SetEndRequestedIndex(int endRequestedIndex) { this->endRequestedIndex = endRequestedIndex; }
 
         virtual void Begin(State *pState);
-        virtual void OnDialogEvidencePresented(Dialog *pSender, string evidenceId);
+        virtual void OnDialogEvidencePresented(Dialog *pSender, const string &evidenceId);
         virtual void OnDialogEndRequested(Dialog *pSender);
         virtual void Reset();
 
@@ -742,16 +742,16 @@ protected:
 
     public:
         string GetRawNotificationText() { return this->rawNotificationText; }
-        void SetRawNotificationText(string rawNotificationText) { this->rawNotificationText = rawNotificationText; }
+        void SetRawNotificationText(const string &rawNotificationText) { this->rawNotificationText = rawNotificationText; }
 
         string GetPartnerId() { return this->partnerId; }
-        void SetPartnerId(string partnerId) { this->partnerId = partnerId; }
+        void SetPartnerId(const string &partnerId) { this->partnerId = partnerId; }
 
         string GetOldEvidenceId() { return this->oldEvidenceId; }
-        void SetOldEvidenceId(string oldEvidenceId) { this->oldEvidenceId = oldEvidenceId; }
+        void SetOldEvidenceId(const string &oldEvidenceId) { this->oldEvidenceId = oldEvidenceId; }
 
         string GetNewEvidenceId() { return this->newEvidenceId; }
-        void SetNewEvidenceId(string newEvidenceId) { this->newEvidenceId = newEvidenceId; }
+        void SetNewEvidenceId(const string &newEvidenceId) { this->newEvidenceId = newEvidenceId; }
 
         virtual void Begin(State *pState);
         virtual void Update(int delta);
@@ -1265,7 +1265,7 @@ protected:
 
         virtual void OnDialogDirectlyNavigated(Dialog *pSender, DirectNavigationDirection direction);
         virtual void OnDialogPressForInfoClicked(Dialog *pSender);
-        virtual void OnDialogEvidencePresented(Dialog *pSender, string evidenceId);
+        virtual void OnDialogEvidencePresented(Dialog *pSender, const string &evidenceId);
         virtual void OnDialogUsePartner(Dialog *pSender);
         virtual void OnDialogEndRequested(Dialog *pSender);
 
@@ -1497,7 +1497,7 @@ public:
     class Topic
     {
     public:
-        Topic(string id, string name, int actionIndex);
+        Topic(const string &id, const string &name, int actionIndex);
         Topic(XmlReader *pReader);
 
         string GetId() { return this->id; }
@@ -1523,17 +1523,17 @@ public:
     virtual ~Confrontation();
 
     string GetPlayerCharacterId() { return this->playerCharacterId; }
-    void SetPlayerCharacterId(string playerCharacterId) { this->playerCharacterId = playerCharacterId; this->pPlayerCharacter = NULL; }
+    void SetPlayerCharacterId(const string &playerCharacterId) { this->playerCharacterId = playerCharacterId; this->pPlayerCharacter = NULL; }
 
     DialogCharacter * GetPlayerCharacter();
 
     string GetOpponentCharacterId() { return this->opponentCharacterId; }
-    void SetOpponentCharacterId(string opponentCharacterId) { this->opponentCharacterId = opponentCharacterId; this->pOpponentCharacter = NULL; }
+    void SetOpponentCharacterId(const string &opponentCharacterId) { this->opponentCharacterId = opponentCharacterId; this->pOpponentCharacter = NULL; }
 
     DialogCharacter * GetOpponentCharacter();
 
     string GetPlayerIconSpriteId() { return this->playerIconSpriteId; }
-    void SetPlayerIconSpriteId(string playerIconSpriteId) { this->playerIconSpriteId = playerIconSpriteId; this->pPlayerIcon = NULL; }
+    void SetPlayerIconSpriteId(const string &playerIconSpriteId) { this->playerIconSpriteId = playerIconSpriteId; this->pPlayerIcon = NULL; }
 
     Vector2 GetPlayerIconOffset() { return this->playerIconOffset; }
     void SetPlayerIconOffset(Vector2 playerIconOffset) { this->playerIconOffset = playerIconOffset; }
@@ -1545,7 +1545,7 @@ public:
     void SetPlayerHealth(int playerHealth) { this->playerHealth = playerHealth; }
 
     string GetOpponentIconSpriteId() { return this->opponentIconSpriteId; }
-    void SetOpponentIconSpriteId(string opponentIconSpriteId) { this->opponentIconSpriteId = opponentIconSpriteId; this->pOpponentIcon = NULL; }
+    void SetOpponentIconSpriteId(const string &opponentIconSpriteId) { this->opponentIconSpriteId = opponentIconSpriteId; this->pOpponentIcon = NULL; }
 
     Vector2 GetOpponentIconOffset() { return this->opponentIconOffset; }
     void SetOpponentIconOffset(Vector2 opponentIconOffset) { this->opponentIconOffset = opponentIconOffset; }
@@ -1563,7 +1563,7 @@ public:
     void SetConfrontationBeginIndex(int confrontationBeginIndex) { this->confrontationBeginIndex = confrontationBeginIndex; }
 
     static void Initialize(Image *pBackgroundDarkeningImage, Image *pConfrontationHealthCircleImage, MLIFont *pConfrontationHealthNumberingFont);
-    static Topic * GetConfrontationTopicFromId(string id);
+    static Topic * GetConfrontationTopicFromId(const string &id);
     static int GetEnabledConfrontationTopicCount();
 
     virtual bool GetShouldUpdateActions();
@@ -1581,7 +1581,7 @@ public:
     void CacheState();
     void Restart();
 
-    string GetTopicNameById(string topicId);
+    string GetTopicNameById(const string &topicId);
 
 protected:
     virtual bool GetCanExit()
@@ -1861,7 +1861,7 @@ protected:
         friend class Confrontation;
 
     public:
-        EnableTopicAction(string topicId);
+        EnableTopicAction(const string &topicId);
 
         virtual void Execute(State *pState);
 

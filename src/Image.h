@@ -66,7 +66,7 @@ public:
     bool IsReady() const { return valid; }
 
     void ReloadFromSource();
-    void FlagResourceLoaderSource(string originFilePath);
+    void FlagResourceLoaderSource(const string &originFilePath);
     void FlagFontSource(MLIFont *pFont);
     void FlagVideoSource(Video::Frame *pVideoFrame);
 
@@ -115,7 +115,7 @@ private:
     class ResourceLoaderSource : public Source
     {
     public:
-        ResourceLoaderSource(Image *pSprite, string originFilePath)
+        ResourceLoaderSource(Image *pSprite, const string &originFilePath)
         {
             this->pSprite = pSprite;
             this->originFilePath = originFilePath;

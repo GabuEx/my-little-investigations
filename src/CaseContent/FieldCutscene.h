@@ -54,7 +54,7 @@ public:
     ~FieldCutscene();
 
     string GetId() const { return this->id; }
-    void SetId(string id) { this->id = id; }
+    void SetId(const string &id) { this->id = id; }
 
     bool GetIsEnabled() const { return this->isEnabled; }
     void SetIsEnabled(bool isEnabled) { this->isEnabled = isEnabled; }
@@ -69,13 +69,13 @@ public:
     void SetPreventsInitialBgm(bool preventsInitialBgm) { this->preventsInitialBgm = preventsInitialBgm; }
 
     string GetInitialBgmReplacement() const { return this->initialBgmReplacement; }
-    void SetInitialBgmReplacement(string initialBgmReplacement) { this->initialBgmReplacement = initialBgmReplacement; }
+    void SetInitialBgmReplacement(const string &initialBgmReplacement) { this->initialBgmReplacement = initialBgmReplacement; }
 
     bool GetPreventsInitialAmbiance() const { return this->preventsInitialAmbiance; }
     void SetPreventsInitialAmbiance(bool preventsInitialAmbiance) { this->preventsInitialAmbiance = preventsInitialAmbiance; }
 
     string GetInitialAmbianceReplacement() const { return this->initialAmbianceReplacement; }
-    void SetInitialAmbianceReplacement(string initialAmbianceReplacement) { this->initialAmbianceReplacement = initialAmbianceReplacement; }
+    void SetInitialAmbianceReplacement(const string &initialAmbianceReplacement) { this->initialAmbianceReplacement = initialAmbianceReplacement; }
 
     void SetBackgroundSprite(Sprite *pBackgroundSprite) { this->pBackgroundSprite = pBackgroundSprite; }
     void SetBackgroundSpriteOpacity(double backgroundSpriteOpacity) { this->backgroundSpriteOpacity = backgroundSpriteOpacity; }

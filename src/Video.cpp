@@ -121,7 +121,7 @@ Video::~Video()
     frameList.clear();
 }
 
-void Video::SetVideoAttributes(string videoRelativeFilePath, unsigned int frameCount, int msFrameDuration, unsigned int width, unsigned int height)
+void Video::SetVideoAttributes(const string &videoRelativeFilePath, unsigned int frameCount, int msFrameDuration, unsigned int width, unsigned int height)
 {
     this->videoRelativeFilePath = videoRelativeFilePath;
     this->width = width;
@@ -133,7 +133,7 @@ void Video::SetVideoAttributes(string videoRelativeFilePath, unsigned int frameC
     }
 }
 
-void Video::AddSound(unsigned int frameIndex, string sfxId)
+void Video::AddSound(unsigned int frameIndex, const string &sfxId)
 {
     if (frameIndex >= frameList.size())
     {
@@ -309,7 +309,7 @@ bool Video::IsFinished() const
     return curFrameIndex == frameList.size();
 }
 
-void Video::UpdateReadiness(string newLocationId, bool *pLoadFrames, bool *pDeleteFrames)
+void Video::UpdateReadiness(const string &newLocationId, bool *pLoadFrames, bool *pDeleteFrames)
 {
     vector<string> parentLocationList = Case::GetInstance()->GetParentLocationListForVideoId(id);
     bool isNeeded = false;

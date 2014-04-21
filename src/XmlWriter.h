@@ -41,13 +41,13 @@ public:
     XmlWriter(const char *pFilePath, const char *pFilePathExtension = NULL);
     ~XmlWriter();
 
-    void StartElement(string elementName);
+    void StartElement(const string &elementName);
     void EndElement();
-    void WriteIntElement(string elementName, int elementValue);
-    void WriteDoubleElement(string elementName, double elementValue);
-    void WriteBooleanElement(string elementName, bool elementValue);
-    void WriteTextElement(string elementName, string elementValue);
-    void WritePngElement(string elementName, void *pElementValue, size_t elementSize);
+    void WriteIntElement(const string &elementName, int elementValue);
+    void WriteDoubleElement(const string &elementName, double elementValue);
+    void WriteBooleanElement(const string &elementName, bool elementValue);
+    void WriteTextElement(const string &elementName, const string &elementValue);
+    void WritePngElement(const string &elementName, void *pElementValue, size_t elementSize);
 
 private:
     stringstream stringStream;

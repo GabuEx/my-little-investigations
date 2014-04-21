@@ -68,7 +68,7 @@ XmlWriter::~XmlWriter()
     fileStream.close();
 }
 
-void XmlWriter::StartElement(string elementName)
+void XmlWriter::StartElement(const string &elementName)
 {
     stringStream << "<" << elementName.c_str() << ">";
     elementNameStack.push(elementName);
@@ -80,35 +80,35 @@ void XmlWriter::EndElement()
     elementNameStack.pop();
 }
 
-void XmlWriter::WriteIntElement(string elementName, int elementValue)
+void XmlWriter::WriteIntElement(const string &elementName, int elementValue)
 {
     StartElement(elementName);
     stringStream << elementValue;
     EndElement();
 }
 
-void XmlWriter::WriteDoubleElement(string elementName, double elementValue)
+void XmlWriter::WriteDoubleElement(const string &elementName, double elementValue)
 {
     StartElement(elementName);
     stringStream << elementValue;
     EndElement();
 }
 
-void XmlWriter::WriteBooleanElement(string elementName, bool elementValue)
+void XmlWriter::WriteBooleanElement(const string &elementName, bool elementValue)
 {
     StartElement(elementName);
     stringStream << (elementValue ? "true" : "false");
     EndElement();
 }
 
-void XmlWriter::WriteTextElement(string elementName, string elementValue)
+void XmlWriter::WriteTextElement(const string &elementName, const string &elementValue)
 {
     StartElement(elementName);
     stringStream << elementValue.c_str();
     EndElement();
 }
 
-void XmlWriter::WritePngElement(string elementName, void *pElementValue, size_t elementSize)
+void XmlWriter::WritePngElement(const string &elementName, void *pElementValue, size_t elementSize)
 {
     char *pElementString = reinterpret_cast<char *>(pElementValue);
 

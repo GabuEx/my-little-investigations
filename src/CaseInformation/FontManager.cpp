@@ -37,12 +37,12 @@ FontManager::~FontManager()
     }
 }
 
-MLIFont * FontManager::GetFontFromId(string id)
+MLIFont * FontManager::GetFontFromId(const string &id)
 {
     return fontByIdMap[id];
 }
 
-void FontManager::AddFont(string id, MLIFont *pFont)
+void FontManager::AddFont(const string &id, MLIFont *pFont)
 {
     fontByIdMap[id] = pFont;
 }

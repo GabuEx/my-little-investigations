@@ -46,13 +46,13 @@ typedef int (*PFNPROGRESSCALLBACK)(void *, double, double, double, double);
 deque<string> &split(const string &s, char delim, deque<string> &tokens);
 deque<string> split(const string &s, char delim);
 
-bool SignatureIsValid(const byte *pFileData, unsigned int fileSize, string hexEncodedSignature);
+bool SignatureIsValid(const byte *pFileData, unsigned int fileSize, const string &hexEncodedSignature);
 
 string UuidFromSHA256Hash(byte hash[]);
 
 #ifndef GAME_EXECUTABLE
-bool RetrieveDataFromUriHttp(string uri, byte **ppByteDataFromUriHttp, size_t *pByteDataSize, PFNPROGRESSCALLBACK pfnProgressCallback = NULL, void *pProgressCallbackData = NULL);
-bool RetrieveStringFromUriHttp(string uri, string *pReturnString, PFNPROGRESSCALLBACK pfnProgressCallback = NULL, void *pProgressCallbackData = NULL);
+bool RetrieveDataFromUriHttp(const string &uri, byte **ppByteDataFromUriHttp, size_t *pByteDataSize, PFNPROGRESSCALLBACK pfnProgressCallback = NULL, void *pProgressCallbackData = NULL);
+bool RetrieveStringFromUriHttp(const string &uri, string *pReturnString, PFNPROGRESSCALLBACK pfnProgressCallback = NULL, void *pProgressCallbackData = NULL);
 bool CheckIfUpdatesExist(string *pVersionsXmlContent);
 string FileSizeToString(int fileSize);
 bool PromptUserToDownloadUpdates(Version currentVersion, Version newVersion, int updateFileSize);

@@ -48,10 +48,10 @@ class PartnerManager
 public:
     PartnerManager();
     ~PartnerManager();
-    Partner * GetPartnerFromId(string id);
+    Partner * GetPartnerFromId(const string &id);
     Partner * GetCurrentPartner();
     string GetCurrentPartnerId();
-    void SetCurrentPartner(string newPartnerId);
+    void SetCurrentPartner(const string &newPartnerId);
 
     void CacheState();
     void LoadCachedState();
@@ -127,32 +127,32 @@ public:
     ~Partner();
 
     string GetId() const { return this->id; }
-    void SetId(string id) { this->id = id; }
+    void SetId(const string &id) { this->id = id; }
 
     string GetName() const { return this->name; }
-    void SetName(string name) { this->name = name; }
+    void SetName(const string &name) { this->name = name; }
 
     string GetIconSpriteId() const { return this->iconSpriteId; }
-    void SetIconSpriteId(string iconSpriteId) { this->iconSpriteId = iconSpriteId; }
+    void SetIconSpriteId(const string &iconSpriteId) { this->iconSpriteId = iconSpriteId; }
 
     Sprite * GetIconSprite();
 
     string GetProfileImageSpriteId() const { return this->profileImageSpriteId; }
-    void SetProfileImageSpriteId(string profileImageSpriteId) { this->profileImageSpriteId = profileImageSpriteId; }
+    void SetProfileImageSpriteId(const string &profileImageSpriteId) { this->profileImageSpriteId = profileImageSpriteId; }
 
     Sprite * GetProfileImageSprite();
 
     string GetPassiveAbilityDescription() const { return this->passiveAbilityDescription; }
-    void SetPassiveAbilityDescription(string passiveAbilityDescription) { this->passiveAbilityDescription = passiveAbilityDescription; }
+    void SetPassiveAbilityDescription(const string &passiveAbilityDescription) { this->passiveAbilityDescription = passiveAbilityDescription; }
 
     string GetActiveAbilityDescription() const { return this->activeAbilityDescription; }
-    void SetActiveAbilityDescription(string activeAbilityDescription) { this->activeAbilityDescription = activeAbilityDescription; }
+    void SetActiveAbilityDescription(const string &activeAbilityDescription) { this->activeAbilityDescription = activeAbilityDescription; }
 
     string GetFieldAbilityName() const { return this->fieldAbilityName; }
-    void SetFieldAbilityName(string fieldAbilityName) { this->fieldAbilityName = fieldAbilityName; }
+    void SetFieldAbilityName(const string &fieldAbilityName) { this->fieldAbilityName = fieldAbilityName; }
 
     string GetConversationAbilityName() const { return this->conversationAbilityName; }
-    void SetConversationAbilityName(string conversationAbilityName) { this->conversationAbilityName = conversationAbilityName; }
+    void SetConversationAbilityName(const string &conversationAbilityName) { this->conversationAbilityName = conversationAbilityName; }
 
     bool GetIsUsingFieldAbility() const;
     void ToggleIsUsingFieldAbility();

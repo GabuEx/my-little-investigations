@@ -44,7 +44,7 @@ Version::Version(XmlReader *pReader)
     pReader->EndElement();
 }
 
-Version::Version(string versionString)
+Version::Version(const string &versionString)
 {
     sscanf(versionString.c_str(), "%d.%d.%d", &major, &minor, &revision);
 }

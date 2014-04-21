@@ -50,7 +50,7 @@ FieldCharacterManager::~FieldCharacterManager()
     pPlayerCharacter = NULL;
 }
 
-FieldCharacter * FieldCharacterManager::GetCharacterFromId(string characterId)
+FieldCharacter * FieldCharacterManager::GetCharacterFromId(const string &characterId)
 {
     return characterByIdMap[characterId]->Clone();
 }

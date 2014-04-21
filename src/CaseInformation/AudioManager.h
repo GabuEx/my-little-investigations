@@ -46,17 +46,17 @@ public:
     AudioManager();
     ~AudioManager();
 
-    void PlayBgmWithId(string id);
+    void PlayBgmWithId(const string &id);
     void PauseCurrentBgm();
     void ResumeCurrentBgm();
     void StopCurrentBgm(bool isInstant);
 
-    void PlayAmbianceWithId(string id);
+    void PlayAmbianceWithId(const string &id);
     void PauseCurrentAmbiance();
     void ResumeCurrentAmbiance();
     void StopCurrentAmbiance(bool isInstant);
 
-    void PlayRandomHoofstepSound(string textureName, double volume);
+    void PlayRandomHoofstepSound(const string &textureName, double volume);
 
     void Update(int delta);
 

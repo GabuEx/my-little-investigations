@@ -73,7 +73,7 @@ public:
         friend class Location;
 
     public:
-        Transition(string targetLocationId, string targetLocationName)
+        Transition(const string &targetLocationId, const string &targetLocationName)
         {
             this->targetLocationId = targetLocationId;
             this->targetLocationName = targetLocationName;
@@ -194,16 +194,16 @@ public:
     static void Initialize(Image *pFadeSprite);
 
     string GetId() const { return this->id; }
-    void SetId(string id) { this->id = id; }
+    void SetId(const string &id) { this->id = id; }
 
     string GetBackgroundSpriteId() const { return this->backgroundSpriteId; }
-    void SetBackgroundSpriteId(string backgroundSpriteId) { this->backgroundSpriteId = backgroundSpriteId; }
+    void SetBackgroundSpriteId(const string &backgroundSpriteId) { this->backgroundSpriteId = backgroundSpriteId; }
 
     string GetBgm();
-    void SetBgm(string bgm) { this->bgm = bgm; }
+    void SetBgm(const string &bgm) { this->bgm = bgm; }
 
     string GetAmbianceSfxId();
-    void SetAmbianceSfxId(string ambianceSfxId) { this->ambianceSfxId = ambianceSfxId; }
+    void SetAmbianceSfxId(const string &ambianceSfxId) { this->ambianceSfxId = ambianceSfxId; }
 
     HitBox * GetAreaHitBox() { return this->pAreaHitBox; }
     void SetAreaHitBox(HitBox *pAreaHitBox) { this->pAreaHitBox = pAreaHitBox; }
@@ -219,14 +219,14 @@ public:
 
     void UpdateLoadedTextures(bool waitUntilLoaded = true);
 
-    void Begin(string transitionId);
+    void Begin(const string &transitionId);
     void Update(int delta);
     void UpdateTabPositions(int delta);
     void Draw();
     void DrawForScreenshot();
     void Reset();
 
-    void BeginTransition(Location *pTargetLocation, string transitionId);
+    void BeginTransition(Location *pTargetLocation, const string &transitionId);
     void CheckForTransitionUnderPlayer();
 
     void SaveToSaveFile(XmlWriter *pWriter);
@@ -236,18 +236,18 @@ public:
     void BeginForegroundElementInteraction(ForegroundElement *pForegroundElement);
     void BeginCrowdInteraction(Crowd *pCrowd);
 
-    void OnPromptOverlayValueReturned(PromptOverlay *pSender, string value);
+    void OnPromptOverlayValueReturned(PromptOverlay *pSender, const string &value);
 
 private:
     void SetLoopingSoundLevels();
     Sprite * GetBackgroundSprite();
     RectangleWH GetBounds();
-    StartPosition GetStartPositionFromTransitionId(string transitionId);
-    StartPosition * GetPartnerStartPositionFromTransitionId(string transitionId);
+    StartPosition GetStartPositionFromTransitionId(const string &transitionId);
+    StartPosition * GetPartnerStartPositionFromTransitionId(const string &transitionId);
     void SetTargetInteractiveElement(InteractiveElement *pInteractiveElement, FieldCharacterState characterStateIfMoving);
     bool GetIsPlayerCharacterCloseToInteractiveElement();
     void StartCharacterOnPath(FieldCharacter *pCharacter, Vector2 endPosition, FieldCharacterState characterStateIfMoving, bool doAsync = true);
-    void OnExited(Location *pLocation, string transitionId);
+    void OnExited(Location *pLocation, const string &transitionId);
     static int PerformPathfindingStatic(void *pData);
     void PerformPathfinding(FieldCharacter *pCharacter, Vector2 startPosition, Vector2 endPosition, FieldCharacterState characterStateIfMoving, int threadId);
 

@@ -51,15 +51,15 @@ class FieldCharacter : public InteractiveElement, public ZOrderableObject
 {
 public:
     FieldCharacter();
-    FieldCharacter(string characterId, string characterName, string characterStandingAnimationIds[], string characterWalkingAnimationIds[], string characterRunningAnimationIds[]);
+    FieldCharacter(const string &characterId, const string &characterName, string characterStandingAnimationIds[], string characterWalkingAnimationIds[], string characterRunningAnimationIds[]);
     FieldCharacter(XmlReader *pReader);
     virtual ~FieldCharacter();
 
     string GetId() const { return this->id; }
-    void SetId(string id) { this->id = id; }
+    void SetId(const string &id) { this->id = id; }
 
     string GetName() const { return this->name; }
-    void SetName(string name) { this->id = name; }
+    void SetName(const string &name) { this->id = name; }
 
     Vector2 GetPosition() const { return this->position; }
     void SetPosition(Vector2 position) { this->position = position; }
@@ -80,12 +80,12 @@ public:
     void SetClickRect(RectangleWH clickRect) { this->clickRect = clickRect; }
 
     string GetClickEncounterId() const { return this->clickEncounterId; }
-    void SetClickEncounterId(string clickEncounterId) { this->clickEncounterId = clickEncounterId; }
+    void SetClickEncounterId(const string &clickEncounterId) { this->clickEncounterId = clickEncounterId; }
 
     Encounter * GetClickEncounter();
 
     string GetClickCutsceneId() const { return this->clickCutsceneId; }
-    void SetClickCutsceneId(string clickCutsceneId) { this->clickCutsceneId = clickCutsceneId; }
+    void SetClickCutsceneId(const string &clickCutsceneId) { this->clickCutsceneId = clickCutsceneId; }
 
     FieldCutscene * GetClickCutscene();
 

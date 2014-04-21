@@ -76,7 +76,7 @@ EvidenceSelector::EvidenceSelectorItem::~EvidenceSelectorItem()
     pSelectionOffsetEase = NULL;
 }
 
-void EvidenceSelector::EvidenceSelectorItem::LoadEvidence(string evidenceId)
+void EvidenceSelector::EvidenceSelectorItem::LoadEvidence(const string &evidenceId)
 {
     SetEvidenceId(evidenceId);
 
@@ -795,7 +795,7 @@ void EvidenceSelector::UpdateSelectedItem(EvidenceSelectorItem *pItem)
     pCombineTab->SetIsEnabled(selectedItemId.length() > 0);
 }
 
-void EvidenceSelector::OnEvidencePresented(string evidenceId)
+void EvidenceSelector::OnEvidencePresented(const string &evidenceId)
 {
     EventProviders::GetEvidenceSelectorEventProvider()->RaiseEvidenceSelectorEvidencePresented(this, evidenceId);
 }

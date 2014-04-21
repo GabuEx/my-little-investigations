@@ -41,9 +41,9 @@ class XmlWriter;
 class FlagManager
 {
 public:
-    bool IsFlagSet(string flagName);
-    void SetFlag(string flagName);
-    void ClearFlag(string flagName);
+    bool IsFlagSet(const string &flagName);
+    void SetFlag(const string &flagName);
+    void ClearFlag(const string &flagName);
     void Reset();
 
     void CacheState();

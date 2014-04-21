@@ -87,7 +87,7 @@ void TextInputHelper::NotifyKeyUp(SDL_Keycode keycode)
     }
 }
 
-void TextInputHelper::NotifyTextInput(string newText)
+void TextInputHelper::NotifyTextInput(const string &newText)
 {
     SetNewText(
         (caretPosition > 0 ? currentText.substr(0, caretPosition) : "") +
@@ -132,7 +132,7 @@ void TextInputHelper::Reset()
     userHasCanceled = false;
 }
 
-bool TextInputHelper::SetNewText(string newText, unsigned int newCaretPosition)
+bool TextInputHelper::SetNewText(const string &newText, unsigned int newCaretPosition)
 {
     // If we have a max pixel width and the new text will push us past that width,
     // then we won't do anything.

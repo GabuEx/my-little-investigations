@@ -56,8 +56,8 @@ public:
     Video(XmlReader *pReader);
     ~Video();
 
-    void SetVideoAttributes(string videoRelativeFilePath, unsigned int frameCount, int msFrameDuration, unsigned int width, unsigned int height);
-    void AddSound(unsigned int frameIndex, string sfxId);
+    void SetVideoAttributes(const string &videoRelativeFilePath, unsigned int frameCount, int msFrameDuration, unsigned int width, unsigned int height);
+    void AddSound(unsigned int frameIndex, const string &sfxId);
 
     unsigned int GetWidth() { return this->width; }
     unsigned int GetHeight() { return this->height; }
@@ -77,7 +77,7 @@ public:
     bool IsReady();
     bool IsFinished() const;
 
-    void UpdateReadiness(string newLocationId, bool *pLoadFile, bool *pDeleteFile);
+    void UpdateReadiness(const string &newLocationId, bool *pLoadFile, bool *pDeleteFile);
     bool IsAnimationReady();
 
     class Frame

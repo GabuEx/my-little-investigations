@@ -67,7 +67,7 @@ public:
     virtual ~ForegroundElement();
 
     string GetName() const { return this->name; }
-    void SetName(string name) { this->name = name; }
+    void SetName(const string &name) { this->name = name; }
 
     HitBox * GetHitBox() const { return this->pHitBox; }
 

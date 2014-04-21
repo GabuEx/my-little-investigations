@@ -75,7 +75,7 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
 #endif
 }
 
-void XmlReader::ParseXmlContent(string xmlContent)
+void XmlReader::ParseXmlContent(const string &xmlContent)
 {
     delete pDocument;
     pDocument = new Document();

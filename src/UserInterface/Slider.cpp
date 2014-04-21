@@ -44,7 +44,7 @@ void Slider::Initialize(MLIFont *pHeaderFont, Image *pTrackSprite, Image *pThumb
     Slider::pThumbSprite = pThumbSprite;
 }
 
-Slider::Slider(string headerText, int xPosition, int yPosition)
+Slider::Slider(const string &headerText, int xPosition, int yPosition)
 {
     this->headerText = headerText;
     this->xPosition = xPosition;

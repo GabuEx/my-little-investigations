@@ -125,7 +125,7 @@ Conversation::UnlockCondition * Conversation::FlagSetUnlockCondition::Clone()
     return new Conversation::FlagSetUnlockCondition(flagId);
 }
 
-Conversation::FlagSetUnlockCondition::FlagSetUnlockCondition(string flagId)
+Conversation::FlagSetUnlockCondition::FlagSetUnlockCondition(const string &flagId)
 {
     this->flagId = flagId;
 }
@@ -172,7 +172,7 @@ Conversation::UnlockCondition * Conversation::PartnerPresentUnlockCondition::Clo
     return new Conversation::PartnerPresentUnlockCondition(partnerId);
 }
 
-Conversation::PartnerPresentUnlockCondition::PartnerPresentUnlockCondition(string partnerId)
+Conversation::PartnerPresentUnlockCondition::PartnerPresentUnlockCondition(const string &partnerId)
 {
     this->partnerId = partnerId;
 }
@@ -1313,7 +1313,7 @@ bool Conversation::ShowDialogAction::GetIsReadyToHide()
     return pDialog->GetIsReadyToHide() && pState->GetActionIndexAfterInterjection() == -1;
 }
 
-void Conversation::ShowDialogAction::OnDialogSpeakerEmotionChanged(Dialog *pSender, string newEmotionId)
+void Conversation::ShowDialogAction::OnDialogSpeakerEmotionChanged(Dialog *pSender, const string &newEmotionId)
 {
     if (pSender != pDialog)
     {
@@ -1332,7 +1332,7 @@ void Conversation::ShowDialogAction::OnDialogSpeakerEmotionChanged(Dialog *pSend
     }
 }
 
-void Conversation::ShowDialogAction::OnDialogOtherEmotionChanged(Dialog *pSender, string newEmotionId)
+void Conversation::ShowDialogAction::OnDialogOtherEmotionChanged(Dialog *pSender, const string &newEmotionId)
 {
     if (pSender != pDialog)
     {
@@ -1617,7 +1617,7 @@ void Conversation::MustPresentEvidenceAction::Begin(State *pState)
     }
 }
 
-void Conversation::MustPresentEvidenceAction::OnDialogEvidencePresented(Dialog *pSender, string evidenceId)
+void Conversation::MustPresentEvidenceAction::OnDialogEvidencePresented(Dialog *pSender, const string &evidenceId)
 {
     if (pSender != pDialog)
     {
@@ -2769,7 +2769,7 @@ void Interrogation::ShowInterrogationAction::OnDialogPressForInfoClicked(Dialog 
     nextIndexSet = true;
 }
 
-void Interrogation::ShowInterrogationAction::OnDialogEvidencePresented(Dialog *pSender, string evidenceId)
+void Interrogation::ShowInterrogationAction::OnDialogEvidencePresented(Dialog *pSender, const string &evidenceId)
 {
     if (pSender != pDialog)
     {
@@ -3025,7 +3025,7 @@ Interrogation::EndInterrogationRepeatAction::EndInterrogationRepeatAction(XmlRea
     pReader->EndElement();
 }
 
-Confrontation::Topic::Topic(string id, string name, int actionIndex)
+Confrontation::Topic::Topic(const string &id, const string &name, int actionIndex)
     : id(id)
     , name(name)
     , actionIndex(actionIndex)
@@ -3150,7 +3150,7 @@ void Confrontation::Initialize(Image *pBackgroundDarkeningImage, Image *pConfron
     Confrontation::pConfrontationHealthNumberingFont = pConfrontationHealthNumberingFont;
 }
 
-Confrontation::Topic * Confrontation::GetConfrontationTopicFromId(string id)
+Confrontation::Topic * Confrontation::GetConfrontationTopicFromId(const string &id)
 {
     Confrontation::Topic *pTopic = NULL;
 
@@ -3445,7 +3445,7 @@ void Confrontation::Restart()
     pBackgroundDarkeningOpacityEaseOut->Reset();
 }
 
-string Confrontation::GetTopicNameById(string topicId)
+string Confrontation::GetTopicNameById(const string &topicId)
 {
     return confrontationTopicNamesById[topicId];
 }
@@ -4160,7 +4160,7 @@ Confrontation::EndConfrontationTopicSelectionAction::EndConfrontationTopicSelect
     pReader->EndElement();
 }
 
-Confrontation::EnableTopicAction::EnableTopicAction(string topicId)
+Confrontation::EnableTopicAction::EnableTopicAction(const string &topicId)
     : topicId(topicId)
 {
 }

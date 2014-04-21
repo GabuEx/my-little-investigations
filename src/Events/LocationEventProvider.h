@@ -40,7 +40,7 @@ class Location;
 class LocationEventListener
 {
 public:
-    virtual void OnLocationExited(Location *pSender, Location *pTargetLocation, string transitionId) = 0;
+    virtual void OnLocationExited(Location *pSender, Location *pTargetLocation, const string &transitionId) = 0;
 };
 
 class LocationEventProvider
@@ -57,7 +57,7 @@ public:
         listenerList.remove(pListener);
     }
 
-    void RaiseExited(Location *pSender, Location *pTargetLocation, string transitionId)
+    void RaiseExited(Location *pSender, Location *pTargetLocation, const string &transitionId)
     {
         for (list<LocationEventListener *>::iterator iter = listenerList.begin(); iter != listenerList.end(); ++iter)
         {

@@ -53,7 +53,7 @@ public:
 class CaseSelectorItem : public SelectorItem
 {
 public:
-    CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotFullSizeSprite, string caseUuid, string caseTitle, string caseDescription, string caseFilePath, bool isCompatible, Version requiredVersion);
+    CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotFullSizeSprite, const string &caseUuid, const string &caseTitle, const string &caseDescription, const string &caseFilePath, bool isCompatible, Version requiredVersion);
 
     virtual ~CaseSelectorItem()
     {
@@ -107,7 +107,7 @@ private:
 class SaveLoadSelectorItem : public SelectorItem
 {
 public:
-    SaveLoadSelectorItem(string saveName, Image *pScreenshotSprite, time_t timestamp, string description, string filePath)
+    SaveLoadSelectorItem(const string &saveName, Image *pScreenshotSprite, time_t timestamp, const string &description, const string &filePath)
     {
         this->saveName = saveName;
         this->pScreenshotSprite = pScreenshotSprite;
@@ -173,7 +173,7 @@ private:
 class SelectorSection
 {
 public:
-    SelectorSection(string sectionTitle)
+    SelectorSection(const string &sectionTitle)
     {
         this->sectionTitle = sectionTitle;
     }

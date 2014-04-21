@@ -61,7 +61,7 @@ RectangleWH Dialog::textAreaRect = RectangleWH(0, 0, 0, 0);
 double Dialog::desiredPadding = 0;
 MLIFont *Dialog::pDialogFont = NULL;
 
-Dialog::Dialog(string filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence)
+Dialog::Dialog(const string &filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence)
 {
     this->curTextPosition = 0;
 
@@ -166,7 +166,7 @@ void Dialog::Initialize(
     Dialog::pDialogFont = pDialogFont;
 }
 
-Dialog * Dialog::CreateForString(string dialogText)
+Dialog * Dialog::CreateForString(const string &dialogText)
 {
     Dialog *pDialog =
         CreateForString(
@@ -186,7 +186,7 @@ Dialog * Dialog::CreateForString(string dialogText)
     return pDialog;
 }
 
-Dialog * Dialog::CreateForString(string dialogText, string filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence)
+Dialog * Dialog::CreateForString(const string &dialogText, const string &filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence)
 {
     Dialog *pDialog = new Dialog(filePath, timeBeforeDialogInitial, delayBeforeContinuing, isInterrogation, isPassive, isConfrontation, canNavigateBack, canNavigateForward, presentEvidenceAutomatically, canStopPresentingEvidence);
 
@@ -295,7 +295,7 @@ Dialog * Dialog::CreateForString(string dialogText, string filePath, int timeBef
     return pDialog;
 }
 
-string Dialog::StripEvents(string stringToStrip)
+string Dialog::StripEvents(const string &stringToStrip)
 {
     string strippedString = stringToStrip;
 
@@ -1103,7 +1103,7 @@ void Dialog::Reset()
     }
 }
 
-void Dialog::OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, string evidenceId)
+void Dialog::OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, const string &evidenceId)
 {
     if (pSender == pEvidenceSelector)
     {
@@ -1126,7 +1126,7 @@ void Dialog::OnEvidenceSelectorClosing(EvidenceSelector *pSender)
     }
 }
 
-string Dialog::ParseEvents(int lineOffset, string stringToParse, string *pStringToPrependOnNext)
+string Dialog::ParseEvents(int lineOffset, const string &stringToParse, string *pStringToPrependOnNext)
 {
     string parsedString = stringToParse;
     *pStringToPrependOnNext = "";

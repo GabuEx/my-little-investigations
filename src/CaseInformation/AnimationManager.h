@@ -48,14 +48,14 @@ public:
     }
 
     ~AnimationManager();
-    void AddAnimation(string animationId, Animation **ppAnimation);
-    void AddVideo(string animationId, Video **ppVideo, bool shouldLoop = false);
-    void DeleteAnimation(string animationId);
-    void DeleteVideo(string animationId);
-    Animation * GetAnimationFromId(string animationId);
-    Video * GetVideoFromId(string videoId);
+    void AddAnimation(const string &animationId, Animation **ppAnimation);
+    void AddVideo(const string &animationId, Video **ppVideo, bool shouldLoop = false);
+    void DeleteAnimation(const string &animationId);
+    void DeleteVideo(const string &animationId);
+    Animation * GetAnimationFromId(const string &animationId);
+    Video * GetVideoFromId(const string &videoId);
     void LoadFromXml(XmlReader *pReader);
-    void FinishUpdateLoadedTextures(string newLocationId);
+    void FinishUpdateLoadedTextures(const string &newLocationId);
     void UnloadResources();
 
 private:

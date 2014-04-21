@@ -68,7 +68,7 @@ AnimationSound * HoofstepSound::Clone()
     return pSound;
 }
 
-SpecifiedSound::SpecifiedSound(string sfxId)
+SpecifiedSound::SpecifiedSound(const string &sfxId)
 {
     this->sfxId = sfxId;
 }

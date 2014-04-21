@@ -47,25 +47,25 @@ using namespace std;
 class MLIFont
 {
 public:
-    MLIFont(string ttfFilePath, int fontSize, int strokeWidth = 0, bool isBold = false);
+    MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth = 0, bool isBold = false);
     ~MLIFont();
 
     void Reinit();
-    void Draw(string s, Vector2 position);
-    void Draw(string s, Vector2 position, double scale);
-    void Draw(string s, Vector2 position, Color color);
-    void Draw(string s, Vector2 position, Color color, double scale);
-    void Draw(string s, Vector2 position, Color color, RectangleWH clipRect);
-    void Draw(string s, Vector2 position, Color color, RectangleWH clipRect, double scale);
+    void Draw(const string &s, Vector2 position);
+    void Draw(const string &s, Vector2 position, double scale);
+    void Draw(const string &s, Vector2 position, Color color);
+    void Draw(const string &s, Vector2 position, Color color, double scale);
+    void Draw(const string &s, Vector2 position, Color color, RectangleWH clipRect);
+    void Draw(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale);
 
-    int GetWidth(string s);
+    int GetWidth(const string &s);
     int GetKerningDelta(map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, char c1, char c2);
-    int GetHeight(string s);
+    int GetHeight(const string &s);
     int GetLineHeight();
     int GetLineAscent();
 
 private:
-    void DrawInternal(string s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, map<char, RectangleWH> *pClipRectMapForWidth);
+    void DrawInternal(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, map<char, RectangleWH> *pClipRectMapForWidth);
 
     TTF_Font *pTtfFont;
     int strokeWidth;

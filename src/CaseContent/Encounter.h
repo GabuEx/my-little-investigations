@@ -58,19 +58,19 @@ public:
     virtual ~Encounter();
 
     string GetId() const { return this->id; }
-    void SetId(string id) { this->id = id; }
+    void SetId(const string &id) { this->id = id; }
 
     string GetInitialLeftCharacterId() const { return this->initialLeftCharacterId; }
-    void SetInitialLeftCharacterId(string initialLeftCharacterId) { this->initialLeftCharacterId = initialLeftCharacterId; }
+    void SetInitialLeftCharacterId(const string &initialLeftCharacterId) { this->initialLeftCharacterId = initialLeftCharacterId; }
 
     string GetInitialLeftCharacterEmotionId() const { return this->initialLeftCharacterEmotionId; }
-    void SetInitialLeftCharacterEmotionId(string initialLeftCharacterEmotionId) { this->initialLeftCharacterEmotionId = initialLeftCharacterEmotionId; }
+    void SetInitialLeftCharacterEmotionId(const string &initialLeftCharacterEmotionId) { this->initialLeftCharacterEmotionId = initialLeftCharacterEmotionId; }
 
     string GetInitialRightCharacterId() const { return this->initialRightCharacterId; }
-    void SetInitialRightCharacterId(string initialRightCharacterId) { this->initialRightCharacterId = initialRightCharacterId; }
+    void SetInitialRightCharacterId(const string &initialRightCharacterId) { this->initialRightCharacterId = initialRightCharacterId; }
 
     string GetInitialRightCharacterEmotionId() const { return this->initialRightCharacterEmotionId; }
-    void SetInitialRightCharacterEmotionId(string initialRightCharacterEmotionId) { this->initialRightCharacterEmotionId = initialRightCharacterEmotionId; }
+    void SetInitialRightCharacterEmotionId(const string &initialRightCharacterEmotionId) { this->initialRightCharacterEmotionId = initialRightCharacterEmotionId; }
 
     Conversation * GetOneShotConversation() { return this->pOneShotConversation; }
     void SetOneShotConversation(Conversation *pOneShotConversation) { this->pOneShotConversation = pOneShotConversation; }
@@ -97,7 +97,7 @@ public:
 
     void OnButtonArrayButtonClicked(ButtonArray *pSender, int id);
     void OnButtonArrayCanceled(ButtonArray *pSender);
-    void OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, string evidenceId);
+    void OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, const string &evidenceId);
     void OnEvidenceSelectorClosing(EvidenceSelector *pSender) { }
 
 private:

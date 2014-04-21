@@ -39,7 +39,7 @@ FieldCutsceneManager::~FieldCutsceneManager()
     }
 }
 
-FieldCutscene * FieldCutsceneManager::GetCutsceneFromId(string id)
+FieldCutscene * FieldCutsceneManager::GetCutsceneFromId(const string &id)
 {
     return idToCutsceneMap[id];
 }

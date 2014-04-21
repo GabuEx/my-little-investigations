@@ -269,7 +269,7 @@ void DialogCutsceneAnimation::MoveToNextFrame()
     }
 }
 
-DialogCutsceneAnimationElement::DialogCutsceneAnimationElement(string spriteId, int x, int y, int a, int r, int g, int b)
+DialogCutsceneAnimationElement::DialogCutsceneAnimationElement(const string &spriteId, int x, int y, int a, int r, int g, int b)
     : spriteId(spriteId)
 {
     this->pSprite = NULL;

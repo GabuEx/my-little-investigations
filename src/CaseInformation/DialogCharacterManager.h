@@ -55,11 +55,11 @@ public:
     void UpdateForState(State *pState, int delta);
     void DrawForState(State *pState);
     static void DrawInterjectionForState(State *pState);
-    void BeginAnimations(string characterId, string emotionId);
-    void Update(string characterId, string &emotionId, int delta, bool finishOneTimeEmotions, bool isInBackground = false);
-    void Draw(string characterId, string emotionId, bool isTalking, bool shouldChangeMouth, bool isRightSide, EasingFunction *pCharacterXOffsetEasingFunction);
-    string GetCharacterNameFromId(string characterId);
-    DialogCharacter * GetCharacterFromId(string characterId);
+    void BeginAnimations(const string &characterId, const string &emotionId);
+    void Update(const string &characterId, string &emotionId, int delta, bool finishOneTimeEmotions, bool isInBackground = false);
+    void Draw(const string &characterId, const string &emotionId, bool isTalking, bool shouldChangeMouth, bool isRightSide, EasingFunction *pCharacterXOffsetEasingFunction);
+    string GetCharacterNameFromId(const string &characterId);
+    DialogCharacter * GetCharacterFromId(const string &characterId);
     void LoadFromXml(XmlReader *pReader);
 
 private:
@@ -118,72 +118,72 @@ public:
     ~DialogCharacter();
 
     string GetName() const { return this->name; }
-    void SetName(string name) { this->name = name; }
+    void SetName(const string &name) { this->name = name; }
 
     string GetDefaultEmotionId() const { return this->defaultEmotionId; }
-    void SetDefaultEmotionId(string defaultEmotionId) { this->defaultEmotionId = defaultEmotionId; }
+    void SetDefaultEmotionId(const string &defaultEmotionId) { this->defaultEmotionId = defaultEmotionId; }
 
     string GetPresentCorrectEvidenceSpriteId() const { return this->presentCorrectEvidenceSpriteId; }
-    void SetPresentCorrectEvidenceSpriteId(string presentCorrectEvidenceSpriteId) { this->presentCorrectEvidenceSpriteId = presentCorrectEvidenceSpriteId; }
+    void SetPresentCorrectEvidenceSpriteId(const string &presentCorrectEvidenceSpriteId) { this->presentCorrectEvidenceSpriteId = presentCorrectEvidenceSpriteId; }
 
     Sprite * GetPresentCorrectEvidenceSprite();
 
     string GetPresentCorrectEvidenceSoundId() const { return this->presentCorrectEvidenceSoundId; }
-    void SetPresentCorrectEvidenceSoundId(string presentCorrectEvidenceSoundId) { this->presentCorrectEvidenceSoundId = presentCorrectEvidenceSoundId; }
+    void SetPresentCorrectEvidenceSoundId(const string &presentCorrectEvidenceSoundId) { this->presentCorrectEvidenceSoundId = presentCorrectEvidenceSoundId; }
 
     string GetPresentCorrectEvidencePromptedSoundId() const { return this->presentCorrectEvidencePromptedSoundId; }
-    void SetPresentCorrectEvidencePromptedSoundId(string presentCorrectEvidencePromptedSoundId) { this->presentCorrectEvidencePromptedSoundId = presentCorrectEvidencePromptedSoundId; }
+    void SetPresentCorrectEvidencePromptedSoundId(const string &presentCorrectEvidencePromptedSoundId) { this->presentCorrectEvidencePromptedSoundId = presentCorrectEvidencePromptedSoundId; }
 
     string GetPresentIncorrectEvidenceSpriteId() const { return this->presentIncorrectEvidenceSpriteId; }
-    void SetPresentIncorrectEvidenceSpriteId(string presentIncorrectEvidenceSpriteId) { this->presentIncorrectEvidenceSpriteId = presentIncorrectEvidenceSpriteId; }
+    void SetPresentIncorrectEvidenceSpriteId(const string &presentIncorrectEvidenceSpriteId) { this->presentIncorrectEvidenceSpriteId = presentIncorrectEvidenceSpriteId; }
 
     Sprite * GetPresentIncorrectEvidenceSprite();
 
     string GetPresentIncorrectEvidenceSoundId() const { return this->presentIncorrectEvidenceSoundId; }
-    void SetPresentIncorrectEvidenceSoundId(string presentIncorrectEvidenceSoundId) { this->presentIncorrectEvidenceSoundId = presentIncorrectEvidenceSoundId; }
+    void SetPresentIncorrectEvidenceSoundId(const string &presentIncorrectEvidenceSoundId) { this->presentIncorrectEvidenceSoundId = presentIncorrectEvidenceSoundId; }
 
     string GetPressStatementSpriteId() const { return this->pressStatementSpriteId; }
-    void SetPressStatementSpriteId(string pressStatementSpriteId) { this->pressStatementSpriteId = pressStatementSpriteId; }
+    void SetPressStatementSpriteId(const string &pressStatementSpriteId) { this->pressStatementSpriteId = pressStatementSpriteId; }
 
     Sprite * GetPressStatementSprite();
 
     string GetPressStatementSoundId() const { return this->pressStatementSoundId; }
-    void SetPressStatementSoundId(string pressStatementSoundId) { this->pressStatementSoundId = pressStatementSoundId; }
+    void SetPressStatementSoundId(const string &pressStatementSoundId) { this->pressStatementSoundId = pressStatementSoundId; }
 
     string GetInterjectionSpriteId() const { return this->interjectionSpriteId; }
-    void SetInterjectionSpriteId(string interjectionSpriteId) { this->interjectionSpriteId = interjectionSpriteId; }
+    void SetInterjectionSpriteId(const string &interjectionSpriteId) { this->interjectionSpriteId = interjectionSpriteId; }
 
     Sprite * GetInterjectionSprite();
 
     string GetInterjectionSoundId() const { return this->interjectionSoundId; }
-    void SetInterjectionSoundId(string interjectionSoundId) { this->interjectionSoundId = interjectionSoundId; }
+    void SetInterjectionSoundId(const string &interjectionSoundId) { this->interjectionSoundId = interjectionSoundId; }
 
     void BeginAnimations(string emotionId);
     void Update(int delta, string &emotionId, bool finishOneTimeEmotions, bool isInBackground = false);
     void Draw(string emotionId, bool isTalking, bool shouldChangeMouth, bool isRightSide, int xOffset);
-    Sprite * GetBaseSpriteForEmotion(string emotionId);
-    Sprite * GetEyeSpriteForEmotion(string emotionId);
-    Sprite * GetMouthSpriteForEmotion(string emotionId, bool isTalking, bool shouldChangeMouth);
-    vector<Animation *> * GetForegroundLayersForEmotion(string emotionId);
+    Sprite * GetBaseSpriteForEmotion(const string &emotionId);
+    Sprite * GetEyeSpriteForEmotion(const string &emotionId);
+    Sprite * GetMouthSpriteForEmotion(const string &emotionId, bool isTalking, bool shouldChangeMouth);
+    vector<Animation *> * GetForegroundLayersForEmotion(const string &emotionId);
     Video * GetBreakdownVideo();
 
     string GetHealthBackgroundSpriteId() const { return this->healthBackgroundSpriteId; }
-    void SetHealthBackgroundSpriteId(string healthBackgroundSpriteId) { this->healthBackgroundSpriteId = healthBackgroundSpriteId; }
+    void SetHealthBackgroundSpriteId(const string &healthBackgroundSpriteId) { this->healthBackgroundSpriteId = healthBackgroundSpriteId; }
 
     Sprite * GetHealthBackgroundSprite();
 
     string GetEntranceForegroundSpriteId() const { return this->entranceForegroundSpriteId; }
-    void SetEntranceForegroundSpriteId(string entranceForegroundSpriteId) { this->entranceForegroundSpriteId = entranceForegroundSpriteId; }
+    void SetEntranceForegroundSpriteId(const string &entranceForegroundSpriteId) { this->entranceForegroundSpriteId = entranceForegroundSpriteId; }
 
     Sprite * GetEntranceForegroundSprite();
     Sprite * GetEntranceForegroundWhiteSprite();
 
     Color GetBackgroundColor();
 
-    int GetLeadInTimeForEmotion(string emotionId);
+    int GetLeadInTimeForEmotion(const string &emotionId);
 
 private:
-    void PopulateEyeFrameDurationList(string emotionId);
+    void PopulateEyeFrameDurationList(const string &emotionId);
 
     map<string, string> characterEmotionBaseSpriteIds;
     map<string, vector<string> > characterEmotionEyeSpriteIds;
