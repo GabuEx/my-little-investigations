@@ -41,8 +41,8 @@ class Dialog;
 class DialogEventListener
 {
 public:
-    virtual void OnDialogSpeakerEmotionChanged(Dialog *pSender, string newEmotionId) = 0;
-    virtual void OnDialogOtherEmotionChanged(Dialog *pSender, string newEmotionId) = 0;
+    virtual void OnDialogSpeakerEmotionChanged(Dialog *pSender, const string &newEmotionId) = 0;
+    virtual void OnDialogOtherEmotionChanged(Dialog *pSender, const string &newEmotionId) = 0;
     virtual void OnDialogNextFrame(Dialog *pSender) = 0;
     virtual void OnDialogPlayerDamaged(Dialog *pSender) = 0;
     virtual void OnDialogOpponentDamaged(Dialog *pSender) = 0;
@@ -56,7 +56,7 @@ public:
     virtual void OnDialogDirectlyNavigated(Dialog *pSender, DirectNavigationDirection direction) = 0;
     virtual void OnDialogPressForInfoClicked(Dialog *pSender) = 0;
     virtual void OnDialogUsePartner(Dialog *pSender) = 0;
-    virtual void OnDialogEvidencePresented(Dialog *pSender, string evidenceId) = 0;
+    virtual void OnDialogEvidencePresented(Dialog *pSender, const string &evidenceId) = 0;
     virtual void OnDialogEndRequested(Dialog *pSender) = 0;
 };
 
@@ -74,7 +74,7 @@ public:
         listenerList.remove(pListener);
     }
 
-    void RaiseSpeakerEmotionChanged(Dialog *pSender, string newEmotionId)
+    void RaiseSpeakerEmotionChanged(Dialog *pSender, const string &newEmotionId)
     {
         for (list<DialogEventListener *>::iterator iter = listenerList.begin(); iter != listenerList.end(); ++iter)
         {
@@ -82,7 +82,7 @@ public:
         }
     }
 
-    void RaiseOtherEmotionChanged(Dialog *pSender, string newEmotionId)
+    void RaiseOtherEmotionChanged(Dialog *pSender, const string &newEmotionId)
     {
         for (list<DialogEventListener *>::iterator iter = listenerList.begin(); iter != listenerList.end(); ++iter)
         {
@@ -194,7 +194,7 @@ public:
         }
     }
 
-    void RaiseEvidencePresented(Dialog *pSender, string evidenceId)
+    void RaiseEvidencePresented(Dialog *pSender, const string &evidenceId)
     {
         for (list<DialogEventListener *>::iterator iter = listenerList.begin(); iter != listenerList.end(); ++iter)
         {

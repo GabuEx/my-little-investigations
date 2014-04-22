@@ -46,7 +46,7 @@ void EvidenceDescription::Initialize(Image *pBackgroundImage, MLIFont *pNameFont
     EvidenceDescription::pDescriptionFont = pDescriptionFont;
 }
 
-void EvidenceDescription::SetEvidenceId(string evidenceId)
+void EvidenceDescription::SetEvidenceId(const string &evidenceId)
 {
     this->evidenceId = evidenceId;
     retrievedEvidenceInformation = false;

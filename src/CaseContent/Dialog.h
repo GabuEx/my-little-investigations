@@ -52,7 +52,7 @@ class Dialog : public EvidenceSelectorEventListener
 public:
     static int Height;
 
-    Dialog(string filePath, int timeBeforeDialogInitial,int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence);
+    Dialog(const string &filePath, int timeBeforeDialogInitial,int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence);
     virtual ~Dialog();
 
     static void Initialize(
@@ -63,11 +63,11 @@ public:
         double desiredPadding,
         MLIFont *pDialogFont);
 
-    static Dialog * CreateForString(string dialogText);
-    static Dialog * CreateForString(string dialogText, string filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence);
+    static Dialog * CreateForString(const string &dialogText);
+    static Dialog * CreateForString(const string &dialogText, const string &filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence);
 
     string GetText() const { return this->text; }
-    void SetText(string text) { this->text = text; }
+    void SetText(const string &text) { this->text = text; }
 
     bool GetTextSkipped() const { return this->textSkipped; }
     void SetTextSkipped(bool textSkipped) { this->textSkipped = textSkipped; }
@@ -107,19 +107,19 @@ public:
         return this->delayBeforeContinuing >= 0;
     }
 
-    static string StripEvents(string stringToStrip);
+    static string StripEvents(const string &stringToStrip);
 
     void AddSpeedChangePosition(int position, double newMillisecondsPerCharacterUpdate)
     {
         this->dialogEventListOriginal.push_back(new SpeedChangeEvent(position, this, newMillisecondsPerCharacterUpdate));
     }
 
-    void AddEmotionChangePosition(int position, string newEmotionId)
+    void AddEmotionChangePosition(int position, const string &newEmotionId)
     {
         this->dialogEventListOriginal.push_back(new SpeakerEmotionChangeEvent(position, this, newEmotionId));
     }
 
-    void AddEmotionOtherChangePosition(int position, string newEmotionId)
+    void AddEmotionOtherChangePosition(int position, const string &newEmotionId)
     {
         this->dialogEventListOriginal.push_back(new OtherEmotionChangeEvent(position, this, newEmotionId));
     }
@@ -139,7 +139,7 @@ public:
         this->dialogEventListOriginal.push_back(new MouthChangeEvent(position, this, mouthIsOn));
     }
 
-    void AddPlaySoundPosition(int position, string id)
+    void AddPlaySoundPosition(int position, const string &id)
     {
         this->dialogEventListOriginal.push_back(new PlaySoundEvent(position, this, id));
     }
@@ -169,12 +169,12 @@ public:
         this->dialogEventListOriginal.push_back(new OpponentDamagedEvent(position, this));
     }
 
-    void AddPlayBgmPosition(int position, string id)
+    void AddPlayBgmPosition(int position, const string &id)
     {
         this->dialogEventListOriginal.push_back(new PlayBgmEvent(position, this, id));
     }
 
-    void AddPlayBgmPermanentlyPosition(int position, string id)
+    void AddPlayBgmPermanentlyPosition(int position, const string &id)
     {
         this->dialogEventListOriginal.push_back(new PlayBgmEvent(position, this, id, true /* isPermanent */));
     }
@@ -229,11 +229,11 @@ public:
     void Finish(bool shouldPlaySfx = true);
     void Reset();
 
-    void OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, string evidenceId);
+    void OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, const string &evidenceId);
     void OnEvidenceSelectorClosing(EvidenceSelector *pSender);
 
 private:
-    string ParseEvents(int lineOffset, string stringToParse, string *pStringToPrependOnNext);
+    string ParseEvents(int lineOffset, const string &stringToParse, string *pStringToPrependOnNext);
 
     void OnDirectlyNavigated(DirectNavigationDirection direction)
     {
@@ -245,7 +245,7 @@ private:
         EventProviders::GetDialogEventProvider()->RaisePressForInfoClicked(this);
     }
 
-    void OnEvidencePresented(string evidenceId)
+    void OnEvidencePresented(const string &evidenceId)
     {
         EventProviders::GetDialogEventProvider()->RaiseEvidencePresented(this, evidenceId);
     }
@@ -357,7 +357,7 @@ private:
     class SpeakerEmotionChangeEvent : public DialogEvent
     {
     public:
-        SpeakerEmotionChangeEvent(int position, Dialog *pOwningDialog, string newEmotionId)
+        SpeakerEmotionChangeEvent(int position, Dialog *pOwningDialog, const string &newEmotionId)
             : DialogEvent(position, pOwningDialog)
         {
             this->newEmotionId = newEmotionId;
@@ -390,7 +390,7 @@ private:
     class OtherEmotionChangeEvent : public DialogEvent
     {
     public:
-        OtherEmotionChangeEvent(int position, Dialog *pOwningDialog, string newEmotionId)
+        OtherEmotionChangeEvent(int position, Dialog *pOwningDialog, const string &newEmotionId)
             : DialogEvent(position, pOwningDialog)
         {
             this->newEmotionId = newEmotionId;
@@ -496,7 +496,7 @@ private:
     class PlaySoundEvent : public DialogEvent
     {
     public:
-        PlaySoundEvent(int position, Dialog *pOwningDialog, string soundId)
+        PlaySoundEvent(int position, Dialog *pOwningDialog, const string &soundId)
             : DialogEvent(position, pOwningDialog)
         {
             this->soundId = soundId;
@@ -643,7 +643,7 @@ private:
     class PlayBgmEvent : public DialogEvent
     {
     public:
-        PlayBgmEvent(int position, Dialog *pOwningDialog, string bgmId, bool isPermanent = false)
+        PlayBgmEvent(int position, Dialog *pOwningDialog, const string &bgmId, bool isPermanent = false)
             : DialogEvent(position, pOwningDialog)
         {
             this->bgmId = bgmId;

@@ -121,10 +121,10 @@ public:
     void SetSpeakerPosition(CharacterPosition speakerPosition) { this->speakerPosition = speakerPosition; }
 
     string GetLeftCharacterId() const { return this->leftCharacterId; }
-    void SetLeftCharacterId(string leftCharacterId) { this->leftCharacterId = leftCharacterId; }
+    void SetLeftCharacterId(const string &leftCharacterId) { this->leftCharacterId = leftCharacterId; }
 
     string GetLeftCharacterEmotionId() const { return this->leftCharacterEmotionId; }
-    void SetLeftCharacterEmotionId(string leftCharacterEmotionId) { this->leftCharacterEmotionId = leftCharacterEmotionId; }
+    void SetLeftCharacterEmotionId(const string &leftCharacterEmotionId) { this->leftCharacterEmotionId = leftCharacterEmotionId; }
 
     bool GetIsLeftCharacterTalking() const { return this->isLeftCharacterTalking; }
     void SetIsLeftCharacterTalking(bool isLeftCharacterTalking) { this->isLeftCharacterTalking = isLeftCharacterTalking; }
@@ -142,19 +142,19 @@ public:
     void SetIsLeftCharacterZoomed(bool isLeftCharacterZoomed) { this->isLeftCharacterZoomed = isLeftCharacterZoomed; }
 
     string GetLeftReplacementCharacterId() const { return this->leftReplacementCharacterId; }
-    void SetLeftReplacementCharacterId(string leftReplacementCharacterId) { this->leftReplacementCharacterId = leftReplacementCharacterId; }
+    void SetLeftReplacementCharacterId(const string &leftReplacementCharacterId) { this->leftReplacementCharacterId = leftReplacementCharacterId; }
 
     string GetLeftReplacementCharacterEmotionId() const { return this->leftReplacementCharacterEmotionId; }
-    void SetLeftReplacementCharacterEmotionId(string leftReplacementCharacterEmotionId) { this->leftReplacementCharacterEmotionId = leftReplacementCharacterEmotionId; }
+    void SetLeftReplacementCharacterEmotionId(const string &leftReplacementCharacterEmotionId) { this->leftReplacementCharacterEmotionId = leftReplacementCharacterEmotionId; }
 
     EasingFunction * GetLeftReplacementCharacterXOffsetEasingFunction() { return this->pLeftReplacementCharacterXOffsetEasingFunction; }
     void SetLeftReplacementCharacterXOffsetEasingFunction(EasingFunction *pLeftReplacementCharacterXOffsetEasingFunction) { this->pLeftReplacementCharacterXOffsetEasingFunction = pLeftReplacementCharacterXOffsetEasingFunction; }
 
     string GetRightCharacterId() const { return this->rightCharacterId; }
-    void SetRightCharacterId(string rightCharacterId) { this->rightCharacterId = rightCharacterId; }
+    void SetRightCharacterId(const string &rightCharacterId) { this->rightCharacterId = rightCharacterId; }
 
     string GetRightCharacterEmotionId() const { return this->rightCharacterEmotionId; }
-    void SetRightCharacterEmotionId(string rightCharacterEmotionId) { this->rightCharacterEmotionId = rightCharacterEmotionId; }
+    void SetRightCharacterEmotionId(const string &rightCharacterEmotionId) { this->rightCharacterEmotionId = rightCharacterEmotionId; }
 
     bool GetIsRightCharacterTalking() const { return this->isRightCharacterTalking; }
     void SetIsRightCharacterTalking(bool isRightCharacterTalking) { this->isRightCharacterTalking = isRightCharacterTalking; }
@@ -172,10 +172,10 @@ public:
     void SetIsRightCharacterZoomed(bool isRightCharacterZoomed) { this->isRightCharacterZoomed = isRightCharacterZoomed; }
 
     string GetRightReplacementCharacterId() const { return this->rightReplacementCharacterId; }
-    void SetRightReplacementCharacterId(string rightReplacementCharacterId) { this->rightReplacementCharacterId = rightReplacementCharacterId; }
+    void SetRightReplacementCharacterId(const string &rightReplacementCharacterId) { this->rightReplacementCharacterId = rightReplacementCharacterId; }
 
     string GetRightReplacementCharacterEmotionId() const { return this->rightReplacementCharacterEmotionId; }
-    void SetRightReplacementCharacterEmotionId(string rightReplacementCharacterEmotionId) { this->rightReplacementCharacterEmotionId = rightReplacementCharacterEmotionId; }
+    void SetRightReplacementCharacterEmotionId(const string &rightReplacementCharacterEmotionId) { this->rightReplacementCharacterEmotionId = rightReplacementCharacterEmotionId; }
 
     EasingFunction * GetRightReplacementCharacterXOffsetEasingFunction() { return this->pRightReplacementCharacterXOffsetEasingFunction; }
     void SetRightReplacementCharacterXOffsetEasingFunction(EasingFunction *pRightReplacementCharacterXOffsetEasingFunction) { this->pRightReplacementCharacterXOffsetEasingFunction = pRightReplacementCharacterXOffsetEasingFunction; }
@@ -235,10 +235,10 @@ public:
     void SetActionIndexAfterInterjection(int actionIndexAfterInterjection) { this->actionIndexAfterInterjection = actionIndexAfterInterjection; }
 
     string GetLastShowDialogSpeakerName() const { return this->lastShowDialogSpeakerName; }
-    void SetLastShowDialogSpeakerName(string lastShowDialogSpeakerName) { this->lastShowDialogSpeakerName = lastShowDialogSpeakerName; }
+    void SetLastShowDialogSpeakerName(const string &lastShowDialogSpeakerName) { this->lastShowDialogSpeakerName = lastShowDialogSpeakerName; }
 
     string GetLastShowDialogRawDialogText() const { return this->lastShowDialogRawDialogText; }
-    void SetLastShowDialogRawDialogText(string lastShowDialogRawDialogText) { this->lastShowDialogRawDialogText = lastShowDialogRawDialogText; }
+    void SetLastShowDialogRawDialogText(const string &lastShowDialogRawDialogText) { this->lastShowDialogRawDialogText = lastShowDialogRawDialogText; }
 
     bool GetFastForwardEnabled() { return this->fastForwardEnabled; }
     void SetFastForwardEnabled(bool fastForwardEnabled) { this->fastForwardEnabled = fastForwardEnabled; }
@@ -253,7 +253,7 @@ public:
     void SetIsFinishingDialog(bool isFinishingDialog) { this->isFinishingDialog = isFinishingDialog; }
 
     string GetCurrentSpeakerName() const { return this->currentSpeakerName; }
-    void SetCurrentSpeakerName(string currentSpeakerName) { this->currentSpeakerName = currentSpeakerName; }
+    void SetCurrentSpeakerName(const string &currentSpeakerName) { this->currentSpeakerName = currentSpeakerName; }
 
     CharacterPosition GetBreakdownActivePosition() { return this->breakdownActivePosition; }
     void SetBreakdownActivePosition(CharacterPosition breakdownActivePosition)

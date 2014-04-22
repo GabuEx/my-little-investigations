@@ -86,7 +86,7 @@ AudioManager::~AudioManager()
     pAmbianceVolumeChangeForDialogEase = NULL;
 }
 
-void AudioManager::PlayBgmWithId(string id)
+void AudioManager::PlayBgmWithId(const string &id)
 {
     if (id.length() == 0)
     {
@@ -148,7 +148,7 @@ void AudioManager::StopCurrentBgm(bool isInstant)
     }
 }
 
-void AudioManager::PlayAmbianceWithId(string id)
+void AudioManager::PlayAmbianceWithId(const string &id)
 {
     if (id.length() == 0)
     {
@@ -201,7 +201,7 @@ void AudioManager::StopCurrentAmbiance(bool isInstant)
     }
 }
 
-void AudioManager::PlayRandomHoofstepSound(string textureName, double volume)
+void AudioManager::PlayRandomHoofstepSound(const string &textureName, double volume)
 {
     string randomSoundId = hoofstepSoundIdListByTexture[textureName][rand() % hoofstepSoundIdListByTexture[textureName].size()];
     playSound(randomSoundId, volume);

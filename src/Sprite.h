@@ -48,7 +48,7 @@ public:
         managerSource = ManagerSourceCommonResources;
     }
 
-    Sprite(string spriteSheetImageId, RectangleWH spriteClipRect)
+    Sprite(const string &spriteSheetImageId, RectangleWH spriteClipRect)
     {
         this->spriteSheetImageId = spriteSheetImageId;
         this->spriteClipRect = spriteClipRect;
@@ -73,7 +73,7 @@ public:
     void DrawClipped(Vector2 position, RectangleWH clipRect, bool flipHorizontally);
     void DrawClipped(Vector2 position, RectangleWH clipRect, bool flipHorizontally, Color color);
 
-    void UpdateReadiness(string newLocationId, bool *pLoadSprite, bool *pDeleteSprite);
+    void UpdateReadiness(const string &newLocationId, bool *pLoadSprite, bool *pDeleteSprite);
     bool IsReady();
 
 //private:

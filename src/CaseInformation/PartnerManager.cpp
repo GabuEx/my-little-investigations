@@ -48,7 +48,7 @@ PartnerManager::~PartnerManager()
     }
 }
 
-Partner * PartnerManager::GetPartnerFromId(string id)
+Partner * PartnerManager::GetPartnerFromId(const string &id)
 {
     return partnerByIdMap[id];
 }
@@ -63,7 +63,7 @@ string PartnerManager::GetCurrentPartnerId()
     return pCurrentPartner != NULL ? pCurrentPartner->GetId() : string("");
 }
 
-void PartnerManager::SetCurrentPartner(string newPartnerId)
+void PartnerManager::SetCurrentPartner(const string &newPartnerId)
 {
     pCurrentPartner = GetPartnerFromId(newPartnerId);
 }

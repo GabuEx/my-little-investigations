@@ -50,7 +50,7 @@ const int HeaderOffset = 5; // px
 const int DividerPadding = 3; // px
 const int TextPadding = 8; // px
 
-CaseSelectorItem::CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotFullSizeSprite, string caseUuid, string caseTitle, string caseDescription, string caseFilePath, bool isCompatible, Version requiredVersion)
+CaseSelectorItem::CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotFullSizeSprite, const string &caseUuid, const string &caseTitle, const string &caseDescription, const string &caseFilePath, bool isCompatible, Version requiredVersion)
 {
     this->shouldDisplayStar = IsCaseCompleted(caseUuid);
     this->pScreenshotSprite = pScreenshotSprite;

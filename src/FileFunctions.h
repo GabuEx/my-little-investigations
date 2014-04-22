@@ -40,18 +40,18 @@ using namespace std;
 void LoadFilePathsAndCaseUuids(string executableFilePath);
 
 #ifdef GAME_EXECUTABLE
-string GetUuidFromFilePath(string caseFilePath);
+string GetUuidFromFilePath(const string &caseFilePath);
 
 vector<string> GetCaseFilePaths();
-bool IsCaseCorrectlySigned(string caseFilePath, bool useLookupTable = true);
+bool IsCaseCorrectlySigned(const string &caseFilePath, bool useLookupTable = true);
 void PopulateCaseSignatureMap();
 vector<string> GetCaseUuids();
-bool IsCaseCompleted(string caseUuid);
-bool CopyCaseFileToCaseFolder(string caseFilePath, string caseUuid);
+bool IsCaseCompleted(const string &caseUuid);
+bool CopyCaseFileToCaseFolder(const string &caseFilePath, const string &caseUuid);
 #endif
 
-string ConvertSeparatorsInPath(string path);
-string GetFileNameFromFilePath(string path);
+string ConvertSeparatorsInPath(string &path);
+string GetFileNameFromFilePath(const string &path);
 
 string GetCommonResourcesFilePath();
 
@@ -74,25 +74,25 @@ void LoadConfigurations();
 
 string GetCompletedCasesFilePath();
 bool CompletedCasesFileExists();
-void SaveCompletedCase(string caseUuid);
+void SaveCompletedCase(const string &caseUuid);
 void LoadCompletedCases();
 
 bool SaveFileExists();
-bool SaveFileExistsForCase(string caseUuid);
-string GetSaveFolderPathForCase(string caseUuid);
-vector<string> GetSaveFilePathsForCase(string caseUuid);
-bool IsAutosave(string saveFilePath);
+bool SaveFileExistsForCase(const string &caseUuid);
+string GetSaveFolderPathForCase(const string &caseUuid);
+vector<string> GetSaveFilePathsForCase(const string &caseUuid);
+bool IsAutosave(const string &saveFilePath);
 
-string GetDialogsSeenListFilePathForCase(string caseUuid);
-bool DialogsSeenListFileExistsForCase(string caseUuid);
-void SaveDialogsSeenListForCase(string caseUuid);
-void LoadDialogsSeenListForCase(string caseUuid);
+string GetDialogsSeenListFilePathForCase(const string &caseUuid);
+bool DialogsSeenListFileExistsForCase(const string &caseUuid);
+void SaveDialogsSeenListForCase(const string &caseUuid);
+void LoadDialogsSeenListForCase(const string &caseUuid);
 
 bool CheckForExistingInstance();
 #endif
 
 #ifndef GAME_EXECUTABLE
-string GetFileNameFromUri(string uri);
+string GetFileNameFromUri(const string &uri);
 
 string GetExecutionPath();
 string GetCommonAppDataPath();
@@ -113,13 +113,13 @@ void LaunchGameExecutable();
 #endif
 
 #ifdef UPDATER
-bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath);
-bool RemoveFile(string filePath);
-bool RenameFile(string oldFilePath, string newFilePath);
+bool ApplyDeltaFile(const string &oldFilePath, const string &deltaFilePath, const string &newFilePath);
+bool RemoveFile(const string &filePath);
+bool RenameFile(const string &oldFilePath, const string &newFilePath);
 #endif
 #ifdef LAUNCHER
-bool LaunchUpdater(string versionsXmlFilePath);
-string SaveVersionsXmlFile(string versionsXmlContent);
+bool LaunchUpdater(const string &versionsXmlFilePath);
+string SaveVersionsXmlFile(const string &versionsXmlContent);
 #endif
 
 #endif

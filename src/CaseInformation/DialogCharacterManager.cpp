@@ -255,7 +255,7 @@ void DialogCharacterManager::DrawInterjectionForState(State *pState)
     pState->GetInterjectionSprite()->Draw(Vector2(interjectionSpriteXOffset, 0));
 }
 
-void DialogCharacterManager::BeginAnimations(string characterId, string emotionId)
+void DialogCharacterManager::BeginAnimations(const string &characterId, const string &emotionId)
 {
     if (characterId.length() == 0)
     {
@@ -265,7 +265,7 @@ void DialogCharacterManager::BeginAnimations(string characterId, string emotionI
     characterByIdMap[characterId]->BeginAnimations(emotionId);
 }
 
-void DialogCharacterManager::Update(string characterId, string &emotionId, int delta, bool finishOneTimeEmotions, bool isInBackground)
+void DialogCharacterManager::Update(const string &characterId, string &emotionId, int delta, bool finishOneTimeEmotions, bool isInBackground)
 {
     if (characterId.length() == 0)
     {
@@ -275,7 +275,7 @@ void DialogCharacterManager::Update(string characterId, string &emotionId, int d
     characterByIdMap[characterId]->Update(delta, emotionId, finishOneTimeEmotions, isInBackground);
 }
 
-void DialogCharacterManager::Draw(string characterId, string emotionId, bool isTalking, bool shouldChangeMouth, bool isRightSide, EasingFunction *pCharacterXOffsetEasingFunction)
+void DialogCharacterManager::Draw(const string &characterId, const string &emotionId, bool isTalking, bool shouldChangeMouth, bool isRightSide, EasingFunction *pCharacterXOffsetEasingFunction)
 {
     int xOffset = (int)(pCharacterXOffsetEasingFunction == NULL ? 0 : pCharacterXOffsetEasingFunction->GetCurrentValue());
 
@@ -287,7 +287,7 @@ void DialogCharacterManager::Draw(string characterId, string emotionId, bool isT
     characterByIdMap[characterId]->Draw(emotionId, isTalking, shouldChangeMouth, isRightSide, xOffset);
 }
 
-string DialogCharacterManager::GetCharacterNameFromId(string characterId)
+string DialogCharacterManager::GetCharacterNameFromId(const string &characterId)
 {
     if (characterId.length() == 0 || characterByIdMap.count(characterId) == 0)
     {
@@ -299,7 +299,7 @@ string DialogCharacterManager::GetCharacterNameFromId(string characterId)
     }
 }
 
-DialogCharacter * DialogCharacterManager::GetCharacterFromId(string characterId)
+DialogCharacter * DialogCharacterManager::GetCharacterFromId(const string &characterId)
 {
     return characterByIdMap[characterId];
 }
@@ -737,7 +737,7 @@ void DialogCharacter::Draw(string emotionId, bool isTalking, bool shouldChangeMo
     }
 }
 
-Sprite * DialogCharacter::GetBaseSpriteForEmotion(string emotionId)
+Sprite * DialogCharacter::GetBaseSpriteForEmotion(const string &emotionId)
 {
     Sprite *pSprite = NULL;
 
@@ -757,7 +757,7 @@ Sprite * DialogCharacter::GetBaseSpriteForEmotion(string emotionId)
     return pSprite;
 }
 
-Sprite * DialogCharacter::GetEyeSpriteForEmotion(string emotionId)
+Sprite * DialogCharacter::GetEyeSpriteForEmotion(const string &emotionId)
 {
     vector<Sprite *> *pEyeSpriteList = NULL;
 
@@ -786,7 +786,7 @@ Sprite * DialogCharacter::GetEyeSpriteForEmotion(string emotionId)
     return (*pEyeSpriteList)[min(currentEyeFrame, (unsigned int)pEyeSpriteList->size() - 1)];
 }
 
-Sprite * DialogCharacter::GetMouthSpriteForEmotion(string emotionId, bool isTalking, bool shouldChangeMouth)
+Sprite * DialogCharacter::GetMouthSpriteForEmotion(const string &emotionId, bool isTalking, bool shouldChangeMouth)
 {
     vector<Sprite *> *pMouthSpriteList = NULL;
 
@@ -863,7 +863,7 @@ Sprite * DialogCharacter::GetMouthSpriteForEmotion(string emotionId, bool isTalk
     return (*pMouthSpriteList)[min(spriteIndex, (int)pMouthSpriteList->size() - 1)];
 }
 
-vector<Animation *> * DialogCharacter::GetForegroundLayersForEmotion(string emotionId)
+vector<Animation *> * DialogCharacter::GetForegroundLayersForEmotion(const string &emotionId)
 {
     vector<Animation *> *pForegroundLayers = NULL;
 
@@ -937,12 +937,12 @@ Color DialogCharacter::GetBackgroundColor()
     return backgroundColor;
 }
 
-int DialogCharacter::GetLeadInTimeForEmotion(string emotionId)
+int DialogCharacter::GetLeadInTimeForEmotion(const string &emotionId)
 {
     return characterOneTimeEmotions.count(emotionId) > 0 ? characterOneTimeEmotions[emotionId]->GetLeadInTime() : 0;
 }
 
-void DialogCharacter::PopulateEyeFrameDurationList(string emotionId)
+void DialogCharacter::PopulateEyeFrameDurationList(const string &emotionId)
 {
     eyeFrameDurationList.clear();
 

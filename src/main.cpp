@@ -72,7 +72,7 @@ string title = "My Little Investigations Launcher";
 #endif
 
 #ifdef GAME_EXECUTABLE
-bool ValidateCaseFile(string caseFileName, string *pCaseUuid);
+bool ValidateCaseFile(const string &caseFileName, string *pCaseUuid);
 #endif
 
 #ifdef __OSX
@@ -490,7 +490,7 @@ int main(int argc, char * argv[])
 }
 
 #ifdef GAME_EXECUTABLE
-bool ValidateCaseFile(string caseFileName, string *pCaseUuid)
+bool ValidateCaseFile(const string &caseFileName, string *pCaseUuid)
 {
     if (!ResourceLoader::GetInstance()->LoadCase(caseFileName))
     {

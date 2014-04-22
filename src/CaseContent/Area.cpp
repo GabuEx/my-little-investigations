@@ -68,7 +68,7 @@ void Area::Begin()
     Begin(GetStartLocation(), false /* isLoadingFromSaveFile */);
 }
 
-void Area::Begin(string startLocationId, bool isLoadingFromSaveFile)
+void Area::Begin(const string &startLocationId, bool isLoadingFromSaveFile)
 {
     Begin(Case::GetInstance()->GetContentManager()->GetLocationFromId(startLocationId), isLoadingFromSaveFile);
 }
@@ -153,7 +153,7 @@ void Area::LoadFromSaveFile(XmlReader *pReader, Area **ppCurrentArea)
     (*ppCurrentArea)->pCurrentLocation->LoadFromSaveFile(pReader);
 }
 
-void Area::OnLocationExited(Location *pSender, Location *pTargetLocation, string transitionId)
+void Area::OnLocationExited(Location *pSender, Location *pTargetLocation, const string &transitionId)
 {
     if (pSender == pCurrentLocation)
     {
@@ -163,7 +163,7 @@ void Area::OnLocationExited(Location *pSender, Location *pTargetLocation, string
     }
 }
 
-void Area::SwapLocations(Location *pNewLocation, string transitionId, bool isLoadingFromSaveFile)
+void Area::SwapLocations(Location *pNewLocation, const string &transitionId, bool isLoadingFromSaveFile)
 {
     if (pCurrentLocation != NULL)
     {

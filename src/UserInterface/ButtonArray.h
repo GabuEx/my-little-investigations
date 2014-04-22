@@ -46,7 +46,7 @@ class Button
 public:
     static void Initialize(MLIFont *pTextFont, Image *pCheckMarkImage);
 
-    Button(int id, string text);
+    Button(int id, const string &text);
 
     ~Button();
 
@@ -61,7 +61,7 @@ public:
     static string GetClickSoundEffect() { return "ButtonClick3"; }
 
     string GetCustomIconId() const { return this->customIconId; }
-    void SetCustomIconId(string customIconId);
+    void SetCustomIconId(const string &customIconId);
 
     bool GetIsHidden() const { return this->isHidden; }
     void SetIsHidden(bool isHidden) { this->isHidden = isHidden; }

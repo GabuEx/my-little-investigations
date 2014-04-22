@@ -736,7 +736,7 @@ void Encounter::OnButtonArrayCanceled(ButtonArray *pSender)
     // Nothing to do here - no button array is cancelable.
 }
 
-void Encounter::OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, string evidenceId)
+void Encounter::OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, const string &evidenceId)
 {
     Conversation *pConversationToUse = NULL;
 

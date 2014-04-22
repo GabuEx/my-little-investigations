@@ -248,20 +248,21 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
 }
 
 #ifdef GAME_EXECUTABLE
-string GetUuidFromFilePath(string filePath)
+string GetUuidFromFilePath(const string &filePath)
 {
-    if (filePath.rfind(pathSeparator) != string::npos)
+    string uuid = filePath;
+    if (uuid.rfind(pathSeparator) != string::npos)
     {
-        filePath = filePath.substr(filePath.rfind(pathSeparator) + 1);
+        uuid = uuid.substr(uuid.rfind(pathSeparator) + 1);
     }
 
-    if (filePath.rfind(".") != string::npos)
+    if (uuid.rfind(".") != string::npos)
     {
-        filePath = filePath.substr(0, filePath.rfind("."));
+        uuid = uuid.substr(0, uuid.rfind("."));
     }
 
     // What's left is the UUID.
-    return filePath;
+    return uuid;
 }
 
 vector<string> GetCaseFilePaths()
@@ -311,7 +312,7 @@ vector<string> GetCaseFilePaths()
     return filePaths;
 }
 
-bool IsCaseCorrectlySigned(string caseFilePath, bool useLookupTable)
+bool IsCaseCorrectlySigned(const string &caseFilePath, bool useLookupTable)
 {
     if (useLookupTable && gCaseIsSignedByFilePathMap.count(caseFilePath))
     {
@@ -386,7 +387,7 @@ vector<string> GetCaseUuids()
     return caseUuids;
 }
 
-bool IsCaseCompleted(string caseUuid)
+bool IsCaseCompleted(const string &caseUuid)
 {
     bool isCaseCompleted = false;
 
@@ -402,7 +403,7 @@ bool IsCaseCompleted(string caseUuid)
     return isCaseCompleted;
 }
 
-bool CopyCaseFileToCaseFolder(string caseFilePath, string caseUuid)
+bool CopyCaseFileToCaseFolder(const string &caseFilePath, const string &caseUuid)
 {
     bool success = false;
 
@@ -433,7 +434,7 @@ bool CopyCaseFileToCaseFolder(string caseFilePath, string caseUuid)
 }
 #endif
 
-string ConvertSeparatorsInPath(string path)
+string ConvertSeparatorsInPath(string &path)
 {
     while (path.find_first_of(otherPathSeparator) != string::npos)
     {
@@ -443,7 +444,7 @@ string ConvertSeparatorsInPath(string path)
     return path;
 }
 
-string GetFileNameFromFilePath(string path)
+string GetFileNameFromFilePath(const string &path)
 {
     return path.substr(path.find_last_of(pathSeparator) + 1);
 }
@@ -707,7 +708,7 @@ bool CompletedCasesFileExists()
     return completedCasesFileStream.is_open();
 }
 
-void SaveCompletedCase(string caseUuid)
+void SaveCompletedCase(const string &caseUuid)
 {
     bool caseAlreadyCompleted = false;
 
@@ -806,12 +807,12 @@ bool SaveFileExists()
     return saveFileExists;
 }
 
-bool SaveFileExistsForCase(string caseUuid)
+bool SaveFileExistsForCase(const string &caseUuid)
 {
     return GetSaveFilePathsForCase(caseUuid).size() > 0;
 }
 
-string GetSaveFolderPathForCase(string caseUuid)
+string GetSaveFolderPathForCase(const string &caseUuid)
 {
     string path = savesPath + caseUuid + pathSeparator;
 #ifdef __unix
@@ -820,7 +821,7 @@ string GetSaveFolderPathForCase(string caseUuid)
     return path;
 }
 
-vector<string> GetSaveFilePathsForCase(string caseUuid)
+vector<string> GetSaveFilePathsForCase(const string &caseUuid)
 {
     vector<string> filePaths;
 
@@ -871,24 +872,24 @@ vector<string> GetSaveFilePathsForCase(string caseUuid)
     return filePaths;
 }
 
-bool IsAutosave(string saveFilePath)
+bool IsAutosave(const string &saveFilePath)
 {
     return GetUuidFromFilePath(saveFilePath) == "00000000-0000-0000-0000-000000000000";
 }
 
-string GetDialogsSeenListFilePathForCase(string caseUuid)
+string GetDialogsSeenListFilePathForCase(const string &caseUuid)
 {
     return dialogSeenListsPath + caseUuid + string(".xml");
 }
 
-bool DialogsSeenListFileExistsForCase(string caseUuid)
+bool DialogsSeenListFileExistsForCase(const string &caseUuid)
 {
     ifstream dialogsSeenListFileStream(GetDialogsSeenListFilePathForCase(caseUuid).c_str());
 
     return dialogsSeenListFileStream.is_open();
 }
 
-void SaveDialogsSeenListForCase(string caseUuid)
+void SaveDialogsSeenListForCase(const string &caseUuid)
 {
     XmlWriter dialogsSeenListWriter(GetDialogsSeenListFilePathForCase(caseUuid).c_str());
 
@@ -904,7 +905,7 @@ void SaveDialogsSeenListForCase(string caseUuid)
     dialogsSeenListWriter.EndElement();
 }
 
-void LoadDialogsSeenListForCase(string caseUuid)
+void LoadDialogsSeenListForCase(const string &caseUuid)
 {
     if (DialogsSeenListFileExistsForCase(caseUuid))
     {
@@ -973,7 +974,7 @@ bool CheckForExistingInstance()
 #endif
 
 #ifndef GAME_EXECUTABLE
-string GetFileNameFromUri(string uri)
+string GetFileNameFromUri(const string &uri)
 {
     string fileName = uri;
 
@@ -1335,7 +1336,7 @@ void LaunchGameExecutable()
 #endif
 
 #ifdef UPDATER
-bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath)
+bool ApplyDeltaFile(const string &oldFilePath, const string &deltaFilePath, const string &newFilePath)
 {
 #ifdef __WINDOWS
     string executablePath = executionPath + "deltatool" + pathSeparator + "xdelta3.exe";
@@ -1393,7 +1394,7 @@ bool ApplyDeltaFile(string oldFilePath, string deltaFilePath, string newFilePath
     return success;
 }
 
-bool RemoveFile(string filePath)
+bool RemoveFile(const string &filePath)
 {
 #if defined(__WINDOWS) || defined(__unix)
     return remove(filePath.c_str()) == 0;
@@ -1411,7 +1412,7 @@ bool RemoveFile(string filePath)
 #endif
 }
 
-bool RenameFile(string oldFilePath, string newFilePath)
+bool RenameFile(const string &oldFilePath, const string &newFilePath)
 {
 #if defined(__WINDOWS) || defined(__unix)
     return rename(oldFilePath.c_str(), newFilePath.c_str()) == 0;
@@ -1431,7 +1432,7 @@ bool RenameFile(string oldFilePath, string newFilePath)
 }
 #endif
 #ifdef LAUNCHER
-bool LaunchUpdater(string versionsXmlFilePath)
+bool LaunchUpdater(const string &versionsXmlFilePath)
 {
 #ifdef __WINDOWS
     string executablePath = executionPath + "MyLittleInvestigationsUpdater.exe";
@@ -1470,7 +1471,7 @@ bool LaunchUpdater(string versionsXmlFilePath)
         );
 }
 
-string SaveVersionsXmlFile(string versionsXmlContent)
+string SaveVersionsXmlFile(const string &versionsXmlContent)
 {
     string versionsXmlFilePath = GetTempDirectoryPath() + "mli-versions.xml";
 

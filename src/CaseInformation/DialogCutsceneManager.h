@@ -51,12 +51,12 @@ public:
     DialogCutsceneManager() {}
     ~DialogCutsceneManager();
 
-    DialogCutsceneAnimation * GetAnimationFromId(string id)
+    DialogCutsceneAnimation * GetAnimationFromId(const string &id)
     {
         return idToAnimationMap[id];
     }
 
-    DialogCutsceneAnimationElement * GetElementFromId(string id)
+    DialogCutsceneAnimationElement * GetElementFromId(const string &id)
     {
         return idToElementMap[id];
     }
@@ -86,13 +86,13 @@ public:
     ~DialogCutsceneAnimation();
 
     string GetId() const { return this->id; }
-    void setId(string id) { this->id = id; }
+    void setId(const string &id) { this->id = id; }
 
     int GetChangeBackgroundCount() const { return this->changeBackgroundCount; }
     void IncrementChangeBackgroundCount() { this->changeBackgroundCount++; }
 
     string GetBackgroundSpriteId() const { return this->backgroundSpriteId; }
-    void SetBackgroundSpriteId(string backgroundSpriteId) { this->backgroundSpriteId = backgroundSpriteId; }
+    void SetBackgroundSpriteId(const string &backgroundSpriteId) { this->backgroundSpriteId = backgroundSpriteId; }
 
     Sprite * GetBackgroundSprite();
     vector<DialogCutsceneAnimationElement *> * GetElementList();
@@ -158,7 +158,7 @@ public:
         bTint = 0;
     }
 
-    DialogCutsceneAnimationElement(string spriteId, int x, int y, int a, int r, int g, int b);
+    DialogCutsceneAnimationElement(const string &spriteId, int x, int y, int a, int r, int g, int b);
     DialogCutsceneAnimationElement(XmlReader *pReader);
 
     Sprite * GetSprite();

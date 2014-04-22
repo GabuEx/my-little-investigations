@@ -52,7 +52,7 @@ SpriteManager::~SpriteManager()
     pImageByIdSemaphore = NULL;
 }
 
-Sprite * SpriteManager::GetSpriteFromId(string id)
+Sprite * SpriteManager::GetSpriteFromId(const string &id)
 {
     if (id.length() == 0)
     {
@@ -62,7 +62,7 @@ Sprite * SpriteManager::GetSpriteFromId(string id)
     return spriteByIdMap[id];
 }
 
-Image * SpriteManager::GetImageFromId(string id)
+Image * SpriteManager::GetImageFromId(const string &id)
 {
     Image *pSprite = NULL;
 
@@ -73,13 +73,13 @@ Image * SpriteManager::GetImageFromId(string id)
     return pSprite;
 }
 
-void SpriteManager::AddSprite(string id, string spriteSheetId, RectangleWH spriteClipRect)
+void SpriteManager::AddSprite(const string &id, const string &spriteSheetId, RectangleWH spriteClipRect)
 {
     spriteByIdMap[id] = new Sprite(spriteSheetId, spriteClipRect);
     spriteByIdMap[id]->SetManagerSource(managerSource);
 }
 
-void SpriteManager::AddImage(string id, Image *pSprite)
+void SpriteManager::AddImage(const string &id, Image *pSprite)
 {
     SDL_SemWait(pImageByIdSemaphore);
     if (smartSpriteByIdMap[id] != NULL)
@@ -90,12 +90,12 @@ void SpriteManager::AddImage(string id, Image *pSprite)
     SDL_SemPost(pImageByIdSemaphore);
 }
 
-void SpriteManager::LoadImageFromFilePath(string id)
+void SpriteManager::LoadImageFromFilePath(const string &id)
 {
     AddImage(id, ResourceLoader::GetInstance()->LoadImage(smartSpriteFilePathByIdMap[id]));
 }
 
-void SpriteManager::DeleteImage(string id)
+void SpriteManager::DeleteImage(const string &id)
 {
     SDL_SemWait(pImageByIdSemaphore);
     if (smartSpriteByIdMap[id] != NULL)
@@ -138,7 +138,7 @@ void SpriteManager::LoadFromXml(XmlReader *pReader)
     pReader->EndElement();
 }
 
-void SpriteManager::FinishUpdateLoadedTextures(string newLocationId)
+void SpriteManager::FinishUpdateLoadedTextures(const string &newLocationId)
 {
     for (map<string, Sprite *>::iterator iter = spriteByIdMap.begin(); iter != spriteByIdMap.end(); ++iter)
     {

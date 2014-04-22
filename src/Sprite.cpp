@@ -180,7 +180,7 @@ void Sprite::DrawClipped(Vector2 position, RectangleWH clipRect, bool flipHorizo
         color);
 }
 
-void Sprite::UpdateReadiness(string newLocationId, bool *pLoadSprite, bool *pDeleteSprite)
+void Sprite::UpdateReadiness(const string &newLocationId, bool *pLoadSprite, bool *pDeleteSprite)
 {
     vector<string> parentLocationList = Case::GetInstance()->GetParentLocationListForSpriteSheetId(spriteSheetImageId);
     bool isNeeded = false;

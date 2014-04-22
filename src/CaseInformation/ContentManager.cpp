@@ -56,22 +56,22 @@ ContentManager::~ContentManager()
     Conversation::showDialogActionListsById.clear();
 }
 
-Area * ContentManager::GetAreaFromId(string areaId)
+Area * ContentManager::GetAreaFromId(const string &areaId)
 {
     return areaByIdMap[areaId];
 }
 
-Location * ContentManager::GetLocationFromId(string locationId)
+Location * ContentManager::GetLocationFromId(const string &locationId)
 {
     return locationByIdMap[locationId];
 }
 
-Encounter * ContentManager::GetEncounterFromId(string encounterId)
+Encounter * ContentManager::GetEncounterFromId(const string &encounterId)
 {
     return encounterByIdMap[encounterId];
 }
 
-Conversation * ContentManager::GetConversationFromId(string conversationId)
+Conversation * ContentManager::GetConversationFromId(const string &conversationId)
 {
     return conversationByIdMap[conversationId];
 }

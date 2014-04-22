@@ -51,10 +51,10 @@ public:
         Image *pDirectionArrow);
 
     Notification();
-    Notification(string rawNotificationText);
-    Notification(string rawNotificationText, string partnerId);
-    Notification(string rawNotificationText, string oldEvidenceId, string newEvidenceId);
-    Notification(string rawNotificationText, string partnerId, string oldEvidenceId, string newEvidenceId);
+    Notification(const string &rawNotificationText);
+    Notification(const string &rawNotificationText, const string &partnerId);
+    Notification(const string &rawNotificationText, const string &oldEvidenceId, const string &newEvidenceId);
+    Notification(const string &rawNotificationText, const string &partnerId, const string &oldEvidenceId, const string &newEvidenceId);
 
     ~Notification();
 
@@ -69,7 +69,7 @@ public:
     void Reset();
 
 private:
-    void Init(string rawNotificationText, string partnerId, string oldEvidenceId, string newEvidenceId);
+    void Init(const string &rawNotificationText, const string &partnerId, const string &oldEvidenceId, const string &newEvidenceId);
 
     static RectangleWH textAreaRect;
     static double desiredPadding;

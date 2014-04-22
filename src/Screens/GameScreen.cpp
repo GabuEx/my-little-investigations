@@ -250,7 +250,7 @@ void GameScreen::Draw()
     Case::GetInstance()->Draw();
 }
 
-void GameScreen::OnCaseParsingComplete(string caseFileName)
+void GameScreen::OnCaseParsingComplete(const string &caseFileName)
 {
     if (caseFileName == "case.xml")
     {

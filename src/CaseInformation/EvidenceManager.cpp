@@ -113,56 +113,56 @@ EvidenceManager::~EvidenceManager()
     delete pWrongCombinationConversation;
 }
 
-Sprite * EvidenceManager::GetSmallSpriteForId(string id)
+Sprite * EvidenceManager::GetSmallSpriteForId(const string &id)
 {
     return idToItemMap[id]->GetSmallSprite();
 }
 
-Sprite * EvidenceManager::GetLargeSpriteForId(string id)
+Sprite * EvidenceManager::GetLargeSpriteForId(const string &id)
 {
     return idToItemMap[id]->GetLargeSprite();
 }
 
-string EvidenceManager::GetNameForId(string id)
+string EvidenceManager::GetNameForId(const string &id)
 {
     return idToItemMap[id]->GetName();
 }
 
-string EvidenceManager::GetDescriptionForId(string id)
+string EvidenceManager::GetDescriptionForId(const string &id)
 {
     return idToItemMap[id]->GetDescription();
 }
 
-bool EvidenceManager::IsEvidenceWithIdProfile(string id)
+bool EvidenceManager::IsEvidenceWithIdProfile(const string &id)
 {
     return idToItemMap[id]->GetIsProfile();
 }
 
-bool EvidenceManager::IsEvidenceWithIdEnabled(string id)
+bool EvidenceManager::IsEvidenceWithIdEnabled(const string &id)
 {
     return idToItemMap[id]->GetIsEnabled();
 }
 
-bool EvidenceManager::IsEvidenceWithIdVisible(string id)
+bool EvidenceManager::IsEvidenceWithIdVisible(const string &id)
 {
     return idToItemMap[id]->GetIsEnabled() && !idToItemMap[id]->GetIsHidden();
 }
 
-void EvidenceManager::EnableEvidenceWithId(string id)
+void EvidenceManager::EnableEvidenceWithId(const string &id)
 {
     idToItemMap[id]->SetIsEnabled(true);
     evidenceCount++;
     CheckAreEvidenceCombinations();
 }
 
-void EvidenceManager::DisableEvidenceWithId(string id)
+void EvidenceManager::DisableEvidenceWithId(const string &id)
 {
     idToItemMap[id]->SetIsHidden(true);
     evidenceCount--;
     CheckAreEvidenceCombinations();
 }
 
-Conversation * EvidenceManager::GetConversationForEvidenceCombination(string evidenceId1, string evidenceId2)
+Conversation * EvidenceManager::GetConversationForEvidenceCombination(const string &evidenceId1, const string &evidenceId2)
 {
     EvidenceIdPair pair(evidenceId1, evidenceId2);
 

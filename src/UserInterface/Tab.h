@@ -51,15 +51,15 @@ public:
 
     Tab();
     Tab(int xPosition, bool isClickable);
-    Tab(int xPosition, bool isClickable, string text);
-    Tab(int xPosition, bool isClickable, string text, bool useCancelClickSoundEffect);
-    Tab(int xPosition, bool isClickable, string text, bool useCancelClickSoundEffect, TabRow row);
-    Tab(int xPosition, bool isClickable, string text, bool useCancelClickSoundEffect, TabRow row, bool canPulse);
+    Tab(int xPosition, bool isClickable, const string &text);
+    Tab(int xPosition, bool isClickable, const string &text, bool useCancelClickSoundEffect);
+    Tab(int xPosition, bool isClickable, const string &text, bool useCancelClickSoundEffect, TabRow row);
+    Tab(int xPosition, bool isClickable, const string &text, bool useCancelClickSoundEffect, TabRow row, bool canPulse);
 
     ~Tab();
 
     string GetText() const { return this->text; }
-    void SetText(string text) { this->text = text; }
+    void SetText(const string &text) { this->text = text; }
 
     bool GetIsEnabled() const { return this->isEnabled; }
     void SetIsEnabled(bool isEnabled) { this->isEnabled = isEnabled; }
@@ -89,7 +89,7 @@ public:
     void Reset();
 
 private:
-    void Init(int xPosition, bool isClickable, string text, bool useCancelClickSoundEffect, TabRow row, bool canPulse);
+    void Init(int xPosition, bool isClickable, const string &text, bool useCancelClickSoundEffect, TabRow row, bool canPulse);
     int GetYPositionFromRow() const;
     bool GetShouldShowPulse();
 

@@ -39,7 +39,7 @@ using namespace std;
 class PromptOverlayEventListener
 {
 public:
-    virtual void OnPromptOverlayValueReturned(PromptOverlay *pSender, string value) = 0;
+    virtual void OnPromptOverlayValueReturned(PromptOverlay *pSender, const string &value) = 0;
 };
 
 class PromptOverlayEventProvider
@@ -56,7 +56,7 @@ public:
         listenerList.remove(pListener);
     }
 
-    void RaisePromptOverlayValueReturned(PromptOverlay *pSender, string value)
+    void RaisePromptOverlayValueReturned(PromptOverlay *pSender, const string &value)
     {
         for (list<PromptOverlayEventListener *>::iterator iter = listenerList.begin(); iter != listenerList.end(); ++iter)
         {

@@ -53,18 +53,18 @@ public:
     Location * GetStartLocation();
 
     string GetId() const { return this->id; }
-    void SetId(string id) { this->id = id; }
+    void SetId(const string &id) { this->id = id; }
 
     string GetName() const { return this->name; }
-    void SetName(string name) { this->name = name; }
+    void SetName(const string &name) { this->name = name; }
 
     string GetStartLocationId() const { return this->startLocationId; }
-    void SetStartLocationId(string startLocationId) { this->startLocationId = startLocationId; }
+    void SetStartLocationId(const string &startLocationId) { this->startLocationId = startLocationId; }
 
     bool GetIsFinished() const { return pCurrentLocation == NULL; }
 
     void Begin();
-    void Begin(string startLocationId, bool isLoadingFromSaveFile);
+    void Begin(const string &startLocationId, bool isLoadingFromSaveFile);
     void Update(int delta);
     void Draw();
     void DrawForScreenshot();
@@ -73,11 +73,11 @@ public:
     void SaveToSaveFile(XmlWriter *pWriter);
     static void LoadFromSaveFile(XmlReader *pReader, Area **ppCurrentArea);
 
-    void OnLocationExited(Location *pSender, Location *pTargetLocation, string transitionId);
+    void OnLocationExited(Location *pSender, Location *pTargetLocation, const string &transitionId);
 
 private:
     void Begin(Location *pNewLocation, bool isLoadingFromSaveFile);
-    void SwapLocations(Location *pNewLocation, string transitionId, bool isLoadingFromSaveFile);
+    void SwapLocations(Location *pNewLocation, const string &transitionId, bool isLoadingFromSaveFile);
     void LoadFromSaveFile(XmlReader *pReader);
 
     Location *pStartLocation;

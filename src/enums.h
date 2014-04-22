@@ -152,13 +152,13 @@ enum SelectionScreenType
     SelectionScreenTypeLoadGame,
 };
 
-CharacterDirection StringToCharacterDirection(string s);
+CharacterDirection StringToCharacterDirection(const string &s);
 string CharacterDirectionToString(CharacterDirection d);
-CharacterPosition StringToCharacterPosition(string s);
-FieldCharacterDirection StringToFieldCharacterDirection(string s);
+CharacterPosition StringToCharacterPosition(const string &s);
+FieldCharacterDirection StringToFieldCharacterDirection(const string &s);
 string FieldCharacterDirectionToString(FieldCharacterDirection d);
-FieldCharacterState StringToFieldCharacterState(string s);
-FieldCustomCursorState StringToFieldCustomCursorState(string s);
-TransitionDirection StringToTransitionDirection(string s);
+FieldCharacterState StringToFieldCharacterState(const string &s);
+FieldCustomCursorState StringToFieldCustomCursorState(const string &s);
+TransitionDirection StringToTransitionDirection(const string &s);
 
 #endif

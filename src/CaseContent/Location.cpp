@@ -688,7 +688,7 @@ void Location::UpdateLoadedTextures(bool waitUntilLoaded)
     Case::GetInstance()->UpdateLoadedTextures(GetId(), waitUntilLoaded);
 }
 
-void Location::Begin(string transitionId)
+void Location::Begin(const string &transitionId)
 {
     if (pPlayerCharacter == NULL)
     {
@@ -845,7 +845,7 @@ void Location::Begin(string transitionId)
 
     pTargetLocation = NULL;
     pTransitionAtPlayer = NULL;
-    transitionId = "";
+    this->transitionId = "";
     isTransitioning = false;
     isFinishing = false;
     overlayId = "";
@@ -2798,7 +2798,7 @@ void Location::Reset()
     pCurrentInteractiveCrowd = NULL;
 }
 
-void Location::BeginTransition(Location *pTargetLocation, string transitionId)
+void Location::BeginTransition(Location *pTargetLocation, const string &transitionId)
 {
     this->pTargetLocation = pTargetLocation;
     this->transitionId = transitionId;
@@ -3056,7 +3056,7 @@ void Location::BeginCrowdInteraction(Crowd *pCrowd)
     pCurrentInteractiveCrowd = pCrowd;
 }
 
-void Location::OnPromptOverlayValueReturned(PromptOverlay *pSender, string value)
+void Location::OnPromptOverlayValueReturned(PromptOverlay *pSender, const string &value)
 {
     if (pSender == pQuitConfirmOverlay && value == yesString)
     {
@@ -3104,7 +3104,7 @@ RectangleWH Location::GetBounds()
     return bounds;
 }
 
-Location::StartPosition Location::GetStartPositionFromTransitionId(string transitionId)
+Location::StartPosition Location::GetStartPositionFromTransitionId(const string &transitionId)
 {
     if (transitionId.length() > 0)
     {
@@ -3116,7 +3116,7 @@ Location::StartPosition Location::GetStartPositionFromTransitionId(string transi
     }
 }
 
-Location::StartPosition * Location::GetPartnerStartPositionFromTransitionId(string transitionId)
+Location::StartPosition * Location::GetPartnerStartPositionFromTransitionId(const string &transitionId)
 {
     if (transitionId.length() > 0 && transitionIdToPartnerStartPositionMap.count(transitionId) > 0)
     {
@@ -3199,7 +3199,7 @@ void Location::StartCharacterOnPath(FieldCharacter *pCharacter, Vector2 endPosit
     MouseHelper::HandleDoubleClick();
 }
 
-void Location::OnExited(Location *pLocation, string transitionId)
+void Location::OnExited(Location *pLocation, const string &transitionId)
 {
     EventProviders::GetLocationEventProvider()->RaiseExited(this, pLocation, transitionId);
 }

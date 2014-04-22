@@ -214,7 +214,7 @@ void Image::ReloadFromSource()
     }
 }
 
-void Image::FlagResourceLoaderSource(string originFilePath)
+void Image::FlagResourceLoaderSource(const string &originFilePath)
 {
     delete pSource;
     pSource = new ResourceLoaderSource(this, originFilePath);

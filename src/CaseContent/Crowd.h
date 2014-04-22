@@ -48,7 +48,7 @@ public:
     virtual ~Crowd();
 
     string GetName() const { return this->name; }
-    void SetName(string name) { this->name = name; }
+    void SetName(const string &name) { this->name = name; }
 
     Vector2 GetPosition() const { return this->position; }
     void SetPosition(Vector2 position) { this->position = position; }

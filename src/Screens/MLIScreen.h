@@ -38,10 +38,10 @@ class MLIScreen
 {
 public:
     static string GetCurrentScreenId() { return MLIScreen::currentScreenId; }
-    static void SetCurrentScreenId(string currentScreenId) { MLIScreen::currentScreenId = currentScreenId; }
+    static void SetCurrentScreenId(const string &currentScreenId) { MLIScreen::currentScreenId = currentScreenId; }
 
     static string GetLastScreenId() { return MLIScreen::lastScreenId; }
-    static void SetLastScreenId(string lastScreenId) { MLIScreen::lastScreenId = lastScreenId; }
+    static void SetLastScreenId(const string &lastScreenId) { MLIScreen::lastScreenId = lastScreenId; }
 
     virtual ~MLIScreen() {}
 

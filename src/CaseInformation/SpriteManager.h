@@ -43,14 +43,14 @@ public:
     SpriteManager(ManagerSource managerSource);
     ~SpriteManager();
 
-    Sprite * GetSpriteFromId(string id);
-    Image * GetImageFromId(string id);
-    void AddSprite(string id, string spriteSheetId, RectangleWH spriteClipRect);
-    void AddImage(string id, Image *pImage);
-    void LoadImageFromFilePath(string id);
-    void DeleteImage(string id);
+    Sprite * GetSpriteFromId(const string &id);
+    Image * GetImageFromId(const string &id);
+    void AddSprite(const string &id, const string &spriteSheetId, RectangleWH spriteClipRect);
+    void AddImage(const string &id, Image *pImage);
+    void LoadImageFromFilePath(const string &id);
+    void DeleteImage(const string &id);
     void LoadFromXml(XmlReader *pReader);
-    void FinishUpdateLoadedTextures(string newLocationId);
+    void FinishUpdateLoadedTextures(const string &newLocationId);
     void UnloadResources();
 
 private:

@@ -38,8 +38,8 @@ class FontManager
 public:
     ~FontManager();
 
-    MLIFont * GetFontFromId(string id);
-    void AddFont(string id, MLIFont *pFont);
+    MLIFont * GetFontFromId(const string &id);
+    void AddFont(const string &id, MLIFont *pFont);
 
 private:
     map<string, MLIFont *> fontByIdMap;

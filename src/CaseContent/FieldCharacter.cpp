@@ -70,7 +70,7 @@ FieldCharacter::FieldCharacter()
     pCondition = NULL;
 }
 
-FieldCharacter::FieldCharacter(string characterId, string characterName, string characterStandingAnimationIds[], string characterWalkingAnimationIds[], string characterRunningAnimationIds[])
+FieldCharacter::FieldCharacter(const string &characterId, const string &characterName, string characterStandingAnimationIds[], string characterWalkingAnimationIds[], string characterRunningAnimationIds[])
 {
     for (int i = 0; i < FieldCharacterDirectionCount; i++)
     {

@@ -54,7 +54,7 @@ private:
         string GetEvidenceId() const { return this->evidenceId; }
         static string GetClickSoundEffect() { return "ButtonClick2"; }
 
-        void LoadEvidence(string evidenceId);
+        void LoadEvidence(const string &evidenceId);
 
         void Update(int delta, bool &isSelected, bool isSetAsideForCombination);
         void UpdateState(bool &isSelected,  bool isSetAsideForCombination);
@@ -62,7 +62,7 @@ private:
         void Reset();
 
     private:
-        void SetEvidenceId(string evidenceId) { this->evidenceId = evidenceId; }
+        void SetEvidenceId(const string &evidenceId) { this->evidenceId = evidenceId; }
 
         Vector2 position;
         RectangleWH boundingRect;
@@ -104,7 +104,7 @@ public:
 private:
     void Init(bool isCancelable, bool isForCombination);
     void UpdateSelectedItem(EvidenceSelectorItem *pItem);
-    void OnEvidencePresented(string evidenceId);
+    void OnEvidencePresented(const string &evidenceId);
     void OnClosing();
 
     bool GetAcceptsInput() { return this->pInEase->GetIsFinished() && !this->pOutEase->GetIsStarted(); }

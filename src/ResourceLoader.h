@@ -127,12 +127,12 @@ private:
 
         ~ArchiveSource();
 
-        static bool CreateAndInit(string archiveFilePath, ArchiveSource **ppSource);
-        SDL_RWops * LoadFile(string relativeFilePath, void **ppMemToFree);
-        void * LoadFileToMemory(string relativeFilePath, unsigned int *pSize);
+        static bool CreateAndInit(const string &archiveFilePath, ArchiveSource **ppSource);
+        SDL_RWops * LoadFile(const string &relativeFilePath, void **ppMemToFree);
+        void * LoadFileToMemory(const string &relativeFilePath, unsigned int *pSize);
 
     private:
-        bool Init(string archiveFilePath);
+        bool Init(const string &archiveFilePath);
 
         mz_zip_archive zip_archive;
     };
@@ -147,7 +147,7 @@ private:
     class LoadImageStep : public LoadResourceStep
     {
     public:
-        LoadImageStep(string spriteId)
+        LoadImageStep(const string &spriteId)
         {
             this->spriteId = spriteId;
         }
@@ -162,7 +162,7 @@ private:
     class DeleteImageStep : public LoadResourceStep
     {
     public:
-        DeleteImageStep(string spriteId)
+        DeleteImageStep(const string &spriteId)
         {
             this->spriteId = spriteId;
         }
@@ -217,19 +217,19 @@ public:
         return pInstance;
     }
 
-    bool Init(string commonResourcesFilePath);
-    bool LoadCase(string caseFilePath);
-    bool LoadTemporaryCase(string caseFilePath);
+    bool Init(const string &commonResourcesFilePath);
+    bool LoadCase(const string &caseFilePath);
+    bool LoadTemporaryCase(const string &caseFilePath);
     void UnloadTemporaryCase();
     void UnloadCase();
-    SDL_Surface * LoadRawSurface(string relativeFilePath);
-    Image * LoadImage(string relativeFilePath);
-    void ReloadImage(Image *pSprite, string originFilePath);
-    Document * LoadDocument(string relativeFilePath);
-    TTF_Font * LoadFont(string relativeFilePath, int ptSize);
+    SDL_Surface * LoadRawSurface(const string &relativeFilePath);
+    Image * LoadImage(const string &relativeFilePath);
+    void ReloadImage(Image *pSprite, const string &originFilePath);
+    Document * LoadDocument(const string &relativeFilePath);
+    TTF_Font * LoadFont(const string &relativeFilePath, int ptSize);
 
     void LoadVideo(
-        string relativeFilePath,
+        const string &relativeFilePath,
         RWOpsIOContext **ppRWOpsIOContext,
         AVFormatContext **ppFormatContext,
         int *pVideoStream,
@@ -237,15 +237,15 @@ public:
         AVCodec **ppCodec,
         void **ppMemToFree);
 
-    void PreloadMusic(string id, string relativeFilePath);
-    void UnloadMusic(string id);
-    void PreloadSound(string id, string relativeFilePath);
-    void UnloadSound(string id);
-    void PreloadDialog(string id, string relativeFilePath);
-    void UnloadDialog(string id);
+    void PreloadMusic(const string &id, const string &relativeFilePath);
+    void UnloadMusic(const string &id);
+    void PreloadSound(const string &id, const string &relativeFilePath);
+    void UnloadSound(const string &id);
+    void PreloadDialog(const string &id, const string &relativeFilePath);
+    void UnloadDialog(const string &id);
 
-    void * LoadFileToMemory(string relativeFilePath, unsigned int *pFileSize);
-    void HashFile(string relativeFilePath, byte hash[]);
+    void * LoadFileToMemory(const string &relativeFilePath, unsigned int *pFileSize);
+    void HashFile(const string &relativeFilePath, byte hash[]);
 
     void AddImage(Image *pImage);
     void RemoveImage(Image *pImage);
@@ -253,8 +253,8 @@ public:
     bool HasImageTexturesToLoad();
     void FlushImages();
 
-    void AddImageIdToLoadList(string id);
-    void AddImageIdToDeleteList(string id);
+    void AddImageIdToLoadList(const string &id);
+    void AddImageIdToDeleteList(const string &id);
     void AddVideoToLoadList(Video *pVideo);
     void AddVideoToDeleteList(Video *pVideo);
 

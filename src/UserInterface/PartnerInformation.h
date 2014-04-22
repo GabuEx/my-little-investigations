@@ -47,7 +47,7 @@ public:
     PartnerInformation();
 
     string GetPartnerId() const { return this->partnerId; }
-    void SetPartnerId(string partnerId) { this->partnerId = partnerId; }
+    void SetPartnerId(const string &partnerId) { this->partnerId = partnerId; }
 
     Partner * GetPartner();
 

@@ -48,7 +48,7 @@ public:
     static int GetWidth() { return pBackgroundImage != NULL ? pBackgroundImage->width : 0; }
     static int GetHeight() { return pBackgroundImage != NULL ? pBackgroundImage->height : 0; }
 
-    void SetEvidenceId(string evidenceId);
+    void SetEvidenceId(const string &evidenceId);
     void Draw(Vector2 position);
 
 private:

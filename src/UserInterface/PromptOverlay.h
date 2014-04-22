@@ -42,7 +42,7 @@ class PromptButton
 public:
     static void Initialize(MLIFont *pTextFont);
 
-    PromptButton(Vector2 position, string text)
+    PromptButton(Vector2 position, const string &text)
     {
         this->position = position;
         this->text = text;
@@ -91,17 +91,17 @@ class PromptOverlay
 public:
     static void Initialize(MLIFont *pTextFont, MLIFont *pTextEntryFont, Image *pDarkeningImage);
 
-    PromptOverlay(string headerText, bool allowsTextEntry);
+    PromptOverlay(const string &headerText, bool allowsTextEntry);
     ~PromptOverlay();
 
     bool GetIsShowing() { return this->isShowing; }
 
-    void SetHeaderText(string headerText);
+    void SetHeaderText(const string &headerText);
 
-    void AddButton(string text);
+    void AddButton(const string &text);
     void FinalizeButtons();
 
-    void Begin(string initialText = "");
+    void Begin(const string &initialText = "");
     void Update(int delta);
     void Draw();
     void Reset();

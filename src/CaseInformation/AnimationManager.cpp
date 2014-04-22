@@ -45,7 +45,7 @@ AnimationManager::~AnimationManager()
     }
 }
 
-void AnimationManager::AddAnimation(string animationId, Animation **ppAnimation)
+void AnimationManager::AddAnimation(const string &animationId, Animation **ppAnimation)
 {
     Animation *pAnimation = new Animation(managerSource);
     animationByIdMap[animationId] = pAnimation;
@@ -53,7 +53,7 @@ void AnimationManager::AddAnimation(string animationId, Animation **ppAnimation)
     *ppAnimation = pAnimation;
 }
 
-void AnimationManager::AddVideo(string videoId, Video **ppVideo, bool shouldLoop)
+void AnimationManager::AddVideo(const string &videoId, Video **ppVideo, bool shouldLoop)
 {
     Video *pVideo = new Video(shouldLoop);
     videoByIdMap[videoId] = pVideo;
@@ -61,26 +61,26 @@ void AnimationManager::AddVideo(string videoId, Video **ppVideo, bool shouldLoop
     *ppVideo = pVideo;
 }
 
-void AnimationManager::DeleteAnimation(string animationId)
+void AnimationManager::DeleteAnimation(const string &animationId)
 {
     Animation *pAnimation = animationByIdMap[animationId];
     animationByIdMap.erase(animationId);
     delete pAnimation;
 }
 
-void AnimationManager::DeleteVideo(string videoId)
+void AnimationManager::DeleteVideo(const string &videoId)
 {
     Video *pVideo = videoByIdMap[videoId];
     videoByIdMap.erase(videoId);
     delete pVideo;
 }
 
-Animation * AnimationManager::GetAnimationFromId(string animationId)
+Animation * AnimationManager::GetAnimationFromId(const string &animationId)
 {
     return animationByIdMap[animationId];
 }
 
-Video * AnimationManager::GetVideoFromId(string videoId)
+Video * AnimationManager::GetVideoFromId(const string &videoId)
 {
     return videoByIdMap[videoId];
 }
@@ -113,7 +113,7 @@ void AnimationManager::LoadFromXml(XmlReader *pReader)
     pReader->EndElement();
 }
 
-void AnimationManager::FinishUpdateLoadedTextures(string newLocationId)
+void AnimationManager::FinishUpdateLoadedTextures(const string &newLocationId)
 {
     for (map<string, Video *>::iterator iter = videoByIdMap.begin(); iter != videoByIdMap.end(); ++iter)
     {

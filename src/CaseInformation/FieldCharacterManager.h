@@ -49,7 +49,7 @@ public:
     // since they'll be mucking with its values,
     // so we create a copy for the caller.
     // As such, the caller needs to delete it.
-    FieldCharacter * GetCharacterFromId(string characterId);
+    FieldCharacter * GetCharacterFromId(const string &characterId);
 
     // That is not the case for GetPlayerCharacter.
     FieldCharacter * GetPlayerCharacter();

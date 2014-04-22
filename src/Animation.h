@@ -52,8 +52,8 @@ public:
 
     void SetManagerSource(ManagerSource managerSource) { this->managerSource = managerSource; }
 
-    void AddFrame(int msDuration, string spriteId);
-    void AddSound(string sfxId);
+    void AddFrame(int msDuration, const string &spriteId);
+    void AddSound(const string &sfxId);
     Vector2 GetSize();
 
     void Begin();
@@ -88,7 +88,7 @@ public:
         {
         }
 
-        Frame(int msDuration, string spriteId)
+        Frame(int msDuration, const string &spriteId)
             : msDuration(msDuration)
             , spriteId(spriteId)
             , pSprite(NULL)

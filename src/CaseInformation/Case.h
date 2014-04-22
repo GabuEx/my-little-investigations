@@ -92,7 +92,7 @@ public:
         SDL_SemPost(pInstanceSemaphore);
     }
 
-    static void LoadFromXml(string caseFilePath);
+    static void LoadFromXml(const string &caseFilePath);
     static void ValidateXml();
 
     AnimationManager * GetAnimationManager() { return pAnimationManager; }
@@ -116,10 +116,10 @@ public:
     void CacheState();
     void LoadCachedState();
 
-    void SaveToSaveFile(string filePath, string fileExtension, string saveName);
+    void SaveToSaveFile(const string &filePath, const string &fileExtension, const string &saveName);
     void Autosave();
     void GetFieldScreenshot(void **ppPngMemory, size_t *pPngSize);
-    void LoadFromSaveFile(string filePath);
+    void LoadFromSaveFile(const string &filePath);
 
     string GetPlayerCharacterId() const { return this->playerCharacterId; }
     string GetFilePath() const { return this->filePath; }
@@ -140,19 +140,19 @@ public:
     bool GetIsUnloaded() const { return this->isUnloaded; }
 
     string GetLoadStage();
-    void SetLoadStage(string loadStage);
+    void SetLoadStage(const string &loadStage);
     bool IsLoading();
     bool IsReady();
     void LoadResources();
 
-    void UpdateLoadedTextures(string newLocationId, bool waitUntilLoaded = true);
+    void UpdateLoadedTextures(const string &newLocationId, bool waitUntilLoaded = true);
     static int FinishUpdateLoadedTexturesStatic(void *pData);
-    void FinishUpdateLoadedTextures(string newLocationId);
+    void FinishUpdateLoadedTextures(const string &newLocationId);
 
     void UnloadResources();
 
-    vector<string> GetParentLocationListForSpriteSheetId(string id);
-    vector<string> GetParentLocationListForVideoId(string id);
+    vector<string> GetParentLocationListForSpriteSheetId(const string &id);
+    vector<string> GetParentLocationListForVideoId(const string &id);
 
 private:
     static Case *pInstance;
@@ -194,7 +194,7 @@ private:
     class UpdateLoadedTexturesParameters
     {
     public:
-        UpdateLoadedTexturesParameters(Case *pCase, string newLocationId)
+        UpdateLoadedTexturesParameters(Case *pCase, const string &newLocationId)
         {
             this->pCase = pCase;
             this->newLocationId = newLocationId;

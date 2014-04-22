@@ -29,7 +29,7 @@
 
 #include "enums.h"
 
-CharacterDirection StringToCharacterDirection(string s)
+CharacterDirection StringToCharacterDirection(const string &s)
 {
     if (s == "Left")
     {
@@ -61,7 +61,7 @@ string CharacterDirectionToString(CharacterDirection d)
     }
 }
 
-CharacterPosition StringToCharacterPosition(string s)
+CharacterPosition StringToCharacterPosition(const string &s)
 {
     if (s == "Left")
     {
@@ -85,7 +85,7 @@ CharacterPosition StringToCharacterPosition(string s)
     }
 }
 
-FieldCharacterDirection StringToFieldCharacterDirection(string s)
+FieldCharacterDirection StringToFieldCharacterDirection(const string &s)
 {
     if (s == "Up")
     {
@@ -141,7 +141,7 @@ string FieldCharacterDirectionToString(FieldCharacterDirection d)
     }
 }
 
-FieldCharacterState StringToFieldCharacterState(string s)
+FieldCharacterState StringToFieldCharacterState(const string &s)
 {
     if (s == "Standing")
     {
@@ -161,7 +161,7 @@ FieldCharacterState StringToFieldCharacterState(string s)
     }
 }
 
-FieldCustomCursorState StringToFieldCustomCursorState(string s)
+FieldCustomCursorState StringToFieldCustomCursorState(const string &s)
 {
     if (s == "None")
     {
@@ -185,7 +185,7 @@ FieldCustomCursorState StringToFieldCustomCursorState(string s)
     }
 }
 
-TransitionDirection StringToTransitionDirection(string s)
+TransitionDirection StringToTransitionDirection(const string &s)
 {
     if (s == "North")
     {

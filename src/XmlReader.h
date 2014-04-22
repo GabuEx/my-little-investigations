@@ -68,7 +68,7 @@ public:
     ~XmlReader();
 
     void ParseXmlFile(const char *pFilePath);
-    void ParseXmlContent(string xmlContent);
+    void ParseXmlContent(const string &xmlContent);
 
     void StartElement(const char *pElementName);
     bool ElementExists(const char *pElementName);

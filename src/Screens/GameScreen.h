@@ -40,7 +40,7 @@ private:
     class LoadCaseParameters
     {
     public:
-        LoadCaseParameters(string caseFilePath)
+        LoadCaseParameters(const string &caseFilePath)
         {
             this->caseFilePath = caseFilePath;
         }
@@ -63,7 +63,7 @@ public:
     void Update(int delta);
     void UpdateAudio(int delta);
     void Draw();
-    void OnCaseParsingComplete(string caseFileName);
+    void OnCaseParsingComplete(const string &caseFileName);
 
 private:
     int numLoadingDots;

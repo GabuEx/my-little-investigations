@@ -55,7 +55,7 @@ public:
     }
 
     Version(XmlReader *pReader);
-    Version(string versionString);
+    Version(const string &versionString);
 
     bool operator==(const Version &other) const;
     bool operator!=(const Version &other) const;

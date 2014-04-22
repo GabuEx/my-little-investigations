@@ -60,7 +60,7 @@ void ResourceLoader::Close()
     pInstance = NULL;
 }
 
-bool ResourceLoader::Init(string commonResourcesFilePath)
+bool ResourceLoader::Init(const string &commonResourcesFilePath)
 {
     ArchiveSource *pCommonResourcesSource = NULL;
 
@@ -73,7 +73,7 @@ bool ResourceLoader::Init(string commonResourcesFilePath)
     return true;
 }
 
-bool ResourceLoader::LoadCase(string caseFilePath)
+bool ResourceLoader::LoadCase(const string &caseFilePath)
 {
     bool retVal;
 
@@ -85,7 +85,7 @@ bool ResourceLoader::LoadCase(string caseFilePath)
     return retVal;
 }
 
-bool ResourceLoader::LoadTemporaryCase(string caseFilePath)
+bool ResourceLoader::LoadTemporaryCase(const string &caseFilePath)
 {
     pCachedCaseResourcesSource = pCaseResourcesSource;
     pCaseResourcesSource = NULL;
@@ -115,7 +115,7 @@ void ResourceLoader::UnloadCase()
     SDL_SemPost(pLoadingSemaphore);
 }
 
-SDL_Surface * ResourceLoader::LoadRawSurface(string relativeFilePath)
+SDL_Surface * ResourceLoader::LoadRawSurface(const string &relativeFilePath)
 {
     void *pMemToFree = NULL;
     SDL_RWops * pRW = NULL;
@@ -129,7 +129,7 @@ SDL_Surface * ResourceLoader::LoadRawSurface(string relativeFilePath)
     return pSurface;
 }
 
-Image * ResourceLoader::LoadImage(string relativeFilePath)
+Image * ResourceLoader::LoadImage(const string &relativeFilePath)
 {
     SDL_RWops *pRW = NULL;
     void *pMemToFree = NULL;
@@ -154,7 +154,7 @@ Image * ResourceLoader::LoadImage(string relativeFilePath)
     return pSprite;
 }
 
-void ResourceLoader::ReloadImage(Image *pSprite, string originFilePath)
+void ResourceLoader::ReloadImage(Image *pSprite, const string &originFilePath)
 {
     SDL_RWops *pRW = NULL;
     void *pMemToFree = NULL;
@@ -180,7 +180,7 @@ void ResourceLoader::ReloadImage(Image *pSprite, string originFilePath)
     free(pMemToFree);
 }
 
-Document * ResourceLoader::LoadDocument(string relativeFilePath)
+Document * ResourceLoader::LoadDocument(const string &relativeFilePath)
 {
     void *pMemToFree = NULL;
     SDL_RWops * pRW = NULL;
@@ -202,7 +202,7 @@ Document * ResourceLoader::LoadDocument(string relativeFilePath)
     return pDocument;
 }
 
-TTF_Font * ResourceLoader::LoadFont(string relativeFilePath, int ptSize)
+TTF_Font * ResourceLoader::LoadFont(const string &relativeFilePath, int ptSize)
 {
     void *pMemToFree = NULL;
     SDL_RWops * pRW = NULL;
@@ -221,7 +221,7 @@ TTF_Font * ResourceLoader::LoadFont(string relativeFilePath, int ptSize)
 }
 
 void ResourceLoader::LoadVideo(
-    string relativeFilePath,
+    const string &relativeFilePath,
     RWOpsIOContext **ppRWOpsIOContext,
     AVFormatContext **ppFormatContext,
     int *pVideoStream,
@@ -303,7 +303,7 @@ void ResourceLoader::LoadVideo(
     *ppMemToFree = pMemToFree;
 }
 
-void ResourceLoader::PreloadMusic(string id, string relativeFilePath)
+void ResourceLoader::PreloadMusic(const string &id, const string &relativeFilePath)
 {
     SDL_RWops *pRWA = NULL;
     SDL_RWops *pRWB = NULL;
@@ -335,7 +335,7 @@ void ResourceLoader::PreloadMusic(string id, string relativeFilePath)
     musicIdToMemToFreeMap[id + "_B"] = pMemToFreeB;
 }
 
-void ResourceLoader::UnloadMusic(string id)
+void ResourceLoader::UnloadMusic(const string &id)
 {
     unloadMusic(id);
 
@@ -346,7 +346,7 @@ void ResourceLoader::UnloadMusic(string id)
     musicIdToMemToFreeMap.erase(id + "_B");
 }
 
-void ResourceLoader::PreloadSound(string id, string relativeFilePath)
+void ResourceLoader::PreloadSound(const string &id, const string &relativeFilePath)
 {
     SDL_RWops *pRW = NULL;
     void *pMemToFree = NULL;
@@ -369,12 +369,12 @@ void ResourceLoader::PreloadSound(string id, string relativeFilePath)
     free(pMemToFree);
 }
 
-void ResourceLoader::UnloadSound(string id)
+void ResourceLoader::UnloadSound(const string &id)
 {
     unloadSound(id);
 }
 
-void ResourceLoader::PreloadDialog(string id, string relativeFilePath)
+void ResourceLoader::PreloadDialog(const string &id, const string &relativeFilePath)
 {
     SDL_RWops *pRW = NULL;
     void *pMemToFree = NULL;
@@ -397,12 +397,12 @@ void ResourceLoader::PreloadDialog(string id, string relativeFilePath)
     free(pMemToFree);
 }
 
-void ResourceLoader::UnloadDialog(string id)
+void ResourceLoader::UnloadDialog(const string &id)
 {
     unloadDialog(id);
 }
 
-void * ResourceLoader::LoadFileToMemory(string relativeFilePath, unsigned int *pFileSize)
+void * ResourceLoader::LoadFileToMemory(const string &relativeFilePath, unsigned int *pFileSize)
 {
     void *p = NULL;
     unsigned int fileSize = 0;
@@ -420,7 +420,7 @@ void * ResourceLoader::LoadFileToMemory(string relativeFilePath, unsigned int *p
     return p;
 }
 
-void ResourceLoader::HashFile(string relativeFilePath, byte hash[CryptoPP::SHA256::DIGESTSIZE])
+void ResourceLoader::HashFile(const string &relativeFilePath, byte hash[CryptoPP::SHA256::DIGESTSIZE])
 {
     void *p = NULL;
     unsigned int fileSize = 0;
@@ -503,7 +503,7 @@ void ResourceLoader::FlushImages()
     SDL_SemPost(pQueueSemaphore);
 }
 
-void ResourceLoader::AddImageIdToLoadList(string id)
+void ResourceLoader::AddImageIdToLoadList(const string &id)
 {
     if (id.length() == 0)
     {
@@ -531,7 +531,7 @@ void ResourceLoader::AddImageIdToLoadList(string id)
     SDL_SemPost(pLoadQueueSemaphore);
 }
 
-void ResourceLoader::AddImageIdToDeleteList(string id)
+void ResourceLoader::AddImageIdToDeleteList(const string &id)
 {
     if (id.length() == 0)
     {
@@ -676,7 +676,7 @@ ResourceLoader::ArchiveSource::~ArchiveSource()
     mz_zip_reader_end(&zip_archive);
 }
 
-bool ResourceLoader::ArchiveSource::CreateAndInit(string archiveFilePath, ArchiveSource **ppSource)
+bool ResourceLoader::ArchiveSource::CreateAndInit(const string &archiveFilePath, ArchiveSource **ppSource)
 {
     ArchiveSource *pSource = new ArchiveSource();
 
@@ -690,7 +690,7 @@ bool ResourceLoader::ArchiveSource::CreateAndInit(string archiveFilePath, Archiv
     return true;
 }
 
-SDL_RWops * ResourceLoader::ArchiveSource::LoadFile(string relativeFilePath, void **ppMemToFree)
+SDL_RWops * ResourceLoader::ArchiveSource::LoadFile(const string &relativeFilePath, void **ppMemToFree)
 {
     size_t uncomp_size = 0;
     void *p = mz_zip_reader_extract_file_to_heap(&zip_archive, relativeFilePath.c_str(), &uncomp_size, 0);
@@ -704,7 +704,7 @@ SDL_RWops * ResourceLoader::ArchiveSource::LoadFile(string relativeFilePath, voi
     return SDL_RWFromMem(p, (unsigned int)uncomp_size);
 }
 
-void * ResourceLoader::ArchiveSource::LoadFileToMemory(string relativeFilePath, unsigned int *pSize)
+void * ResourceLoader::ArchiveSource::LoadFileToMemory(const string &relativeFilePath, unsigned int *pSize)
 {
     size_t uncomp_size = 0;
     void *p = mz_zip_reader_extract_file_to_heap(&zip_archive, relativeFilePath.c_str(), &uncomp_size, 0);
@@ -718,7 +718,7 @@ void * ResourceLoader::ArchiveSource::LoadFileToMemory(string relativeFilePath, 
     return p;
 }
 
-bool ResourceLoader::ArchiveSource::Init(string archiveFilePath)
+bool ResourceLoader::ArchiveSource::Init(const string &archiveFilePath)
 {
     return mz_zip_reader_init_file(&zip_archive, archiveFilePath.c_str(), 0) > 0;
 }

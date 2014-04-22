@@ -55,7 +55,7 @@ public:
 
     void OnSelectorSelectionChanged(Selector *pSender, SelectorItem *pSelectedItem);
     void OnButtonClicked(ImageButton *pSender);
-    void OnPromptOverlayValueReturned(PromptOverlay *pSender, string value);
+    void OnPromptOverlayValueReturned(PromptOverlay *pSender, const string &value);
 
 private:
     static void EnsureFonts();

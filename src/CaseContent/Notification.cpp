@@ -66,27 +66,27 @@ Notification::Notification()
     Init("", "", "", "");
 }
 
-Notification::Notification(string rawNotificationText)
+Notification::Notification(const string &rawNotificationText)
 {
     Init(rawNotificationText, "", "", "");
 }
 
-Notification::Notification(string rawNotificationText, string partnerId)
+Notification::Notification(const string &rawNotificationText, const string &partnerId)
 {
     Init(rawNotificationText, partnerId, "", "");
 }
 
-Notification::Notification(string rawNotificationText, string oldEvidenceId, string newEvidenceId)
+Notification::Notification(const string &rawNotificationText, const string &oldEvidenceId, const string &newEvidenceId)
 {
     Init(rawNotificationText, "", oldEvidenceId, newEvidenceId);
 }
 
-Notification::Notification(string rawNotificationText, string partnerId, string oldEvidenceId, string newEvidenceId)
+Notification::Notification(const string &rawNotificationText, const string &partnerId, const string &oldEvidenceId, const string &newEvidenceId)
 {
     Init(rawNotificationText, partnerId, oldEvidenceId, newEvidenceId);
 }
 
-void Notification::Init(string rawNotificationText, string partnerId, string oldEvidenceId, string newEvidenceId)
+void Notification::Init(const string &rawNotificationText, const string &partnerId, const string &oldEvidenceId, const string &newEvidenceId)
 {
     pPartnerInformation = NULL;
     pOldEvidenceDescription = NULL;

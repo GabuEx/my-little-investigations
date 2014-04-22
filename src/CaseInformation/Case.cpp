@@ -127,7 +127,7 @@ Case::~Case()
     pLoadStageSemaphore = NULL;
 }
 
-void Case::LoadFromXml(string caseFilePath)
+void Case::LoadFromXml(const string &caseFilePath)
 {
     ReplaceInstance();
     pInstance->isUnloaded = false;
@@ -358,7 +358,7 @@ void Case::Reset()
     pCurrentArea = Case::GetInstance()->GetContentManager()->GetAreaFromId(Case::GetInstance()->GetContentManager()->GetInitialAreaId());
 }
 
-void Case::SaveToSaveFile(string filePath, string fileExtension, string saveName)
+void Case::SaveToSaveFile(const string &filePath, const string &fileExtension, const string &saveName)
 {
     XmlWriter writer(filePath.c_str(), fileExtension.length() > 0 ? fileExtension.c_str() : NULL);
 
@@ -425,7 +425,7 @@ void Case::GetFieldScreenshot(void **ppPngMemory, size_t *pPngSize)
     gIsSavingScreenshot = false;
 }
 
-void Case::LoadFromSaveFile(string filePath)
+void Case::LoadFromSaveFile(const string &filePath)
 {
     XmlReader reader(filePath.c_str());
 
@@ -470,7 +470,7 @@ string Case::GetLoadStage()
     return loadStage;
 }
 
-void Case::SetLoadStage(string loadStage)
+void Case::SetLoadStage(const string &loadStage)
 {
     SDL_SemWait(pLoadStageSemaphore);
     this->loadStage = loadStage;
@@ -508,7 +508,7 @@ void Case::LoadResources()
     ResourceLoader::GetInstance()->SnapLoadStepQueue();
 }
 
-void Case::UpdateLoadedTextures(string newLocationId, bool waitUntilLoaded)
+void Case::UpdateLoadedTextures(const string &newLocationId, bool waitUntilLoaded)
 {
     SetWaitUntilLoaded(waitUntilLoaded);
     SetIsLoadingSprites(true);
@@ -532,7 +532,7 @@ int Case::FinishUpdateLoadedTexturesStatic(void *pData)
     return 0;
 }
 
-void Case::FinishUpdateLoadedTextures(string newLocationId)
+void Case::FinishUpdateLoadedTextures(const string &newLocationId)
 {
     pSpriteManager->FinishUpdateLoadedTextures(newLocationId);
     pAnimationManager->FinishUpdateLoadedTextures(newLocationId);
@@ -546,12 +546,12 @@ void Case::UnloadResources()
     isUnloaded = true;
 }
 
-vector<string> Case::GetParentLocationListForSpriteSheetId(string id)
+vector<string> Case::GetParentLocationListForSpriteSheetId(const string &id)
 {
     return parentLocationListsBySpriteSheetId[id];
 }
 
-vector<string> Case::GetParentLocationListForVideoId(string id)
+vector<string> Case::GetParentLocationListForVideoId(const string &id)
 {
     return parentLocationListsByVideoId[id];
 }

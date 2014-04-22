@@ -39,7 +39,7 @@ using namespace std;
 class EvidenceSelectorEventListener
 {
 public:
-    virtual void OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, string evidenceId) = 0;
+    virtual void OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, const string &evidenceId) = 0;
     virtual void OnEvidenceSelectorClosing(EvidenceSelector *pSender) = 0;
 };
 
@@ -57,7 +57,7 @@ public:
         listenerList.remove(pListener);
     }
 
-    void RaiseEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, string evidenceId)
+    void RaiseEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, const string &evidenceId)
     {
         for (list<EvidenceSelectorEventListener *>::iterator iter = listenerList.begin(); iter != listenerList.end(); ++iter)
         {

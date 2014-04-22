@@ -123,7 +123,7 @@ void PromptOverlay::Initialize(MLIFont *pTextFont, MLIFont *pTextEntryFont, Imag
     PromptOverlay::pDarkeningImage = pDarkeningImage;
 }
 
-PromptOverlay::PromptOverlay(string headerText, bool allowsTextEntry)
+PromptOverlay::PromptOverlay(const string &headerText, bool allowsTextEntry)
 {
     yOffset = 0;
 
@@ -160,14 +160,14 @@ PromptOverlay::~PromptOverlay()
     pFadeOutEase = NULL;
 }
 
-void PromptOverlay::SetHeaderText(string headerText)
+void PromptOverlay::SetHeaderText(const string &headerText)
 {
     this->headerTextLines = split(headerText, '\n');
 
     yOffset = (pTextFont->GetLineHeight() * (this->headerTextLines.size() - 1)) / 2;
 }
 
-void PromptOverlay::AddButton(string text)
+void PromptOverlay::AddButton(const string &text)
 {
     buttonTextList.push_back(text);
 }
@@ -207,7 +207,7 @@ void PromptOverlay::FinalizeButtons()
     buttonTextList.clear();
 }
 
-void PromptOverlay::Begin(string initialText)
+void PromptOverlay::Begin(const string &initialText)
 {
     Reset();
 

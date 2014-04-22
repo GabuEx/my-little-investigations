@@ -38,7 +38,7 @@ class Slider
 public:
     static void Initialize(MLIFont *pHeaderFont, Image *pTrackSprite, Image *pThumbSprite);
 
-    Slider(string headerText, int xPosition, int yPosition);
+    Slider(const string &headerText, int xPosition, int yPosition);
 
     int GetXPosition() const { return this->xPosition; }
     void SetXPosition(int xPosition) { this->xPosition = xPosition; }

@@ -866,7 +866,7 @@ void SelectionScreen::OnButtonClicked(ImageButton *pSender)
     }
 }
 
-void SelectionScreen::OnPromptOverlayValueReturned(PromptOverlay *pSender, string value)
+void SelectionScreen::OnPromptOverlayValueReturned(PromptOverlay *pSender, const string &value)
 {
     if (pSender == pDeleteConfirmOverlay && value == yesString)
     {

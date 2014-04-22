@@ -294,7 +294,7 @@ void Game::PrepareMenuMode()
     screenFromIdMap[CASE_SELECTION_SCREEN_ID]->LoadResources();
 }
 
-void Game::SetOverlayById(string overlayId)
+void Game::SetOverlayById(const string &overlayId)
 {
     pOverlayScreen = screenFromIdMap[overlayId];
     pOverlayScreen->Init();

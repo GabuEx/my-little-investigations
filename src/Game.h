@@ -50,7 +50,7 @@ public:
 #ifdef GAME_EXECUTABLE
     void PrepareGameMode();
     void PrepareMenuMode();
-    void SetOverlayById(string overlayId);
+    void SetOverlayById(const string &overlayId);
 #endif
 
     void Update(int delta);

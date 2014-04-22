@@ -39,7 +39,7 @@ using namespace std;
 class CaseParsingEventListener
 {
 public:
-    virtual void OnCaseParsingComplete(string caseFileName) = 0;
+    virtual void OnCaseParsingComplete(const string &caseFileName) = 0;
 };
 
 class CaseParsingEventProvider
@@ -56,7 +56,7 @@ public:
         listenerList.remove(pListener);
     }
 
-    void RaiseCaseParsingComplete(string caseFileName)
+    void RaiseCaseParsingComplete(const string &caseFileName)
     {
         for (list<CaseParsingEventListener *>::iterator iter = listenerList.begin(); iter != listenerList.end(); ++iter)
         {

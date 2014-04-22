@@ -48,7 +48,7 @@ public:
     ~ZoomedView();
 
     string GetBackgroundSpriteId() const { return this->backgroundSpriteId; }
-    void SetBackgroundSpriteId(string backgroundSpriteId) { this->backgroundSpriteId = backgroundSpriteId; }
+    void SetBackgroundSpriteId(const string &backgroundSpriteId) { this->backgroundSpriteId = backgroundSpriteId; }
 
     bool GetIsFinished() const { return this->isFinished; }
     void SetIsFinished(bool isFinished) { this->isFinished = isFinished; }
