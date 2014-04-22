@@ -231,7 +231,7 @@ bool Game::CreateAndInit()
 #endif
 #endif
 
-    gpRenderer = SDL_CreateRenderer(gpWindow, -1, SDL_RENDERER_ACCELERATED);
+    gpRenderer = SDL_CreateRenderer(gpWindow, -1, 0);
 
     // Ditto for the renderer.
     if (gpRenderer == NULL)
