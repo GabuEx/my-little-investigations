@@ -50,7 +50,7 @@ static BOOL   gCalledAppMainline = FALSE;
 static NSString *getApplicationName(void)
 {
     NSDictionary *dict = [[NSBundle mainBundle] infoDictionary];
-    NSString *appName = NULL;
+    NSString *appName = nil;
 
     /* Determine the application name */
     if (dict)
