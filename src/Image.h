@@ -103,7 +103,11 @@ private:
 
     bool valid;
     SDL_Surface *pSurface;
-    SDL_Texture *pTexture;
+
+    vector<SDL_Texture *> textureList;
+
+    int textureCountX;
+    int textureCountY;
 
     class Source
     {

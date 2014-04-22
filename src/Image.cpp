@@ -50,7 +50,12 @@ Image::Image(void)
 {
     valid = false;
     pSurface = NULL;
-    pTexture = NULL;
+
+    textureList.clear();
+
+    textureCountX = 0;
+    textureCountY = 0;
+
     width = 0;
     height = 0;
     pSource = NULL;
@@ -170,14 +175,62 @@ void Image::Reload(SDL_RWops * ops, bool loadImmediately)
 
 void Image::LoadTextures()
 {
-    if (pTexture != NULL)
+    for (vector<SDL_Texture *>::iterator iter = textureList.begin(); iter != textureList.end(); iter++)
     {
-        SDL_DestroyTexture(pTexture);
-        pTexture = NULL;
+        SDL_DestroyTexture(*iter);
     }
 
-    pTexture = SDL_CreateTextureFromSurface(gpRenderer, pSurface);
-    SDL_SetTextureBlendMode(pTexture, SDL_BLENDMODE_BLEND);
+    textureList.clear();
+
+    textureCountX = 0;
+    textureCountY = 0;
+
+    if (pSurface->w <= gMaxTextureWidth && pSurface->h <= gMaxTextureHeight)
+    {
+        textureCountX = 1;
+        textureCountY = 1;
+
+        // If the surface will fit within a single texture, then we'll just create that single texture,
+        // nothing fancy required.
+        SDL_Texture *pTexture = SDL_CreateTextureFromSurface(gpRenderer, pSurface);
+        SDL_SetTextureBlendMode(pTexture, SDL_BLENDMODE_BLEND);
+
+        textureList.push_back(pTexture);
+    }
+    else
+    {
+        // On the other hand, if the surface won't fit within a single texture, then we'll need to slice it up
+        // into subsurfaces that do all fit within a single texture, and store each of those as separate textures.
+        const SDL_PixelFormat *pFormat = pSurface->format;
+
+        textureCountX = (pSurface->w / gMaxTextureWidth) + (pSurface->w % gMaxTextureWidth > 0 ? 1 : 0);
+        textureCountY = (pSurface->h / gMaxTextureHeight) + (pSurface->h % gMaxTextureHeight > 0 ? 1 : 0);
+
+        for (int y = 0; y < textureCountY; y++)
+        {
+            for (int x = 0; x < textureCountX; x++)
+            {
+                int textureWidth = min(pSurface->w - gMaxTextureWidth * x, gMaxTextureWidth);
+                int textureHeight = min(pSurface->h - gMaxTextureHeight * y, gMaxTextureHeight);
+
+                SDL_Surface *pTempSurface =
+                    SDL_CreateRGBSurface(
+                        0, textureWidth, textureHeight,
+                        pFormat->BitsPerPixel,
+                        pFormat->Rmask, pFormat->Gmask, pFormat->Bmask, pFormat->Amask);
+
+                SDL_Rect srcRect = { x * gMaxTextureWidth, y * gMaxTextureHeight, textureWidth, textureHeight };
+                SDL_BlitSurface(pSurface, &srcRect, pTempSurface, NULL);
+
+                SDL_Texture *pTexture = SDL_CreateTextureFromSurface(gpRenderer, pTempSurface);
+                SDL_SetTextureBlendMode(pTexture, SDL_BLENDMODE_BLEND);
+
+                textureList.push_back(pTexture);
+
+                SDL_FreeSurface(pTempSurface);
+            }
+        }
+    }
 
     SDL_FreeSurface(pSurface);
     pSurface = NULL;
@@ -199,11 +252,15 @@ void Image::UnloadTextures()
         pSurface = NULL;
     }
 
-    if (pTexture != NULL)
+    for (vector<SDL_Texture *>::iterator iter = textureList.begin(); iter != textureList.end(); iter++)
     {
-        SDL_DestroyTexture(pTexture);
-        pTexture = NULL;
+        SDL_DestroyTexture(*iter);
     }
+
+    textureList.clear();
+
+    textureCountX = 0;
+    textureCountY = 0;
 }
 
 void Image::ReloadFromSource()
@@ -255,7 +312,80 @@ void Image::Draw(
         return;
     }
 
-    Image::Draw(pTexture, position, clipRect, flipHorizontally, flipVertically, scale, color);
+    if (textureList.size() == 1)
+    {
+        // If we only have one texture, then we can just draw it without any processing.
+        Image::Draw(textureList[0], position, clipRect, flipHorizontally, flipVertically, scale, color);
+    }
+    else
+    {
+        // Otherwise, we'll need to ensure that each texture gets drawn in its correct spot,
+        // accounting for flipping.
+        double startY = position.GetY() + (flipVertically ? height : 0);
+
+        for (int y = 0; y < textureCountY; y++)
+        {
+            double startX = position.GetX() + (flipHorizontally ? width : 0);
+
+            for (int x = 0; x < textureCountX; x++)
+            {
+                int textureWidth = 0;
+                int textureHeight = 0;
+
+                SDL_Texture *pTexture = textureList[y * textureCountY + x % textureCountX];
+
+                SDL_QueryTexture(pTexture, NULL, NULL, &textureWidth, &textureHeight);
+
+                if (flipHorizontally)
+                {
+                    startX -= textureWidth;
+                }
+
+                if (flipVertically)
+                {
+                    startY -= textureHeight;
+                }
+
+                // Adjust the clip rect accordingly for this portion of the image,
+                // taking into account the position into the image we're drawing.
+                RectangleWH portionClipRect(clipRect.GetX() - x * gMaxTextureWidth, clipRect.GetY() - y * gMaxTextureHeight, clipRect.GetWidth(), clipRect.GetHeight());
+
+                if (portionClipRect.GetX() < 0)
+                {
+                    portionClipRect.SetWidth(portionClipRect.GetWidth() + portionClipRect.GetX());
+                    portionClipRect.SetX(0);
+                }
+
+                if (portionClipRect.GetY() < 0)
+                {
+                    portionClipRect.SetHeight(portionClipRect.GetHeight() + portionClipRect.GetY());
+                    portionClipRect.SetY(0);
+                }
+
+                if (portionClipRect.GetX() + portionClipRect.GetWidth() > textureWidth)
+                {
+                    portionClipRect.SetWidth(portionClipRect.GetWidth() - (textureWidth - portionClipRect.GetX()));
+                }
+
+                if (portionClipRect.GetY() + portionClipRect.GetHeight() > textureHeight)
+                {
+                    portionClipRect.SetWidth(portionClipRect.GetHeight() - (textureHeight - portionClipRect.GetY()));
+                }
+
+                Image::Draw(pTexture, Vector2(startX, startY), portionClipRect, flipHorizontally, flipVertically, scale, color);
+
+                if (!flipHorizontally)
+                {
+                    startX += textureWidth;
+                }
+
+                if (!flipVertically)
+                {
+                    startY += textureHeight;
+                }
+            }
+        }
+    }
 }
 
 void Image::Draw(

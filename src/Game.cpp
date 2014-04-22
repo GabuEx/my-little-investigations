@@ -239,6 +239,17 @@ bool Game::CreateAndInit()
         return false;
     }
 
+    // And for the renderer info, too.
+    SDL_RendererInfo rendererInfo;
+
+    if (SDL_GetRendererInfo(gpRenderer, &rendererInfo) < 0)
+    {
+        return false;
+    }
+
+    gMaxTextureWidth = rendererInfo.max_texture_width;
+    gMaxTextureHeight = rendererInfo.max_texture_height;
+
 #ifdef GAME_EXECUTABLE
     // Initialize audio subsystems.
     initAudio();

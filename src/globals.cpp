@@ -34,6 +34,9 @@ SDL_Renderer *gpRenderer = NULL;
 Uint16 gScreenWidth = 0;
 Uint16 gScreenHeight = 0;
 
+int gMaxTextureWidth = 0;
+int gMaxTextureHeight = 0;
+
 #ifdef GAME_EXECUTABLE
 bool gIsFullscreen = false;
 double gScreenScale = 0.0;

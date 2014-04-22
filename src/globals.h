@@ -51,6 +51,9 @@ extern SDL_Renderer *gpRenderer;
 extern Uint16 gScreenWidth;
 extern Uint16 gScreenHeight;
 
+extern int gMaxTextureWidth;
+extern int gMaxTextureHeight;
+
 #ifdef GAME_EXECUTABLE
 extern bool gIsFullscreen;
 extern double gScreenScale;
