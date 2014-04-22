@@ -223,7 +223,9 @@ int main(int argc, char * argv[])
     // Create the game and initialize all of its components, or just quit if we can't.
     if (!Game::CreateAndInit())
     {
-        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Couldn't start", "ERROR: Couldn't initialize game.", NULL);
+        char msg[256];
+        sprintf(msg, "Error initializing game: %s", SDL_GetError());
+        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Couldn't start", msg, NULL);
         return 1;
     }
 
