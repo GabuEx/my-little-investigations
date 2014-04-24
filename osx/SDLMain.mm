@@ -491,8 +491,6 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
 string GetVersionStringOSX(string PropertyListFilePath)
 {
     NSFileManager *defaultManager = [NSFileManager defaultManager];
-    NSString *pErrorDesc = nil;
-    NSPropertyListFormat format;
     NSString *pProperyListPath = [defaultManager stringWithFileSystemRepresentation:PropertyListFilePath.c_str() length: PropertyListFilePath.size()];
 
     if (![defaultManager fileExistsAtPath:pProperyListPath])
@@ -518,7 +516,6 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
 
     NSFileManager *defaultManager = [NSFileManager defaultManager];
     NSString *pErrorDesc = nil;
-    NSPropertyListFormat format;
     //TODO: Save the NSString as, say, a static pointer.
     NSString *pProperyListPath = [defaultManager stringWithFileSystemRepresentation:pPropertyListFilePath.c_str() length: pPropertyListFilePath.size()];
 
