@@ -1,8 +1,7 @@
-
 #include "ApplicationSupportBridge.h"
 
-const char *pLocalApplicationSupportPath;
-const char *pCasesPath;
-const char *pUserApplicationSupportPath;
-const char *pDialogSeenListsPath;
-const char *pSavesPath;
+string pLocalApplicationSupportPath;
+string pCasesPath;
+string pUserApplicationSupportPath;
+string pDialogSeenListsPath;
+string pSavesPath;

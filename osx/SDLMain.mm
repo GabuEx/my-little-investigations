@@ -12,8 +12,6 @@
 #include <sys/param.h> /* for MAXPATHLEN */
 #include <unistd.h>
 
-using namespace std;
-
 /* For some reaon, Apple removed setAppleMenu from the headers in 10.4,
  but the method still is there and works. To avoid warnings, we declare
  it ourselves here. */
@@ -25,8 +23,10 @@ using namespace std;
 #define		SDL_USE_NIB_FILE	0
 
 /* Use this flag to determine whether we use CPS (docking) or not */
-#define		SDL_USE_CPS		1
-#ifdef SDL_USE_CPS
+/* CPS is deprecated now, so avoid using it */
+#define		SDL_USE_CPS		0
+
+#if SDL_USE_CPS
 /* Portions of CPS.h */
 typedef struct CPSProcessSerNum
 {
@@ -202,7 +202,7 @@ static void CustomApplicationMain (int argc, char **argv)
     /* Ensure the application object is initialised */
     [NSApplication sharedApplication];
 
-#ifdef SDL_USE_CPS
+#if SDL_USE_CPS
     {
         CPSProcessSerNum PSN;
         /* Tell the dock about us */
@@ -343,12 +343,9 @@ static void CustomApplicationMain (int argc, char **argv)
 
 @end
 
-
-
 #ifdef main
 #  undef main
 #endif
-
 
 /* Main entry point to executable - should *not* be SDL_main! */
 int main (int argc, char **argv)
@@ -422,15 +419,15 @@ int main (int argc, char **argv)
 
 vector<string> GetCaseFilePathsOSX()
 {
-	NSAutoreleasePool *pool = [NSAutoreleasePool new];
-	NSError *error = nil;
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    NSError *error = nil;
+    NSFileManager *defaultManager = [NSFileManager defaultManager];
 
-    //TODO: use NSFileManager to get the path
-    // Or save the NSString as, say, a static pointer.
-	NSString *casesPath = [NSString stringWithUTF8String:pCasesPath];
+    //TODO: Save the NSString as, say, a static pointer.
+    NSString *casesPath = [defaultManager stringWithFileSystemRepresentation:pCasesPath.c_str() length: pCasesPath.size()];
 
     NSArray *pCaseFileList =
-        [[NSFileManager defaultManager]
+        [defaultManager
             contentsOfDirectoryAtPath: casesPath
             error:&error];
 
@@ -439,7 +436,8 @@ vector<string> GetCaseFilePathsOSX()
     for (NSString *pStrCaseFileName in pCaseFileList)
     {
        //Ignore UNIX hidden files, like OS X's .DS_Store
-        if ([pStrCaseFileName hasPrefix:@"."]) {
+        if ([pStrCaseFileName hasPrefix:@"."])
+        {
             continue;
         }
 
@@ -457,8 +455,9 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
 	NSError *error = nil;
 	NSFileManager *defaultManager = [NSFileManager defaultManager];
 
-    //TODO: use NSFileManager to get the path
-    NSString *pStrCaseSavesFilePath =  [[NSString stringWithUTF8String:pSavesPath] stringByAppendingPathComponent:[NSString stringWithUTF8String:pCaseUuid.c_str()]];
+    //TODO: Save the NSString as, say, a static pointer.
+    NSString *pStrCaseSavesFilePath = [defaultManager stringWithFileSystemRepresentation:pSavesPath.c_str() length: pSavesPath.size()];
+    pStrCaseSavesFilePath = [pStrCaseSavesFilePath stringByAppendingPathComponent:[NSString stringWithUTF8String:pCaseUuid.c_str()]];
 
     [defaultManager
         createDirectoryAtPath:pStrCaseSavesFilePath
@@ -476,7 +475,8 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
     for (NSString *pStrSaveFileName in pSaveFileList)
     {
        //Ignore UNIX hidden files, like OS X's .DS_Store
-        if ([pStrSaveFileName hasPrefix:@"."]) {
+        if ([pStrSaveFileName hasPrefix:@"."])
+        {
             continue;
         }
 
@@ -490,19 +490,19 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
 
 string GetVersionStringOSX(string PropertyListFilePath)
 {
+    NSFileManager *defaultManager = [NSFileManager defaultManager];
     NSString *pErrorDesc = nil;
     NSPropertyListFormat format;
-	const char *pPropertyListFilePath = PropertyListFilePath.c_str();
-    NSString *pProperyListPath = [NSString stringWithUTF8String:pPropertyListFilePath];
+    NSString *pProperyListPath = [defaultManager stringWithFileSystemRepresentation:PropertyListFilePath.c_str() length: PropertyListFilePath.size()];
 
-    if (![[NSFileManager defaultManager] fileExistsAtPath:pProperyListPath])
+    if (![defaultManager fileExistsAtPath:pProperyListPath])
     {
         return string();
     }
 
-    NSData *pPropertyListXML = [[NSFileManager defaultManager] contentsAtPath:pProperyListPath];
+    NSData *pPropertyListXML = [defaultManager contentsAtPath:pProperyListPath];
     NSDictionary *pPropertyListDictionary =
-        (NSDictionary *)[NSPropertyListSerialization propertyListFromData:pPropertyListXML
+        [NSPropertyListSerialization propertyListFromData:pPropertyListXML
             mutabilityOption:NSPropertyListMutableContainersAndLeaves
             format:&format
             errorDescription:&pErrorDesc];
@@ -520,19 +520,20 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
 {
     *pVersionStringLength = 0;
 
+    NSFileManager *defaultManager = [NSFileManager defaultManager];
     NSString *pErrorDesc = nil;
     NSPropertyListFormat format;
-    //TODO: use NSFileManager to get the path
-    NSString *pProperyListPath = [NSString stringWithUTF8String:pPropertyListFilePath.c_str()];
+    //TODO: Save the NSString as, say, a static pointer.
+    NSString *pProperyListPath = [defaultManager stringWithFileSystemRepresentation:pPropertyListFilePath.c_str() length: pPropertyListFilePath.size()];
 
-    if (![[NSFileManager defaultManager] fileExistsAtPath:pProperyListPath])
+    if (![defaultManager fileExistsAtPath:pProperyListPath])
     {
         return NULL;
     }
 
-    NSData *pPropertyListXML = [[NSFileManager defaultManager] contentsAtPath:pProperyListPath];
+    NSData *pPropertyListXML = [defaultManager contentsAtPath:pProperyListPath];
     NSDictionary *pPropertyListDictionary =
-        (NSDictionary *)[NSPropertyListSerialization propertyListFromData:pPropertyListXML
+        [NSPropertyListSerialization propertyListFromData:pPropertyListXML
             mutabilityOption:NSPropertyListMutableContainersAndLeaves
             format:&format
             errorDescription:&pErrorDesc];
@@ -547,7 +548,7 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
     [pPropertyListDictionaryMutable setObject:[NSString stringWithUTF8String:pVersionString.c_str()] forKey:@"VersionString"];
 
     NSData *pData = [NSPropertyListSerialization
-        dataFromPropertyList:(id)pPropertyListDictionaryMutable
+        dataFromPropertyList:pPropertyListDictionaryMutable
         format:NSPropertyListXMLFormat_v1_0
         errorDescription:&pErrorDesc];
 
