@@ -500,12 +500,8 @@ string GetVersionStringOSX(string PropertyListFilePath)
         return string();
     }
 
-    NSData *pPropertyListXML = [defaultManager contentsAtPath:pProperyListPath];
     NSDictionary *pPropertyListDictionary =
-        [NSPropertyListSerialization propertyListFromData:pPropertyListXML
-            mutabilityOption:NSPropertyListMutableContainersAndLeaves
-            format:&format
-            errorDescription:&pErrorDesc];
+        [NSDictionary dictionaryWithContentsOfFile:pProperyListPath];
 
     if (pPropertyListDictionary == NULL)
     {
@@ -531,19 +527,13 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
         return NULL;
     }
 
-    NSData *pPropertyListXML = [defaultManager contentsAtPath:pProperyListPath];
-    NSDictionary *pPropertyListDictionary =
-        [NSPropertyListSerialization propertyListFromData:pPropertyListXML
-            mutabilityOption:NSPropertyListMutableContainersAndLeaves
-            format:&format
-            errorDescription:&pErrorDesc];
+    NSMutableDictionary *pPropertyListDictionaryMutable =
+        [NSMutableDictionary dictionaryWithContentsOfFile:pProperyListPath];
 
-    if (pPropertyListDictionary == NULL)
+    if (pPropertyListDictionaryMutable == NULL)
     {
         return NULL;
     }
-
-    NSMutableDictionary *pPropertyListDictionaryMutable = [pPropertyListDictionary mutableCopy];
 
     [pPropertyListDictionaryMutable setObject:[NSString stringWithUTF8String:pVersionString.c_str()] forKey:@"VersionString"];
 
@@ -557,7 +547,7 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
         return NULL;
     }
 
-    unsigned long dataLength = [pData length];
+    NSUInteger dataLength = [pData length];
 
     char *pCharData = (char *)malloc(dataLength * sizeof(char));
     [pData getBytes:(void *)pCharData length:dataLength];
