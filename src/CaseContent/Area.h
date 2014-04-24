@@ -34,6 +34,7 @@
 #include "../Events/LocationEventProvider.h"
 
 class XmlReader;
+
 class XmlWriter;
 
 class Area : public LocationEventListener
@@ -44,7 +45,7 @@ public:
         pStartLocation = NULL;
         pCurrentLocation = NULL;
         pTargetLocation = NULL;
-        shouldSwapLocations = NULL;
+        shouldSwapLocations = false;
     }
 
     Area(XmlReader *pReader);
