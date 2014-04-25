@@ -18,4 +18,6 @@ string GetVersionStringOSX(string PropertyListFilePath);
 char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, string pVersionString, unsigned long *pVersionStringLength);
 string GetGameExecutable();
 
+void BeginOSX();
+
 #endif
