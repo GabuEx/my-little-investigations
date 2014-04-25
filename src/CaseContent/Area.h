@@ -34,7 +34,6 @@
 #include "../Events/LocationEventProvider.h"
 
 class XmlReader;
-
 class XmlWriter;
 
 class Area : public LocationEventListener
