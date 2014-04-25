@@ -12,6 +12,12 @@
 #include <sys/param.h> /* for MAXPATHLEN */
 #include <unistd.h>
 
+string pLocalApplicationSupportPath;
+string pCasesPath;
+string pUserApplicationSupportPath;
+string pDialogSeenListsPath;
+string pSavesPath;
+
 /* For some reaon, Apple removed setAppleMenu from the headers in 10.4,
  but the method still is there and works. To avoid warnings, we declare
  it ourselves here. */
@@ -308,9 +314,9 @@ static void CustomApplicationMain (int argc, char **argv)
 
 - (NSString *)stringByReplacingRange:(NSRange)aRange with:(NSString *)aString
 {
-    unsigned int bufferSize;
-    unsigned int selfLen = [self length];
-    unsigned int aStringLen = [aString length];
+    NSUInteger bufferSize;
+    NSUInteger selfLen = [self length];
+    NSUInteger aStringLen = [aString length];
     unichar *buffer;
     NSRange localRange;
     NSString *result;

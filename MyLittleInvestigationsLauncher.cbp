@@ -165,10 +165,6 @@
 			<Add option="-D__STDC_CONSTANT_MACROS" />
 			<Add option="-DTIXML_USE_TICPP" />
 		</Compiler>
-		<Unit filename="osx/ApplicationSupportBridge.cpp">
-			<Option target="Debug (OS X)" />
-			<Option target="Release (OS X)" />
-		</Unit>
 		<Unit filename="osx/ApplicationSupportBridge.h">
 			<Option target="Debug (OS X)" />
 			<Option target="Release (OS X)" />
