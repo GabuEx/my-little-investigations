@@ -56,6 +56,10 @@
 #include <string>
 #include <math.h>
 
+#ifdef __OSX
+#include "../osx/ApplicationSupportBridge.h"
+#endif
+
 #ifdef __unix
 #include <unistd.h>
 #endif
@@ -76,12 +80,12 @@ string title = "My Little Investigations Launcher";
 bool ValidateCaseFile(const string &caseFileName, string *pCaseUuid);
 #endif
 
-#ifdef __OSX
-int SDL_main(int argc, char * argv[])
-#else
 int main(int argc, char * argv[])
-#endif
 {
+#ifdef __OSX
+    BeginOSX();
+#endif
+
     LoadFilePathsAndCaseUuids(argc > 0 ? string(argv[0]) : "");
 
 #ifdef UPDATER

@@ -51,6 +51,11 @@ bool CopyCaseFileToCaseFolder(const string &caseFilePath, const string &caseUuid
 #endif
 
 string ConvertSeparatorsInPath(string &path);
+inline string ConvertSeparatorsInPath(const string &path)
+{
+    string path1 = path;
+    return ConvertSeparatorsInPath(path1);
+}
 string GetFileNameFromFilePath(const string &path);
 
 string GetCommonResourcesFilePath();

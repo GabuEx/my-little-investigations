@@ -899,7 +899,7 @@ void Dialog::Draw(double xOffset, double yOffset)
 #ifdef ENABLE_DEBUG_MODE
     if (gEnableDebugMode && filePath.length() > 0)
     {
-        Font *pFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("MouseOverFont");
+        MLIFont *pFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("MouseOverFont");
         pFont->Draw(GetFileNameFromFilePath(ConvertSeparatorsInPath(filePath + ".ogg")), Vector2(xOffset, yOffset + gScreenHeight - Dialog::Height - TabHeight + 3 - pFont->GetLineHeight()));
     }
 #endif
