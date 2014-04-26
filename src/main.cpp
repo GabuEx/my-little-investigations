@@ -323,10 +323,6 @@ int main(int argc, char * argv[])
                     TextInputHelper::NotifyKeyDown(event.key.keysym.sym);
                     switch(event.key.keysym.sym)
                     {
-                        case SDLK_LALT:
-                        case SDLK_RALT:
-                            MouseHelper::UpdateState(true, mouseX, mouseY, drawCursor); //Simulated double-click
-                            MouseHelper::UpdateState(false, mouseX, mouseY, drawCursor);
                         case SDLK_RETURN:
                         case SDLK_SPACE:
                             isLeftMouseButtonDown = true;
@@ -364,8 +360,6 @@ int main(int argc, char * argv[])
                     TextInputHelper::NotifyKeyUp(event.key.keysym.sym);
                     switch(event.key.keysym.sym)
                     {
-                        case SDLK_LALT:
-                        case SDLK_RALT:
                         case SDLK_RETURN:
                         case SDLK_SPACE:
                             isLeftMouseButtonDown = false;
