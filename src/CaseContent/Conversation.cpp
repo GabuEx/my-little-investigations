@@ -1181,7 +1181,7 @@ void Conversation::ShowDialogAction::Update(int delta)
         return;
     }
 
-    if (((MouseHelper::ClickedAnywhere() || pState->GetIsFastForwarding()) &&						//MEH TODO: || KeyboardHelper::ActionPressed()
+    if (((MouseHelper::ClickedAnywhere() || pState->GetIsFastForwarding()) &&
          (pDialog->GetIsReadyToProgress() || hasBeenSeen || gEnableSkippingUnseenDialog) &&
          !pDialog->HandleClick() &&
          !pDialog->GetIsAutomatic() &&

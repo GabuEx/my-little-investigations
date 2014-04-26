@@ -34,6 +34,7 @@
 #ifndef LAUNCHER
 #include "Game.h"
 #include "MouseHelper.h"
+#include "KeyboardHelper.h"
 #include "CaseInformation/Case.h"
 #include "CaseInformation/CommonCaseResources.h"
 #endif
@@ -324,14 +325,37 @@ int main(int argc, char * argv[])
                     {
                         case SDLK_LALT:
                         case SDLK_RALT:
-                        case SDLK_LSHIFT:
-                        case SDLK_RSHIFT:
                             MouseHelper::UpdateState(true, mouseX, mouseY, drawCursor); //Simulated double-click
                             MouseHelper::UpdateState(false, mouseX, mouseY, drawCursor);
                         case SDLK_RETURN:
                         case SDLK_SPACE:
                             isLeftMouseButtonDown = true;
                             MouseHelper::UpdateState(isLeftMouseButtonDown, mouseX, mouseY, drawCursor);    //Simulate click at the last position of the mouse
+                            break;
+
+                        case SDLK_w:
+                        case SDLK_UP:
+                            KeyboardHelper::UpPress();
+                            break;
+
+                        case SDLK_a:
+                        case SDLK_LEFT:
+                            KeyboardHelper::LeftPress();
+                            break;
+
+                        case SDLK_s:
+                        case SDLK_DOWN:
+                            KeyboardHelper::DownPress();
+                            break;
+
+                        case SDLK_d:
+                        case SDLK_RIGHT:
+                            KeyboardHelper::RightPress();
+                            break;
+
+                        case SDLK_LSHIFT:
+                        case SDLK_RSHIFT:
+                            KeyboardHelper::RunPress();
                             break;
                     }
                     break;
@@ -342,12 +366,35 @@ int main(int argc, char * argv[])
                     {
                         case SDLK_LALT:
                         case SDLK_RALT:
-                        case SDLK_LSHIFT:
-                        case SDLK_RSHIFT:
                         case SDLK_RETURN:
                         case SDLK_SPACE:
                             isLeftMouseButtonDown = false;
                             MouseHelper::UpdateState(isLeftMouseButtonDown, mouseX, mouseY, drawCursor);    //Simulate mouse button released
+                            break;
+
+                        case SDLK_w:
+                        case SDLK_UP:
+                            KeyboardHelper::UpRelease();
+                            break;
+
+                        case SDLK_a:
+                        case SDLK_LEFT:
+                            KeyboardHelper::LeftRelease();
+                            break;
+
+                        case SDLK_s:
+                        case SDLK_DOWN:
+                            KeyboardHelper::DownRelease();
+                            break;
+
+                        case SDLK_d:
+                        case SDLK_RIGHT:
+                            KeyboardHelper::RightRelease();
+                            break;
+
+                        case SDLK_LSHIFT:
+                        case SDLK_RSHIFT:
+                            KeyboardHelper::RunRelease();
                             break;
                     }
                     break;

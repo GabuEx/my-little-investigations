@@ -33,6 +33,7 @@
 #include "../globals.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../PositionalSound.h"
 #include "../TransitionRequest.h"
 #include "../XmlReader.h"
@@ -1114,7 +1115,7 @@ void Location::Update(int delta)
                     pFadeOutEase->Reset();
                     pCurrentCutscene = NULL;
                     MouseHelper::HandleClick();
-                    Case::GetInstance()->UpdateLoadedTextures(GetId());	//MEH TODO: Check
+                    Case::GetInstance()->UpdateLoadedTextures(GetId());
                     return;
                 }
             }
@@ -1945,7 +1946,6 @@ void Location::Update(int delta)
 
         if (!pFadeOutEase->GetIsStarted())
         {
-			//MEH TODO: Test for keyboard keys being pressed, and move player accordingly
             if (MouseHelper::ClickedAnywhere() || MouseHelper::DoubleClickedAnywhere())
             {
                 pTargetInteractiveElement = NULL;
@@ -2013,6 +2013,30 @@ void Location::Update(int delta)
                 characterTargetPositionQueueMap[pPlayerCharacter] = queue<Vector2>();
                 characterTargetPositionMap[pPlayerCharacter] = endPosition;
                 characterStateMap[pPlayerCharacter] = FieldCharacterStateRunning;
+
+                if (!characterTargetPositionQueueMap[pPartnerCharacter].empty())
+                {
+                    characterTargetPositionQueueMap[pPartnerCharacter] = queue<Vector2>();
+                    characterTargetPositionMap[pPartnerCharacter] = Vector2(-1, -1);
+                    characterStateMap[pPartnerCharacter] = FieldCharacterStateStanding;
+                }
+
+                SDL_SemPost(pPathfindingValuesSemaphore);
+            }
+            else if (KeyboardHelper::GetMoving())
+            {
+                Vector2 endPosition = pPlayerCharacter->GetCenterPoint() + KeyboardHelper::GetPressedDirection();
+
+                SDL_SemWait(pPathfindingValuesSemaphore);
+
+                movingDirectly = true;
+                pTargetInteractiveElement = NULL;
+                characterTargetPositionQueueMap[pPlayerCharacter] = queue<Vector2>();
+                characterTargetPositionMap[pPlayerCharacter] = endPosition;
+
+                characterStateMap[pPlayerCharacter] = FieldCharacterStateWalking;
+                if (KeyboardHelper::GetRunning())
+                    characterStateMap[pPlayerCharacter] = FieldCharacterStateRunning;
 
                 if (!characterTargetPositionQueueMap[pPartnerCharacter].empty())
                 {
