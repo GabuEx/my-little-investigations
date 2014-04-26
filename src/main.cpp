@@ -320,10 +320,36 @@ int main(int argc, char * argv[])
 
                 case SDL_KEYDOWN:
                     TextInputHelper::NotifyKeyDown(event.key.keysym.sym);
+                    switch(event.key.keysym.sym)
+                    {
+                        case SDLK_LALT:
+                        case SDLK_RALT:
+                        case SDLK_LSHIFT:
+                        case SDLK_RSHIFT:
+                            MouseHelper::UpdateState(true, mouseX, mouseY, drawCursor); //Simulated double-click
+                            MouseHelper::UpdateState(false, mouseX, mouseY, drawCursor);
+                        case SDLK_RETURN:
+                        case SDLK_SPACE:
+                            isLeftMouseButtonDown = true;
+                            MouseHelper::UpdateState(isLeftMouseButtonDown, mouseX, mouseY, drawCursor);    //Simulate click at the last position of the mouse
+                            break;
+                    }
                     break;
 
                 case SDL_KEYUP:
                     TextInputHelper::NotifyKeyUp(event.key.keysym.sym);
+                    switch(event.key.keysym.sym)
+                    {
+                        case SDLK_LALT:
+                        case SDLK_RALT:
+                        case SDLK_LSHIFT:
+                        case SDLK_RSHIFT:
+                        case SDLK_RETURN:
+                        case SDLK_SPACE:
+                            isLeftMouseButtonDown = false;
+                            MouseHelper::UpdateState(isLeftMouseButtonDown, mouseX, mouseY, drawCursor);    //Simulate mouse button released
+                            break;
+                    }
                     break;
 
                 case SDL_TEXTINPUT:
