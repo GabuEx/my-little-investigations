@@ -323,6 +323,7 @@ int main(int argc, char * argv[])
                     if(TextInputHelper::GetInSession())
                         TextInputHelper::NotifyKeyDown(event.key.keysym.sym);
                     else
+                    {
                         switch(event.key.keysym.sym)
                         {
                             case SDLK_RETURN:
@@ -356,12 +357,14 @@ int main(int argc, char * argv[])
                                 KeyboardHelper::RunPress();
                                 break;
                         }
+                    }
                     break;
 
                 case SDL_KEYUP:
                     if(TextInputHelper::GetInSession())
                         TextInputHelper::NotifyKeyUp(event.key.keysym.sym);
                     else
+                    {
                         switch(event.key.keysym.sym)
                         {
                             case SDLK_RETURN:
@@ -395,6 +398,7 @@ int main(int argc, char * argv[])
                                 KeyboardHelper::RunRelease();
                                 break;
                         }
+                    }
                     break;
 
                 case SDL_TEXTINPUT:

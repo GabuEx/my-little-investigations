@@ -57,35 +57,3 @@ private:
 };
 
 #endif // KEYBOARDHELPER_H
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

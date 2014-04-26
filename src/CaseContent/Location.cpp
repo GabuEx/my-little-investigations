@@ -1963,6 +1963,7 @@ void Location::Update(int delta)
                         endPosition += heightMapOffset;
                     }
                 }
+
                 StartCharacterOnPath(pPlayerCharacter, endPosition, MouseHelper::DoubleClickedAnywhere() ? FieldCharacterStateRunning : FieldCharacterStateWalking);
             }
             else if (MouseHelper::PressedAndHeldAnywhere())
