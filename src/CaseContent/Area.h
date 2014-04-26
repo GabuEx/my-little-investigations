@@ -44,7 +44,7 @@ public:
         pStartLocation = NULL;
         pCurrentLocation = NULL;
         pTargetLocation = NULL;
-        shouldSwapLocations = NULL;
+        shouldSwapLocations = false;
     }
 
     Area(XmlReader *pReader);
