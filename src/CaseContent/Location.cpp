@@ -1114,7 +1114,7 @@ void Location::Update(int delta)
                     pFadeOutEase->Reset();
                     pCurrentCutscene = NULL;
                     MouseHelper::HandleClick();
-                    Case::GetInstance()->UpdateLoadedTextures(GetId());
+                    Case::GetInstance()->UpdateLoadedTextures(GetId());	//MEH TODO: Check
                     return;
                 }
             }
@@ -1945,6 +1945,7 @@ void Location::Update(int delta)
 
         if (!pFadeOutEase->GetIsStarted())
         {
+			//MEH TODO: Test for keyboard keys being pressed, and move player accordingly
             if (MouseHelper::ClickedAnywhere() || MouseHelper::DoubleClickedAnywhere())
             {
                 pTargetInteractiveElement = NULL;
@@ -1962,7 +1963,6 @@ void Location::Update(int delta)
                         endPosition += heightMapOffset;
                     }
                 }
-
                 StartCharacterOnPath(pPlayerCharacter, endPosition, MouseHelper::DoubleClickedAnywhere() ? FieldCharacterStateRunning : FieldCharacterStateWalking);
             }
             else if (MouseHelper::PressedAndHeldAnywhere())
