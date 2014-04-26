@@ -59,6 +59,7 @@ public:
 
     static bool GetUserHasConfirmed() { return userHasConfirmed; }
     static bool GetUserHasCanceled() { return userHasCanceled; }
+    static bool GetInSession() { return isInSession; }
 
 private:
     static bool SetNewText(const string &newText, unsigned int newCaretPosition);
@@ -79,6 +80,7 @@ private:
 
     static bool userHasConfirmed;
     static bool userHasCanceled;
+    static bool isInSession;
 };
 
 #endif

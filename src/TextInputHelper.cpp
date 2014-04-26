@@ -45,6 +45,7 @@ MLIFont *TextInputHelper::pFontToCheckAgainst = NULL;
 
 bool TextInputHelper::userHasConfirmed = false;
 bool TextInputHelper::userHasCanceled = false;
+bool TextInputHelper::isInSession = false;
 
 const int DurationBeforeRepeatingMs = 500;
 const int CaretToggleDurationMs = 500;
@@ -57,11 +58,13 @@ void TextInputHelper::Init()
 void TextInputHelper::StartSession()
 {
     SDL_StartTextInput();
+    isInSession = true;
 }
 
 void TextInputHelper::EndSession()
 {
     SDL_StopTextInput();
+    isInSession = false;
 }
 
 void TextInputHelper::NotifyKeyDown(SDL_Keycode keycode)
@@ -130,6 +133,7 @@ void TextInputHelper::Reset()
 
     userHasConfirmed = false;
     userHasCanceled = false;
+    isInSession = false;
 }
 
 bool TextInputHelper::SetNewText(const string &newText, unsigned int newCaretPosition)
