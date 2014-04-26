@@ -6,7 +6,6 @@
 */
 
 #include "SDL2/SDL.h"
-#import "SDLMain.h"
 #import "NSFileManagerDirectoryLocations.h"
 #include "ApplicationSupportBridge.h"
 #include <sys/param.h> /* for MAXPATHLEN */
