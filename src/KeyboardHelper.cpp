@@ -27,8 +27,9 @@
  * SOFTWARE.
  */
 
- #include "KeyboardHelper.h"
+#include <assert.h>
 
+#include "KeyboardHelper.h"
 
 bool KeyboardHelper::left = false;
 bool KeyboardHelper::right = false;
@@ -36,59 +37,59 @@ bool KeyboardHelper::up = false;
 bool KeyboardHelper::down = false;
 bool KeyboardHelper::running = false;
 
+SDL_Keycode KeyboardHelper::actionKeys[Count][nbAlternate] = {	// Default values
+	{ SDLK_w,		SDLK_UP		},	// Up
+	{ SDLK_s,		SDLK_DOWN	},	// Down
+	{ SDLK_a,		SDLK_LEFT	},	// Left
+	{ SDLK_d,		SDLK_RIGHT	},	// Right
+	{ SDLK_LSHIFT,	SDLK_RSHIFT	},	// Run
+	{ SDLK_SPACE,	SDLK_RETURN	}	// Click
+};
+
+string KeyboardHelper::actionNames[Count] = {
+    "Up",
+    "Down",
+    "Left",
+    "Right",
+    "Run",
+    "Click"
+};
+
 void KeyboardHelper::Init()
 {
     left = right = up = down = running = false;
+
+    // Provide layout independant keys (no qwerty / azerty problem)
+    // Now that SDL has been init, this will work
+    actionKeys[Up][0]		= SDL_GetKeyFromScancode(SDL_SCANCODE_W);
+    actionKeys[Down][0]		= SDL_GetKeyFromScancode(SDL_SCANCODE_S);
+    actionKeys[Left][0]		= SDL_GetKeyFromScancode(SDL_SCANCODE_A);
+    actionKeys[Right][0]	= SDL_GetKeyFromScancode(SDL_SCANCODE_D);
 }
 
-void KeyboardHelper::LeftPress()
+void KeyboardHelper::LeftState(bool isDown)
 {
-    left = true;
+    left = isDown;
 }
 
-void KeyboardHelper::LeftRelease()
+void KeyboardHelper::RightState(bool isDown)
 {
-    left = false;
+    right = isDown;
 }
 
-void KeyboardHelper::RightPress()
+void KeyboardHelper::UpState(bool isDown)
 {
-    right = true;
+    up = isDown;
 }
 
-void KeyboardHelper::RightRelease()
+void KeyboardHelper::DownState(bool isDown)
 {
-    right = false;
+    down = isDown;
 }
 
-void KeyboardHelper::UpPress()
+void KeyboardHelper::RunState(bool isDown)
 {
-    up = true;
-}
-
-void KeyboardHelper::UpRelease()
-{
-    up = false;
-}
-
-void KeyboardHelper::DownPress()
-{
-    down = true;
-}
-
-void KeyboardHelper::DownRelease()
-{
-    down = false;
-}
-
-void KeyboardHelper::RunPress()
-{
-    running = true;
-}
-
-void KeyboardHelper::RunRelease()
-{
-    running = false;
+    running = isDown;
 }
 
 bool KeyboardHelper::GetRunning()
@@ -115,4 +116,76 @@ Vector2 KeyboardHelper::GetPressedDirection()
         result.SetY(result.GetY() + 50);
 
     return result;
+}
+
+bool KeyboardHelper::IsActionKey(HandledActions action, SDL_Keycode key)
+{
+	assert(action >= 0 && action < Count);
+
+    for(int i = 0; i < nbAlternate; i++)
+    {
+        if(key == actionKeys[action][i])
+            return true;
+    }
+
+    return false;
+}
+
+SDL_Keycode KeyboardHelper::GetKeyForAction(HandledActions action, int alternate)
+{
+	assert(action >= 0 && action < Count);
+	assert(alternate >= 0 && alternate < nbAlternate);
+
+	return actionKeys[action][alternate];
+}
+
+void KeyboardHelper::SetKeyForAction(HandledActions action, SDL_Keycode key, int alternate)
+{
+	assert(action >= 0 && action < Count);
+	assert(alternate >= 0 && alternate < nbAlternate);
+
+	actionKeys[action][alternate] = key;
+}
+
+void KeyboardHelper::ReadConf(XmlReader& configReader)
+{
+    for(int actionIt = 0; actionIt < Count; actionIt++)
+    {
+        for(int alternateIt = 0; alternateIt < nbAlternate; alternateIt++)
+        {
+            string nodeName = GetActionNodeName((HandledActions) actionIt, alternateIt);
+
+			if (configReader.ElementExists(nodeName.c_str()))
+			{
+					KeyboardHelper::SetKeyForAction(
+						(HandledActions) actionIt,
+						SDL_GetKeyFromName( configReader.ReadTextElement( nodeName.c_str() ).c_str() ),
+						alternateIt
+					);
+			}
+        }
+    }
+}
+
+void KeyboardHelper::WriteConf(XmlWriter& configWriter)
+{
+    for(int actionIt = 0; actionIt < Count; actionIt++)
+    {
+        for(int alternateIt = 0; alternateIt < nbAlternate; alternateIt++)
+        {
+            string nodeName = GetActionNodeName((HandledActions) actionIt, alternateIt);
+
+			configWriter.WriteTextElement(
+				nodeName.c_str(),
+				SDL_GetKeyName(KeyboardHelper::GetKeyForAction((HandledActions) actionIt, alternateIt))
+			);
+        }
+    }
+}
+
+string KeyboardHelper::GetActionNodeName(HandledActions action, int alternate)
+{
+    ostringstream oss;
+    oss << actionNames[action] << alternate;
+    return oss.str();
 }
