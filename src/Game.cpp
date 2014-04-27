@@ -202,8 +202,8 @@ bool Game::CreateAndInit()
         return false;
     }
 
-#ifdef __WINDOWS
 #ifndef LAUNCHER
+#ifdef __WINDOWS
     // Load and set the window icon - this is needed on Windows,
     // since just having the icon in the .exe doesn't set it for things like
     // the Alt+Tab menu.
@@ -228,6 +228,16 @@ bool Game::CreateAndInit()
             SendMessage(hwnd, WM_SETICON, ICON_BIG, reinterpret_cast<WPARAM>(hBigIcon));
         }
     }
+#else
+    SDL_Surface* pIcon = IMG_Load(GetWindowIconFilePath().c_str());
+
+    if (pIcon)
+    {
+		SDL_SetWindowIcon(gpWindow, pIcon);
+    }
+
+	SDL_FreeSurface(pIcon);
+    pIcon = NULL;
 #endif
 #endif
 

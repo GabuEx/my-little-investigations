@@ -60,6 +60,8 @@ string GetFileNameFromFilePath(const string &path);
 
 string GetCommonResourcesFilePath();
 
+string GetWindowIconFilePath();
+
 #ifdef __OSX
 string GetPropertyListPath();
 #endif
