@@ -45,8 +45,7 @@ public:
     static void StartSession();
     static void EndSession();
 
-    static void NotifyKeyDown(SDL_Keycode keycode);
-    static void NotifyKeyUp(SDL_Keycode keycode);
+    static void NotifyKeyState(SDL_Keycode keycode, bool isDown);
     static void NotifyTextInput(const string &newText);
     static void Update(int delta);
     static void Reset();

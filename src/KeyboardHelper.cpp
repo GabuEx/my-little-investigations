@@ -36,59 +36,41 @@ bool KeyboardHelper::up = false;
 bool KeyboardHelper::down = false;
 bool KeyboardHelper::running = false;
 
+SDL_Scancode KeyboardHelper::upKey[2] = {SDL_SCANCODE_W, SDL_SCANCODE_UP};
+SDL_Scancode KeyboardHelper::downKey[2] = {SDL_SCANCODE_S, SDL_SCANCODE_DOWN};
+SDL_Scancode KeyboardHelper::leftKey[2] = {SDL_SCANCODE_A, SDL_SCANCODE_LEFT};
+SDL_Scancode KeyboardHelper::rightKey[2] = {SDL_SCANCODE_D, SDL_SCANCODE_RIGHT};
+SDL_Scancode KeyboardHelper::runKey[2] = {SDL_SCANCODE_LSHIFT, SDL_SCANCODE_RSHIFT};
+SDL_Scancode KeyboardHelper::clickKey[2] = {SDL_SCANCODE_SPACE, SDL_SCANCODE_RETURN};
+
 void KeyboardHelper::Init()
 {
     left = right = up = down = running = false;
 }
 
-void KeyboardHelper::LeftPress()
+void KeyboardHelper::LeftState(bool isDown)
 {
-    left = true;
+    left = isDown;
 }
 
-void KeyboardHelper::LeftRelease()
+void KeyboardHelper::RightState(bool isDown)
 {
-    left = false;
+    right = isDown;
 }
 
-void KeyboardHelper::RightPress()
+void KeyboardHelper::UpState(bool isDown)
 {
-    right = true;
+    up = isDown;
 }
 
-void KeyboardHelper::RightRelease()
+void KeyboardHelper::DownState(bool isDown)
 {
-    right = false;
+    down = isDown;
 }
 
-void KeyboardHelper::UpPress()
+void KeyboardHelper::RunState(bool isDown)
 {
-    up = true;
-}
-
-void KeyboardHelper::UpRelease()
-{
-    up = false;
-}
-
-void KeyboardHelper::DownPress()
-{
-    down = true;
-}
-
-void KeyboardHelper::DownRelease()
-{
-    down = false;
-}
-
-void KeyboardHelper::RunPress()
-{
-    running = true;
-}
-
-void KeyboardHelper::RunRelease()
-{
-    running = false;
+    running = isDown;
 }
 
 bool KeyboardHelper::GetRunning()
@@ -116,3 +98,34 @@ Vector2 KeyboardHelper::GetPressedDirection()
 
     return result;
 }
+
+bool KeyboardHelper::IsUpKey(SDL_Scancode key)
+{
+    return (key == upKey[0] || key == upKey[1]);
+}
+
+bool KeyboardHelper::IsDownKey(SDL_Scancode key)
+{
+    return (key == downKey[0] || key == downKey[1]);
+}
+
+bool KeyboardHelper::IsLeftKey(SDL_Scancode key)
+{
+    return (key == leftKey[0] || key == leftKey[1]);
+}
+
+bool KeyboardHelper::IsRightKey(SDL_Scancode key)
+{
+    return (key == rightKey[0] || key == rightKey[1]);
+}
+
+bool KeyboardHelper::IsRunKey(SDL_Scancode key)
+{
+    return (key == runKey[0] || key == runKey[1]);
+}
+
+bool KeyboardHelper::IsClickKey(SDL_Scancode key)
+{
+    return (key == clickKey[0] || key == clickKey[1]);
+}
+

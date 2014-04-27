@@ -320,84 +320,31 @@ int main(int argc, char * argv[])
                     break;
 
                 case SDL_KEYDOWN:
-                    if(TextInputHelper::GetInSession())
-                        TextInputHelper::NotifyKeyDown(event.key.keysym.sym);
-                    else
-                    {
-                        switch(event.key.keysym.sym)
-                        {
-                            case SDLK_RETURN:
-                            case SDLK_SPACE:
-                                isLeftMouseButtonDown = true;
-                                MouseHelper::UpdateState(isLeftMouseButtonDown, mouseX, mouseY, drawCursor);    //Simulate click at the last position of the mouse
-                                break;
-
-                            case SDLK_w:
-                            case SDLK_UP:
-                                KeyboardHelper::UpPress();
-                                break;
-
-                            case SDLK_a:
-                            case SDLK_LEFT:
-                                KeyboardHelper::LeftPress();
-                                break;
-
-                            case SDLK_s:
-                            case SDLK_DOWN:
-                                KeyboardHelper::DownPress();
-                                break;
-
-                            case SDLK_d:
-                            case SDLK_RIGHT:
-                                KeyboardHelper::RightPress();
-                                break;
-
-                            case SDLK_LSHIFT:
-                            case SDLK_RSHIFT:
-                                KeyboardHelper::RunPress();
-                                break;
-                        }
-                    }
-                    break;
-
                 case SDL_KEYUP:
                     if(TextInputHelper::GetInSession())
-                        TextInputHelper::NotifyKeyUp(event.key.keysym.sym);
+                        TextInputHelper::NotifyKeyState(event.key.keysym.sym, event.key.state);
                     else
                     {
-                        switch(event.key.keysym.sym)
+                        if(KeyboardHelper::IsClickKey(event.key.keysym.scancode))
                         {
-                            case SDLK_RETURN:
-                            case SDLK_SPACE:
-                                isLeftMouseButtonDown = false;
-                                MouseHelper::UpdateState(isLeftMouseButtonDown, mouseX, mouseY, drawCursor);    //Simulate mouse button released
-                                break;
-
-                            case SDLK_w:
-                            case SDLK_UP:
-                                KeyboardHelper::UpRelease();
-                                break;
-
-                            case SDLK_a:
-                            case SDLK_LEFT:
-                                KeyboardHelper::LeftRelease();
-                                break;
-
-                            case SDLK_s:
-                            case SDLK_DOWN:
-                                KeyboardHelper::DownRelease();
-                                break;
-
-                            case SDLK_d:
-                            case SDLK_RIGHT:
-                                KeyboardHelper::RightRelease();
-                                break;
-
-                            case SDLK_LSHIFT:
-                            case SDLK_RSHIFT:
-                                KeyboardHelper::RunRelease();
-                                break;
+							isLeftMouseButtonDown = event.key.state;
+							MouseHelper::UpdateState(isLeftMouseButtonDown, mouseX, mouseY, drawCursor);    //Simulate mouse button released
                         }
+
+                        if(KeyboardHelper::IsUpKey(event.key.keysym.scancode))
+							KeyboardHelper::UpState(event.key.state);
+
+                        if(KeyboardHelper::IsLeftKey(event.key.keysym.scancode))
+							KeyboardHelper::LeftState(event.key.state);
+
+                        if(KeyboardHelper::IsDownKey(event.key.keysym.scancode))
+							KeyboardHelper::DownState(event.key.state);
+
+                        if(KeyboardHelper::IsRightKey(event.key.keysym.scancode))
+							KeyboardHelper::RightState(event.key.state);
+
+                        if(KeyboardHelper::IsRunKey(event.key.keysym.scancode))
+							KeyboardHelper::RunState(event.key.state);
                     }
                     break;
 

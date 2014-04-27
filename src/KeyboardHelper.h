@@ -30,6 +30,7 @@
 #ifndef KEYBOARDHELPER_H
 #define KEYBOARDHELPER_H
 
+#include <SDL2/SDL_scancode.h>
 #include "Vector2.h"
 
 class KeyboardHelper
@@ -37,23 +38,27 @@ class KeyboardHelper
 public:
     static void Init();
 
-    static void LeftPress();
-    static void LeftRelease();
-    static void RightPress();
-    static void RightRelease();
-    static void UpPress();
-    static void UpRelease();
-    static void DownPress();
-    static void DownRelease();
-    static void RunPress();
-    static void RunRelease();
+    static void LeftState(bool isDown);
+    static void RightState(bool isDown);
+    static void UpState(bool isDown);
+    static void DownState(bool isDown);
+    static void RunState(bool isDown);
 
     static Vector2 GetPressedDirection();
     static bool GetMoving();
     static bool GetRunning();
 
+	static bool IsUpKey(SDL_Scancode);
+	static bool IsDownKey(SDL_Scancode);
+	static bool IsLeftKey(SDL_Scancode);
+	static bool IsRightKey(SDL_Scancode);
+	static bool IsRunKey(SDL_Scancode);
+	static bool IsClickKey(SDL_Scancode);
+
 private:
     static bool left, right, up, down, running;
+
+	static SDL_Scancode upKey[2], downKey[2], leftKey[2], rightKey[2], runKey[2], clickKey[2];
 };
 
 #endif // KEYBOARDHELPER_H
