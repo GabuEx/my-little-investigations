@@ -67,26 +67,29 @@ void TextInputHelper::EndSession()
     isInSession = false;
 }
 
-void TextInputHelper::NotifyKeyDown(SDL_Keycode keycode)
+void TextInputHelper::NotifyKeyState(SDL_Keycode keycode, bool isDown)
 {
-    HandleSpecialKey(keycode);
-
-    if (keycode == SDLK_BACKSPACE ||
-        keycode == SDLK_DELETE ||
-        keycode == SDLK_LEFT ||
-        keycode == SDLK_RIGHT)
+    if(isDown)
     {
-        keyDownForRepeat = keycode;
-        msSinceKeyDown = 0;
+		HandleSpecialKey(keycode);
+
+		if (keycode == SDLK_BACKSPACE ||
+			keycode == SDLK_DELETE ||
+			keycode == SDLK_LEFT ||
+			keycode == SDLK_RIGHT)
+		{
+			keyDownForRepeat = keycode;
+			msSinceKeyDown = 0;
+		}
     }
-}
 
-void TextInputHelper::NotifyKeyUp(SDL_Keycode keycode)
-{
-    if (keycode == keyDownForRepeat)
+    else
     {
-        keyDownForRepeat = SDLK_UNKNOWN;
-        msSinceKeyDown = -1;
+		if (keycode == keyDownForRepeat)
+		{
+			keyDownForRepeat = SDLK_UNKNOWN;
+			msSinceKeyDown = -1;
+		}
     }
 }
 

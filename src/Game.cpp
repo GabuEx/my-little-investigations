@@ -36,6 +36,7 @@
 #ifdef GAME_EXECUTABLE
 #include "mli_audio.h"
 #include "MouseHelper.h"
+#include "KeyboardHelper.h"
 #include "ResourceLoader.h"
 #include "TextInputHelper.h"
 #include "CaseContent/Dialog.h"
@@ -275,6 +276,7 @@ bool Game::CreateAndInit()
 
 #ifdef GAME_EXECUTABLE
     MouseHelper::Init();
+    KeyboardHelper::Init();
     TextInputHelper::Init();
     EventProviders::Init();
 
