@@ -31,6 +31,9 @@
 #define KEYBOARDHELPER_H
 
 #include <SDL2/SDL_scancode.h>
+
+#include "XmlReader.h"
+#include "XmlWriter.h"
 #include "Vector2.h"
 
 class KeyboardHelper
@@ -54,6 +57,23 @@ public:
 	static bool IsRightKey(SDL_Scancode);
 	static bool IsRunKey(SDL_Scancode);
 	static bool IsClickKey(SDL_Scancode);
+
+    static void ReadConf(XmlReader& configReader);
+    static void WriteConf(XmlWriter& configWriter);
+
+    static SDL_Scancode GetUpKey(int id);
+    static SDL_Scancode GetDownKey(int id);
+    static SDL_Scancode GetLeftKey(int id);
+    static SDL_Scancode GetRightKey(int id);
+    static SDL_Scancode GetRunKey(int id);
+    static SDL_Scancode GetClickKey(int id);
+
+    static void SetUpKey(SDL_Scancode key, int id);
+    static void SetDownKey(SDL_Scancode key, int id);
+    static void SetLeftKey(SDL_Scancode key, int id);
+    static void SetRightKey(SDL_Scancode key, int id);
+    static void SetRunKey(SDL_Scancode key, int id);
+    static void SetClickKey(SDL_Scancode key, int id);
 
 private:
     static bool left, right, up, down, running;
