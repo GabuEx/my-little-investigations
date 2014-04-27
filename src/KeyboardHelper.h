@@ -30,15 +30,30 @@
 #ifndef KEYBOARDHELPER_H
 #define KEYBOARDHELPER_H
 
-#include <SDL2/SDL_scancode.h>
+#include <SDL2/SDL_keyboard.h>
 
 #include "XmlReader.h"
 #include "XmlWriter.h"
 #include "Vector2.h"
 
+const int nbAlternate = 2;
+
 class KeyboardHelper
 {
 public:
+
+    enum HandledActions
+    {
+        Up,
+        Down,
+        Left,
+        Right,
+        Run,
+        Click,
+
+        Count,
+    };
+
     static void Init();
 
     static void LeftState(bool isDown);
@@ -51,34 +66,22 @@ public:
     static bool GetMoving();
     static bool GetRunning();
 
-	static bool IsUpKey(SDL_Scancode);
-	static bool IsDownKey(SDL_Scancode);
-	static bool IsLeftKey(SDL_Scancode);
-	static bool IsRightKey(SDL_Scancode);
-	static bool IsRunKey(SDL_Scancode);
-	static bool IsClickKey(SDL_Scancode);
+	static bool IsActionKey(HandledActions, SDL_Keycode);
+
+    static SDL_Keycode GetKeyForAction(HandledActions action, int alternate);
+    static void SetKeyForAction(HandledActions action, SDL_Keycode key, int alternate);
 
     static void ReadConf(XmlReader& configReader);
     static void WriteConf(XmlWriter& configWriter);
 
-    static SDL_Scancode GetUpKey(int id);
-    static SDL_Scancode GetDownKey(int id);
-    static SDL_Scancode GetLeftKey(int id);
-    static SDL_Scancode GetRightKey(int id);
-    static SDL_Scancode GetRunKey(int id);
-    static SDL_Scancode GetClickKey(int id);
-
-    static void SetUpKey(SDL_Scancode key, int id);
-    static void SetDownKey(SDL_Scancode key, int id);
-    static void SetLeftKey(SDL_Scancode key, int id);
-    static void SetRightKey(SDL_Scancode key, int id);
-    static void SetRunKey(SDL_Scancode key, int id);
-    static void SetClickKey(SDL_Scancode key, int id);
-
 private:
+
+	static string GetActionNodeName(HandledActions action, int alternate);
+
     static bool left, right, up, down, running;
 
-	static SDL_Scancode upKey[2], downKey[2], leftKey[2], rightKey[2], runKey[2], clickKey[2];
+	static SDL_Keycode	actionKeys[Count][nbAlternate];
+    static string		actionNames[Count];
 };
 
 #endif // KEYBOARDHELPER_H

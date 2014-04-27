@@ -27,8 +27,9 @@
  * SOFTWARE.
  */
 
- #include "KeyboardHelper.h"
+#include <assert.h>
 
+#include "KeyboardHelper.h"
 
 bool KeyboardHelper::left = false;
 bool KeyboardHelper::right = false;
@@ -36,16 +37,34 @@ bool KeyboardHelper::up = false;
 bool KeyboardHelper::down = false;
 bool KeyboardHelper::running = false;
 
-SDL_Scancode KeyboardHelper::upKey[2] = {SDL_SCANCODE_W, SDL_SCANCODE_UP};
-SDL_Scancode KeyboardHelper::downKey[2] = {SDL_SCANCODE_S, SDL_SCANCODE_DOWN};
-SDL_Scancode KeyboardHelper::leftKey[2] = {SDL_SCANCODE_A, SDL_SCANCODE_LEFT};
-SDL_Scancode KeyboardHelper::rightKey[2] = {SDL_SCANCODE_D, SDL_SCANCODE_RIGHT};
-SDL_Scancode KeyboardHelper::runKey[2] = {SDL_SCANCODE_LSHIFT, SDL_SCANCODE_RSHIFT};
-SDL_Scancode KeyboardHelper::clickKey[2] = {SDL_SCANCODE_SPACE, SDL_SCANCODE_RETURN};
+SDL_Keycode KeyboardHelper::actionKeys[Count][nbAlternate] = {	// Default values
+	{ SDLK_w,		SDLK_UP		},	// Up
+	{ SDLK_s,		SDLK_DOWN	},	// Down
+	{ SDLK_a,		SDLK_LEFT	},	// Left
+	{ SDLK_d,		SDLK_RIGHT	},	// Right
+	{ SDLK_LSHIFT,	SDLK_RSHIFT	},	// Run
+	{ SDLK_SPACE,	SDLK_RETURN	}	// Click
+};
+
+string KeyboardHelper::actionNames[Count] = {
+    "Up",
+    "Down",
+    "Left",
+    "Right",
+    "Run",
+    "Click"
+};
 
 void KeyboardHelper::Init()
 {
     left = right = up = down = running = false;
+
+    // Provide layout independant keys (no qwerty / azerty problem)
+    // Now that SDL has been init, this will work
+    actionKeys[Up][0]		= SDL_GetKeyFromScancode(SDL_SCANCODE_W);
+    actionKeys[Down][0]		= SDL_GetKeyFromScancode(SDL_SCANCODE_S);
+    actionKeys[Left][0]		= SDL_GetKeyFromScancode(SDL_SCANCODE_A);
+    actionKeys[Right][0]	= SDL_GetKeyFromScancode(SDL_SCANCODE_D);
 }
 
 void KeyboardHelper::LeftState(bool isDown)
@@ -99,171 +118,74 @@ Vector2 KeyboardHelper::GetPressedDirection()
     return result;
 }
 
-bool KeyboardHelper::IsUpKey(SDL_Scancode key)
+bool KeyboardHelper::IsActionKey(HandledActions action, SDL_Keycode key)
 {
-    return (key == upKey[0] || key == upKey[1]);
+	assert(action >= 0 && action < Count);
+
+    for(int i = 0; i < nbAlternate; i++)
+    {
+        if(key == actionKeys[action][i])
+            return true;
+    }
+
+    return false;
 }
 
-bool KeyboardHelper::IsDownKey(SDL_Scancode key)
+SDL_Keycode KeyboardHelper::GetKeyForAction(HandledActions action, int alternate)
 {
-    return (key == downKey[0] || key == downKey[1]);
+	assert(action >= 0 && action < Count);
+	assert(alternate >= 0 && alternate < nbAlternate);
+
+	return actionKeys[action][alternate];
 }
 
-bool KeyboardHelper::IsLeftKey(SDL_Scancode key)
+void KeyboardHelper::SetKeyForAction(HandledActions action, SDL_Keycode key, int alternate)
 {
-    return (key == leftKey[0] || key == leftKey[1]);
-}
+	assert(action >= 0 && action < Count);
+	assert(alternate >= 0 && alternate < nbAlternate);
 
-bool KeyboardHelper::IsRightKey(SDL_Scancode key)
-{
-    return (key == rightKey[0] || key == rightKey[1]);
-}
-
-bool KeyboardHelper::IsRunKey(SDL_Scancode key)
-{
-    return (key == runKey[0] || key == runKey[1]);
-}
-
-bool KeyboardHelper::IsClickKey(SDL_Scancode key)
-{
-    return (key == clickKey[0] || key == clickKey[1]);
-}
-
-SDL_Scancode KeyboardHelper::GetUpKey(int id)
-{
-    return upKey[id];
-}
-
-SDL_Scancode KeyboardHelper::GetDownKey(int id)
-{
-    return downKey[id];
-}
-
-SDL_Scancode KeyboardHelper::GetLeftKey(int id)
-{
-    return leftKey[id];
-}
-
-SDL_Scancode KeyboardHelper::GetRightKey(int id)
-{
-    return rightKey[id];
-}
-
-SDL_Scancode KeyboardHelper::GetRunKey(int id)
-{
-    return runKey[id];
-}
-
-SDL_Scancode KeyboardHelper::GetClickKey(int id)
-{
-    return clickKey[id];
-}
-
-void KeyboardHelper::SetUpKey(SDL_Scancode key, int id)
-{
-    upKey[id] = key;
-}
-
-void KeyboardHelper::SetDownKey(SDL_Scancode key, int id)
-{
-    downKey[id] = key;
-}
-
-void KeyboardHelper::SetLeftKey(SDL_Scancode key, int id)
-{
-    leftKey[id] = key;
-}
-
-void KeyboardHelper::SetRightKey(SDL_Scancode key, int id)
-{
-    rightKey[id] = key;
-}
-
-void KeyboardHelper::SetRunKey(SDL_Scancode key, int id)
-{
-    runKey[id] = key;
-}
-
-void KeyboardHelper::SetClickKey(SDL_Scancode key, int id)
-{
-    clickKey[id] = key;
+	actionKeys[action][alternate] = key;
 }
 
 void KeyboardHelper::ReadConf(XmlReader& configReader)
 {
-	if (configReader.ElementExists("UpKey1"))
-	{
-		KeyboardHelper::SetUpKey((SDL_Scancode) configReader.ReadIntElement("UpKey1"), 0);
-	}
+    for(int actionIt = 0; actionIt < Count; actionIt++)
+    {
+        for(int alternateIt = 0; alternateIt < nbAlternate; alternateIt++)
+        {
+            string nodeName = GetActionNodeName((HandledActions) actionIt, alternateIt);
 
-	if (configReader.ElementExists("UpKey2"))
-	{
-		KeyboardHelper::SetDownKey((SDL_Scancode) configReader.ReadIntElement("UpKey2"), 1);
-	}
-
-	if (configReader.ElementExists("DownKey1"))
-	{
-		KeyboardHelper::SetDownKey((SDL_Scancode) configReader.ReadIntElement("DownKey1"), 0);
-	}
-
-	if (configReader.ElementExists("DownKey2"))
-	{
-		KeyboardHelper::SetDownKey((SDL_Scancode) configReader.ReadIntElement("DownKey2"), 1);
-	}
-
-	if (configReader.ElementExists("LeftKey1"))
-	{
-		KeyboardHelper::SetLeftKey((SDL_Scancode) configReader.ReadIntElement("LeftKey1"), 0);
-	}
-
-	if (configReader.ElementExists("LeftKey2"))
-	{
-		KeyboardHelper::SetLeftKey((SDL_Scancode) configReader.ReadIntElement("LeftKey2"), 1);
-	}
-
-	if (configReader.ElementExists("RightKey1"))
-	{
-		KeyboardHelper::SetRightKey((SDL_Scancode) configReader.ReadIntElement("RightKey1"), 0);
-	}
-
-	if (configReader.ElementExists("RightKey2"))
-	{
-		KeyboardHelper::SetRightKey((SDL_Scancode) configReader.ReadIntElement("RightKey2"), 1);
-	}
-
-	if (configReader.ElementExists("RunKey1"))
-	{
-		KeyboardHelper::SetRunKey((SDL_Scancode) configReader.ReadIntElement("RunKey1"), 0);
-	}
-
-	if (configReader.ElementExists("RunKey2"))
-	{
-		KeyboardHelper::SetRunKey((SDL_Scancode) configReader.ReadIntElement("RunKey2"), 1);
-	}
-
-	if (configReader.ElementExists("ClickKey1"))
-	{
-		KeyboardHelper::SetClickKey((SDL_Scancode) configReader.ReadIntElement("ClickKey1"), 0);
-	}
-
-	if (configReader.ElementExists("ClickKey2"))
-	{
-		KeyboardHelper::SetClickKey((SDL_Scancode) configReader.ReadIntElement("ClickKey2"), 1);
-	}
+			if (configReader.ElementExists(nodeName.c_str()))
+			{
+					KeyboardHelper::SetKeyForAction(
+						(HandledActions) actionIt,
+						SDL_GetKeyFromName( configReader.ReadTextElement( nodeName.c_str() ).c_str() ),
+						alternateIt
+					);
+			}
+        }
+    }
 }
 
 void KeyboardHelper::WriteConf(XmlWriter& configWriter)
 {
-    configWriter.WriteIntElement("UpKey1", KeyboardHelper::GetUpKey(0));
-    configWriter.WriteIntElement("UpKey2", KeyboardHelper::GetUpKey(1));
-    configWriter.WriteIntElement("DownKey1", KeyboardHelper::GetDownKey(0));
-    configWriter.WriteIntElement("DownKey2", KeyboardHelper::GetDownKey(1));
-    configWriter.WriteIntElement("LeftKey1", KeyboardHelper::GetLeftKey(0));
-    configWriter.WriteIntElement("LeftKey2", KeyboardHelper::GetLeftKey(1));
-    configWriter.WriteIntElement("RightKey1", KeyboardHelper::GetRightKey(0));
-    configWriter.WriteIntElement("RightKey2", KeyboardHelper::GetRightKey(1));
-    configWriter.WriteIntElement("RunKey1", KeyboardHelper::GetRunKey(0));
-    configWriter.WriteIntElement("RunKey2", KeyboardHelper::GetRunKey(1));
-    configWriter.WriteIntElement("ClickKey1", KeyboardHelper::GetClickKey(0));
-    configWriter.WriteIntElement("ClickKey2", KeyboardHelper::GetClickKey(1));
+    for(int actionIt = 0; actionIt < Count; actionIt++)
+    {
+        for(int alternateIt = 0; alternateIt < nbAlternate; alternateIt++)
+        {
+            string nodeName = GetActionNodeName((HandledActions) actionIt, alternateIt);
+
+			configWriter.WriteTextElement(
+				nodeName.c_str(),
+				SDL_GetKeyName(KeyboardHelper::GetKeyForAction((HandledActions) actionIt, alternateIt))
+			);
+        }
+    }
+}
+
+string KeyboardHelper::GetActionNodeName(HandledActions action, int alternate)
+{
+    ostringstream oss;
+    oss << actionNames[action] << alternate;
+    return oss.str();
 }
