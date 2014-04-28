@@ -109,13 +109,21 @@ Vector2 KeyboardHelper::GetPressedDirection()
     Vector2 result(0,0);
 
     if(left)
+    {
         result.SetX(result.GetX() - KeyboardMovementVectorLength);
+    }
     if(right)
+    {
         result.SetX(result.GetX() + KeyboardMovementVectorLength);
+    }
     if(up)
+    {
         result.SetY(result.GetY() - KeyboardMovementVectorLength);
+    }
     if(down)
+    {
         result.SetY(result.GetY() + KeyboardMovementVectorLength);
+    }
 
     return result;
 }
@@ -127,7 +135,9 @@ bool KeyboardHelper::IsActionKey(HandledAction action, SDL_Keycode key)
     for(int i = 0; i < AllowedAlternateKeyCount; i++)
     {
         if(key == actionKeys[action][i])
+        {
             return true;
+        }
     }
 
     return false;

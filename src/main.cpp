@@ -326,7 +326,9 @@ int main(int argc, char * argv[])
                 case SDL_KEYDOWN:
                 case SDL_KEYUP:
                     if(TextInputHelper::GetInSession())
+                    {
                         TextInputHelper::NotifyKeyState(event.key.keysym.sym, event.key.state);
+                    }
                     else
                     {
                         if(KeyboardHelper::IsActionKey(KeyboardHelper::Click, event.key.keysym.sym))
@@ -336,19 +338,29 @@ int main(int argc, char * argv[])
                         }
 
                         if(KeyboardHelper::IsActionKey(KeyboardHelper::Up, event.key.keysym.sym))
+                        {
                             KeyboardHelper::UpState(event.key.state);
+                        }
 
                         if(KeyboardHelper::IsActionKey(KeyboardHelper::Left, event.key.keysym.sym))
+                        {
                             KeyboardHelper::LeftState(event.key.state);
+                        }
 
                         if(KeyboardHelper::IsActionKey(KeyboardHelper::Down, event.key.keysym.sym))
+                        {
                             KeyboardHelper::DownState(event.key.state);
+                        }
 
                         if(KeyboardHelper::IsActionKey(KeyboardHelper::Right, event.key.keysym.sym))
+                        {
                             KeyboardHelper::RightState(event.key.state);
+                        }
 
                         if(KeyboardHelper::IsActionKey(KeyboardHelper::Run, event.key.keysym.sym))
+                        {
                             KeyboardHelper::RunState(event.key.state);
+                        }
                     }
                     break;
 
