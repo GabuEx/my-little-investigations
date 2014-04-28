@@ -2,7 +2,7 @@
  * Static class to aid in the handling of keyboard operations.
  *
  * @author meh2481
- * @since 1.06
+ * @since 1.07
  *
  * Licensed under the MIT License.
  *

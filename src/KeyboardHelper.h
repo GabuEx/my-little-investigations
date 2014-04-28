@@ -2,7 +2,7 @@
  * Basic header/include file for KeyboardHelper.cpp.
  *
  * @author meh2481
- * @since 1.06
+ * @since 1.07
  *
  * Licensed under the MIT License.
  *
