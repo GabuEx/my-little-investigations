@@ -37,13 +37,13 @@ bool KeyboardHelper::up = false;
 bool KeyboardHelper::down = false;
 bool KeyboardHelper::running = false;
 
-SDL_Keycode KeyboardHelper::actionKeys[Count][nbAlternate] = {	// Default values
-	{ SDLK_w,		SDLK_UP		},	// Up
-	{ SDLK_s,		SDLK_DOWN	},	// Down
-	{ SDLK_a,		SDLK_LEFT	},	// Left
-	{ SDLK_d,		SDLK_RIGHT	},	// Right
-	{ SDLK_LSHIFT,	SDLK_RSHIFT	},	// Run
-	{ SDLK_SPACE,	SDLK_RETURN	}	// Click
+SDL_Keycode KeyboardHelper::actionKeys[Count][AllowedAlternateKeyCount] = {    // Default values
+    { SDLK_w,       SDLK_UP     },  // Up
+    { SDLK_s,       SDLK_DOWN   },  // Down
+    { SDLK_a,       SDLK_LEFT   },  // Left
+    { SDLK_d,       SDLK_RIGHT  },  // Right
+    { SDLK_LSHIFT,  SDLK_RSHIFT },  // Run
+    { SDLK_SPACE,   SDLK_RETURN }   // Click
 };
 
 string KeyboardHelper::actionNames[Count] = {
@@ -59,12 +59,12 @@ void KeyboardHelper::Init()
 {
     left = right = up = down = running = false;
 
-    // Provide layout independant keys (no qwerty / azerty problem)
+    // Provide layout independent keys (no qwerty / azerty problem)
     // Now that SDL has been init, this will work
-    actionKeys[Up][0]		= SDL_GetKeyFromScancode(SDL_SCANCODE_W);
-    actionKeys[Down][0]		= SDL_GetKeyFromScancode(SDL_SCANCODE_S);
-    actionKeys[Left][0]		= SDL_GetKeyFromScancode(SDL_SCANCODE_A);
-    actionKeys[Right][0]	= SDL_GetKeyFromScancode(SDL_SCANCODE_D);
+    actionKeys[Up][0]       = SDL_GetKeyFromScancode(SDL_SCANCODE_W);
+    actionKeys[Down][0]     = SDL_GetKeyFromScancode(SDL_SCANCODE_S);
+    actionKeys[Left][0]     = SDL_GetKeyFromScancode(SDL_SCANCODE_A);
+    actionKeys[Right][0]    = SDL_GetKeyFromScancode(SDL_SCANCODE_D);
 }
 
 void KeyboardHelper::LeftState(bool isDown)
@@ -118,11 +118,11 @@ Vector2 KeyboardHelper::GetPressedDirection()
     return result;
 }
 
-bool KeyboardHelper::IsActionKey(HandledActions action, SDL_Keycode key)
+bool KeyboardHelper::IsActionKey(HandledAction action, SDL_Keycode key)
 {
-	assert(action >= 0 && action < Count);
+    assert(action >= 0 && action < Count);
 
-    for(int i = 0; i < nbAlternate; i++)
+    for(int i = 0; i < AllowedAlternateKeyCount; i++)
     {
         if(key == actionKeys[action][i])
             return true;
@@ -131,59 +131,60 @@ bool KeyboardHelper::IsActionKey(HandledActions action, SDL_Keycode key)
     return false;
 }
 
-SDL_Keycode KeyboardHelper::GetKeyForAction(HandledActions action, int alternate)
+SDL_Keycode KeyboardHelper::GetKeyForAction(HandledAction action, int alternate)
 {
-	assert(action >= 0 && action < Count);
-	assert(alternate >= 0 && alternate < nbAlternate);
+    assert(action >= 0 && action < Count);
+    assert(alternate >= 0 && alternate < AllowedAlternateKeyCount);
 
-	return actionKeys[action][alternate];
+    return actionKeys[action][alternate];
 }
 
-void KeyboardHelper::SetKeyForAction(HandledActions action, SDL_Keycode key, int alternate)
+void KeyboardHelper::SetKeyForAction(HandledAction action, SDL_Keycode key, int alternate)
 {
-	assert(action >= 0 && action < Count);
-	assert(alternate >= 0 && alternate < nbAlternate);
+    assert(action >= 0 && action < Count);
+    assert(alternate >= 0 && alternate < AllowedAlternateKeyCount);
 
-	actionKeys[action][alternate] = key;
+    actionKeys[action][alternate] = key;
 }
 
-void KeyboardHelper::ReadConf(XmlReader& configReader)
+void KeyboardHelper::ReadConfig(XmlReader& configReader)
 {
     for(int actionIt = 0; actionIt < Count; actionIt++)
     {
-        for(int alternateIt = 0; alternateIt < nbAlternate; alternateIt++)
+        for(int alternateIt = 0; alternateIt < AllowedAlternateKeyCount; alternateIt++)
         {
-            string nodeName = GetActionNodeName((HandledActions) actionIt, alternateIt);
+            string nodeName = GetActionNodeName((HandledAction) actionIt, alternateIt);
 
-			if (configReader.ElementExists(nodeName.c_str()))
-			{
-					KeyboardHelper::SetKeyForAction(
-						(HandledActions) actionIt,
-						SDL_GetKeyFromName( configReader.ReadTextElement( nodeName.c_str() ).c_str() ),
-						alternateIt
-					);
-			}
+            if (configReader.ElementExists(nodeName.c_str()))
+            {
+                SDL_Keycode key = SDL_GetKeyFromName( configReader.ReadTextElement( nodeName.c_str() ).c_str() );
+
+                if(key != SDLK_UNKNOWN)
+                {
+                    KeyboardHelper::SetKeyForAction( (HandledAction) actionIt, key, alternateIt );
+                }
+            }
         }
     }
 }
 
-void KeyboardHelper::WriteConf(XmlWriter& configWriter)
+void KeyboardHelper::WriteConfig(XmlWriter& configWriter)
 {
     for(int actionIt = 0; actionIt < Count; actionIt++)
     {
-        for(int alternateIt = 0; alternateIt < nbAlternate; alternateIt++)
+        for(int alternateIt = 0; alternateIt < AllowedAlternateKeyCount; alternateIt++)
         {
-            string nodeName = GetActionNodeName((HandledActions) actionIt, alternateIt);
+            string nodeName = GetActionNodeName((HandledAction) actionIt, alternateIt);
 
-			configWriter.WriteTextElement(
-				nodeName.c_str(),
-				SDL_GetKeyName(KeyboardHelper::GetKeyForAction((HandledActions) actionIt, alternateIt))
-			);
+            configWriter.WriteTextElement(
+                nodeName.c_str(),
+                SDL_GetKeyName(KeyboardHelper::GetKeyForAction((HandledAction) actionIt, alternateIt))
+            );
         }
     }
 }
 
-string KeyboardHelper::GetActionNodeName(HandledActions action, int alternate)
+string KeyboardHelper::GetActionNodeName(HandledAction action, int alternate)
 {
     ostringstream oss;
     oss << actionNames[action] << alternate;

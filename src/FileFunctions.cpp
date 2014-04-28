@@ -610,7 +610,7 @@ void SaveConfigurations()
     configWriter.WriteDoubleElement("SoundEffectsVolume", gSoundEffectsVolume);
     configWriter.WriteDoubleElement("VoiceVolume", gVoiceVolume);
 
-    KeyboardHelper::WriteConf(configWriter);
+    KeyboardHelper::WriteConfig(configWriter);
 
     configWriter.EndElement();
 }
@@ -680,7 +680,7 @@ void LoadConfigurations()
                     voiceVolume = configReader.ReadDoubleElement("VoiceVolume");
                 }
 
-                KeyboardHelper::ReadConf(configReader);
+                KeyboardHelper::ReadConfig(configReader);
 
                 configReader.EndElement();
             }
