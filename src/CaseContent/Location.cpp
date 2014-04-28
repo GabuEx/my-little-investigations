@@ -2035,9 +2035,14 @@ void Location::Update(int delta)
                 characterTargetPositionQueueMap[pPlayerCharacter] = queue<Vector2>();
                 characterTargetPositionMap[pPlayerCharacter] = endPosition;
 
-                characterStateMap[pPlayerCharacter] = FieldCharacterStateWalking;
                 if (KeyboardHelper::GetRunning())
+                {
                     characterStateMap[pPlayerCharacter] = FieldCharacterStateRunning;
+                }
+                else
+                {
+                    characterStateMap[pPlayerCharacter] = FieldCharacterStateWalking;
+                }
 
                 if (!characterTargetPositionQueueMap[pPartnerCharacter].empty())
                 {
