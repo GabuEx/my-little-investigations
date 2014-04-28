@@ -31,6 +31,8 @@
 
 #include "KeyboardHelper.h"
 
+const double KeyboardMovementVectorLength = 50.0;   //In this case, fairly arbitrary, as we're moving the player directly
+
 bool KeyboardHelper::left = false;
 bool KeyboardHelper::right = false;
 bool KeyboardHelper::up = false;
@@ -107,13 +109,13 @@ Vector2 KeyboardHelper::GetPressedDirection()
     Vector2 result(0,0);
 
     if(left)
-        result.SetX(result.GetX() - 50);
+        result.SetX(result.GetX() - KeyboardMovementVectorLength);
     if(right)
-        result.SetX(result.GetX() + 50);
+        result.SetX(result.GetX() + KeyboardMovementVectorLength);
     if(up)
-        result.SetY(result.GetY() - 50);
+        result.SetY(result.GetY() - KeyboardMovementVectorLength);
     if(down)
-        result.SetY(result.GetY() + 50);
+        result.SetY(result.GetY() + KeyboardMovementVectorLength);
 
     return result;
 }
