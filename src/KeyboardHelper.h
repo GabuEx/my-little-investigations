@@ -36,20 +36,20 @@
 #include "XmlWriter.h"
 #include "Vector2.h"
 
-const int nbAlternate = 2;
+const int AllowedAlternateKeyCount = 2;
 
 class KeyboardHelper
 {
 public:
 
-    enum HandledActions
+    enum HandledAction
     {
-        Up,
-        Down,
-        Left,
-        Right,
-        Run,
-        Click,
+        Up      = 0,
+        Down    = 1,
+        Left    = 2,
+        Right   = 3,
+        Run     = 4,
+        Click   = 5,
 
         Count,
     };
@@ -66,22 +66,22 @@ public:
     static bool GetMoving();
     static bool GetRunning();
 
-	static bool IsActionKey(HandledActions, SDL_Keycode);
+    static bool IsActionKey(HandledAction, SDL_Keycode);
 
-    static SDL_Keycode GetKeyForAction(HandledActions action, int alternate);
-    static void SetKeyForAction(HandledActions action, SDL_Keycode key, int alternate);
+    static SDL_Keycode GetKeyForAction(HandledAction action, int alternate);
+    static void SetKeyForAction(HandledAction action, SDL_Keycode key, int alternate);
 
-    static void ReadConf(XmlReader& configReader);
-    static void WriteConf(XmlWriter& configWriter);
+    static void ReadConfig(XmlReader& configReader);
+    static void WriteConfig(XmlWriter& configWriter);
 
 private:
 
-	static string GetActionNodeName(HandledActions action, int alternate);
+    static string GetActionNodeName(HandledAction action, int alternate);
 
     static bool left, right, up, down, running;
 
-	static SDL_Keycode	actionKeys[Count][nbAlternate];
-    static string		actionNames[Count];
+    static SDL_Keycode  actionKeys[Count][AllowedAlternateKeyCount];
+    static string       actionNames[Count];
 };
 
 #endif // KEYBOARDHELPER_H
