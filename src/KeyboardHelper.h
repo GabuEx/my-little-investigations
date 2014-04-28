@@ -56,10 +56,10 @@ public:
 
     static void Init();
 
-    static void LeftState(bool isDown);
-    static void RightState(bool isDown);
-    static void UpState(bool isDown);
-    static void DownState(bool isDown);
+    static void SetLeftState(bool isDown);
+    static void SetRightState(bool isDown);
+    static void SetUpState(bool isDown);
+    static void SetDownState(bool isDown);
     static void RunState(bool isDown);
 
     static Vector2 GetPressedDirection();

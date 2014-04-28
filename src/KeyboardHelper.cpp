@@ -69,22 +69,22 @@ void KeyboardHelper::Init()
     actionKeys[Right][0]    = SDL_GetKeyFromScancode(SDL_SCANCODE_D);
 }
 
-void KeyboardHelper::LeftState(bool isDown)
+void KeyboardHelper::SetLeftState(bool isDown)
 {
     left = isDown;
 }
 
-void KeyboardHelper::RightState(bool isDown)
+void KeyboardHelper::SetRightState(bool isDown)
 {
     right = isDown;
 }
 
-void KeyboardHelper::UpState(bool isDown)
+void KeyboardHelper::SetUpState(bool isDown)
 {
     up = isDown;
 }
 
-void KeyboardHelper::DownState(bool isDown)
+void KeyboardHelper::SetDownState(bool isDown)
 {
     down = isDown;
 }
