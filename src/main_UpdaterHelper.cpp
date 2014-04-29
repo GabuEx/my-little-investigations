@@ -32,6 +32,7 @@
 #include <vector>
 
 #include <sys/stat.h>
+#include <unistd.h>
 
 using namespace std;
 
