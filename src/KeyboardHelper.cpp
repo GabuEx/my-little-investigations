@@ -31,11 +31,17 @@
 
 #include "KeyboardHelper.h"
 
+const Uint32 maxButtonHandleTime = 50;
+
 bool KeyboardHelper::left = false;
 bool KeyboardHelper::right = false;
 bool KeyboardHelper::up = false;
 bool KeyboardHelper::down = false;
 bool KeyboardHelper::running = false;
+bool KeyboardHelper::clicking = false;
+bool KeyboardHelper::clickhandled = false;
+bool KeyboardHelper::uphandled = false;
+bool KeyboardHelper::downhandled = false;
 
 SDL_Keycode KeyboardHelper::actionKeys[Count][AllowedAlternateKeyCount] = {    // Default values
     { SDLK_w,       SDLK_UP     },  // Up
@@ -57,7 +63,8 @@ string KeyboardHelper::actionNames[Count] = {
 
 void KeyboardHelper::Init()
 {
-    left = right = up = down = running = false;
+    left = right = up = down = running = clicking = false;
+    clickhandled = uphandled = downhandled = false;
 
     // Provide layout independent keys (no qwerty / azerty problem)
     // Now that SDL has been init, this will work
@@ -80,11 +87,28 @@ void KeyboardHelper::SetRightState(bool isDown)
 void KeyboardHelper::SetUpState(bool isDown)
 {
     up = isDown;
+    if(!isDown)
+    {
+        uphandled = false;
+    }
 }
 
 void KeyboardHelper::SetDownState(bool isDown)
 {
     down = isDown;
+    if(!isDown)
+    {
+        downhandled = false;
+    }
+}
+
+void KeyboardHelper::SetClickState(bool isDown)
+{
+    clicking = isDown;
+    if(!isDown)
+    {
+        clickhandled = false;
+    }
 }
 
 void KeyboardHelper::SetRunState(bool isDown)
@@ -112,6 +136,11 @@ bool KeyboardHelper::GetDownState()
     return down;
 }
 
+bool KeyboardHelper::GetClickState()
+{
+    return clicking;
+}
+
 bool KeyboardHelper::GetRunState()
 {
     return running;
@@ -120,6 +149,41 @@ bool KeyboardHelper::GetRunState()
 bool KeyboardHelper::GetMoving()
 {
     return (left || right || up || down);
+}
+
+bool KeyboardHelper::ClickPressed()
+{
+    bool result = (!clickhandled) && clicking;
+    if(result)
+    {
+        clickhandled = true;
+    }
+    return result;
+}
+
+bool KeyboardHelper::UpPressed()
+{
+    bool result = (!uphandled) && up;
+    if(result)
+    {
+        uphandled = true;
+    }
+    return result;
+}
+
+bool KeyboardHelper::DownPressed()
+{
+    bool result = (!downhandled) && down;
+    if(result)
+    {
+        downhandled = true;
+    }
+    return result;
+}
+
+void KeyboardHelper::UpdateKeyState()
+{
+    downhandled = uphandled = clickhandled = true;
 }
 
 bool KeyboardHelper::IsActionKey(HandledAction action, SDL_Keycode key)

@@ -30,6 +30,7 @@
 #include "Dialog.h"
 #include "../globals.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../ResourceLoader.h"
 #include "../Utils.h"
 #include "../CaseInformation/Case.h"
@@ -873,6 +874,33 @@ bool Dialog::HandleClick()
         return true;
     }
 
+    return false;
+}
+
+bool Dialog::HandleKeypress()
+{
+    if(KeyboardHelper::UpPressed() && canNavigateBack)
+    {
+        if (filePath.length() > 0 && gVoiceVolume > 0)
+        {
+            stopDialog();
+        }
+
+        Finish();
+        OnDirectlyNavigated(DirectNavigationDirectionBack);
+        return true;
+    }
+    if(KeyboardHelper::DownPressed() && canNavigateForward)
+    {
+        if (filePath.length() > 0 && gVoiceVolume > 0)
+        {
+            stopDialog();
+        }
+
+        Finish();
+        OnDirectlyNavigated(DirectNavigationDirectionForward);
+        return true;
+    }
     return false;
 }
 

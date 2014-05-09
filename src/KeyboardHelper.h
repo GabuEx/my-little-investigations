@@ -61,6 +61,7 @@ public:
     static void SetUpState(bool isDown);
     static void SetDownState(bool isDown);
     static void SetRunState(bool isDown);
+    static void SetClickState(bool isDown);
 
     static bool GetLeftState();
     static bool GetRightState();
@@ -68,6 +69,13 @@ public:
     static bool GetDownState();
     static bool GetMoving();
     static bool GetRunState();
+    static bool GetClickState();
+
+    static bool ClickPressed();
+    static bool UpPressed();
+    static bool DownPressed();
+
+    static void UpdateKeyState();
 
     static bool IsActionKey(HandledAction, SDL_Keycode);
 
@@ -81,7 +89,8 @@ private:
 
     static string GetActionNodeName(HandledAction action, int alternate);
 
-    static bool left, right, up, down, running;
+    static bool left, right, up, down, running, clicking;
+    static bool clickhandled, uphandled, downhandled;
 
     static SDL_Keycode  actionKeys[Count][AllowedAlternateKeyCount];
     static string       actionNames[Count];

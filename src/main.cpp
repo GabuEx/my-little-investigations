@@ -333,8 +333,7 @@ int main(int argc, char * argv[])
                     {
                         if(KeyboardHelper::IsActionKey(KeyboardHelper::Click, event.key.keysym.sym))
                         {
-                            isLeftMouseButtonDown = event.key.state;
-                            MouseHelper::UpdateState(isLeftMouseButtonDown, mouseX, mouseY, drawCursor);    //Simulate mouse button released
+                            KeyboardHelper::SetClickState(event.key.state);
                         }
 
                         if(KeyboardHelper::IsActionKey(KeyboardHelper::Up, event.key.keysym.sym))

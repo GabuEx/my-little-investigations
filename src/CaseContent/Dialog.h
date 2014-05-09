@@ -224,6 +224,7 @@ public:
     void Begin(State *pState);
     void Update(int delta);
     bool HandleClick();
+    bool HandleKeypress();
     void Draw(double xOffset, double yOffset);
     void DrawBackground(double xOffset, double yOffset);
     void Finish(bool shouldPlaySfx = true);
