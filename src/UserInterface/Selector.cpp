@@ -32,6 +32,7 @@
 #include "../globals.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../ResourceLoader.h"
 #include "../XmlReader.h"
 #include "../CaseInformation/CommonCaseResources.h"
@@ -205,7 +206,7 @@ void Selector::UpdateState()
                 MouseHelper::MouseOverRect(currentItemHitboxRect) ||
                 MouseHelper::MouseDownOnRect(currentItemHitboxRect);
             bool clicked =
-                MouseHelper::ClickedOnRect(currentItemHitboxRect);
+                MouseHelper::ClickedOnRect(currentItemHitboxRect) || (MouseHelper::MouseOverRect(currentItemHitboxRect) && KeyboardHelper::ClickPressed());
 
             if (clicked && selectedIndex != currentIndex)
             {

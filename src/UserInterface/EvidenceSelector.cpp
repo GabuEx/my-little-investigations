@@ -30,6 +30,7 @@
 #include "EvidenceSelector.h"
 #include "../globals.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../Utils.h"
 #include "../CaseInformation/Case.h"
 
@@ -114,7 +115,8 @@ void EvidenceSelector::EvidenceSelectorItem::UpdateState(bool &isSelected, bool 
 {
     if (GetEvidenceId().length() > 0 && !isSetAsideForCombination)
     {
-        if (MouseHelper::ClickedOnRect(boundingRect))
+        if (MouseHelper::ClickedOnRect(boundingRect) ||
+            (MouseHelper::MouseOverRect(boundingRect) && KeyboardHelper::ClickPressed()))
         {
             isSelected = true;
             playSound(GetClickSoundEffect());

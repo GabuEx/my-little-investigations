@@ -31,6 +31,7 @@
 #include "ImageButton.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../Events/ImageButtonEventProvider.h"
 
 ImageButton::ImageButton(Image *pMouseOffImage, Image *pMouseOverImage, Image *pMouseDownImage, int xPosition, int yPosition)
@@ -70,7 +71,7 @@ void ImageButton::Update(int delta)
         RectangleWH positionRect = RectangleWH(GetXPosition(), GetYPosition(), pCurrentImage->width, pCurrentImage->height);
         bool isPressed = MouseHelper::PressedAndHeldAnywhere() || MouseHelper::DoublePressedAndHeldAnywhere();
 
-        if (MouseHelper::ClickedOnRect(positionRect))
+        if (MouseHelper::ClickedOnRect(positionRect) || (MouseHelper::MouseOverRect(positionRect) && KeyboardHelper::ClickPressed()))
         {
             OnClicked();
         }

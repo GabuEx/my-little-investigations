@@ -30,6 +30,7 @@
 #include "Tab.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../ResourceLoader.h"
 #include "../CaseInformation/CommonCaseResources.h"
 
@@ -260,7 +261,7 @@ void Tab::Update(int delta)
 
         isMouseOver = MouseHelper::MouseOverRect(areaRect) && !isPressed;
         isMouseDown = MouseHelper::MouseDownOnRect(areaRect) && !isPressed;
-        SetIsClicked(MouseHelper::ClickedOnRect(areaRect));
+        SetIsClicked(MouseHelper::ClickedOnRect(areaRect) || (MouseHelper::MouseOverRect(areaRect) && KeyboardHelper::ClickPressed()));
 
         if (GetIsClicked())
         {

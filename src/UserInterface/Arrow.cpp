@@ -30,6 +30,7 @@
 #include "Arrow.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 
 const Color NormalColor = Color(1.0, 1.0, 1.0, 1.0);
 const Color MouseOverColor = Color(1.0, 1.0, 1.0, 0.0);
@@ -194,7 +195,7 @@ void Arrow::UpdateState()
 
         isMouseOver = MouseHelper::MouseOverRect(hitboxRect) && !isPressed;
         isMouseDown = MouseHelper::MouseDownOnRect(hitboxRect) && !isPressed;
-        SetIsClicked(MouseHelper::ClickedOnRect(hitboxRect));
+        SetIsClicked(MouseHelper::ClickedOnRect(hitboxRect) || (MouseHelper::MouseOverRect(hitboxRect) && KeyboardHelper::ClickPressed()));
 
         if (GetIsClicked())
         {

@@ -31,6 +31,7 @@
 #include "ForegroundElement.h"
 #include "Crowd.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../XmlReader.h"
 #include "../CaseInformation/Case.h"
 
@@ -418,7 +419,7 @@ void FieldCharacter::UpdateClickState(RectangleWH adjustedClickRect)
         SetIsMouseOver(false);
     }
 
-    SetIsClicked(MouseHelper::ClickedOnRect(adjustedClickRect) || MouseHelper::DoubleClickedOnRect(adjustedClickRect));
+    SetIsClicked(MouseHelper::ClickedOnRect(adjustedClickRect) || MouseHelper::DoubleClickedOnRect(adjustedClickRect) || (MouseHelper::MouseOverRect(adjustedClickRect) && KeyboardHelper::ClickPressed()));
 }
 
 void FieldCharacter::Draw()

@@ -1720,7 +1720,7 @@ void Location::Update(int delta)
             if (pTransition->GetHitBox()->ContainsPoint(Vector2(0, 0), MouseHelper::GetMousePosition() + drawingOffsetVector) &&
                 (pTransition->GetCondition() == NULL || pTransition->GetCondition()->IsTrue() || !pTransition->GetHideWhenLocked()) &&
                 pTransition->HasInteractionLocation() &&
-                (MouseHelper::ClickedAnywhere() || MouseHelper::DoubleClickedAnywhere()))
+                (MouseHelper::ClickedAnywhere() || MouseHelper::DoubleClickedAnywhere() || KeyboardHelper::ClickPressed()))
             {
                 if (acceptsUserInput)
                 {

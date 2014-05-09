@@ -34,6 +34,7 @@
 #include "../globals.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../TextInputHelper.h"
 #include "../Utils.h"
 #include "../Events/PromptOverlayEventProvider.h"
@@ -67,7 +68,7 @@ void PromptButton::Update(int delta)
         RectangleWH positionRect = RectangleWH(position.GetX(), position.GetY(), pTextFont->GetWidth(text), pTextFont->GetHeight(text));
         bool isPressed = MouseHelper::PressedAndHeldAnywhere() || MouseHelper::DoublePressedAndHeldAnywhere();
 
-        if (MouseHelper::ClickedOnRect(positionRect))
+        if (MouseHelper::ClickedOnRect(positionRect) || (MouseHelper::MouseOverRect(positionRect) && KeyboardHelper::ClickPressed()))
         {
             playSound(GetClickSoundEffect());
             isClicked = true;

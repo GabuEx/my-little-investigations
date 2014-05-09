@@ -30,6 +30,7 @@
 #include "Crowd.h"
 #include "Encounter.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../XmlReader.h"
 #include "../CaseInformation/Case.h"
 
@@ -169,7 +170,7 @@ void Crowd::UpdateClickState(GeometricPolygon adjustedClickPolygon)
         SetIsMouseOver(false);
     }
 
-    SetIsClicked(MouseHelper::ClickedOnPolygon(adjustedClickPolygon) || MouseHelper::DoubleClickedOnPolygon(adjustedClickPolygon));
+    SetIsClicked(MouseHelper::ClickedOnPolygon(adjustedClickPolygon) || MouseHelper::DoubleClickedOnPolygon(adjustedClickPolygon) || (MouseHelper::MouseOverPolygon(adjustedClickPolygon) && KeyboardHelper::ClickPressed()));
 }
 
 void Crowd::Draw()

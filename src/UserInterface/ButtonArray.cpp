@@ -32,6 +32,7 @@
 #include "../mli_audio.h"
 #include "../globals.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../ResourceLoader.h"
 #include "../CaseInformation/Case.h"
 #include "../CaseInformation/CommonCaseResources.h"
@@ -258,7 +259,7 @@ void Button::Update(int delta)
             RectangleWH positionRect = RectangleWH(GetXPosition(), GetYPosition(), pTextFont->GetWidth(GetText()), TextHeight);
             bool isPressed = MouseHelper::PressedAndHeldAnywhere() || MouseHelper::DoublePressedAndHeldAnywhere();
 
-            if (MouseHelper::ClickedOnRect(positionRect))
+            if (MouseHelper::ClickedOnRect(positionRect) || (MouseHelper::MouseOverRect(positionRect) && KeyboardHelper::ClickPressed()))
             {
                 OnClicked();
             }

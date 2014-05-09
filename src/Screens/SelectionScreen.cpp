@@ -32,6 +32,7 @@
 #include "../Game.h"
 #include "../globals.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../ResourceLoader.h"
 #include "../Utils.h"
 #include "../XmlReader.h"
@@ -413,7 +414,7 @@ void SelectionScreen::Update(int delta)
     {
         MouseHelper::SetCursorType(CursorTypeLook);
 
-        if (MouseHelper::ClickedAnywhere())
+        if (MouseHelper::ClickedAnywhere() || KeyboardHelper::ClickPressed())
         {
             pFullSizeScreenshotFadeOutEase->Begin();
             playSound("ButtonClick4");
@@ -429,12 +430,14 @@ void SelectionScreen::Update(int delta)
 
         if (MouseHelper::MouseOverRect(screenshotRect) ||
             MouseHelper::MouseDownOnRect(screenshotRect) ||
-            MouseHelper::ClickedOnRect(screenshotRect))
+            MouseHelper::ClickedOnRect(screenshotRect) ||
+            (MouseHelper::MouseOverRect(screenshotRect) && KeyboardHelper::ClickPressed()))
         {
             MouseHelper::SetCursorType(CursorTypeLook);
         }
 
-        if (MouseHelper::ClickedOnRect(screenshotRect))
+        if (MouseHelper::ClickedOnRect(screenshotRect) ||
+            (MouseHelper::MouseOverRect(screenshotRect) && KeyboardHelper::ClickPressed()))
         {
             pFullSizeScreenshotFadeInEase->Begin();
             playSound("ButtonClick1");
