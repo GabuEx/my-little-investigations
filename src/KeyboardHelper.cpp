@@ -31,8 +31,6 @@
 
 #include "KeyboardHelper.h"
 
-const double KeyboardMovementVectorLength = 50.0;   //In this case, fairly arbitrary, as we're moving the player directly
-
 bool KeyboardHelper::left = false;
 bool KeyboardHelper::right = false;
 bool KeyboardHelper::up = false;
@@ -89,12 +87,32 @@ void KeyboardHelper::SetDownState(bool isDown)
     down = isDown;
 }
 
-void KeyboardHelper::RunState(bool isDown)
+void KeyboardHelper::SetRunState(bool isDown)
 {
     running = isDown;
 }
 
-bool KeyboardHelper::GetRunning()
+bool KeyboardHelper::GetLeftState()
+{
+    return left;
+}
+
+bool KeyboardHelper::GetRightState()
+{
+    return right;
+}
+
+bool KeyboardHelper::GetUpState()
+{
+    return up;
+}
+
+bool KeyboardHelper::GetDownState()
+{
+    return down;
+}
+
+bool KeyboardHelper::GetRunState()
 {
     return running;
 }
@@ -102,30 +120,6 @@ bool KeyboardHelper::GetRunning()
 bool KeyboardHelper::GetMoving()
 {
     return (left || right || up || down);
-}
-
-Vector2 KeyboardHelper::GetPressedDirection()
-{
-    Vector2 result(0,0);
-
-    if(left)
-    {
-        result.SetX(result.GetX() - KeyboardMovementVectorLength);
-    }
-    if(right)
-    {
-        result.SetX(result.GetX() + KeyboardMovementVectorLength);
-    }
-    if(up)
-    {
-        result.SetY(result.GetY() - KeyboardMovementVectorLength);
-    }
-    if(down)
-    {
-        result.SetY(result.GetY() + KeyboardMovementVectorLength);
-    }
-
-    return result;
 }
 
 bool KeyboardHelper::IsActionKey(HandledAction action, SDL_Keycode key)

@@ -359,7 +359,7 @@ int main(int argc, char * argv[])
 
                         if(KeyboardHelper::IsActionKey(KeyboardHelper::Run, event.key.keysym.sym))
                         {
-                            KeyboardHelper::RunState(event.key.state);
+                            KeyboardHelper::SetRunState(event.key.state);
                         }
                     }
                     break;

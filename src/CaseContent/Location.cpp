@@ -68,6 +68,8 @@ const bool bSkipIntroCutscene = false;
 const string yesString = "Yes";
 const string noString = "No";
 
+const double KeyboardMovementVectorLength = 50.0;   //In this case, fairly arbitrary, as we're moving the player directly
+
 Image *Location::pFadeSprite = NULL;
 FieldCharacter *Location::pCurrentPlayerCharacter = NULL;
 string Location::pendingTransitionEndSfxId = "";
@@ -2026,7 +2028,24 @@ void Location::Update(int delta)
             }
             else if (KeyboardHelper::GetMoving())
             {
-                Vector2 endPosition = pPlayerCharacter->GetCenterPoint() + KeyboardHelper::GetPressedDirection();
+                Vector2 pressedDirection(0,0);
+                if(KeyboardHelper::GetLeftState())
+                {
+                    pressedDirection.SetX(pressedDirection.GetX() - KeyboardMovementVectorLength);
+                }
+                if(KeyboardHelper::GetRightState())
+                {
+                    pressedDirection.SetX(pressedDirection.GetX() + KeyboardMovementVectorLength);
+                }
+                if(KeyboardHelper::GetUpState())
+                {
+                    pressedDirection.SetY(pressedDirection.GetY() - KeyboardMovementVectorLength);
+                }
+                if(KeyboardHelper::GetDownState())
+                {
+                    pressedDirection.SetY(pressedDirection.GetY() + KeyboardMovementVectorLength);
+                }
+                Vector2 endPosition = pPlayerCharacter->GetCenterPoint() + pressedDirection;
 
                 SDL_SemWait(pPathfindingValuesSemaphore);
 
@@ -2035,7 +2054,7 @@ void Location::Update(int delta)
                 characterTargetPositionQueueMap[pPlayerCharacter] = queue<Vector2>();
                 characterTargetPositionMap[pPlayerCharacter] = endPosition;
 
-                if (KeyboardHelper::GetRunning())
+                if (KeyboardHelper::GetRunState())
                 {
                     characterStateMap[pPlayerCharacter] = FieldCharacterStateRunning;
                 }

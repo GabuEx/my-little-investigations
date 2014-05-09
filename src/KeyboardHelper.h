@@ -60,11 +60,14 @@ public:
     static void SetRightState(bool isDown);
     static void SetUpState(bool isDown);
     static void SetDownState(bool isDown);
-    static void RunState(bool isDown);
+    static void SetRunState(bool isDown);
 
-    static Vector2 GetPressedDirection();
+    static bool GetLeftState();
+    static bool GetRightState();
+    static bool GetUpState();
+    static bool GetDownState();
     static bool GetMoving();
-    static bool GetRunning();
+    static bool GetRunState();
 
     static bool IsActionKey(HandledAction, SDL_Keycode);
 
