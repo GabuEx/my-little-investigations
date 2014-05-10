@@ -432,6 +432,7 @@ int main(int argc, char * argv[])
         // Anyone who cares will have responded to it by now.
         MouseHelper::HandleClick();
         MouseHelper::HandleDoubleClick();
+        KeyboardHelper::UpdateKeyState();
     #endif
 
         // Blank the screen before drawing the new frame.

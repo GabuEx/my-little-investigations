@@ -266,6 +266,7 @@ void Tab::Update(int delta)
         if (GetIsClicked())
         {
             playSound(GetClickSoundEffect());
+            KeyboardHelper::UpdateKeyState();
         }
     }
     else

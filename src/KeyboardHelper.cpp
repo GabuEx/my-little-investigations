@@ -87,28 +87,19 @@ void KeyboardHelper::SetRightState(bool isDown)
 void KeyboardHelper::SetUpState(bool isDown)
 {
     up = isDown;
-    if(!isDown)
-    {
-        uphandled = false;
-    }
+    uphandled = false;
 }
 
 void KeyboardHelper::SetDownState(bool isDown)
 {
     down = isDown;
-    if(!isDown)
-    {
-        downhandled = false;
-    }
+    downhandled = false;
 }
 
 void KeyboardHelper::SetClickState(bool isDown)
 {
     clicking = isDown;
-    if(!isDown)
-    {
-        clickhandled = false;
-    }
+    clickhandled = false;
 }
 
 void KeyboardHelper::SetRunState(bool isDown)
@@ -154,30 +145,18 @@ bool KeyboardHelper::GetMoving()
 bool KeyboardHelper::ClickPressed()
 {
     bool result = (!clickhandled) && clicking;
-    if(result)
-    {
-        clickhandled = true;
-    }
     return result;
 }
 
 bool KeyboardHelper::UpPressed()
 {
     bool result = (!uphandled) && up;
-    if(result)
-    {
-        uphandled = true;
-    }
     return result;
 }
 
 bool KeyboardHelper::DownPressed()
 {
     bool result = (!downhandled) && down;
-    if(result)
-    {
-        downhandled = true;
-    }
     return result;
 }
 
