@@ -430,14 +430,12 @@ void SelectionScreen::Update(int delta)
 
         if (MouseHelper::MouseOverRect(screenshotRect) ||
             MouseHelper::MouseDownOnRect(screenshotRect) ||
-            MouseHelper::ClickedOnRect(screenshotRect) ||
-            (MouseHelper::MouseOverRect(screenshotRect) && KeyboardHelper::ClickPressed()))
+            MouseHelper::ClickedOnRect(screenshotRect))
         {
             MouseHelper::SetCursorType(CursorTypeLook);
         }
 
-        if (MouseHelper::ClickedOnRect(screenshotRect) ||
-            (MouseHelper::MouseOverRect(screenshotRect) && KeyboardHelper::ClickPressed()))
+        if (MouseHelper::ClickedOnRect(screenshotRect))
         {
             pFullSizeScreenshotFadeInEase->Begin();
             playSound("ButtonClick1");

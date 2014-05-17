@@ -259,7 +259,7 @@ void Button::Update(int delta)
             RectangleWH positionRect = RectangleWH(GetXPosition(), GetYPosition(), pTextFont->GetWidth(GetText()), TextHeight);
             bool isPressed = MouseHelper::PressedAndHeldAnywhere() || MouseHelper::DoublePressedAndHeldAnywhere();
 
-            if (MouseHelper::ClickedOnRect(positionRect) || (MouseHelper::MouseOverRect(positionRect) && KeyboardHelper::ClickPressed()))
+            if (MouseHelper::ClickedOnRect(positionRect))
             {
                 OnClicked();
             }

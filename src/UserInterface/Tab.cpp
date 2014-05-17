@@ -261,12 +261,11 @@ void Tab::Update(int delta)
 
         isMouseOver = MouseHelper::MouseOverRect(areaRect) && !isPressed;
         isMouseDown = MouseHelper::MouseDownOnRect(areaRect) && !isPressed;
-        SetIsClicked(MouseHelper::ClickedOnRect(areaRect) || (MouseHelper::MouseOverRect(areaRect) && KeyboardHelper::ClickPressed()));
+        SetIsClicked(MouseHelper::ClickedOnRect(areaRect));
 
         if (GetIsClicked())
         {
             playSound(GetClickSoundEffect());
-            KeyboardHelper::UpdateKeyState();
         }
     }
     else

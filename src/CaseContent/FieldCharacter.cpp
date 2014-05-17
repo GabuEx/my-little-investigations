@@ -419,7 +419,7 @@ void FieldCharacter::UpdateClickState(RectangleWH adjustedClickRect)
         SetIsMouseOver(false);
     }
 
-    SetIsClicked(MouseHelper::ClickedOnRect(adjustedClickRect) || MouseHelper::DoubleClickedOnRect(adjustedClickRect) || (MouseHelper::MouseOverRect(adjustedClickRect) && KeyboardHelper::ClickPressed()));
+    SetIsClicked(MouseHelper::ClickedOnRect(adjustedClickRect) || MouseHelper::DoubleClickedOnRect(adjustedClickRect));
 }
 
 void FieldCharacter::Draw()

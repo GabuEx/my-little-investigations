@@ -71,7 +71,7 @@ void ImageButton::Update(int delta)
         RectangleWH positionRect = RectangleWH(GetXPosition(), GetYPosition(), pCurrentImage->width, pCurrentImage->height);
         bool isPressed = MouseHelper::PressedAndHeldAnywhere() || MouseHelper::DoublePressedAndHeldAnywhere();
 
-        if (MouseHelper::ClickedOnRect(positionRect) || (MouseHelper::MouseOverRect(positionRect) && KeyboardHelper::ClickPressed()))
+        if (MouseHelper::ClickedOnRect(positionRect))
         {
             OnClicked();
         }

@@ -206,7 +206,7 @@ void Selector::UpdateState()
                 MouseHelper::MouseOverRect(currentItemHitboxRect) ||
                 MouseHelper::MouseDownOnRect(currentItemHitboxRect);
             bool clicked =
-                MouseHelper::ClickedOnRect(currentItemHitboxRect) || (MouseHelper::MouseOverRect(currentItemHitboxRect) && KeyboardHelper::ClickPressed());
+                MouseHelper::ClickedOnRect(currentItemHitboxRect);
 
             if (clicked && selectedIndex != currentIndex)
             {

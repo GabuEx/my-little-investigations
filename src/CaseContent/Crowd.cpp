@@ -170,7 +170,7 @@ void Crowd::UpdateClickState(GeometricPolygon adjustedClickPolygon)
         SetIsMouseOver(false);
     }
 
-    SetIsClicked(MouseHelper::ClickedOnPolygon(adjustedClickPolygon) || MouseHelper::DoubleClickedOnPolygon(adjustedClickPolygon) || (MouseHelper::MouseOverPolygon(adjustedClickPolygon) && KeyboardHelper::ClickPressed()));
+    SetIsClicked(MouseHelper::ClickedOnPolygon(adjustedClickPolygon) || MouseHelper::DoubleClickedOnPolygon(adjustedClickPolygon));
 }
 
 void Crowd::Draw()

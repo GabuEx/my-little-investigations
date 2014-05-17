@@ -68,7 +68,7 @@ void PromptButton::Update(int delta)
         RectangleWH positionRect = RectangleWH(position.GetX(), position.GetY(), pTextFont->GetWidth(text), pTextFont->GetHeight(text));
         bool isPressed = MouseHelper::PressedAndHeldAnywhere() || MouseHelper::DoublePressedAndHeldAnywhere();
 
-        if (MouseHelper::ClickedOnRect(positionRect) || (MouseHelper::MouseOverRect(positionRect) && KeyboardHelper::ClickPressed()))
+        if (MouseHelper::ClickedOnRect(positionRect))
         {
             playSound(GetClickSoundEffect());
             isClicked = true;

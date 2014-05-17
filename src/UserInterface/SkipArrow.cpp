@@ -125,7 +125,7 @@ void SkipArrow::Update(int delta)
 
         isMouseOver = MouseHelper::MouseOverRect(hitboxRect) && !isPressed;
         isMouseDown = MouseHelper::MouseDownOnRect(hitboxRect) && !isPressed;
-        SetIsClicked(MouseHelper::ClickedOnRect(hitboxRect) || (MouseHelper::MouseOverRect(hitboxRect) && KeyboardHelper::ClickPressed()));
+        SetIsClicked(MouseHelper::ClickedOnRect(hitboxRect));
 
         if (GetIsClicked())
         {

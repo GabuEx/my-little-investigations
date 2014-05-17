@@ -115,8 +115,7 @@ void EvidenceSelector::EvidenceSelectorItem::UpdateState(bool &isSelected, bool 
 {
     if (GetEvidenceId().length() > 0 && !isSetAsideForCombination)
     {
-        if (MouseHelper::ClickedOnRect(boundingRect) ||
-            (MouseHelper::MouseOverRect(boundingRect) && KeyboardHelper::ClickPressed()))
+        if (MouseHelper::ClickedOnRect(boundingRect))
         {
             isSelected = true;
             playSound(GetClickSoundEffect());

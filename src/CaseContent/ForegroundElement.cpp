@@ -126,7 +126,7 @@ void ForegroundElement::UpdateClickState(GeometricPolygon adjustedClickPolygon)
         SetIsMouseOver(false);
     }
 
-    SetIsClicked(MouseHelper::ClickedOnPolygon(adjustedClickPolygon) || MouseHelper::DoubleClickedOnPolygon(adjustedClickPolygon) || (MouseHelper::MouseOverPolygon(adjustedClickPolygon) && KeyboardHelper::ClickPressed()));
+    SetIsClicked(MouseHelper::ClickedOnPolygon(adjustedClickPolygon) || MouseHelper::DoubleClickedOnPolygon(adjustedClickPolygon));
 }
 
 void ForegroundElement::Draw()
