@@ -45,6 +45,7 @@ MLIFont *TextInputHelper::pFontToCheckAgainst = NULL;
 
 bool TextInputHelper::userHasConfirmed = false;
 bool TextInputHelper::userHasCanceled = false;
+bool TextInputHelper::isInSession = false;
 
 const int DurationBeforeRepeatingMs = 500;
 const int CaretToggleDurationMs = 500;
@@ -57,33 +58,38 @@ void TextInputHelper::Init()
 void TextInputHelper::StartSession()
 {
     SDL_StartTextInput();
+    isInSession = true;
 }
 
 void TextInputHelper::EndSession()
 {
     SDL_StopTextInput();
+    isInSession = false;
 }
 
-void TextInputHelper::NotifyKeyDown(SDL_Keycode keycode)
+void TextInputHelper::NotifyKeyState(SDL_Keycode keycode, bool isDown)
 {
-    HandleSpecialKey(keycode);
-
-    if (keycode == SDLK_BACKSPACE ||
-        keycode == SDLK_DELETE ||
-        keycode == SDLK_LEFT ||
-        keycode == SDLK_RIGHT)
+    if(isDown)
     {
-        keyDownForRepeat = keycode;
-        msSinceKeyDown = 0;
+		HandleSpecialKey(keycode);
+
+		if (keycode == SDLK_BACKSPACE ||
+			keycode == SDLK_DELETE ||
+			keycode == SDLK_LEFT ||
+			keycode == SDLK_RIGHT)
+		{
+			keyDownForRepeat = keycode;
+			msSinceKeyDown = 0;
+		}
     }
-}
 
-void TextInputHelper::NotifyKeyUp(SDL_Keycode keycode)
-{
-    if (keycode == keyDownForRepeat)
+    else
     {
-        keyDownForRepeat = SDLK_UNKNOWN;
-        msSinceKeyDown = -1;
+		if (keycode == keyDownForRepeat)
+		{
+			keyDownForRepeat = SDLK_UNKNOWN;
+			msSinceKeyDown = -1;
+		}
     }
 }
 
@@ -130,6 +136,7 @@ void TextInputHelper::Reset()
 
     userHasConfirmed = false;
     userHasCanceled = false;
+    isInSession = false;
 }
 
 bool TextInputHelper::SetNewText(const string &newText, unsigned int newCaretPosition)

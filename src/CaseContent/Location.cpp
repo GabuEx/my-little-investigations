@@ -33,6 +33,7 @@
 #include "../globals.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../PositionalSound.h"
 #include "../TransitionRequest.h"
 #include "../XmlReader.h"
@@ -66,6 +67,8 @@ const bool bSkipIntroCutscene = false;
 
 const string yesString = "Yes";
 const string noString = "No";
+
+const double KeyboardMovementVectorLength = 50.0;   //In this case, fairly arbitrary, as we're moving the player directly
 
 Image *Location::pFadeSprite = NULL;
 FieldCharacter *Location::pCurrentPlayerCharacter = NULL;
@@ -1717,7 +1720,7 @@ void Location::Update(int delta)
             if (pTransition->GetHitBox()->ContainsPoint(Vector2(0, 0), MouseHelper::GetMousePosition() + drawingOffsetVector) &&
                 (pTransition->GetCondition() == NULL || pTransition->GetCondition()->IsTrue() || !pTransition->GetHideWhenLocked()) &&
                 pTransition->HasInteractionLocation() &&
-                (MouseHelper::ClickedAnywhere() || MouseHelper::DoubleClickedAnywhere()))
+                (MouseHelper::ClickedAnywhere() || MouseHelper::DoubleClickedAnywhere() || KeyboardHelper::ClickPressed()))
             {
                 if (acceptsUserInput)
                 {
@@ -2013,6 +2016,52 @@ void Location::Update(int delta)
                 characterTargetPositionQueueMap[pPlayerCharacter] = queue<Vector2>();
                 characterTargetPositionMap[pPlayerCharacter] = endPosition;
                 characterStateMap[pPlayerCharacter] = FieldCharacterStateRunning;
+
+                if (!characterTargetPositionQueueMap[pPartnerCharacter].empty())
+                {
+                    characterTargetPositionQueueMap[pPartnerCharacter] = queue<Vector2>();
+                    characterTargetPositionMap[pPartnerCharacter] = Vector2(-1, -1);
+                    characterStateMap[pPartnerCharacter] = FieldCharacterStateStanding;
+                }
+
+                SDL_SemPost(pPathfindingValuesSemaphore);
+            }
+            else if (KeyboardHelper::GetMoving())
+            {
+                Vector2 pressedDirection(0,0);
+                if(KeyboardHelper::GetLeftState())
+                {
+                    pressedDirection.SetX(pressedDirection.GetX() - KeyboardMovementVectorLength);
+                }
+                if(KeyboardHelper::GetRightState())
+                {
+                    pressedDirection.SetX(pressedDirection.GetX() + KeyboardMovementVectorLength);
+                }
+                if(KeyboardHelper::GetUpState())
+                {
+                    pressedDirection.SetY(pressedDirection.GetY() - KeyboardMovementVectorLength);
+                }
+                if(KeyboardHelper::GetDownState())
+                {
+                    pressedDirection.SetY(pressedDirection.GetY() + KeyboardMovementVectorLength);
+                }
+                Vector2 endPosition = pPlayerCharacter->GetCenterPoint() + pressedDirection;
+
+                SDL_SemWait(pPathfindingValuesSemaphore);
+
+                movingDirectly = true;
+                pTargetInteractiveElement = NULL;
+                characterTargetPositionQueueMap[pPlayerCharacter] = queue<Vector2>();
+                characterTargetPositionMap[pPlayerCharacter] = endPosition;
+
+                if (KeyboardHelper::GetRunState())
+                {
+                    characterStateMap[pPlayerCharacter] = FieldCharacterStateRunning;
+                }
+                else
+                {
+                    characterStateMap[pPlayerCharacter] = FieldCharacterStateWalking;
+                }
 
                 if (!characterTargetPositionQueueMap[pPartnerCharacter].empty())
                 {

@@ -45,8 +45,7 @@ public:
     static void StartSession();
     static void EndSession();
 
-    static void NotifyKeyDown(SDL_Keycode keycode);
-    static void NotifyKeyUp(SDL_Keycode keycode);
+    static void NotifyKeyState(SDL_Keycode keycode, bool isDown);
     static void NotifyTextInput(const string &newText);
     static void Update(int delta);
     static void Reset();
@@ -59,6 +58,7 @@ public:
 
     static bool GetUserHasConfirmed() { return userHasConfirmed; }
     static bool GetUserHasCanceled() { return userHasCanceled; }
+    static bool GetInSession() { return isInSession; }
 
 private:
     static bool SetNewText(const string &newText, unsigned int newCaretPosition);
@@ -79,6 +79,7 @@ private:
 
     static bool userHasConfirmed;
     static bool userHasCanceled;
+    static bool isInSession;
 };
 
 #endif

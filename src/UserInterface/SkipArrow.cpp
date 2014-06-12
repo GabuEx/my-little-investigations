@@ -30,6 +30,7 @@
 #include "SkipArrow.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 
 const int ArrowSeparation = 2; // px
 

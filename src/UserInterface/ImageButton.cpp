@@ -31,6 +31,7 @@
 #include "ImageButton.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../Events/ImageButtonEventProvider.h"
 
 ImageButton::ImageButton(Image *pMouseOffImage, Image *pMouseOverImage, Image *pMouseDownImage, int xPosition, int yPosition)

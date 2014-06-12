@@ -30,6 +30,7 @@
 #include "Crowd.h"
 #include "Encounter.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../XmlReader.h"
 #include "../CaseInformation/Case.h"
 

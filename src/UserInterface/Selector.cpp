@@ -32,6 +32,7 @@
 #include "../globals.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../ResourceLoader.h"
 #include "../XmlReader.h"
 #include "../CaseInformation/CommonCaseResources.h"
