@@ -309,6 +309,8 @@
 		<Unit filename="src/Image.h" />
 		<Unit filename="src/Interfaces.cpp" />
 		<Unit filename="src/Interfaces.h" />
+		<Unit filename="src/KeyboardHelper.cpp" />
+		<Unit filename="src/KeyboardHelper.h" />
 		<Unit filename="src/Line.cpp" />
 		<Unit filename="src/Line.h" />
 		<Unit filename="src/MLIFont.cpp" />

@@ -31,6 +31,7 @@
 #include "../FileFunctions.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../globals.h"
 #include "../State.h"
 #include "../XmlReader.h"
@@ -1181,7 +1182,7 @@ void Conversation::ShowDialogAction::Update(int delta)
         return;
     }
 
-    if (((MouseHelper::ClickedAnywhere() || pState->GetIsFastForwarding()) &&
+    if (((MouseHelper::ClickedAnywhere() || KeyboardHelper::ClickPressed() || pState->GetIsFastForwarding()) &&
          (pDialog->GetIsReadyToProgress() || hasBeenSeen || gEnableSkippingUnseenDialog) &&
          !pDialog->HandleClick() &&
          !pDialog->GetIsAutomatic() &&
@@ -1199,6 +1200,10 @@ void Conversation::ShowDialogAction::Update(int delta)
     else if (pDialog->GetIsReadyToProgress() && pState->GetCurrentAnimation() != NULL)
     {
         pState->GetCurrentAnimation()->FinishCurrentFrame();
+    }
+    else
+    {
+        pDialog->HandleKeypress();
     }
 
     bool shouldChangeMouth = false;

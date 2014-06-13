@@ -31,6 +31,7 @@
 #include "../globals.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../Utils.h"
 
 const int AnimationDuration = 200;
@@ -292,7 +293,7 @@ void Notification::Update(int delta, bool shouldCloseAutomatically)
     {
         pDownArrow->Update(delta);
 
-        if (MouseHelper::ClickedAnywhere() || shouldCloseAutomatically)
+        if (MouseHelper::ClickedAnywhere() || KeyboardHelper::ClickPressed() || shouldCloseAutomatically)
         {
             pOutEaseText->Begin();
             pOutEasePartner->Begin();

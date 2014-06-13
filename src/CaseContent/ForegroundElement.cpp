@@ -30,6 +30,7 @@
 #include "ForegroundElement.h"
 #include "../globals.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../XmlReader.h"
 #include "../CaseInformation/Case.h"
 
@@ -422,7 +423,7 @@ void HiddenForegroundElement::Update(int delta, Vector2 offsetVector)
     else
     {
         MouseHelper::SetMouseOverText("?");
-        SetIsClicked(MouseHelper::ClickedAnywhere() || MouseHelper::DoubleClickedAnywhere());
+        SetIsClicked(MouseHelper::ClickedAnywhere() || MouseHelper::DoubleClickedAnywhere() || KeyboardHelper::ClickPressed());
 
         if (GetIsClicked())
         {

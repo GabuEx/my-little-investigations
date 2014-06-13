@@ -30,6 +30,7 @@
 #include "Arrow.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 
 const Color NormalColor = Color(1.0, 1.0, 1.0, 1.0);
 const Color MouseOverColor = Color(1.0, 1.0, 1.0, 0.0);

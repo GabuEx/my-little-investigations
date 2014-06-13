@@ -30,6 +30,7 @@
 #include "LogoScreen.h"
 #include "../globals.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../ResourceLoader.h"
 #include "../CaseInformation/CommonCaseResources.h"
 
@@ -101,7 +102,7 @@ void LogoScreen::Update(int delta)
     {
         pLogoVideo->Update(delta);
 
-        if (pLogoVideo->IsFinished() || MouseHelper::ClickedAnywhere())
+        if (pLogoVideo->IsFinished() || MouseHelper::ClickedAnywhere() || KeyboardHelper::ClickPressed())
         {
             nextScreenId = TITLE_SCREEN_ID;
             UnloadResources();
@@ -112,7 +113,7 @@ void LogoScreen::Update(int delta)
     }
     else
     {
-        if (MouseHelper::ClickedAnywhere())
+        if (MouseHelper::ClickedAnywhere() || KeyboardHelper::ClickPressed())
         {
             if (!pOutEase->GetIsFinished())
             {

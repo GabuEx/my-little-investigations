@@ -34,6 +34,7 @@
 #include "../globals.h"
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
+#include "../KeyboardHelper.h"
 #include "../TextInputHelper.h"
 #include "../Utils.h"
 #include "../Events/PromptOverlayEventProvider.h"

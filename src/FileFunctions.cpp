@@ -29,6 +29,8 @@
 
 #include "FileFunctions.h"
 
+#include "KeyboardHelper.h"
+
 #include "Utils.h"
 #include "XmlReader.h"
 #include "XmlWriter.h"
@@ -607,6 +609,9 @@ void SaveConfigurations()
     configWriter.WriteDoubleElement("BackgroundMusicVolume", gBackgroundMusicVolume);
     configWriter.WriteDoubleElement("SoundEffectsVolume", gSoundEffectsVolume);
     configWriter.WriteDoubleElement("VoiceVolume", gVoiceVolume);
+
+    KeyboardHelper::WriteConfig(configWriter);
+
     configWriter.EndElement();
 }
 
@@ -674,6 +679,8 @@ void LoadConfigurations()
                 {
                     voiceVolume = configReader.ReadDoubleElement("VoiceVolume");
                 }
+
+                KeyboardHelper::ReadConfig(configReader);
 
                 configReader.EndElement();
             }

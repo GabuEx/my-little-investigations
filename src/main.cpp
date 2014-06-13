@@ -34,6 +34,7 @@
 #ifndef LAUNCHER
 #include "Game.h"
 #include "MouseHelper.h"
+#include "KeyboardHelper.h"
 #include "CaseInformation/Case.h"
 #include "CaseInformation/CommonCaseResources.h"
 #endif
@@ -323,11 +324,43 @@ int main(int argc, char * argv[])
                     break;
 
                 case SDL_KEYDOWN:
-                    TextInputHelper::NotifyKeyDown(event.key.keysym.sym);
-                    break;
-
                 case SDL_KEYUP:
-                    TextInputHelper::NotifyKeyUp(event.key.keysym.sym);
+                    if(TextInputHelper::GetInSession())
+                    {
+                        TextInputHelper::NotifyKeyState(event.key.keysym.sym, event.key.state);
+                    }
+                    else
+                    {
+                        if(KeyboardHelper::IsActionKey(KeyboardHelper::Click, event.key.keysym.sym))
+                        {
+                            KeyboardHelper::SetClickState(event.key.state);
+                        }
+
+                        if(KeyboardHelper::IsActionKey(KeyboardHelper::Up, event.key.keysym.sym))
+                        {
+                            KeyboardHelper::SetUpState(event.key.state);
+                        }
+
+                        if(KeyboardHelper::IsActionKey(KeyboardHelper::Left, event.key.keysym.sym))
+                        {
+                            KeyboardHelper::SetLeftState(event.key.state);
+                        }
+
+                        if(KeyboardHelper::IsActionKey(KeyboardHelper::Down, event.key.keysym.sym))
+                        {
+                            KeyboardHelper::SetDownState(event.key.state);
+                        }
+
+                        if(KeyboardHelper::IsActionKey(KeyboardHelper::Right, event.key.keysym.sym))
+                        {
+                            KeyboardHelper::SetRightState(event.key.state);
+                        }
+
+                        if(KeyboardHelper::IsActionKey(KeyboardHelper::Run, event.key.keysym.sym))
+                        {
+                            KeyboardHelper::SetRunState(event.key.state);
+                        }
+                    }
                     break;
 
                 case SDL_TEXTINPUT:
@@ -399,6 +432,7 @@ int main(int argc, char * argv[])
         // Anyone who cares will have responded to it by now.
         MouseHelper::HandleClick();
         MouseHelper::HandleDoubleClick();
+        KeyboardHelper::UpdateKeyState();
     #endif
 
         // Blank the screen before drawing the new frame.
