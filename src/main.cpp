@@ -49,8 +49,6 @@
 #include "XmlReader.h"
 #endif
 
-#include "ticpp/ticpp.h"
-
 #include <SDL2/SDL.h>
 
 #include <string>
@@ -131,7 +129,7 @@ int main(int argc, char * argv[])
         retrievedVersion = true;
 #endif
     }
-    catch (ticpp::Exception e)
+    catch (Exception e)
     {
         // We'll just use the built-in version if we couldn't retrieve it from the XML file.
     }

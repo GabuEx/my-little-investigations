@@ -313,6 +313,8 @@
 		<Unit filename="src/KeyboardHelper.h" />
 		<Unit filename="src/Line.cpp" />
 		<Unit filename="src/Line.h" />
+		<Unit filename="src/MLIException.cpp" />
+		<Unit filename="src/MLIException.h" />
 		<Unit filename="src/MLIFont.cpp" />
 		<Unit filename="src/MLIFont.h" />
 		<Unit filename="src/MouseHelper.cpp" />
@@ -400,15 +402,8 @@
 			<Option target="Debug (Unix)" />
 			<Option target="Release (Unix)" />
 		</Unit>
-		<Unit filename="src/ticpp/ticpp.cpp" />
-		<Unit filename="src/ticpp/ticpp.h" />
-		<Unit filename="src/ticpp/ticpprc.h" />
-		<Unit filename="src/ticpp/tinystr.cpp" />
-		<Unit filename="src/ticpp/tinystr.h" />
-		<Unit filename="src/ticpp/tinyxml.cpp" />
-		<Unit filename="src/ticpp/tinyxml.h" />
-		<Unit filename="src/ticpp/tinyxmlerror.cpp" />
-		<Unit filename="src/ticpp/tinyxmlparser.cpp" />
+		<Unit filename="src/tinyxml2/tinyxml2.cpp" />
+		<Unit filename="src/tinyxml2/tinyxml2.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

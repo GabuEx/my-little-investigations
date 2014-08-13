@@ -27,6 +27,8 @@
  * SOFTWARE.
  */
 
+#include "XmlReader.h"
+#include "MLIException.h"
 #include "ResourceLoader.h"
 #include "mli_audio.h"
 #include "CaseInformation/Case.h"
@@ -180,7 +182,7 @@ void ResourceLoader::ReloadImage(Image *pSprite, const string &originFilePath)
     free(pMemToFree);
 }
 
-Document * ResourceLoader::LoadDocument(const string &relativeFilePath)
+tinyxml2::XMLDocument * ResourceLoader::LoadDocument(const string &relativeFilePath)
 {
     void *pMemToFree = NULL;
     SDL_RWops * pRW = NULL;
@@ -196,7 +198,7 @@ Document * ResourceLoader::LoadDocument(const string &relativeFilePath)
     }
 
     if (pRW == NULL) return NULL;
-    Document * pDocument = new Document();
+    tinyxml2::XMLDocument * pDocument = new tinyxml2::XMLDocument();
     pDocument->LoadFile(pRW);
     free(pMemToFree);
     return pDocument;
