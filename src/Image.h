@@ -89,12 +89,18 @@ public:
         bool flipHorizontally,
         bool flipVertically,
         double scale,
-        Color color);
+        Color color,
+        bool useScreenScaling = true);
 
     Uint16 width;
     Uint16 height;
 
+    void SetUseScreenScaling(bool useScreenScaling) { this->useScreenScaling = useScreenScaling; }
+    bool GetUseScreenScaling() const { return this->useScreenScaling; }
+
 private:
+    bool useScreenScaling;
+
     static vector<Image *> activeSpriteList;
     static vector<Image *> newSpriteList;
     static vector<Image *> deletedSpriteList;

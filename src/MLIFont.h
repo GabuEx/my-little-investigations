@@ -36,7 +36,10 @@
 #include <SDL2/SDL_ttf.h>
 #endif
 #include <map>
+#include <vector>
+#include <set>
 
+#include "globals.h"
 #include "Color.h"
 #include "Rectangle.h"
 #include "Image.h"
@@ -51,6 +54,7 @@ public:
     ~MLIFont();
 
     void Reinit();
+    void Reinit(const vector<pair<uint32_t, uint32_t> > &ranges);
     void Draw(const string &s, Vector2 position);
     void Draw(const string &s, Vector2 position, double scale);
     void Draw(const string &s, Vector2 position, Color color);
@@ -59,22 +63,59 @@ public:
     void Draw(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale);
 
     int GetWidth(const string &s);
-    int GetKerningDelta(map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, char c1, char c2);
+    int GetKerningDelta(map<pair<uint32_t, uint32_t>, int> *pKernedWidthMap, map<uint32_t, RectangleWH> *pClipRectMap, uint32_t char1, uint32_t char2);
     int GetHeight(const string &s);
     int GetLineHeight();
     int GetLineAscent();
 
 private:
-    void DrawInternal(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, map<char, RectangleWH> *pClipRectMapForWidth);
+    void DrawInternal(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<pair<uint32_t, uint32_t>, int> *pKernedWidthMap, map<uint32_t, RectangleWH> *pClipRectMap, map<uint32_t, RectangleWH> *pClipRectMapForWidth);
 
     TTF_Font *pTtfFont;
     int strokeWidth;
 
     Image *pTextSpriteSheet;
 
-    map<char, RectangleWH> pRenderedTextClipRectMap;
-    map<char, RectangleWH> pRenderedTextOutlineClipRectMap;
-    map<string, int> charPairToKernedWidthMap;
+    map<uint32_t, RectangleWH> renderedTextClipRectMap;
+    map<pair<uint32_t, uint32_t>, int> charPairToKernedWidthMap;
+
+    set<uint32_t> charsToRender;
+
+    string ttfFilePath;
+    int fontSize;
+    bool isBold;
+
+    double GetEnableFullscreen()
+    {
+        #ifdef GAME_EXECUTABLE
+        return gEnableFullscreen;
+        #else
+        return false;
+        #endif // GAME_EXECUTABLE
+    }
+
+    double GetScreenScale()
+    {
+        #ifdef GAME_EXECUTABLE
+        return gScreenScale;
+        #else
+        return 1.0;
+        #endif // GAME_EXECUTABLE
+    }
+
+    double GetFontScale()
+    {
+        // although such method cause some lags when switch fullscreen/window during the game,
+        // i think it's acceptable price for properly scaled font
+        if (scale != (GetEnableFullscreen() ? GetScreenScale() : 1.0))
+            Reinit();
+
+        return scale;
+    }
+
+    // With what scale font have been rendered. We need this to rerender font with right size
+    // when switch fullscreen/window.
+    double scale;
 };
 
 #endif

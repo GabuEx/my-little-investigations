@@ -48,6 +48,8 @@ bool Image::isReloadingSprites = false;
 
 Image::Image(void)
 {
+    useScreenScaling = true;
+
     valid = false;
     pSurface = NULL;
 
@@ -306,6 +308,7 @@ void Image::Draw(
     double scale,
     Color color)
 {
+
     // If this isn't a valid sprite, then we just won't draw anything.
     if (!valid)
     {
@@ -315,7 +318,7 @@ void Image::Draw(
     if (textureList.size() == 1)
     {
         // If we only have one texture, then we can just draw it without any processing.
-        Image::Draw(textureList[0], position, clipRect, flipHorizontally, flipVertically, scale, color);
+        Image::Draw(textureList[0], position, clipRect, flipHorizontally, flipVertically, scale, color, useScreenScaling);
     }
     else
     {
@@ -372,7 +375,7 @@ void Image::Draw(
                     portionClipRect.SetWidth(portionClipRect.GetHeight() - (textureHeight - portionClipRect.GetY()));
                 }
 
-                Image::Draw(pTexture, Vector2(startX, startY), portionClipRect, flipHorizontally, flipVertically, scale, color);
+                Image::Draw(pTexture, Vector2(startX, startY), portionClipRect, flipHorizontally, flipVertically, scale, color, useScreenScaling);
 
                 if (!flipHorizontally)
                 {
@@ -395,7 +398,8 @@ void Image::Draw(
     bool flipHorizontally,
     bool flipVertically,
     double scale,
-    Color color)
+    Color color,
+    bool useScreenScaling)
 {
     // If the alpha channel of the color overlay is zero (i.e., completely transparent),
     // or if the entire sprite is off the screen, then we just won't draw anything.
@@ -502,8 +506,8 @@ void Image::Draw(
         {
             (Sint16)(horizontalOffsetToUse + position.GetX() * horizontalScaleToUse + 0.5),
             (Sint16)(verticalOffsetToUse + position.GetY() * verticalScaleToUse + 0.5),
-            (Uint16)(clipRect.GetWidth() * horizontalScaleToUse * scale + 0.5),
-            (Uint16)(clipRect.GetHeight() * verticalScaleToUse * scale + 0.5)
+            (Uint16)(clipRect.GetWidth() * (useScreenScaling ? horizontalScaleToUse : 1.0) * scale + 0.5),
+            (Uint16)(clipRect.GetHeight() * (useScreenScaling ? verticalScaleToUse : 1.0) * scale + 0.5)
         };
 
     SDL_RendererFlip flags = SDL_FLIP_NONE;

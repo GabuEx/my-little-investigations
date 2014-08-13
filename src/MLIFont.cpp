@@ -30,198 +30,231 @@
 #include "MLIFont.h"
 #include "globals.h"
 #include "ResourceLoader.h"
+#include "utf8cpp/utf8.h"
+
+#include <iostream>
 
 #define MAX_WIDTH 512
 
-const int minCharValue = 32;
-const int maxCharValue = 128;
-
 MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool isBold)
+    : ttfFilePath(ttfFilePath),
+      fontSize(fontSize),
+      strokeWidth(strokeWidth),
+      isBold(isBold)
+
 {
-#ifdef GAME_EXECUTABLE
-    pTtfFont = ResourceLoader::GetInstance()->LoadFont(ttfFilePath, fontSize);
-#else
-    pTtfFont = TTF_OpenFont(ttfFilePath.c_str(), fontSize);
-#endif
+    pTtfFont = NULL;
     pTextSpriteSheet = NULL;
 
-    if (isBold)
-    {
-        TTF_SetFontStyle(pTtfFont, TTF_STYLE_BOLD);
-    }
+    vector<pair<uint32_t, uint32_t> > ranges;
 
-    this->strokeWidth = strokeWidth;
-    Reinit();
+    // basic latin
+    ranges.push_back(pair<uint32_t, uint32_t>(0x0020, 0x007F));
+
+    // russian
+//    ranges.push_back(pair<uint32_t, uint32_t>(0x0401, 0x0401)); // ё
+//    ranges.push_back(pair<uint32_t, uint32_t>(0x0410, 0x044F));
+    Reinit(ranges);
 }
 
 MLIFont::~MLIFont()
 {
-    TTF_CloseFont(pTtfFont);
+    if (pTtfFont != NULL)
+    {
+        TTF_CloseFont(pTtfFont);
+    }
     pTtfFont = NULL;
 
     delete pTextSpriteSheet;
     pTextSpriteSheet = NULL;
 }
 
+void MLIFont::Reinit(const vector<pair<uint32_t, uint32_t> > &ranges)
+{
+    charsToRender.clear();
+    for(vector<pair<uint32_t, uint32_t> >::const_iterator it = ranges.begin(); it != ranges.end(); it++)
+    {
+        for (uint32_t c = (*it).first; c <= (*it).second; c++)
+        {
+            charsToRender.insert(c);
+        }
+    }
+    Reinit();
+}
+
 void MLIFont::Reinit()
 {
-    SDL_Surface *pRenderedText[maxCharValue - minCharValue];
-    SDL_Surface *pRenderedTextOutlines[maxCharValue - minCharValue];
-    int maxHeight = 0;
-    int totalWidth = 0;
+    // clean up first
 
-    pRenderedTextClipRectMap.clear();
-    pRenderedTextOutlineClipRectMap.clear();
+    if (pTtfFont != NULL)
+        TTF_CloseFont(pTtfFont);
+    pTtfFont = NULL;
+
+    delete pTextSpriteSheet;
+    pTextSpriteSheet = NULL;
+
+    renderedTextClipRectMap.clear();
     charPairToKernedWidthMap.clear();
+
+    // setup scale
+    scale = (GetEnableFullscreen() ? GetScreenScale() : 1.0);
+
+    // setup font
+    #ifdef GAME_EXECUTABLE
+        pTtfFont = ResourceLoader::GetInstance()->LoadFont(ttfFilePath, fontSize * scale);
+    #else
+        pTtfFont = TTF_OpenFont(ttfFilePath.c_str(), fontSize * scale);
+    #endif
+
+    if (isBold)
+    {
+        TTF_SetFontStyle(pTtfFont, TTF_STYLE_BOLD);
+    }
+
+    // render chars
+    map<uint32_t, SDL_Surface *> renderedText;
 
     SDL_Color whiteColor = {255, 255, 255, 255};
 
-    for (int i = minCharValue; i < maxCharValue; i++)
+    for (set<uint32_t>::const_iterator it = charsToRender.begin(); it != charsToRender.end(); it++)
     {
-        char c = (char)i;
-        string s(&c, 1);
+        uint32_t c = (*it);
 
-        SDL_Surface *pTextSurface = TTF_RenderUTF8_Blended(pTtfFont, s.c_str(), whiteColor);
+        string utf8string;
+        utf8::unchecked::append(c, back_inserter(utf8string));
 
+        SDL_Surface *pTextSurface = TTF_RenderUTF8_Blended(pTtfFont, utf8string.c_str(), whiteColor);
         if (pTextSurface != NULL)
         {
-            if (pTextSurface->h > maxHeight)
-            {
-                maxHeight = pTextSurface->h;
-            }
-
-            pRenderedTextClipRectMap[c] = RectangleWH(totalWidth, 0, pTextSurface->w, pTextSurface->h);
-            totalWidth += pTextSurface->w;
-
-            pRenderedText[i - minCharValue] = pTextSurface;
-        }
-        else
-        {
-            pRenderedTextClipRectMap[c] = RectangleWH(0, 0, 0, 0);
+            renderedText[c] = pTextSurface;
         }
     }
 
-    int maxStrokeHeight = 0;
-    int totalStrokeWidth = 0;
-
+    // render outlines
     if (strokeWidth > 0)
     {
-        //TTF_SetFontOutline(pTtfFont, strokeWidth);
         SDL_Color blackColor = {0, 0, 0, 255};
 
-        for (int i = minCharValue; i < maxCharValue; i++)
+        for (map<uint32_t, SDL_Surface *>::iterator it = renderedText.begin(); it != renderedText.end(); it++)
         {
-            char c = (char)i;
-            string s(&c, 1);
+            string utf8string;
+            utf8::unchecked::append((*it).first, back_inserter(utf8string));
 
-            SDL_Surface *pTextOutlineSurface = TTF_RenderUTF8_Blended(pTtfFont, s.c_str(), blackColor);
+            SDL_Surface *pSurface = (*it).second;
+            SDL_Surface *pSurfaceOutline = TTF_RenderUTF8_Blended(pTtfFont, utf8string.c_str(), blackColor);
 
-            if (pTextOutlineSurface != NULL)
-            {
-                if (pTextOutlineSurface->h > maxStrokeHeight)
-                {
-                    maxStrokeHeight = pTextOutlineSurface->h;
-                }
+            SDL_Surface *pSurfaceOutlinedText = SDL_CreateRGBSurface(
+                        0,
+                        pSurface->w + strokeWidth * 2,
+                        pSurface->h + strokeWidth * 2,
+                        pSurface->format->BitsPerPixel,
+                        pSurface->format->Rmask,
+                        pSurface->format->Gmask,
+                        pSurface->format->Bmask,
+                        pSurface->format->Amask);
 
-                pRenderedTextOutlineClipRectMap[c] = RectangleWH(totalStrokeWidth, maxHeight, pTextOutlineSurface->w, pTextOutlineSurface->h);
-                totalStrokeWidth += pTextOutlineSurface->w;
+            SDL_Rect dstRect = {0, 0, pSurface->w, pSurface->h};
 
-                pRenderedTextOutlines[i - minCharValue] = pTextOutlineSurface;
-            }
-            else
-            {
-                pRenderedTextOutlineClipRectMap[c] = RectangleWH(0, 0, 0, 0);
-            }
+            dstRect.x = 0;
+            dstRect.y = 0;
+            SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
+            SDL_BlitSurface(pSurfaceOutline, NULL, pSurfaceOutlinedText, &dstRect);
+
+            dstRect.x = 0;
+            dstRect.y = strokeWidth * 2;
+            SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
+            SDL_BlitSurface(pSurfaceOutline, NULL, pSurfaceOutlinedText, &dstRect);
+
+            dstRect.x = strokeWidth * 2;
+            dstRect.y = 0;
+            SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
+            SDL_BlitSurface(pSurfaceOutline, NULL, pSurfaceOutlinedText, &dstRect);
+
+            dstRect.x = strokeWidth * 2;
+            dstRect.y = strokeWidth * 2;
+            SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
+            SDL_BlitSurface(pSurfaceOutline, NULL, pSurfaceOutlinedText, &dstRect);
+
+            dstRect.x = strokeWidth;
+            dstRect.y = strokeWidth;
+            SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
+            SDL_BlitSurface(pSurface, NULL, pSurfaceOutlinedText, &dstRect);
+
+            SDL_FreeSurface(pSurface);
+            SDL_FreeSurface(pSurfaceOutline);
+
+            (*it).second = pSurfaceOutlinedText;
         }
-
-        //TTF_SetFontOutline(pTtfFont, 0);
     }
+
+    // although we render outlines on our own, we need to set outline width to get correct results from TTF_Size functions
+    // also, this will flush internal SDL_TTF cache, and, since we using our own cache, it is outside the 'if (strokeWidth > 0)'
+    TTF_SetFontOutline(pTtfFont, strokeWidth);
+
+    // calc metrics we need to make singular surface
+    int maxHeight = 0;
+    int totalWidth = 0;
+    for (map<uint32_t, SDL_Surface *>::const_iterator it = renderedText.begin(); it != renderedText.end(); it++)
+    {
+        SDL_Surface *pTextSurface = (*it).second;
+
+        renderedTextClipRectMap[(*it).first] = RectangleWH(totalWidth, 0, pTextSurface->w, pTextSurface->h);
+
+        if (pTextSurface->h > maxHeight)
+            maxHeight = pTextSurface->h;
+
+        totalWidth += pTextSurface->w;
+    }
+
+    SDL_Surface *pSurface = (*renderedText.begin()).second;
 
     // We'll make a singular surface to blit all of the individual characters to.
     SDL_Surface *pTextSpriteSheetSurface =
         SDL_CreateRGBSurface(
             0,
-            totalWidth > totalStrokeWidth ? totalWidth : totalStrokeWidth,
-            maxHeight + maxStrokeHeight,
-            pRenderedText[0]->format->BitsPerPixel,
-            pRenderedText[0]->format->Rmask,
-            pRenderedText[0]->format->Gmask,
-            pRenderedText[0]->format->Bmask,
-            pRenderedText[0]->format->Amask);
+            totalWidth,
+            maxHeight,
+            pSurface->format->BitsPerPixel,
+            pSurface->format->Rmask,
+            pSurface->format->Gmask,
+            pSurface->format->Bmask,
+            pSurface->format->Amask);
 
     SDL_FillRect(pTextSpriteSheetSurface, NULL, SDL_MapRGBA(pTextSpriteSheetSurface->format, 0x00, 0x00, 0x00, 0x00));
 
-    for (int i = minCharValue; i < maxCharValue; i++)
+    for (map<uint32_t, SDL_Surface *>::const_iterator it = renderedText.begin(); it != renderedText.end(); it++)
     {
-        char c = (char)i;
+        SDL_Surface *surface = (*it).second;
+        RectangleWH &rect = renderedTextClipRectMap[(*it).first];
+        SDL_Rect sdlRect = {(Sint16)rect.GetX(), (Sint16)rect.GetY(), (Uint16)rect.GetWidth(), (Uint16)rect.GetHeight()};
+        SDL_SetSurfaceBlendMode(surface, SDL_BLENDMODE_NONE);
+        SDL_BlitSurface(surface, NULL, pTextSpriteSheetSurface, &sdlRect);
+    }
 
-        if (pRenderedTextClipRectMap[c].GetWidth() == 0)
+    // calc kerned width
+    for (map<uint32_t, SDL_Surface *>::const_iterator it1 = renderedText.begin(); it1 != renderedText.end(); it1++)
+    {
+        for (map<uint32_t, SDL_Surface *>::const_iterator it2 = renderedText.begin(); it2 != renderedText.end(); it2++)
         {
-            continue;
-        }
-
-        SDL_Rect dstRect = {(Sint16)pRenderedTextClipRectMap[c].GetX(), (Sint16)pRenderedTextClipRectMap[c].GetY(), (Uint16)pRenderedTextClipRectMap[c].GetWidth(), (Uint16)pRenderedTextClipRectMap[c].GetHeight()};
-        SDL_SetSurfaceBlendMode(pRenderedText[i - minCharValue], SDL_BLENDMODE_NONE);
-        SDL_BlitSurface(pRenderedText[i - minCharValue], NULL, pTextSpriteSheetSurface, &dstRect);
-
-        if (strokeWidth > 0)
-        {
-            SDL_Rect dstRectOutline = {(Sint16)pRenderedTextOutlineClipRectMap[c].GetX(), (Sint16)pRenderedTextOutlineClipRectMap[c].GetY(), (Uint16)pRenderedTextOutlineClipRectMap[c].GetWidth(), (Uint16)pRenderedTextOutlineClipRectMap[c].GetHeight()};
-            SDL_SetSurfaceBlendMode(pRenderedTextOutlines[i - minCharValue], SDL_BLENDMODE_NONE);
-            SDL_BlitSurface(pRenderedTextOutlines[i - minCharValue], NULL, pTextSpriteSheetSurface, &dstRectOutline);
+            int w, h;
+            uint32_t c1 = (*it1).first;
+            uint32_t c2 = (*it2).first;
+            string charPairString;
+            utf8::unchecked::append(c1, back_inserter(charPairString));
+            utf8::unchecked::append(c2, back_inserter(charPairString));
+            TTF_SizeUTF8(pTtfFont, charPairString.c_str(), &w, &h);
+            charPairToKernedWidthMap[pair<uint32_t, uint32_t>(c1, c2)] = w;
         }
     }
 
-    for (int i = minCharValue; i < maxCharValue; i++)
-    {
-        char c1 = (char)i;
-
-        if (pRenderedTextClipRectMap[c1].GetWidth() == 0)
-        {
-            continue;
-        }
-
-        for (int j = minCharValue; j < maxCharValue; j++)
-        {
-            char c2 = (char)j;
-
-            if (pRenderedTextClipRectMap[c2].GetWidth() == 0)
-            {
-                continue;
-            }
-
-            int w;
-            int h;
-            string charPairString = string(&c1, 1) + string(&c2, 1);
-            TTF_SizeText(pTtfFont, charPairString.c_str(), &w, &h);
-            charPairToKernedWidthMap[charPairString] = w;
-        }
-    }
-
-    delete pTextSpriteSheet;
     pTextSpriteSheet = Image::Load(pTextSpriteSheetSurface, false /* loadImmediately */);
     pTextSpriteSheet->FlagFontSource(this);
+    pTextSpriteSheet->SetUseScreenScaling(false);
 
-    if (strokeWidth > 0)
+    // free surfaces
+    for (map<uint32_t, SDL_Surface *>::const_iterator it = renderedText.begin(); it != renderedText.end(); it++)
     {
-        //TTF_SetFontOutline(pTtfFont, strokeWidth);
-    }
-
-    for (int i = minCharValue; i < maxCharValue; i++)
-    {
-        char c = (char)i;
-
-        if (pRenderedTextClipRectMap[c].GetWidth() == 0)
-        {
-            continue;
-        }
-
-        SDL_FreeSurface(pRenderedText[i - minCharValue]);
-
-        if (strokeWidth > 0)
-        {
-            SDL_FreeSurface(pRenderedTextOutlines[i - minCharValue]);
-        }
+        SDL_FreeSurface((*it).second);
     }
 }
 
@@ -262,33 +295,24 @@ void MLIFont::Draw(const string &s, Vector2 position, Color color, RectangleWH c
     Vector2 originalPosition = position;
     RectangleWH originalClipRect = clipRect;
 
-    if (strokeWidth > 0)
-    {
-        DrawInternal(s, position, color, clipRect, scale, &charPairToKernedWidthMap, &pRenderedTextOutlineClipRectMap, &pRenderedTextClipRectMap);
-        position = originalPosition + (Vector2(strokeWidth, strokeWidth) * 2);
-
-        if (clipRect.GetWidth() >= 0)
-        {
-            clipRect = RectangleWH(originalClipRect.GetX() - strokeWidth * 2, originalClipRect.GetY() - strokeWidth * 2, originalClipRect.GetWidth() - strokeWidth * 2, originalClipRect.GetHeight() - strokeWidth * 2);
-        }
-
-        DrawInternal(s, position, color, clipRect, scale, &charPairToKernedWidthMap, &pRenderedTextOutlineClipRectMap, &pRenderedTextClipRectMap);
-        position = originalPosition + Vector2(strokeWidth, strokeWidth);
-
-        if (clipRect.GetWidth() >= 0)
-        {
-            clipRect = RectangleWH(originalClipRect.GetX() - strokeWidth, originalClipRect.GetY() - strokeWidth, originalClipRect.GetWidth() - strokeWidth, originalClipRect.GetHeight() - strokeWidth);
-        }
-    }
-
-    DrawInternal(s, position, color, clipRect, scale, &charPairToKernedWidthMap, &pRenderedTextClipRectMap, &pRenderedTextClipRectMap);
+    DrawInternal(s, position, color, clipRect, scale, &charPairToKernedWidthMap, &renderedTextClipRectMap, &renderedTextClipRectMap);
 }
 
-void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, map<char, RectangleWH> *pClipRectMapForWidth)
+void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<pair<uint32_t, uint32_t>, int> *pKernedWidthMap, map<uint32_t, RectangleWH> *pClipRectMap, map<uint32_t, RectangleWH> *pClipRectMapForWidth)
 {
-    for (unsigned int i = 0; i < s.length(); i++)
+    for (string::const_iterator it = s.begin(); it < s.end();)
     {
-        RectangleWH characterClipRect = (*pClipRectMap)[s[i]];
+        uint32_t c = 0;
+        try
+        {
+            c = utf8::next(it, s.end());
+        }
+        catch (utf8::not_enough_room ex)
+        {
+            break;
+        }
+
+        RectangleWH characterClipRect = (*pClipRectMap)[c];
 
         if (characterClipRect.GetWidth() == 0)
         {
@@ -336,17 +360,24 @@ void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, Recta
         // characters minus their combined kerned widths.
         double deltaX = characterClipRect.GetWidth();
 
-        if (i < s.length() - 1)
+        if (it < s.end())
         {
-            deltaX += GetKerningDelta(pKernedWidthMap, pClipRectMapForWidth, s[i], s[i + 1]);
+            try
+            {
+                uint32_t c2 = utf8::peek_next(it, s.end());
+                deltaX += GetKerningDelta(pKernedWidthMap, pClipRectMapForWidth, c, c2);
+            }
+            catch (utf8::not_enough_room ex)
+            {
+            }
         }
 
-        position = Vector2(position.GetX() + deltaX * scale, position.GetY());
+        position = Vector2(position.GetX() + deltaX * scale / GetFontScale(), position.GetY());
 
         if (clipRect.GetWidth() >= 0)
         {
-            clipRect.SetX(clipRect.GetX() - deltaX * scale);
-            clipRect.SetWidth(clipRect.GetWidth() - deltaX * scale);
+            clipRect.SetX(clipRect.GetX() - deltaX * scale / GetFontScale());
+            clipRect.SetWidth(clipRect.GetWidth() - deltaX * scale / GetFontScale());
 
             if (clipRect.GetWidth() <= 0)
             {
@@ -360,59 +391,50 @@ int MLIFont::GetWidth(const string &s)
 {
     Vector2 position(0, 0);
 
-    if (strokeWidth > 0)
+    for (string::const_iterator it = s.begin(); it < s.end();)
     {
-        for (unsigned int i = 0; i < s.length(); i++)
+        uint32_t c = 0;
+        try
         {
-            RectangleWH characterClipRect = pRenderedTextOutlineClipRectMap[s[i]];
-
-            if (characterClipRect.GetWidth() == 0)
-            {
-                continue;
-            }
-
-            // To update the position while still accounting for kerning,
-            // we add the width of the character sprite to the position,
-            // but then subtract off the difference between the widths of this and the next
-            // characters minus their combined kerned widths.
-            position = Vector2(position.GetX() + characterClipRect.GetWidth(), position.GetY());
-
-            if (i < s.length() - 1)
-            {
-                position = Vector2(position.GetX() + GetKerningDelta(&charPairToKernedWidthMap, &pRenderedTextClipRectMap, s[i], s[i + 1]), position.GetY());
-            }
+            c = utf8::next(it, s.end());
         }
-    }
-    else
-    {
-        for (unsigned int i = 0; i < s.length(); i++)
+        catch (utf8::not_enough_room ex)
         {
-            RectangleWH characterClipRect = pRenderedTextClipRectMap[s[i]];
 
-            if (characterClipRect.GetWidth() == 0)
+        }
+        RectangleWH characterClipRect = renderedTextClipRectMap[c];
+
+        if (characterClipRect.GetWidth() == 0)
+        {
+            continue;
+        }
+
+        // To update the position while still accounting for kerning,
+        // we add the width of the character sprite to the position,
+        // but then subtract off the difference between the widths of this and the next
+        // characters minus their combined kerned widths.
+        position = Vector2(position.GetX() + characterClipRect.GetWidth(), position.GetY());
+
+        if (it < s.end())
+        {
+            try
             {
-                continue;
+                uint32_t c2 = utf8::peek_next(it, s.end());
+                position = Vector2(position.GetX() + GetKerningDelta(&charPairToKernedWidthMap, &renderedTextClipRectMap, c, c2), position.GetY());
             }
-
-            // To update the position while still accounting for kerning,
-            // we add the width of the character sprite to the position,
-            // but then subtract off the difference between the widths of this and the next
-            // characters minus their combined kerned widths.
-            position = Vector2(position.GetX() + characterClipRect.GetWidth(), position.GetY());
-
-            if (i < s.length() - 1)
+            catch (utf8::not_enough_room ex)
             {
-                position = Vector2(position.GetX() + GetKerningDelta(&charPairToKernedWidthMap, &pRenderedTextClipRectMap, s[i], s[i + 1]), position.GetY());
+
             }
         }
     }
 
-    return (int)position.GetX();
+    return position.GetX() / GetFontScale();
 }
 
-int MLIFont::GetKerningDelta(map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, char c1, char c2)
+int MLIFont::GetKerningDelta(map<pair<uint32_t, uint32_t>, int> *pKernedWidthMap, map<uint32_t, RectangleWH> *pClipRectMap, uint32_t c1, uint32_t c2)
 {
-    return (int)((*pKernedWidthMap)[string(&c1, 1) + string(&c2, 1)] - ((*pClipRectMap)[c1].GetWidth() + (*pClipRectMap)[c2].GetWidth()));
+    return ((*pKernedWidthMap)[pair<uint32_t, uint32_t>(c1, c2)] - ((*pClipRectMap)[c1].GetWidth() + (*pClipRectMap)[c2].GetWidth())) / GetFontScale();
 }
 
 int MLIFont::GetHeight(const string &s)
@@ -420,15 +442,15 @@ int MLIFont::GetHeight(const string &s)
     int w, h;
 
     TTF_SizeUTF8(pTtfFont, s.c_str(), &w, &h);
-    return h;
+    return h / GetFontScale();
 }
 
 int MLIFont::GetLineHeight()
 {
-    return TTF_FontHeight(pTtfFont);
+    return TTF_FontHeight(pTtfFont) / GetFontScale();
 }
 
 int MLIFont::GetLineAscent()
 {
-    return TTF_FontAscent(pTtfFont);
+    return TTF_FontAscent(pTtfFont) / GetFontScale();
 }
