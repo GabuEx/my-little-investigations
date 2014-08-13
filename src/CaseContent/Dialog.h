@@ -66,7 +66,7 @@ public:
     static Dialog * CreateForString(const string &dialogText);
     static Dialog * CreateForString(const string &dialogText, const string &filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence);
 
-    string GetText() const { return this->text; }
+    const string & GetText() const { return this->text; }
     void SetText(const string &text) { this->text = text; }
 
     bool GetTextSkipped() const { return this->textSkipped; }
