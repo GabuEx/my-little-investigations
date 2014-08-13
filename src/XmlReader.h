@@ -35,7 +35,6 @@
 #include "MLIException.h"
 
 using namespace std;
-using namespace tinyxml2;
 
 class Image;
 
@@ -66,8 +65,8 @@ public:
 
 private:
     string filePath;
-    XMLDocument *pDocument;
-    XMLNode *pCurrentNode;
+    tinyxml2::XMLDocument *pDocument;
+    tinyxml2::XMLNode *pCurrentNode;
 
     struct XMLList
     {

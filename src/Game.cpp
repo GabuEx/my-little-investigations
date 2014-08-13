@@ -364,7 +364,7 @@ void Game::Update(int delta)
             }
             else
             {
-                throw Exception("Unknown screen ID.");
+                throw MLIException("Unknown screen ID.");
             }
         }
     }

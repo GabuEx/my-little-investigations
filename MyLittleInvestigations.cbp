@@ -201,7 +201,6 @@
 			<Add option="-Wall" />
 			<Add option="-DGAME_EXECUTABLE" />
 			<Add option="-D__STDC_CONSTANT_MACROS" />
-			<Add option="-DTIXML_USE_TICPP" />
 		</Compiler>
 		<Unit filename="osx/ApplicationSupportBridge.h">
 			<Option compilerVar="CC" />

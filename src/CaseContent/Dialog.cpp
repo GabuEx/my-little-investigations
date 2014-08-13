@@ -1389,7 +1389,7 @@ string Dialog::ParseEvents(int lineOffset, const string &stringToParse, string *
         }
         else
         {
-            throw Exception("Unknown event.");
+            throw MLIException("Unknown event.");
         }
 
         parsedString = parsedString.substr(0, eventStart) + replacementText + parsedString.substr(eventEnd + 1);

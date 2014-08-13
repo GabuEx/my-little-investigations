@@ -37,6 +37,8 @@
 
 #include <cryptopp/base64.h>
 
+using namespace tinyxml2;
+
 XmlReader::XmlReader()
 {
     pDocument = NULL;
@@ -83,7 +85,7 @@ void XmlReader::ParseXmlContent(const string &xmlContent)
     pDocument = new XMLDocument();
     XMLError error = pDocument->Parse(xmlContent.c_str());
     if (error != XML_NO_ERROR)
-        throw Exception("XML: Error while parsing file.");
+        throw MLIException("XML: Error while parsing file.");
 
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
@@ -95,7 +97,7 @@ void XmlReader::StartElement(const char *pElementName)
     if (pElement == NULL)
     {
         // We didn't find the element - we should throw.
-        throw Exception("XML: Element not found.");
+        throw MLIException("XML: Element not found.");
     }
 
     pCurrentNode = dynamic_cast<XMLNode *>(pElement);
@@ -149,7 +151,7 @@ int XmlReader::ReadIntElement(const char *pElementName)
     StartElement(pElementName);
     XMLError error = pCurrentNode->ToElement()->QueryIntText(&value);
     if (error != XML_NO_ERROR)
-        throw Exception("XML: error, expect int.");
+        throw MLIException("XML: error, expect int.");
     EndElement();
     return value;
 }
@@ -160,7 +162,7 @@ double XmlReader::ReadDoubleElement(const char *pElementName)
     StartElement(pElementName);
     XMLError error = pCurrentNode->ToElement()->QueryDoubleText(&value);
     if (error != XML_NO_ERROR)
-        throw Exception("XML: error, expect double.");
+        throw MLIException("XML: error, expect double.");
     EndElement();
     return value;
 }
@@ -171,7 +173,7 @@ bool XmlReader::ReadBooleanElement(const char *pElementName)
     StartElement(pElementName);
     XMLError error = pCurrentNode->ToElement()->QueryBoolText(&value);
     if (error != XML_NO_ERROR)
-        throw Exception("XML: error, expect double.");
+        throw MLIException("XML: error, expect double.");
     EndElement();
     return value;
 }

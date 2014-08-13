@@ -348,7 +348,7 @@ bool CheckIfUpdatesExist(string *pVersionsXmlContent)
             versionReader.EndElement();
             versionReader.EndElement();
         }
-        catch (Exception e)
+        catch (MLIException e)
         {
             // If something bad happened while getting update information,
             // then we'll just report that there are no updates.

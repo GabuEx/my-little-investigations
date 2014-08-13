@@ -2,16 +2,16 @@
 #define MLIEXCEPTION_H
 
 #include <string>
-#include <exception>
+#include <stdexcept>
 
-class Exception : public std::exception
+class MLIException : public std::exception
 {
 public:
     /**
     Construct an exception with a message
     */
-    Exception( const std::string& details );
-    ~Exception() throw();
+    MLIException( const std::string& details );
+    ~MLIException() throw();
 
     /// Override std::exception::what() to return m_details
     const char* what() const throw();
