@@ -49,4 +49,5 @@ MyLittleInvestigations.mpkg/*
 My Little Investigations.dmg
 mli-versions.xml
 *.cscope_file_list
+*.pro
 *.pro.user
