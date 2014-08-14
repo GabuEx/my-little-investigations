@@ -85,10 +85,10 @@ private:
     int fontSize;
     bool isBold;
 
-    double GetEnableFullscreen()
+    double GetIsFullscreen()
     {
         #ifdef GAME_EXECUTABLE
-        return gEnableFullscreen;
+        return gIsFullscreen;
         #else
         return false;
         #endif // GAME_EXECUTABLE
@@ -103,13 +103,16 @@ private:
         #endif // GAME_EXECUTABLE
     }
 
-    double GetFontScale()
+    void CheckScale()
     {
         // although such method cause some lags when switch fullscreen/window during the game,
         // i think it's acceptable price for properly scaled font
-        if (scale != (GetEnableFullscreen() ? GetScreenScale() : 1.0))
+        if (scale != (GetIsFullscreen() ? GetScreenScale() : 1.0))
             Reinit();
+    }
 
+    double GetFontScale()
+    {
         return scale;
     }
 

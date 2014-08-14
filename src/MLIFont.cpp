@@ -97,7 +97,7 @@ void MLIFont::Reinit()
     charPairToKernedWidthMap.clear();
 
     // setup scale
-    scale = (GetEnableFullscreen() ? GetScreenScale() : 1.0);
+    scale = (GetIsFullscreen() ? GetScreenScale() : 1.0);
 
     // setup font
     #ifdef GAME_EXECUTABLE
@@ -300,6 +300,8 @@ void MLIFont::Draw(const string &s, Vector2 position, Color color, RectangleWH c
 
 void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<pair<uint32_t, uint32_t>, int> *pKernedWidthMap, map<uint32_t, RectangleWH> *pClipRectMap, map<uint32_t, RectangleWH> *pClipRectMapForWidth)
 {
+    CheckScale();
+
     for (string::const_iterator it = s.begin(); it < s.end();)
     {
         uint32_t c = 0;
@@ -389,6 +391,8 @@ void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, Recta
 
 int MLIFont::GetWidth(const string &s)
 {
+    CheckScale();
+
     Vector2 position(0, 0);
 
     for (string::const_iterator it = s.begin(); it < s.end();)
@@ -434,11 +438,13 @@ int MLIFont::GetWidth(const string &s)
 
 int MLIFont::GetKerningDelta(map<pair<uint32_t, uint32_t>, int> *pKernedWidthMap, map<uint32_t, RectangleWH> *pClipRectMap, uint32_t c1, uint32_t c2)
 {
+    CheckScale();
     return ((*pKernedWidthMap)[pair<uint32_t, uint32_t>(c1, c2)] - ((*pClipRectMap)[c1].GetWidth() + (*pClipRectMap)[c2].GetWidth())) / GetFontScale();
 }
 
 int MLIFont::GetHeight(const string &s)
 {
+    CheckScale();
     int w, h;
 
     TTF_SizeUTF8(pTtfFont, s.c_str(), &w, &h);
@@ -447,10 +453,12 @@ int MLIFont::GetHeight(const string &s)
 
 int MLIFont::GetLineHeight()
 {
+    CheckScale();
     return TTF_FontHeight(pTtfFont) / GetFontScale();
 }
 
 int MLIFont::GetLineAscent()
 {
+    CheckScale();
     return TTF_FontAscent(pTtfFont) / GetFontScale();
 }
