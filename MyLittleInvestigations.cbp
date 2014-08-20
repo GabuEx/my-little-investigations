@@ -229,6 +229,7 @@
 		<Unit filename="src/Animation.h" />
 		<Unit filename="src/AnimationSound.cpp" />
 		<Unit filename="src/AnimationSound.h" />
+		<Unit filename="src/Cache.h" />
 		<Unit filename="src/CaseContent/Area.cpp" />
 		<Unit filename="src/CaseContent/Area.h" />
 		<Unit filename="src/CaseContent/Conversation.cpp" />

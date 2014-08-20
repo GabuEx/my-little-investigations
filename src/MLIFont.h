@@ -37,13 +37,14 @@
 #endif
 #include <map>
 #include <vector>
-#include <set>
+#include <deque>
 
 #include "globals.h"
 #include "Color.h"
 #include "Rectangle.h"
 #include "Image.h"
 #include "Vector2.h"
+#include "Cache.h"
 
 using namespace std;
 
@@ -54,7 +55,6 @@ public:
     ~MLIFont();
 
     void Reinit();
-    void Reinit(const vector<pair<uint32_t, uint32_t> > &ranges);
     void Draw(const string &s, Vector2 position);
     void Draw(const string &s, Vector2 position, double scale);
     void Draw(const string &s, Vector2 position, Color color);
@@ -62,24 +62,33 @@ public:
     void Draw(const string &s, Vector2 position, Color color, RectangleWH clipRect);
     void Draw(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale);
 
-    int GetWidth(const string &s);
-    int GetKerningDelta(map<pair<uint32_t, uint32_t>, int> *pKernedWidthMap, map<uint32_t, RectangleWH> *pClipRectMap, uint32_t char1, uint32_t char2);
-    int GetHeight(const string &s);
-    int GetLineHeight();
-    int GetLineAscent();
+    double GetWidth(const string &s);
+    double GetHeight(const string &s);
+    double GetLineHeight();
+    double GetLineAscent();
+    double GetLineDescent();
 
 private:
-    void DrawInternal(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<pair<uint32_t, uint32_t>, int> *pKernedWidthMap, map<uint32_t, RectangleWH> *pClipRectMap, map<uint32_t, RectangleWH> *pClipRectMapForWidth);
+    void DrawInternal(const string &s, Vector2 position, Color color, double scale, RectangleWH clipRect);
+    Image * RenderGlyph(uint32_t c);
+    int GetKernedWidth(uint32_t c1, uint32_t c2);
 
     TTF_Font *pTtfFont;
+
     int strokeWidth;
 
-    Image *pTextSpriteSheet;
+    class CacheItemHandler : public MRUCache<uint32_t, Image *>::ItemHandler
+    {
+    public:
+        CacheItemHandler(MLIFont *pMLIFont) : ItemHandler(), pMLIFont(pMLIFont) {}
+        void releaseItem(const uint32_t &key, Image * const &value) { delete value; }
+        Image * newItem(const uint32_t &key) { return pMLIFont->RenderGlyph((uint32_t)key); }
+    private:
+        MLIFont *pMLIFont;
+    };
+    MRUCache<uint32_t, Image *> cache;
 
-    map<uint32_t, RectangleWH> renderedTextClipRectMap;
-    map<pair<uint32_t, uint32_t>, int> charPairToKernedWidthMap;
-
-    set<uint32_t> charsToRender;
+    map<pair<uint32_t, uint32_t>, int> kernedWidthCache;
 
     string ttfFilePath;
     int fontSize;
@@ -105,10 +114,10 @@ private:
 
     void CheckScale()
     {
-        // although such method cause some lags when switch fullscreen/window during the game,
-        // i think it's acceptable price for properly scaled font
         if (scale != (GetIsFullscreen() ? GetScreenScale() : 1.0))
+        {
             Reinit();
+        }
     }
 
     double GetFontScale()

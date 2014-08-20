@@ -199,6 +199,7 @@
 			<Option target="Debug (OS X)" />
 			<Option target="Release (OS X)" />
 		</Unit>
+		<Unit filename="src/Cache.h" />
 		<Unit filename="src/Color.cpp" />
 		<Unit filename="src/Color.h" />
 		<Unit filename="src/EasingFunctions.cpp" />
