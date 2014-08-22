@@ -94,7 +94,7 @@ private:
     int fontSize;
     bool isBold;
 
-    double GetIsFullscreen()
+    bool GetIsFullscreen()
     {
         #ifdef GAME_EXECUTABLE
         return gIsFullscreen;
