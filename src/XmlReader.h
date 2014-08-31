@@ -70,6 +70,12 @@ private:
 
     struct XMLList
     {
+        XMLList(string elementsName)
+            : elementsName(elementsName)
+            , started(false)
+        {
+        }
+
         string elementsName;
         bool started; // indicate, if we actually start iterate over list
     };

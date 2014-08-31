@@ -117,7 +117,7 @@ void XmlReader::EndElement()
 
 void XmlReader::StartList(const char *pListElementName)
 {
-    listStack.push(XMLList{string(pListElementName), false});
+    listStack.push(XMLList(string(pListElementName)));
 }
 
 bool XmlReader::MoveToNextListItem()
