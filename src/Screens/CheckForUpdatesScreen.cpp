@@ -420,7 +420,7 @@ void CheckForUpdatesScreen::CheckForUpdates()
             versionReader.EndElement();
             versionReader.EndElement();
         }
-        catch (Exception e)
+        catch (MLIException e)
         {
             // If something bad happened while getting update information,
             // then we should clear the pending update stack to ensure we do nothing

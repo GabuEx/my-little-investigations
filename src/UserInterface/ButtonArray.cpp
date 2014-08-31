@@ -658,7 +658,7 @@ void ButtonArray::ReorderOutAnimations(int newFirstOutButtonId)
 
     if (firstOutPosition == -1)
     {
-        throw Exception("Something very bad has happened - a button not being shown has been clicked.");
+        throw MLIException("Something very bad has happened - a button not being shown has been clicked.");
     }
 
     for (unsigned int i = 0; i < visibleButtonCount; i++)

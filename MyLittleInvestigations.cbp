@@ -201,7 +201,6 @@
 			<Add option="-Wall" />
 			<Add option="-DGAME_EXECUTABLE" />
 			<Add option="-D__STDC_CONSTANT_MACROS" />
-			<Add option="-DTIXML_USE_TICPP" />
 		</Compiler>
 		<Unit filename="osx/ApplicationSupportBridge.h">
 			<Option compilerVar="CC" />
@@ -230,6 +229,7 @@
 		<Unit filename="src/Animation.h" />
 		<Unit filename="src/AnimationSound.cpp" />
 		<Unit filename="src/AnimationSound.h" />
+		<Unit filename="src/Cache.h" />
 		<Unit filename="src/CaseContent/Area.cpp" />
 		<Unit filename="src/CaseContent/Area.h" />
 		<Unit filename="src/CaseContent/Conversation.cpp" />
@@ -313,6 +313,8 @@
 		<Unit filename="src/KeyboardHelper.h" />
 		<Unit filename="src/Line.cpp" />
 		<Unit filename="src/Line.h" />
+		<Unit filename="src/MLIException.cpp" />
+		<Unit filename="src/MLIException.h" />
 		<Unit filename="src/MLIFont.cpp" />
 		<Unit filename="src/MLIFont.h" />
 		<Unit filename="src/MouseHelper.cpp" />
@@ -400,15 +402,8 @@
 			<Option target="Debug (Unix)" />
 			<Option target="Release (Unix)" />
 		</Unit>
-		<Unit filename="src/ticpp/ticpp.cpp" />
-		<Unit filename="src/ticpp/ticpp.h" />
-		<Unit filename="src/ticpp/ticpprc.h" />
-		<Unit filename="src/ticpp/tinystr.cpp" />
-		<Unit filename="src/ticpp/tinystr.h" />
-		<Unit filename="src/ticpp/tinyxml.cpp" />
-		<Unit filename="src/ticpp/tinyxml.h" />
-		<Unit filename="src/ticpp/tinyxmlerror.cpp" />
-		<Unit filename="src/ticpp/tinyxmlparser.cpp" />
+		<Unit filename="src/tinyxml2/tinyxml2.cpp" />
+		<Unit filename="src/tinyxml2/tinyxml2.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

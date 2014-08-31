@@ -163,7 +163,6 @@
 			<Add option="-fexceptions" />
 			<Add option="-DLAUNCHER" />
 			<Add option="-D__STDC_CONSTANT_MACROS" />
-			<Add option="-DTIXML_USE_TICPP" />
 		</Compiler>
 		<Unit filename="osx/ApplicationSupportBridge.h">
 			<Option target="Debug (OS X)" />
@@ -189,6 +188,8 @@
 		</Unit>
 		<Unit filename="src/FileFunctions.cpp" />
 		<Unit filename="src/FileFunctions.h" />
+		<Unit filename="src/MLIException.cpp" />
+		<Unit filename="src/MLIException.h" />
 		<Unit filename="src/Utils.cpp" />
 		<Unit filename="src/Utils.h" />
 		<Unit filename="src/Version.cpp" />
@@ -209,15 +210,8 @@
 			<Option target="Debug (Win32)" />
 			<Option target="Release (Win32)" />
 		</Unit>
-		<Unit filename="src/ticpp/ticpp.cpp" />
-		<Unit filename="src/ticpp/ticpp.h" />
-		<Unit filename="src/ticpp/ticpprc.h" />
-		<Unit filename="src/ticpp/tinystr.cpp" />
-		<Unit filename="src/ticpp/tinystr.h" />
-		<Unit filename="src/ticpp/tinyxml.cpp" />
-		<Unit filename="src/ticpp/tinyxml.h" />
-		<Unit filename="src/ticpp/tinyxmlerror.cpp" />
-		<Unit filename="src/ticpp/tinyxmlparser.cpp" />
+		<Unit filename="src/tinyxml2/tinyxml2.cpp" />
+		<Unit filename="src/tinyxml2/tinyxml2.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

@@ -1,8 +1,8 @@
 /**
- * Basic header/include file for Utils.cpp.
+ * Basic header/include file for MLIException.cpp.
  *
- * @author GabuEx, dawnmew
- * @since 1.0
+ * @author mad-mix
+ * @since 1.0.7
  *
  * Licensed under the MIT License.
  *
@@ -27,35 +27,25 @@
  * SOFTWARE.
  */
 
-#ifndef UTILS_H
-#define UTILS_H
-
-#include "Version.h"
+#ifndef MLIEXCEPTION_H
+#define MLIEXCEPTION_H
 
 #include <string>
-#include <deque>
+#include <stdexcept>
 
-typedef unsigned char byte;
+class MLIException : public std::exception
+{
+public:
+    /**
+    Construct an exception with a message
+    */
+    MLIException( const std::string& details );
+    ~MLIException() throw();
 
-using namespace std;
+    /// Override std::exception::what() to return m_details
+    const char* what() const throw();
 
-#ifndef GAME_EXECUTABLE
-typedef int (*PFNPROGRESSCALLBACK)(void *, double, double, double, double);
-#endif
+    std::string m_details; /**< Exception Details */
+};
 
-deque<string> &split(const string &s, char delim, deque<string> &tokens);
-deque<string> split(const string &s, char delim);
-
-bool SignatureIsValid(const byte *pFileData, unsigned int fileSize, const string &hexEncodedSignature);
-
-string UuidFromSHA256Hash(byte hash[]);
-
-#ifndef GAME_EXECUTABLE
-bool RetrieveDataFromUriHttp(const string &uri, byte **ppByteDataFromUriHttp, size_t *pByteDataSize, PFNPROGRESSCALLBACK pfnProgressCallback = NULL, void *pProgressCallbackData = NULL);
-bool RetrieveStringFromUriHttp(const string &uri, string *pReturnString, PFNPROGRESSCALLBACK pfnProgressCallback = NULL, void *pProgressCallbackData = NULL);
-bool CheckIfUpdatesExist(string *pVersionsXmlContent);
-string FileSizeToString(int fileSize);
-bool PromptUserToDownloadUpdates(Version currentVersion, Version newVersion, int updateFileSize);
-#endif
-
-#endif
+#endif // MLIEXCEPTION_H

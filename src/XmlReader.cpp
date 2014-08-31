@@ -37,6 +37,8 @@
 
 #include <cryptopp/base64.h>
 
+using namespace tinyxml2;
+
 XmlReader::XmlReader()
 {
     pDocument = NULL;
@@ -68,113 +70,132 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
     if (pDocument == NULL)
     {
 #endif
-        pDocument = new Document();
+        pDocument = new XMLDocument();
         pDocument->LoadFile(pFilePath);
 #ifdef GAME_EXECUTABLE
     }
 #endif
+
+    pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
 
 void XmlReader::ParseXmlContent(const string &xmlContent)
 {
     delete pDocument;
-    pDocument = new Document();
-    pDocument->Parse(xmlContent);
+    pDocument = new XMLDocument();
+    XMLError error = pDocument->Parse(xmlContent.c_str());
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML: Error while parsing file.");
+
+    pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
 
 void XmlReader::StartElement(const char *pElementName)
 {
-    Element *pElement = GetFirstDirectChildElementByName(pElementName);
+    XMLElement *pElement = pCurrentNode->FirstChildElement(pElementName);
 
-    if (pElement != NULL)
-    {
-        elementStack.push(pElement);
-    }
-    else
+    if (pElement == NULL)
     {
         // We didn't find the element - we should throw.
-        throw Exception("Element not found.");
+        throw MLIException("XML: Element not found.");
     }
+
+    pCurrentNode = dynamic_cast<XMLNode *>(pElement);
 }
 
 bool XmlReader::ElementExists(const char *pElementName)
 {
-    Element *pElement = GetFirstDirectChildElementByName(pElementName);
+    XMLElement *pElement = pCurrentNode->FirstChildElement(pElementName);
 
     return pElement != NULL;
 }
 
 void XmlReader::EndElement()
 {
-    elementStack.pop();
+    pCurrentNode = pCurrentNode->Parent();
 }
 
 void XmlReader::StartList(const char *pListElementName)
 {
-    ListIterator *pIterator = new ListIterator(this, pListElementName);
-    listIteratorStack.push(pIterator);
+    listStack.push(XMLList{string(pListElementName), false});
 }
 
 bool XmlReader::MoveToNextListItem()
 {
-    ListIterator *pIterator = listIteratorStack.top();
-    bool wasNextItem = pIterator->MoveToNextItem();
+    XMLList &topList = listStack.top();
+    XMLElement *pElement = NULL;
+    if (topList.started)
+        pElement = pCurrentNode->NextSiblingElement(topList.elementsName.c_str());
+    else
+        pElement = pCurrentNode->FirstChildElement(topList.elementsName.c_str());
 
-    // If there's no next item, then we're done,
-    // and we want to delete the list iterator,
-    // since we won't be using it anymore.
-    if (!wasNextItem)
+    if (pElement != NULL)
     {
-        listIteratorStack.pop();
-        delete pIterator;
+        topList.started = true;
+        pCurrentNode = dynamic_cast<XMLNode *>(pElement);
+    }
+    else
+    {
+        listStack.pop();
+        if (topList.started)
+            pCurrentNode = pCurrentNode->Parent();
     }
 
-    return wasNextItem;
+    return (pElement != NULL);
+
 }
 
 int XmlReader::ReadIntElement(const char *pElementName)
 {
-    int i;
+    int value;
     StartElement(pElementName);
-    elementStack.top()->GetText(&i);
+    XMLError error = pCurrentNode->ToElement()->QueryIntText(&value);
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML: error, expect int.");
     EndElement();
-    return i;
+    return value;
 }
 
 double XmlReader::ReadDoubleElement(const char *pElementName)
 {
-    double d;
+    double value;
     StartElement(pElementName);
-    elementStack.top()->GetText(&d);
+    XMLError error = pCurrentNode->ToElement()->QueryDoubleText(&value);
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML: error, expect double.");
     EndElement();
-    return d;
+    return value;
 }
 
 bool XmlReader::ReadBooleanElement(const char *pElementName)
 {
-    string s;
+    bool value;
     StartElement(pElementName);
-    elementStack.top()->GetText(&s);
+    XMLError error = pCurrentNode->ToElement()->QueryBoolText(&value);
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML: error, expect double.");
     EndElement();
-    return s == "true";
+    return value;
 }
 
 string XmlReader::ReadTextElement(const char *pElementName)
 {
-    string s;
     StartElement(pElementName);
-    elementStack.top()->GetText(&s, false /* throwIfNotFound */);
+    const char *value = pCurrentNode->ToElement()->GetText();
     EndElement();
-    return s;
+    // looks like tinyxml2 collapse "<tag> </tag>" and return NULL
+    // with GetText() despite of PRESERVE_WHITESPACE flag
+    if (value == NULL)
+        return string();
+    else
+        return string(value);
+
 }
 
 #ifdef GAME_EXECUTABLE
 Image * XmlReader::ReadPngElement(const char *pElementName)
 {
-    string s;
-    StartElement(pElementName);
-    elementStack.top()->GetText(&s);
-    EndElement();
+    string s = ReadTextElement(pElementName);
 
     string decodedString;
     CryptoPP::StringSource(s, true, new CryptoPP::Base64Decoder(new CryptoPP::StringSink(decodedString)));
@@ -190,78 +211,3 @@ Image * XmlReader::ReadPngElement(const char *pElementName)
     return pSprite;
 }
 #endif
-
-Element * XmlReader::GetFirstDirectChildElementByName(const char *pElementName)
-{
-    Element *pElement = NULL;
-    Iterator<Element> child(pElementName);
-
-    for (child = child.begin(GetTopNodeInStack()); child != child.end(); ++child)
-    {
-        pElement = child.Get();
-        break;
-    }
-
-    return pElement;
-}
-
-Node * XmlReader::GetTopNodeInStack()
-{
-    return elementStack.empty() ? dynamic_cast<Node *>(pDocument) : dynamic_cast<Node *>(elementStack.top());
-}
-
-XmlReader::ListIterator::ListIterator(XmlReader *pParent, const char *pListElementName)
-    : listElementName(string(pListElementName))
-{
-    pParentReader = pParent;
-    pIterator = new Iterator<Element>(pListElementName);
-    hasBegun = false;
-}
-
-XmlReader::ListIterator::ListIterator(const ListIterator &other)
-{
-    pParentReader = other.pParentReader;
-    pIterator = new Iterator<Element>(listElementName.c_str());
-    hasBegun = false;
-}
-
-XmlReader::ListIterator::~ListIterator()
-{
-    pParentReader = NULL;
-
-    delete pIterator;
-    pIterator = NULL;
-}
-
-bool XmlReader::ListIterator::MoveToNextItem()
-{
-    if (!hasBegun || *pIterator != pIterator->end())
-    {
-        if (!hasBegun)
-        {
-            *pIterator = pIterator->begin(pParentReader->GetTopNodeInStack());
-            hasBegun = true;
-        }
-        else
-        {
-            pParentReader->elementStack.pop();
-        }
-
-        if (*pIterator != pIterator->end())
-        {
-            pParentReader->elementStack.push(pIterator->Get());
-
-            (*pIterator)++;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-    else
-    {
-        pParentReader->elementStack.pop();
-        return false;
-    }
-}

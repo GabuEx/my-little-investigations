@@ -34,6 +34,7 @@
 #include "../ResourceLoader.h"
 #include "../Utils.h"
 #include "../CaseInformation/Case.h"
+#include "../utf8cpp/utf8.h"
 #include <algorithm>
 #include <cctype>
 #include <cstdlib>
@@ -581,7 +582,18 @@ void Dialog::Update(int delta)
             if (!GetIsStarted() || millisecondsSinceLastUpdate > millisecondsPerCharacterUpdate)
             {
                 int positionsToAdvance = (int)(millisecondsSinceLastUpdate / millisecondsPerCharacterUpdate);
-                curTextPosition = min(curTextPosition + positionsToAdvance, (int)GetText().length());
+                try
+                {
+                    string::const_iterator begin = GetText().begin() + curTextPosition;
+                    string::const_iterator end = begin;
+                    utf8::advance(end, positionsToAdvance, GetText().end());
+                    curTextPosition = curTextPosition + distance(begin, end);
+                }
+                catch (utf8::not_enough_room ex)
+                {
+                    curTextPosition = (int)GetText().length();
+                }
+
                 millisecondsSinceLastUpdate = max(millisecondsSinceLastUpdate - positionsToAdvance * millisecondsPerCharacterUpdate, 0.0);
                 newCharacterDrawn = true;
             }
@@ -1389,7 +1401,7 @@ string Dialog::ParseEvents(int lineOffset, const string &stringToParse, string *
         }
         else
         {
-            throw Exception("Unknown event.");
+            throw MLIException("Unknown event.");
         }
 
         parsedString = parsedString.substr(0, eventStart) + replacementText + parsedString.substr(eventEnd + 1);

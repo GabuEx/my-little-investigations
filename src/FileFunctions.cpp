@@ -348,7 +348,7 @@ bool IsCaseCorrectlySigned(const string &caseFilePath, bool useLookupTable)
             }
         }
     }
-    catch (ticpp::Exception e)
+    catch (MLIException e)
     {
         // Nothing to do if we catch an exception - that just means
         // that the case was not correctly signed.
@@ -696,7 +696,7 @@ void LoadConfigurations()
             gSoundEffectsVolume = soundEffectsVolume;
             gVoiceVolume = voiceVolume;
         }
-        catch (ticpp::Exception e)
+        catch (MLIException e)
         {
             // Nothing to do - we just won't load any configurations if we ran into trouble.
         }
@@ -788,7 +788,7 @@ void LoadCompletedCases()
                 gCompletedCaseGuidList.push_back(completedCaseGuidList[i]);
             }
         }
-        catch (ticpp::Exception e)
+        catch (MLIException e)
         {
             // Nothing to do - we just won't load completed cases if we ran into trouble.
         }
@@ -949,7 +949,7 @@ void LoadDialogsSeenListForCase(const string &caseUuid)
                 gDialogsSeenList.push_back(dialogsSeenList[i]);
             }
         }
-        catch (ticpp::Exception e)
+        catch (MLIException e)
         {
             // Nothing to do - we just won't load completed cases if we ran into trouble.
         }

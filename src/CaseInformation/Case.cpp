@@ -39,6 +39,8 @@
 #include "../Events/EventProviders.h"
 #include "../Events/CaseParsingEventProvider.h"
 
+#include <iostream>
+
 #include <ctime>
 
 Case *Case::pInstance = NULL;

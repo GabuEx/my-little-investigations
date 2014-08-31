@@ -41,8 +41,8 @@
 
 #include "Image.h"
 #include "miniz.h"
-#include "ticpp/ticpp.h"
-using namespace ticpp;
+
+#include "tinyxml2/tinyxml2.h"
 
 #include <map>
 #include <deque>
@@ -225,7 +225,7 @@ public:
     SDL_Surface * LoadRawSurface(const string &relativeFilePath);
     Image * LoadImage(const string &relativeFilePath);
     void ReloadImage(Image *pSprite, const string &originFilePath);
-    Document * LoadDocument(const string &relativeFilePath);
+    tinyxml2::XMLDocument * LoadDocument(const string &relativeFilePath);
     TTF_Font * LoadFont(const string &relativeFilePath, int ptSize);
 
     void LoadVideo(

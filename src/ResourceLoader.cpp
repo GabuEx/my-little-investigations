@@ -26,7 +26,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-
+ 
+#include "XmlReader.h"
+#include "MLIException.h"
 #include "ResourceLoader.h"
 #include "mli_audio.h"
 #include "CaseInformation/Case.h"
@@ -180,7 +182,7 @@ void ResourceLoader::ReloadImage(Image *pSprite, const string &originFilePath)
     free(pMemToFree);
 }
 
-Document * ResourceLoader::LoadDocument(const string &relativeFilePath)
+tinyxml2::XMLDocument * ResourceLoader::LoadDocument(const string &relativeFilePath)
 {
     void *pMemToFree = NULL;
     SDL_RWops * pRW = NULL;
@@ -196,7 +198,7 @@ Document * ResourceLoader::LoadDocument(const string &relativeFilePath)
     }
 
     if (pRW == NULL) return NULL;
-    Document * pDocument = new Document();
+    tinyxml2::XMLDocument * pDocument = new tinyxml2::XMLDocument();
     pDocument->LoadFile(pRW);
     free(pMemToFree);
     return pDocument;
@@ -268,12 +270,12 @@ void ResourceLoader::LoadVideo(
 
     if (avformat_open_input(&pFormatContext, "DummyFilename", NULL, NULL) < 0)
     {
-        throw Exception("Couldn't open video file!");
+        throw MLIException("Couldn't open video file!");
     }
 
     if (avformat_find_stream_info(pFormatContext, NULL) < 0)
     {
-        throw Exception("Couldn't find video stream info!");
+        throw MLIException("Couldn't find video stream info!");
     }
 
     int videoStream = -1;
@@ -292,7 +294,7 @@ void ResourceLoader::LoadVideo(
 
     if (avcodec_open2(pCodecContext, pCodec, NULL) < 0)
     {
-        throw Exception("Couldn't open codec!");
+        throw MLIException("Couldn't open codec!");
     }
 
     *ppRWOpsIOContext = pRWOpsIOContext;

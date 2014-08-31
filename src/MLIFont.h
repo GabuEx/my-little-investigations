@@ -36,11 +36,15 @@
 #include <SDL2/SDL_ttf.h>
 #endif
 #include <map>
+#include <vector>
+#include <deque>
 
+#include "globals.h"
 #include "Color.h"
 #include "Rectangle.h"
 #include "Image.h"
 #include "Vector2.h"
+#include "Cache.h"
 
 using namespace std;
 
@@ -58,23 +62,72 @@ public:
     void Draw(const string &s, Vector2 position, Color color, RectangleWH clipRect);
     void Draw(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale);
 
-    int GetWidth(const string &s);
-    int GetKerningDelta(map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, char c1, char c2);
-    int GetHeight(const string &s);
-    int GetLineHeight();
-    int GetLineAscent();
+    double GetWidth(const string &s);
+    double GetHeight(const string &s);
+    double GetLineHeight();
+    double GetLineAscent();
+    double GetLineDescent();
 
 private:
-    void DrawInternal(const string &s, Vector2 position, Color color, RectangleWH clipRect, double scale, map<string, int> *pKernedWidthMap, map<char, RectangleWH> *pClipRectMap, map<char, RectangleWH> *pClipRectMapForWidth);
+    void DrawInternal(const string &s, Vector2 position, Color color, double scale, RectangleWH clipRect);
+    Image * RenderGlyph(uint32_t c);
+    int GetKernedWidth(uint32_t c1, uint32_t c2);
 
     TTF_Font *pTtfFont;
+
     int strokeWidth;
 
-    Image *pTextSpriteSheet;
+    class CacheItemHandler : public MRUCache<uint32_t, Image *>::ItemHandler
+    {
+    public:
+        CacheItemHandler(MLIFont *pMLIFont) : ItemHandler(), pMLIFont(pMLIFont) {}
+        void releaseItem(const uint32_t &key, Image * const &value) { delete value; }
+        Image * newItem(const uint32_t &key) { return pMLIFont->RenderGlyph((uint32_t)key); }
+    private:
+        MLIFont *pMLIFont;
+    };
+    MRUCache<uint32_t, Image *> cache;
 
-    map<char, RectangleWH> pRenderedTextClipRectMap;
-    map<char, RectangleWH> pRenderedTextOutlineClipRectMap;
-    map<string, int> charPairToKernedWidthMap;
+    map<pair<uint32_t, uint32_t>, int> kernedWidthCache;
+
+    string ttfFilePath;
+    int fontSize;
+    bool isBold;
+
+    bool GetIsFullscreen()
+    {
+        #ifdef GAME_EXECUTABLE
+        return gIsFullscreen;
+        #else
+        return false;
+        #endif // GAME_EXECUTABLE
+    }
+
+    double GetScreenScale()
+    {
+        #ifdef GAME_EXECUTABLE
+        return gScreenScale;
+        #else
+        return 1.0;
+        #endif // GAME_EXECUTABLE
+    }
+
+    void CheckScale()
+    {
+        if (scale != (GetIsFullscreen() ? GetScreenScale() : 1.0))
+        {
+            Reinit();
+        }
+    }
+
+    double GetFontScale()
+    {
+        return scale;
+    }
+
+    // With what scale font have been rendered. We need this to rerender font with right size
+    // when switch fullscreen/window.
+    double scale;
 };
 
 #endif

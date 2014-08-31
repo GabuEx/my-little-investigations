@@ -31,7 +31,6 @@
 
 #include "globals.h"
 #include "XmlReader.h"
-#include "ticpp/ticpp.h"
 #include <sstream>
 
 #include <cryptopp/hex.h>
@@ -349,7 +348,7 @@ bool CheckIfUpdatesExist(string *pVersionsXmlContent)
             versionReader.EndElement();
             versionReader.EndElement();
         }
-        catch (ticpp::Exception e)
+        catch (MLIException e)
         {
             // If something bad happened while getting update information,
             // then we'll just report that there are no updates.

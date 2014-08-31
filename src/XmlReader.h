@@ -31,37 +31,16 @@
 #define XMLREADER_H
 
 #include <stack>
-#include "ticpp/ticpp.h"
+#include "tinyxml2/tinyxml2.h"
+#include "MLIException.h"
 
 using namespace std;
-using namespace ticpp;
 
 class Image;
 
 class XmlReader
 {
 public:
-    class ListIterator
-    {
-    public:
-        ListIterator(XmlReader *pParent, const char *pListElementName);
-        ListIterator(const ListIterator &other);
-        ~ListIterator();
-        bool MoveToNextItem();
-
-    private:
-        ListIterator()
-        {
-            pParentReader = NULL;
-            pIterator = NULL;
-        }
-
-        string listElementName;
-        XmlReader *pParentReader;
-        Iterator<Element> *pIterator;
-        bool hasBegun;
-    };
-
     XmlReader();
     XmlReader(const char *pFilePath);
     XmlReader(const XmlReader &other);
@@ -85,13 +64,17 @@ public:
 #endif
 
 private:
-    Element * GetFirstDirectChildElementByName(const char *pElementName);
-    Node * GetTopNodeInStack();
-
     string filePath;
-    Document *pDocument;
-    stack<ListIterator *> listIteratorStack;
-    stack<Element *> elementStack;
+    tinyxml2::XMLDocument *pDocument;
+    tinyxml2::XMLNode *pCurrentNode;
+
+    struct XMLList
+    {
+        string elementsName;
+        bool started; // indicate, if we actually start iterate over list
+    };
+
+    stack<XMLList> listStack;
 };
 
 #endif

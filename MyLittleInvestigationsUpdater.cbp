@@ -175,7 +175,6 @@
 			<Add option="-fexceptions" />
 			<Add option="-DUPDATER" />
 			<Add option="-D__STDC_CONSTANT_MACROS" />
-			<Add option="-DTIXML_USE_TICPP" />
 		</Compiler>
 		<Unit filename="osx/ApplicationSupportBridge.h">
 			<Option compilerVar="CC" />
@@ -200,18 +199,21 @@
 			<Option target="Debug (OS X)" />
 			<Option target="Release (OS X)" />
 		</Unit>
+		<Unit filename="src/Cache.h" />
 		<Unit filename="src/Color.cpp" />
 		<Unit filename="src/Color.h" />
 		<Unit filename="src/EasingFunctions.cpp" />
 		<Unit filename="src/EasingFunctions.h" />
 		<Unit filename="src/FileFunctions.cpp" />
 		<Unit filename="src/FileFunctions.h" />
-		<Unit filename="src/MLIFont.cpp" />
-		<Unit filename="src/MLIFont.h" />
 		<Unit filename="src/Game.cpp" />
 		<Unit filename="src/Game.h" />
 		<Unit filename="src/Image.cpp" />
 		<Unit filename="src/Image.h" />
+		<Unit filename="src/MLIException.cpp" />
+		<Unit filename="src/MLIException.h" />
+		<Unit filename="src/MLIFont.cpp" />
+		<Unit filename="src/MLIFont.h" />
 		<Unit filename="src/Rectangle.cpp" />
 		<Unit filename="src/Rectangle.h" />
 		<Unit filename="src/Screens/CheckForUpdatesScreen.cpp" />
@@ -242,15 +244,8 @@
 			<Option target="Debug (Win32)" />
 			<Option target="Release (Win32)" />
 		</Unit>
-		<Unit filename="src/ticpp/ticpp.cpp" />
-		<Unit filename="src/ticpp/ticpp.h" />
-		<Unit filename="src/ticpp/ticpprc.h" />
-		<Unit filename="src/ticpp/tinystr.cpp" />
-		<Unit filename="src/ticpp/tinystr.h" />
-		<Unit filename="src/ticpp/tinyxml.cpp" />
-		<Unit filename="src/ticpp/tinyxml.h" />
-		<Unit filename="src/ticpp/tinyxmlerror.cpp" />
-		<Unit filename="src/ticpp/tinyxmlparser.cpp" />
+		<Unit filename="src/tinyxml2/tinyxml2.cpp" />
+		<Unit filename="src/tinyxml2/tinyxml2.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
