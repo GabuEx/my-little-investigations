@@ -58,6 +58,7 @@
 #include "resource.h"
 
 #ifdef GAME_EXECUTABLE
+#include <iostream>
 #include <time.h>
 #include <stdlib.h>
 

@@ -49,7 +49,7 @@ public:
         virtual ~ItemHandler() {}
     };
 
-    MRUCache(int maxLength, ItemHandler *itemHandler) : maxLength(maxLength), itemHandler(itemHandler) { }
+    MRUCache(unsigned int maxLength, ItemHandler *itemHandler) : maxLength(maxLength), itemHandler(itemHandler) { }
 
     ValueType & operator [] (const KeyType &key)
     {
@@ -102,7 +102,7 @@ public:
     }
 
 private:
-    const int maxLength;
+    const unsigned int maxLength;
 
     typedef struct
     {

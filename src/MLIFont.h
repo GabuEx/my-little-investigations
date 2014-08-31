@@ -75,8 +75,6 @@ private:
 
     TTF_Font *pTtfFont;
 
-    int strokeWidth;
-
     class CacheItemHandler : public MRUCache<uint32_t, Image *>::ItemHandler
     {
     public:
@@ -86,13 +84,14 @@ private:
     private:
         MLIFont *pMLIFont;
     };
-    MRUCache<uint32_t, Image *> cache;
-
-    map<pair<uint32_t, uint32_t>, int> kernedWidthCache;
 
     string ttfFilePath;
     int fontSize;
+    int strokeWidth;
     bool isBold;
+
+    MRUCache<uint32_t, Image *> cache;
+    map<pair<uint32_t, uint32_t>, int> kernedWidthCache;
 
     bool GetIsFullscreen()
     {
