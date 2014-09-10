@@ -34,7 +34,7 @@
 
 #include <iostream>
 
-const int CacheSize = 256;
+const unsigned int CacheSize = 256;
 
 MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool isBold)
     : ttfFilePath(ttfFilePath),
@@ -82,6 +82,8 @@ void MLIFont::Reinit()
     {
         TTF_SetFontStyle(pTtfFont, TTF_STYLE_BOLD);
     }
+
+    TTF_SetFontOutline(pTtfFont, strokeWidth * GetFontScale());
 }
 
 Image *MLIFont::RenderGlyph(uint32_t c)
@@ -101,47 +103,40 @@ Image *MLIFont::RenderGlyph(uint32_t c)
         return NULL;
     }
 
+    int scaledStrokeWidth = strokeWidth * GetFontScale();
+
     // render outlines
     if (strokeWidth > 0)
     {
         SDL_Color blackColor = {0, 0, 0, 255};
 
+#ifndef MLI_SDL_FONT_OUTLINING
         SDL_Surface *pSurfaceOutline = TTF_RenderUTF8_Blended(pTtfFont, utf8string.c_str(), blackColor);
 
         SDL_Surface *pSurfaceOutlinedText = SDL_CreateRGBSurface(
                     0,
-                    pSurface->w + strokeWidth * 2 * GetFontScale(),
-                    pSurface->h + strokeWidth * 2 * GetFontScale(),
+                    pSurface->w + scaledStrokeWidth * 2,
+                    pSurface->h + scaledStrokeWidth * 2,
                     pSurface->format->BitsPerPixel,
                     pSurface->format->Rmask,
                     pSurface->format->Gmask,
                     pSurface->format->Bmask,
                     pSurface->format->Amask);
 
+        SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
+
         SDL_Rect dstRect = {0, 0, pSurface->w, pSurface->h};
 
-        dstRect.x = 0;
-        dstRect.y = 0;
-        SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
-        SDL_BlitSurface(pSurfaceOutline, NULL, pSurfaceOutlinedText, &dstRect);
+        for (dstRect.x = 0; dstRect.x <= scaledStrokeWidth * 2; dstRect.x++)
+        {
+            for (dstRect.y = 0; dstRect.y <= scaledStrokeWidth * 2; dstRect.y++)
+            {
+                SDL_BlitSurface(pSurfaceOutline, NULL, pSurfaceOutlinedText, &dstRect);
+            }
+        }
 
-        dstRect.x = 0;
-        dstRect.y = strokeWidth * 2 * GetFontScale();
-        SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
-        SDL_BlitSurface(pSurfaceOutline, NULL, pSurfaceOutlinedText, &dstRect);
-
-        dstRect.x = strokeWidth * 2 * GetFontScale();
-        dstRect.y = 0;
-        SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
-        SDL_BlitSurface(pSurfaceOutline, NULL, pSurfaceOutlinedText, &dstRect);
-
-        dstRect.x = strokeWidth * 2 * GetFontScale();
-        dstRect.y = strokeWidth * 2 * GetFontScale();
-        SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
-        SDL_BlitSurface(pSurfaceOutline, NULL, pSurfaceOutlinedText, &dstRect);
-
-        dstRect.x = strokeWidth * GetFontScale();
-        dstRect.y = strokeWidth * GetFontScale();
+        dstRect.x = scaledStrokeWidth;
+        dstRect.y = scaledStrokeWidth;
         SDL_SetSurfaceBlendMode(pSurfaceOutline, SDL_BLENDMODE_BLEND);
         SDL_BlitSurface(pSurface, NULL, pSurfaceOutlinedText, &dstRect);
 
@@ -149,9 +144,21 @@ Image *MLIFont::RenderGlyph(uint32_t c)
         SDL_FreeSurface(pSurfaceOutline);
 
         pSurface = pSurfaceOutlinedText;
+#else
+        TTF_SetFontOutline(pTtfFont, scaledStrokeWidth);
+        SDL_Surface *pSurfaceOutlinedText = TTF_RenderUTF8_Blended(pTtfFont, utf8string.c_str(), blackColor);
+
+        SDL_SetSurfaceBlendMode(pSurfaceOutlinedText, SDL_BLENDMODE_BLEND);
+        SDL_Rect dstRect = {scaledStrokeWidth, scaledStrokeWidth, pSurface->w, pSurface->h};
+        SDL_BlitSurface(pSurface, NULL, pSurfaceOutlinedText, &dstRect);
+
+        SDL_FreeSurface(pSurface);
+
+        pSurface = pSurfaceOutlinedText;
+#endif
     }
 
-    TTF_SetFontOutline(pTtfFont, strokeWidth * GetFontScale());
+    TTF_SetFontOutline(pTtfFont, scaledStrokeWidth);
 
     // create image
     Image *pImage = Image::Load(pSurface, true);
