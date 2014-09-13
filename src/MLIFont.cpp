@@ -75,7 +75,7 @@ void MLIFont::Reinit()
     #ifdef GAME_EXECUTABLE
         pTtfFont = ResourceLoader::GetInstance()->LoadFont(ttfFilePath, fontSize * scale);
     #else
-        pTtfFont = TTF_OpenFont(ttfFilePath.c_str(), fontSize * scale);
+        pTtfFont = TTF_OpenFont(ttfFilePath.c_str(), fontSize * scale + 0.5);
     #endif
 
     if (isBold)
@@ -83,7 +83,6 @@ void MLIFont::Reinit()
         TTF_SetFontStyle(pTtfFont, TTF_STYLE_BOLD);
     }
 
-    TTF_SetFontOutline(pTtfFont, strokeWidth * GetFontScale());
 }
 
 Image *MLIFont::RenderGlyph(uint32_t c)
@@ -96,14 +95,13 @@ Image *MLIFont::RenderGlyph(uint32_t c)
     string utf8string;
     utf8::unchecked::append(c, back_inserter(utf8string));
 
-    TTF_SetFontOutline(pTtfFont, 0);
     SDL_Surface *pSurface = TTF_RenderUTF8_Blended(pTtfFont, utf8string.c_str(), whiteColor);
     if (pSurface == NULL)
     {
         return NULL;
     }
 
-    int scaledStrokeWidth = strokeWidth * GetFontScale();
+    int scaledStrokeWidth = strokeWidth * GetFontScale() + 0.5;
 
     // render outlines
     if (strokeWidth > 0)
@@ -146,6 +144,7 @@ Image *MLIFont::RenderGlyph(uint32_t c)
         pSurface = pSurfaceOutlinedText;
 #else
         TTF_SetFontOutline(pTtfFont, scaledStrokeWidth);
+
         SDL_Surface *pSurfaceOutlinedText = TTF_RenderUTF8_Blended(pTtfFont, utf8string.c_str(), blackColor);
 
         SDL_SetSurfaceBlendMode(pSurfaceOutlinedText, SDL_BLENDMODE_BLEND);
@@ -155,10 +154,10 @@ Image *MLIFont::RenderGlyph(uint32_t c)
         SDL_FreeSurface(pSurface);
 
         pSurface = pSurfaceOutlinedText;
+
+        TTF_SetFontOutline(pTtfFont, 0);
 #endif
     }
-
-    TTF_SetFontOutline(pTtfFont, scaledStrokeWidth);
 
     // create image
     Image *pImage = Image::Load(pSurface, true);
@@ -190,7 +189,7 @@ int MLIFont::GetKernedWidth(uint32_t c1, uint32_t c2)
         TTF_SizeUTF8(pTtfFont, str2.c_str(), &w2, &h);
         TTF_SizeUTF8(pTtfFont, (str1 + str2).c_str(), &combinedWidth, &h);
 
-        int kernedWidth1 = (combinedWidth - w2);
+        int kernedWidth1 = (combinedWidth - w2) + strokeWidth/* * 2*/;
         kernedWidthCache[charPair] = kernedWidth1;
         return kernedWidth1;
     }
@@ -318,10 +317,43 @@ double MLIFont::GetWidth(const string &s)
 {
     CheckScale();
 
-    int w, h;
+    double x = 0;
+    for (string::const_iterator it = s.begin(); it < s.end();)
+    {
+        uint32_t c = 0;
+        try
+        {
+            c = utf8::next(it, s.end());
+        }
+        catch (utf8::not_enough_room ex)
+        {
+            break;
+        }
 
-    TTF_SizeUTF8(pTtfFont, s.c_str(), &w, &h);
-    return (double)w / GetFontScale();
+        Image *pGlyphImage = cache[c];
+        if (pGlyphImage == NULL)
+        {
+            continue;
+        }
+
+        double deltaX = pGlyphImage->width;
+
+        if (it < s.end())
+        {
+            try
+            {
+                uint32_t c2 = utf8::peek_next(it, s.end());
+                deltaX = GetKernedWidth(c, c2);
+            }
+            catch (utf8::not_enough_room ex)
+            {
+            }
+        }
+
+        x += deltaX / GetFontScale();
+    }
+
+    return x;
 }
 
 double MLIFont::GetHeight(const string &s)
