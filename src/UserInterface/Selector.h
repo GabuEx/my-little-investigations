@@ -59,6 +59,8 @@ public:
     {
         delete pScreenshotSprite;
         pScreenshotSprite = NULL;
+        delete pScreenshotFullSizeSprite;
+        pScreenshotFullSizeSprite = NULL;
     }
 
     static bool CompareByCaseTitle(CaseSelectorItem *pItem1, CaseSelectorItem *pItem2)
