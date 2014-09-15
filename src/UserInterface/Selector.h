@@ -59,7 +59,6 @@ public:
     {
         delete pScreenshotSprite;
         pScreenshotSprite = NULL;
-
         delete pScreenshotFullSizeSprite;
         pScreenshotFullSizeSprite = NULL;
     }
