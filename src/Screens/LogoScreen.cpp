@@ -36,10 +36,18 @@
 
 const int opacityFadeDurationMs = 1000;
 const int disclaimerShowDurationMs = 3000;
+const int textPadding = 50;
+
+const char *DisclaimerText =
+"My Little Pony: Friendship is Magic and all related characters and settings are the property of Hasbro, Inc.\n"
+"\n"
+"This is a fan-made game made solely out of love for the series.\n"
+"\n"
+"Its creators will never make any money from it and are not in any way affiliated with Hasbro, Inc.";
 
 LogoScreen::LogoScreen()
 {
-    pDisclaimerSprite = NULL;
+    pDisclaimerTextWidget = NULL;
     pLogoVideo = NULL;
 
     pInEase = new LinearEase(0, 1, opacityFadeDurationMs);
@@ -62,8 +70,15 @@ LogoScreen::~LogoScreen()
 
 void LogoScreen::LoadResources()
 {
-    delete pDisclaimerSprite;
-    pDisclaimerSprite = ResourceLoader::GetInstance()->LoadImage("image/Disclaimer.png");
+    MLIFont *pFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("LogoScreenFont");
+
+    delete pDisclaimerTextWidget;
+    pDisclaimerTextWidget = new TextWidget(DisclaimerText, pFont, Color::White, HAlignmentCenter, VAlignmentCenter);
+    pDisclaimerTextWidget->SetX(textPadding);
+    pDisclaimerTextWidget->SetY(textPadding);
+    pDisclaimerTextWidget->SetWidth(gScreenWidth - textPadding * 2);
+    pDisclaimerTextWidget->SetHeight(gScreenHeight - textPadding * 2);
+    pDisclaimerTextWidget->WrapText(pDisclaimerTextWidget->GetWidth());
 
     delete pLogoVideo;
     pLogoVideo = new Video(false /* shouldLoop */);
@@ -75,8 +90,9 @@ void LogoScreen::LoadResources()
 
 void LogoScreen::UnloadResources()
 {
-    delete pDisclaimerSprite;
-    pDisclaimerSprite = NULL;
+    delete pDisclaimerTextWidget;
+    pDisclaimerTextWidget = NULL;
+
     delete pLogoVideo;
     pLogoVideo = NULL;
 }
@@ -93,7 +109,7 @@ void LogoScreen::Init()
 
 void LogoScreen::Update(int delta)
 {
-    if (!finishedLoadingAnimations || !pDisclaimerSprite->IsReady())
+    if (!finishedLoadingAnimations || !pDisclaimerTextWidget->IsReady())
     {
         return;
     }
@@ -150,18 +166,20 @@ void LogoScreen::Update(int delta)
             }
         }
     }
+
+    pDisclaimerTextWidget->SetOpacity(imageOpacity);
 }
 
 void LogoScreen::Draw()
 {
-    if (!finishedLoadingAnimations || !pDisclaimerSprite->IsReady())
+    if (!finishedLoadingAnimations || !pDisclaimerTextWidget->IsReady())
     {
         return;
     }
 
     if (!pOutEase->GetIsFinished())
     {
-        pDisclaimerSprite->Draw(Vector2(gScreenWidth - pDisclaimerSprite->width, gScreenHeight - pDisclaimerSprite->height) * 0.5, Color(imageOpacity, 1, 1, 1));
+        pDisclaimerTextWidget->Draw();
     }
     else
     {

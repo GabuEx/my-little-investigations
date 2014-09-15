@@ -51,7 +51,7 @@ using namespace std;
 class MLIFont
 {
 public:
-    MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth = 0, bool isBold = false);
+    MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth = 0, bool isBold = false, bool invertedColors = false);
     ~MLIFont();
 
     void Reinit();
@@ -127,6 +127,8 @@ private:
     // With what scale font have been rendered. We need this to rerender font with right size
     // when switch fullscreen/window.
     double scale;
+
+    bool invertedColors;
 };
 
 #endif

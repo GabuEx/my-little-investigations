@@ -31,6 +31,7 @@
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
 #include "../KeyboardHelper.h"
+#include "../CaseInformation/CommonCaseResources.h"
 
 const int ArrowSeparation = 2; // px
 
@@ -41,25 +42,17 @@ const Color DisabledColor = Color(1.0, 0.5, 0.5, 0.5);
 
 Image *SkipArrow::pArrowImage = NULL;
 Image *SkipArrow::pArrowImageInverted = NULL;
-Image *SkipArrow::pFFwdImage = NULL;
-Image *SkipArrow::pSkipImage = NULL;
-Image *SkipArrow::pFFwdImageInverted = NULL;
-Image *SkipArrow::pSkipImageInverted = NULL;
+MLIFont *SkipArrow::pFont = NULL;
+MLIFont *SkipArrow::pInvertedFont = NULL;
 
-void SkipArrow::Initialize(
-        Image *pArrowImage,
-        Image *pArrowImageInverted,
-        Image *pFFwdImage,
-        Image *pSkipImage,
-        Image *pFFwdImageInverted,
-        Image *pSkipImageInverted)
+void SkipArrow::Initialize(Image *pArrowImage,
+        Image *pArrowImageInverted)
 {
     SkipArrow::pArrowImage = pArrowImage;
     SkipArrow::pArrowImageInverted = pArrowImageInverted;
-    SkipArrow::pFFwdImage = pFFwdImage;
-    SkipArrow::pSkipImage = pSkipImage;
-    SkipArrow::pFFwdImageInverted = pFFwdImageInverted;
-    SkipArrow::pSkipImageInverted = pSkipImageInverted;
+
+    SkipArrow::pFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("SkipArrow/Font");
+    SkipArrow::pInvertedFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("SkipArrow/InvertedFont");
 }
 
 SkipArrow::SkipArrow(int xPosition, int yPosition, int bounceDistance, bool isClickable, bool isFFwd)
@@ -67,10 +60,16 @@ SkipArrow::SkipArrow(int xPosition, int yPosition, int bounceDistance, bool isCl
     this->xPosition = xPosition;
     this->yPosition = yPosition;
 
-    Image *pTextSprite = isFFwd ? pFFwdImage : pSkipImage;
+    textWidget.SetX(xPosition);
+    textWidget.SetY(yPosition);
 
-    width = (pArrowImage->width + ArrowSeparation + pTextSprite->width);
-    height = max(pArrowImage->height, pTextSprite->height);
+    textWidget.SetText(isFFwd ? "F Fwd" : "Skip");
+    textWidget.SetFont(isDown ? pInvertedFont : pFont);
+    textWidget.SetTextColor(NormalColor);
+    textWidget.FitSizeToContent();
+
+    width = (pArrowImage->width + ArrowSeparation + textWidget.GetWidth());
+    height = max(pArrowImage->height, (Uint16)textWidget.GetHeight());
 
     this->bounceDistance = bounceDistance;
 
@@ -98,10 +97,10 @@ SkipArrow::SkipArrow(const SkipArrow& other)
     isFFwd = other.isFFwd;
     isEnabled = true;
 
-    Image *pTextSprite = isFFwd ? pFFwdImage : pSkipImage;
+    textWidget = other.textWidget;
 
-    width = (pArrowImage->width + ArrowSeparation + pTextSprite->width);
-    height = max(pArrowImage->height, pTextSprite->height);
+    width = other.width;
+    height = other.height;
 
     arrowOffset = 0;
     pArrowOffsetEase = new GravityBounceEase(0, bounceDistance, 300);
@@ -139,6 +138,7 @@ void SkipArrow::Update(int delta)
     {
         Reset();
     }
+    UpdateTextWidget();
 }
 
 void SkipArrow::Draw()
@@ -164,11 +164,9 @@ void SkipArrow::Draw()
 
     Vector2 position = Vector2(xPosition, yPosition);
 
-    Image *pTextSprite = isFFwd ? (isDown ? pFFwdImageInverted : pFFwdImage) : (isDown ? pSkipImageInverted : pSkipImage);
+    textWidget.Draw();
     Image *pArrowSprite = isDown ? pArrowImageInverted : pArrowImage;
-
-    pTextSprite->Draw(Vector2(position.GetX(), position.GetY() + hitboxRect.GetHeight() / 2 - pTextSprite->height / 2), false /* flipHorizontally */, false /* flipVertically */, color);
-    pArrowSprite->Draw(Vector2(position.GetX() + pTextSprite->width + ArrowSeparation + (GetIsEnabled() ? arrowOffset : 0), position.GetY() + hitboxRect.GetHeight() / 2 - pArrowSprite->height / 2), false /* flipHorizontally */, false /* flipVertically */, color);
+    pArrowSprite->Draw(Vector2(position.GetX() + textWidget.GetWidth() + ArrowSeparation + (GetIsEnabled() ? arrowOffset : 0), position.GetY() + hitboxRect.GetHeight() / 2 - pArrowSprite->height / 2), false /* flipHorizontally */, false /* flipVertically */, color);
 }
 
 void SkipArrow::Reset()
@@ -177,4 +175,27 @@ void SkipArrow::Reset()
     isMouseDown = false;
     SetIsClicked(false);
     isDown = false;
+}
+
+void SkipArrow::UpdateTextWidget()
+{
+    textWidget.SetFont(isDown ? pInvertedFont : pFont);
+    Color color;
+    if (!GetIsEnabled() && isClickable)
+    {
+        color = DisabledColor;
+    }
+    else if (isMouseDown)
+    {
+        color = MouseDownColor;
+    }
+    else if (isMouseOver)
+    {
+        color = MouseOverColor;
+    }
+    else
+    {
+        color = NormalColor;
+    }
+    textWidget.SetTextColor(color);
 }

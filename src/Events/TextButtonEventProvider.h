@@ -1,8 +1,8 @@
 /**
- * Basic header/include file for TitleScreen.cpp.
+ * An event provider for text buttons.
  *
- * @author GabuEx, dawnmew
- * @since 1.0
+ * @author mad-mix
+ * @since 1.0.7
  *
  * Licensed under the MIT License.
  *
@@ -27,55 +27,43 @@
  * SOFTWARE.
  */
 
-#ifndef TITLESCREEN_H
-#define TITLESCREEN_H
+#ifndef TEXTBUTTONEVENTPROVIDER_H
+#define TEXTBUTTONEVENTPROVIDER_H
 
-#include "MLIScreen.h"
-#include "../Animation.h"
-#include "../EasingFunctions.h"
-#include "../Image.h"
-#include "../Video.h"
-#include "../Events/TextButtonEventProvider.h"
-#include "../UserInterface/PromptOverlay.h"
+#include "EventProviders.h"
+#include "../UserInterface/TextButton.h"
+#include <list>
 
-class TitleScreen : public MLIScreen, public TextButtonEventListener
+class TextButtonEventListener
 {
 public:
-    TitleScreen();
-    ~TitleScreen();
-
-    void LoadResources();
-    void UnloadResources();
-    void Init();
-    void Update(int delta);
-    void Draw();
-
-    void OnButtonClicked(TextButton *pSender);
-
-private:
-    Image *pBackgroundSprite;
-    Image *pTitleSprite;
-    Image *pFadeInSprite;
-
-    double fadeOpacity;
-    EasingFunction *pLongFadeInEase;
-    EasingFunction *pFadeInEase;
-    EasingFunction *pFadeOutEase;
-
-    Video *pSpikeVideo;
-    Animation *pCandleAnimation;
-    Video *pTwilightVideo;
-
-    TextButton *pNewGameButton;
-    TextButton *pLoadGameButton;
-    TextButton *pOptionsButton;
-    TextButton *pExitButton;
-
-    TextButton *pTestButton;
-
-    PromptOverlay *pNoCasesPrompt;
-
-    bool finishedLoadingAnimations;
+    virtual void OnButtonClicked(TextButton *pSender) = 0;
 };
 
-#endif
+class TextButtonEventProvider
+{
+public:
+    void RegisterListener(TextButtonEventListener *pListener)
+    {
+        listenerList.push_back(pListener);
+        listenerList.unique();
+    }
+
+    void ClearListener(TextButtonEventListener *pListener)
+    {
+        listenerList.remove(pListener);
+    }
+
+    void RaiseClicked(TextButton *pSender)
+    {
+        for (list<TextButtonEventListener *>::iterator iter = listenerList.begin(); iter != listenerList.end(); ++iter)
+        {
+            (*iter)->OnButtonClicked(pSender);
+        }
+    }
+
+protected:
+    list<TextButtonEventListener *> listenerList;
+};
+
+#endif // TEXTBUTTONEVENTPROVIDER_H

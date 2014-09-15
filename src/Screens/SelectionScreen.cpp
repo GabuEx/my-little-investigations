@@ -80,7 +80,6 @@ SelectionScreen::SelectionScreen(SelectionScreenType type)
 
     caseTitle = "";
     pDividerSprite = NULL;
-    descriptionLines.clear();
 
     pStartCaseButton = NULL;
     pSelectCaseButton = NULL;
@@ -99,10 +98,12 @@ SelectionScreen::SelectionScreen(SelectionScreenType type)
     pEnterSaveNameOverlay = NULL;
     pIncompatibleCaseNotificationOverlay = NULL;
 
-    EventProviders::GetImageButtonEventProvider()->ClearListener(this);
+    pDescriptionWidget = NULL;
+
+    EventProviders::GetTextButtonEventProvider()->ClearListener(this);
     EventProviders::GetPromptOverlayEventProvider()->ClearListener(this);
     EventProviders::GetSelectorEventProvider()->ClearListener(this);
-    EventProviders::GetImageButtonEventProvider()->RegisterListener(this);
+    EventProviders::GetTextButtonEventProvider()->RegisterListener(this);
     EventProviders::GetPromptOverlayEventProvider()->RegisterListener(this);
     EventProviders::GetSelectorEventProvider()->RegisterListener(this);
 }
@@ -153,13 +154,21 @@ SelectionScreen::~SelectionScreen()
     delete pIncompatibleCaseNotificationOverlay;
     pIncompatibleCaseNotificationOverlay = NULL;
 
-    EventProviders::GetImageButtonEventProvider()->ClearListener(this);
+    delete pDescriptionWidget;
+    pDescriptionWidget = NULL;
+
+    EventProviders::GetTextButtonEventProvider()->ClearListener(this);
     EventProviders::GetPromptOverlayEventProvider()->ClearListener(this);
     EventProviders::GetSelectorEventProvider()->ClearListener(this);
 }
 
 void SelectionScreen::LoadResources()
 {
+    EnsureFonts();
+
+    MLIFont *pTitleScreenFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("TitleScreenFont");
+    MLIFont *pStartFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("SelectionScreen/StartFont");
+
     finishedLoadingAnimations = false;
 
     delete pFadeSprite;
@@ -177,65 +186,35 @@ void SelectionScreen::LoadResources()
     pDividerSprite = ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/RightDivider.png");
 
     delete pStartCaseButton;
-    pStartCaseButton =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/StartCaseMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/StartCaseMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/StartCaseMouseDown.png"),
-            580,
-            426
-        );
+    pStartCaseButton = new TextButton("Start case", pStartFont);
+    pStartCaseButton->SetX(580);
+    pStartCaseButton->SetY(426);
 
     delete pSelectCaseButton;
-    pSelectCaseButton =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/SelectCaseMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/SelectCaseMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/SelectCaseMouseDown.png"),
-            580,
-            426
-        );
+    pSelectCaseButton = new TextButton("Select case", pStartFont);
+    pSelectCaseButton->SetX(580);
+    pSelectCaseButton->SetY(426);
     pSelectCaseButton->SetClickSoundEffect("ButtonClick3");
 
     delete pSaveButton;
-    pSaveButton =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/SaveGameMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/SaveGameMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/SaveGameMouseDown.png"),
-            587,
-            426
-        );
+    pSaveButton = new TextButton("Select case", pStartFont);
+    pSaveButton->SetX(587);
+    pSaveButton->SetY(426);
 
     delete pLoadButton;
-    pLoadButton =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/LoadGameMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/LoadGameMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/LoadGameMouseDown.png"),
-            587,
-            426
-        );
+    pLoadButton = new TextButton("Load Game", pStartFont);
+    pLoadButton->SetX(587);
+    pLoadButton->SetY(426);
 
     delete pDeleteButton;
-    pDeleteButton =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/DeleteGameMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/DeleteGameMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/DeleteGameMouseDown.png"),
-            571,
-            365
-        );
+    pDeleteButton = new TextButton("Delete Game", pStartFont);
+    pDeleteButton->SetX(571);
+    pDeleteButton->SetY(365);
 
     delete pBackButton;
-    pBackButton =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/BackMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/BackMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/BackMouseDown.png"),
-            840,
-            488
-        );
+    pBackButton = new TextButton("Back", pTitleScreenFont);
+    pBackButton->SetX(840);
+    pBackButton->SetY(488);
     pBackButton->SetClickSoundEffect("ButtonClick4");
 
     delete pDeleteConfirmOverlay;
@@ -252,6 +231,12 @@ void SelectionScreen::LoadResources()
     pIncompatibleCaseNotificationOverlay = new PromptOverlay("This case is incompatible with this version of My Little Investigations.\n\nCurrent version: %s\nRequired version: %s\n\nPlease update to the latest version to play this case.", false /* allowsTextEntry */);
     pIncompatibleCaseNotificationOverlay->AddButton("OK");
     pIncompatibleCaseNotificationOverlay->FinalizeButtons();
+
+    delete pDescriptionWidget;
+    pDescriptionWidget = new TextWidget("", pSmallFont, Color(1.0, 0.0, 0.0, 0.0), HAlignmentCenter, VAlignmentTop);
+    pDescriptionWidget->SetX(525);
+    pDescriptionWidget->SetY(274);
+    pDescriptionWidget->SetWidth(248);
 
     finishedLoadingAnimations = true;
 }
@@ -283,6 +268,9 @@ void SelectionScreen::UnloadResources()
     pDeleteButton = NULL;
     delete pBackButton;
     pBackButton = NULL;
+
+    delete pDescriptionWidget;
+    pDescriptionWidget = NULL;
 }
 
 void SelectionScreen::Init()
@@ -508,14 +496,7 @@ void SelectionScreen::Draw()
     pMediumFont->Draw(caseTitle, Vector2(649 - pMediumFont->GetWidth(caseTitle) / 2, 229), Color(1.0, 0.0, 0.0, 0.0));
     pDividerSprite->Draw(Vector2(576, 265));
 
-    int yCurrent = 274;
-
-    for (unsigned int i = 0; i < descriptionLines.size(); i++)
-    {
-        string line = descriptionLines[i];
-        pSmallFont->Draw(line, Vector2(649 - pSmallFont->GetWidth(line) / 2, yCurrent), Color(1.0, 0.0, 0.0, 0.0));
-        yCurrent += pSmallFont->GetLineHeight();
-    }
+    pDescriptionWidget->Draw();
 
     if (!caseSelected)
     {
@@ -621,44 +602,8 @@ void SelectionScreen::OnSelectorSelectionChanged(Selector *pSender, SelectorItem
                 pFullSizeScreenshotFadeOutEase->Reset();
             }
 
-            string oneLineDescription = itemDescription;
-
-            double allowedWidth = 248;
-            deque<string> wordList = split(oneLineDescription, ' ');
-            descriptionLines.clear();
-
-            while (!wordList.empty())
-            {
-                string curString = "";
-                double curTextWidth = 0;
-                bool lineDone = false;
-                bool addSpace = false;
-
-                while (!lineDone)
-                {
-                    string stringToTest = (addSpace ? " " : "") + wordList.front();
-                    double curStringWidth = pSmallFont->GetWidth(stringToTest);
-
-                    if (curTextWidth + curStringWidth < allowedWidth)
-                    {
-                        curString += stringToTest;
-                        curTextWidth += curStringWidth;
-                        wordList.pop_front();
-                        addSpace = true;
-
-                        if (wordList.empty())
-                        {
-                            lineDone = true;
-                        }
-                    }
-                    else
-                    {
-                        lineDone = true;
-                    }
-                }
-
-                descriptionLines.push_back(curString);
-            }
+            pDescriptionWidget->SetText(itemDescription);
+            pDescriptionWidget->WrapText();
 
             saveName = itemSaveName;
             filePath = itemFilePath;
@@ -682,8 +627,7 @@ void SelectionScreen::OnSelectorSelectionChanged(Selector *pSender, SelectorItem
 
                 caseTitle = lastCaseTitle;
 
-                descriptionLines.clear();
-                descriptionLines.push_back("New save file.");
+                pDescriptionWidget->SetText("New save file.");
 
                 string fileName = GetSaveFolderPathForCase(lastCaseUuid);
 
@@ -698,7 +642,7 @@ void SelectionScreen::OnSelectorSelectionChanged(Selector *pSender, SelectorItem
     }
 }
 
-void SelectionScreen::OnButtonClicked(ImageButton *pSender)
+void SelectionScreen::OnButtonClicked(TextButton *pSender)
 {
     if (pSender == pStartCaseButton)
     {

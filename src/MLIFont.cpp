@@ -36,12 +36,13 @@
 
 const unsigned int CacheSize = 256;
 
-MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool isBold)
+MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool isBold, bool invertedColors)
     : ttfFilePath(ttfFilePath),
       fontSize(fontSize),
       strokeWidth(strokeWidth),
       isBold(isBold),
-      cache(CacheSize, new CacheItemHandler(this))
+      cache(CacheSize, new CacheItemHandler(this)),
+      invertedColors(invertedColors)
 
 {
     pTtfFont = NULL;
@@ -91,6 +92,12 @@ Image *MLIFont::RenderGlyph(uint32_t c)
 
     // render char
     SDL_Color whiteColor = {255, 255, 255, 255};
+    if (invertedColors)
+    {
+        whiteColor.b = 255 - whiteColor.b;
+        whiteColor.g = 255 - whiteColor.g;
+        whiteColor.a = 255 - whiteColor.a;
+    }
 
     string utf8string;
     utf8::unchecked::append(c, back_inserter(utf8string));
@@ -107,6 +114,12 @@ Image *MLIFont::RenderGlyph(uint32_t c)
     if (strokeWidth > 0)
     {
         SDL_Color blackColor = {0, 0, 0, 255};
+        if (invertedColors)
+        {
+            blackColor.b = 255 - blackColor.b;
+            blackColor.g = 255 - blackColor.g;
+            blackColor.a = 255 - blackColor.a;
+        }
 
 #ifndef MLI_SDL_FONT_OUTLINING
         SDL_Surface *pSurfaceOutline = TTF_RenderUTF8_Blended(pTtfFont, utf8string.c_str(), blackColor);

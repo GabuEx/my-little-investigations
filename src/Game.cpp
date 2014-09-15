@@ -50,6 +50,7 @@
 #include "Screens/SelectionScreen.h"
 #include "UserInterface/Slider.h"
 #include "UserInterface/Selector.h"
+#include "UserInterface/TextButton.h"
 #else
 #include "MLIFont.h"
 #include "Screens/CheckForUpdatesScreen.h"
@@ -468,10 +469,15 @@ void Game::Init()
     MLIFont *pConfrontationNumberingFont = new MLIFont("fonts/CelestiaMediumRedux1.5.ttf", 100);
     MLIFont *pTabFont = new MLIFont("fonts/CelestiaMediumRedux1.5.ttf", 21);
     MLIFont *pHandwritingLargeFont = new MLIFont("fonts/JennaSue.ttf", 48);
+    MLIFont *pHandwritingLargeFontOutlined = new MLIFont("fonts/JennaSue.ttf", 48, 1);
     MLIFont *pHandwritingMediumFont = new MLIFont("fonts/JennaSue.ttf", 36);
+    MLIFont *pHandwritingMediumFontOutlined = new MLIFont("fonts/JennaSue.ttf", 36, 1);
     MLIFont *pHandwritingSmallFont = new MLIFont("fonts/JennaSue.ttf", 22);
     MLIFont *pPromptOverlayFont = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 42);
     MLIFont *pPromptOverlayTextFont = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 48);
+    MLIFont *pPromptOverlayFontOutlined = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 42, 2);
+    MLIFont *pPromptOverlayTextFontOutlined = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 48, 2);
+    MLIFont *pPromptOverlayTextFontOutlinedInverted = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 48, 2, false, true);
 
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("MouseOverFont", pMouseOverFont);
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("DialogFont", pDialogFont);
@@ -484,6 +490,20 @@ void Game::Init()
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("HandwritingMediumFont", pHandwritingMediumFont);
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("HandwritingSmallFont", pHandwritingSmallFont);
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("PromptOverlayFont", pPromptOverlayFont);
+
+    CommonCaseResources::GetInstance()->GetFontManager()->AddFont("LogoScreenFont", pPromptOverlayFontOutlined);
+
+    CommonCaseResources::GetInstance()->GetFontManager()->AddFont("TitleScreenFont", pPromptOverlayTextFontOutlined);
+
+    CommonCaseResources::GetInstance()->GetFontManager()->AddFont("OptionsScreen/TabFont", pHandwritingLargeFontOutlined);
+    CommonCaseResources::GetInstance()->GetFontManager()->AddFont("OptionsScreen/SelectedTabFont", pHandwritingLargeFont);
+    CommonCaseResources::GetInstance()->GetFontManager()->AddFont("OptionsScreen/OptionFont", pHandwritingMediumFontOutlined);
+
+    CommonCaseResources::GetInstance()->GetFontManager()->AddFont("SelectionScreen/StartFont", pHandwritingLargeFontOutlined);
+
+    CommonCaseResources::GetInstance()->GetFontManager()->AddFont("SkipArrow/Font", pPromptOverlayTextFontOutlined);
+    CommonCaseResources::GetInstance()->GetFontManager()->AddFont("SkipArrow/InvertedFont", pPromptOverlayTextFontOutlinedInverted);
+
     CommonCaseResources::GetInstance()->GetSpriteManager()->AddImage("MultipleChoiceDarkening", ResourceLoader::GetInstance()->LoadImage("image/MultipleChoiceDarkening.png"));
 
     Arrow::Initialize(
@@ -492,11 +512,11 @@ void Game::Init()
 
     SkipArrow::Initialize(
         ResourceLoader::GetInstance()->LoadImage("image/ArrowHorizontalDouble.png"),
-        ResourceLoader::GetInstance()->LoadImage("image/ArrowHorizontalDoubleInverted.png"),
-        ResourceLoader::GetInstance()->LoadImage("image/FFwdOff.png"),
+        ResourceLoader::GetInstance()->LoadImage("image/ArrowHorizontalDoubleInverted.png")
+       /* ResourceLoader::GetInstance()->LoadImage("image/FFwdOff.png"),
         ResourceLoader::GetInstance()->LoadImage("image/SkipOff.png"),
         ResourceLoader::GetInstance()->LoadImage("image/FFwdOn.png"),
-        ResourceLoader::GetInstance()->LoadImage("image/SkipOn.png"));
+        ResourceLoader::GetInstance()->LoadImage("image/SkipOn.png")*/);
 
     Slider::Initialize(
         pHandwritingMediumFont,
@@ -516,9 +536,15 @@ void Game::Init()
         ResourceLoader::GetInstance()->LoadImage("image/TabTop.png"),
         pTabFont);
 
+    Image *pCheckMarkImage = ResourceLoader::GetInstance()->LoadImage("image/CheckMark.png");
+
     Button::Initialize(
         pDialogFont,
-        ResourceLoader::GetInstance()->LoadImage("image/CheckMark.png"));
+        pCheckMarkImage);
+
+    TextButton::Initialize(
+        pCheckMarkImage,
+        ResourceLoader::GetInstance()->LoadImage("image/Box.png"));
 
     ButtonArray::Initialize(
         pDialogFont);

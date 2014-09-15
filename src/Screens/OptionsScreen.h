@@ -36,7 +36,7 @@
 #include "../Image.h"
 #include "../Video.h"
 #include "../UserInterface/Slider.h"
-#include "../Events/ImageButtonEventProvider.h"
+#include "../Events/TextButtonEventProvider.h"
 
 enum SelectedPage
 {
@@ -44,7 +44,7 @@ enum SelectedPage
     SelectedPageAudio,
 };
 
-class OptionsScreen : public MLIScreen, public ImageButtonEventListener
+class OptionsScreen : public MLIScreen, public TextButtonEventListener
 {
 public:
     OptionsScreen();
@@ -55,7 +55,7 @@ public:
     void Update(int delta);
     void Draw();
 
-    void OnButtonClicked(ImageButton *pSender);
+    void OnButtonClicked(TextButton *pSender);
 
 private:
     Image *pFadeSprite;
@@ -67,28 +67,21 @@ private:
     // Global visuals
     Video *pBackgroundVideo;
 
-    ImageButton *pGameplayButton;
-    Image *pGameplaySelectedSprite;
-    ImageButton *pAudioButton;
-    Image *pAudioSelectedSprite;
+    TextButton *pGameplayButton;
+    TextButton *pAudioButton;
 
     Image *pDividerSprite;
 
-    ImageButton *pDefaultsButton;
-    ImageButton *pBackButton;
+    TextButton *pDefaultsButton;
+    TextButton *pBackButton;
 
     // Gameplay visuals
-    ImageButton *pTutorialsButtonOff;
-    ImageButton *pTutorialsButtonOn;
-    ImageButton *pEnableHintsButtonOff;
-    ImageButton *pEnableHintsButtonOn;
-    ImageButton *pFullscreenModeButtonOff;
-    ImageButton *pFullscreenModeButtonOn;
-    ImageButton *pEnableSkippingUnseenDialogButtonOff;
-    ImageButton *pEnableSkippingUnseenDialogButtonOn;
+    TextButton *pTutorialsButton;
+    TextButton *pEnableHintsButton;
+    TextButton *pFullscreenModeButton;
+    TextButton *pEnableSkippingUnseenDialogButton;
 #ifdef ENABLE_DEBUG_MODE
-    ImageButton *pDebugModeButtonOff;
-    ImageButton *pDebugModeButtonOn;
+    TextButton *pDebugModeButton;
 #endif
 
     // Audio visuals

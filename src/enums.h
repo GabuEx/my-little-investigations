@@ -152,6 +152,20 @@ enum SelectionScreenType
     SelectionScreenTypeLoadGame,
 };
 
+enum HAlignment
+{
+    HAlignmentLeft,
+    HAlignmentCenter,
+    HAlignmentRight
+};
+
+enum VAlignment
+{
+    VAlignmentTop,
+    VAlignmentCenter,
+    VAlignmentBottom
+};
+
 CharacterDirection StringToCharacterDirection(const string &s);
 string CharacterDirectionToString(CharacterDirection d);
 CharacterPosition StringToCharacterPosition(const string &s);

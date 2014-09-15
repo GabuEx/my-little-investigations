@@ -58,6 +58,8 @@ public:
     void Reset();
     void Finish();
 
+    bool IsRunning() const { return GetIsStarted() && !GetIsFinished(); }
+
     double GetCurrentValue();
 
 protected:
