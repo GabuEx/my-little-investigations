@@ -48,6 +48,7 @@ MLIFont *SelectionScreen::pSmallFont = NULL;
 
 const int FadeFromBlackDurationMs = 300;
 const int SelectorWidth = 248;
+const int DescriptionWidth = 248;
 
 const string yesString = "Yes";
 const string noString = "No";
@@ -234,9 +235,9 @@ void SelectionScreen::LoadResources()
 
     delete pDescriptionWidget;
     pDescriptionWidget = new TextWidget("", pSmallFont, Color(1.0, 0.0, 0.0, 0.0), HAlignmentCenter, VAlignmentTop);
-    pDescriptionWidget->SetX(525);
+    pDescriptionWidget->SetX(277);
     pDescriptionWidget->SetY(274);
-    pDescriptionWidget->SetWidth(248);
+    pDescriptionWidget->SetWidth(DescriptionWidth);
 
     finishedLoadingAnimations = true;
 }
@@ -603,7 +604,7 @@ void SelectionScreen::OnSelectorSelectionChanged(Selector *pSender, SelectorItem
             }
 
             pDescriptionWidget->SetText(itemDescription);
-            pDescriptionWidget->WrapText();
+            pDescriptionWidget->WrapText(DescriptionWidth);
 
             saveName = itemSaveName;
             filePath = itemFilePath;
