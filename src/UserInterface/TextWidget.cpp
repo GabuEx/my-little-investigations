@@ -171,8 +171,4 @@ void TextWidget::SplitText(bool wrap, double maxWidth)
             lines.push_back(make_pair(lineStart, it));
         }
     }
-
-    // widget size should not be less than content size, so check it
-    this->width = max(width, GetTextWidth());
-    this->height = max(height, GetTextHeight());
 }

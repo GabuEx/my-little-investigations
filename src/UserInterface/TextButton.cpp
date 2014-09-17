@@ -281,7 +281,8 @@ void TextButton::SetMaxWidth(double maxWidth)
                 max(TextButton::pCheckMarkImage->height + CheckMarkOffset.GetY(), (double)TextButton::pBoxImage->height)
                 );
 
-    textWidget.WrapText(maxWidth - checkBoxSize.GetX() - Padding);
+    textWidget.SetWidth(maxWidth - checkBoxSize.GetX() - Padding);
+    textWidget.WrapText();
 
     width = checkBoxSize.GetX() + Padding + textWidget.GetWidth();
     height = max(height, checkBoxSize.GetY());
