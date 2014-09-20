@@ -68,8 +68,8 @@ TitleScreen::TitleScreen()
 
     finishedLoadingAnimations = false;
 
-    EventProviders::GetImageButtonEventProvider()->ClearListener(this);
-    EventProviders::GetImageButtonEventProvider()->RegisterListener(this);
+    EventProviders::GetTextButtonEventProvider()->ClearListener(this);
+    EventProviders::GetTextButtonEventProvider()->RegisterListener(this);
 }
 
 TitleScreen::~TitleScreen()
@@ -105,12 +105,14 @@ TitleScreen::~TitleScreen()
     delete pTwilightVideo;
     pTwilightVideo = NULL;
 
-    EventProviders::GetImageButtonEventProvider()->ClearListener(this);
+    EventProviders::GetTextButtonEventProvider()->ClearListener(this);
 }
 
 void TitleScreen::LoadResources()
 {
     finishedLoadingAnimations = false;
+
+    MLIFont *pTitleScreenFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("TitleScreenFont");
 
     delete pBackgroundSprite;
     pBackgroundSprite = ResourceLoader::GetInstance()->LoadImage("image/TitleScreen/Background.png");
@@ -119,65 +121,39 @@ void TitleScreen::LoadResources()
     delete pFadeInSprite;
     pFadeInSprite = ResourceLoader::GetInstance()->LoadImage("image/TitleScreen/FadeInBackground.png");
 
-    Image *pNewGameMouseOffSprite = ResourceLoader::GetInstance()->LoadImage("image/NewGameMouseOff.png");
-    Image *pLoadGameMouseOffSprite = ResourceLoader::GetInstance()->LoadImage("image/LoadGameMouseOff.png");
-    Image *pOptionsMouseOffSprite = ResourceLoader::GetInstance()->LoadImage("image/OptionsMouseOff.png");
-    Image *pExitMouseOffSprite = ResourceLoader::GetInstance()->LoadImage("image/ExitMouseOff.png");
+    delete pNewGameButton;
+    pNewGameButton = new TextButton("New Game", pTitleScreenFont);
+    delete pLoadGameButton;
+    pLoadGameButton = new TextButton("Load Game", pTitleScreenFont);
+    delete pOptionsButton;
+    pOptionsButton = new TextButton("Options", pTitleScreenFont);
+    delete pExitButton;
+    pExitButton = new TextButton("Exit", pTitleScreenFont);
 
     int totalButtonHeight =
-        pNewGameMouseOffSprite->height +
-        pLoadGameMouseOffSprite->height +
-        pOptionsMouseOffSprite->height +
-        pExitMouseOffSprite->height +
+        pNewGameButton->GetHeight() +
+        pLoadGameButton->GetHeight() +
+        pOptionsButton->GetHeight() +
+        pExitButton->GetHeight() +
         ButtonSpacing * 2 + 12;
 
     int currentButtonHeight = ButtonAreaStartHeight + (gScreenHeight - ButtonAreaStartHeight - totalButtonHeight) / 2;
 
-    delete pNewGameButton;
-    pNewGameButton =
-        new ImageButton(
-            pNewGameMouseOffSprite,
-            ResourceLoader::GetInstance()->LoadImage("image/NewGameMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/NewGameMouseDown.png"),
-            (gScreenWidth - pNewGameMouseOffSprite->width) / 2,
-            currentButtonHeight
-        );
+    pNewGameButton->SetX((gScreenWidth - pNewGameButton->GetWidth()) / 2);
+    pNewGameButton->SetY(currentButtonHeight);
+    currentButtonHeight += pNewGameButton->GetHeight() + ButtonSpacing;
 
-    currentButtonHeight += pNewGameMouseOffSprite->height + ButtonSpacing;
+    pLoadGameButton->SetX((gScreenWidth - pLoadGameButton->GetWidth()) / 2);
+    pLoadGameButton->SetY(currentButtonHeight);
+    currentButtonHeight += pLoadGameButton->GetHeight() + ButtonSpacing;
 
-    delete pLoadGameButton;
-    pLoadGameButton =
-        new ImageButton(
-            pLoadGameMouseOffSprite,
-            ResourceLoader::GetInstance()->LoadImage("image/LoadGameMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/LoadGameMouseDown.png"),
-            (gScreenWidth - pLoadGameMouseOffSprite->width) / 2,
-            currentButtonHeight
-        );
+    pOptionsButton->SetX((gScreenWidth - pOptionsButton->GetWidth()) / 2);
+    pOptionsButton->SetY(currentButtonHeight);
+    currentButtonHeight += pOptionsButton->GetHeight() + ButtonSpacing;
 
-    currentButtonHeight += pLoadGameMouseOffSprite->height + ButtonSpacing;
-
-    delete pOptionsButton;
-    pOptionsButton =
-        new ImageButton(
-            pOptionsMouseOffSprite,
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsMouseDown.png"),
-            (gScreenWidth - pOptionsMouseOffSprite->width) / 2,
-            currentButtonHeight
-        );
-
-    currentButtonHeight += pOptionsMouseOffSprite->height + 12;
-
-    delete pExitButton;
-    pExitButton =
-        new ImageButton(
-            pExitMouseOffSprite,
-            ResourceLoader::GetInstance()->LoadImage("image/ExitMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/ExitMouseDown.png"),
-            (gScreenWidth - pExitMouseOffSprite->width) / 2,
-            currentButtonHeight
-        );
+    pExitButton->SetX((gScreenWidth - pExitButton->GetWidth()) / 2);
+    pExitButton->SetY(currentButtonHeight);
+    currentButtonHeight += pExitButton->GetHeight() + ButtonSpacing;
 
     delete pSpikeVideo;
     pSpikeVideo = new Video(true /* shouldLoop */);
@@ -387,9 +363,10 @@ void TitleScreen::Draw()
     }
 
     pFadeInSprite->Draw(Vector2(0, 0), Color(fadeOpacity, 1, 1, 1));
+
 }
 
-void TitleScreen::OnButtonClicked(ImageButton *pSender)
+void TitleScreen::OnButtonClicked(TextButton *pSender)
 {
     if (pSender == pNewGameButton)
     {

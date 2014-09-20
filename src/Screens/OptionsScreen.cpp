@@ -38,6 +38,16 @@
 const int FadeFromBlackDurationMs = 300;
 const int TransitionDurationMs = 300;
 
+const int GameplayButtonX = 562;
+const int GameplayButtonY = 182;
+const int SelectedGameplayButtonX = 290;
+const int SelectedGameplayButtonY = 182;
+
+const int AudioButtonX = 607;
+const int AudioButtonY = 182;
+const int SelectedAudioButtonX = 290;
+const int SelectedAudioButtonY = 182;
+
 OptionsScreen::OptionsScreen()
 {
     pFadeSprite = NULL;
@@ -49,26 +59,19 @@ OptionsScreen::OptionsScreen()
     pBackgroundVideo = NULL;
 
     pGameplayButton = NULL;
-    pGameplaySelectedSprite = NULL;
     pAudioButton = NULL;
-    pAudioSelectedSprite = NULL;
 
     pDividerSprite = NULL;
 
     pDefaultsButton = NULL;
     pBackButton = NULL;
 
-    pTutorialsButtonOff = NULL;
-    pTutorialsButtonOn = NULL;
-    pEnableHintsButtonOff = NULL;
-    pEnableHintsButtonOn = NULL;
-    pFullscreenModeButtonOff = NULL;
-    pFullscreenModeButtonOn = NULL;
-    pEnableSkippingUnseenDialogButtonOff = NULL;
-    pEnableSkippingUnseenDialogButtonOn = NULL;
+    pTutorialsButton = NULL;
+    pEnableHintsButton = NULL;
+    pFullscreenModeButton = NULL;
+    pEnableSkippingUnseenDialogButton = NULL;
 #ifdef ENABLE_DEBUG_MODE
-    pDebugModeButtonOff = NULL;
-    pDebugModeButtonOn = NULL;
+    pDebugModeButton = NULL;
 #endif
 
     pBackgroundMusicSlider = NULL;
@@ -77,15 +80,13 @@ OptionsScreen::OptionsScreen()
 
     selectedPage = SelectedPageGameplay;
 
-    pGameplayPositionInEase = new SCurveEase(272, 0, TransitionDurationMs);
-    pAudioPositionInEase = new SCurveEase(316, 0, TransitionDurationMs);
     pOpacityInEase = new LinearEase(0, 1, TransitionDurationMs);
     pOpacityOutEase = new LinearEase(1, 0, TransitionDurationMs);
 
     finishedLoadingAnimations = false;
 
-    EventProviders::GetImageButtonEventProvider()->ClearListener(this);
-    EventProviders::GetImageButtonEventProvider()->RegisterListener(this);
+    EventProviders::GetTextButtonEventProvider()->ClearListener(this);
+    EventProviders::GetTextButtonEventProvider()->RegisterListener(this);
 }
 
 OptionsScreen::~OptionsScreen()
@@ -103,12 +104,8 @@ OptionsScreen::~OptionsScreen()
 
     delete pGameplayButton;
     pGameplayButton = NULL;
-    delete pGameplaySelectedSprite;
-    pGameplaySelectedSprite = NULL;
     delete pAudioButton;
     pAudioButton = NULL;
-    delete pAudioSelectedSprite;
-    pAudioSelectedSprite = NULL;
 
     delete pDividerSprite;
     pDividerSprite = NULL;
@@ -118,27 +115,17 @@ OptionsScreen::~OptionsScreen()
     delete pBackButton;
     pBackButton = NULL;
 
-    delete pTutorialsButtonOff;
-    pTutorialsButtonOff = NULL;
-    delete pTutorialsButtonOn;
-    pTutorialsButtonOn = NULL;
-    delete pEnableHintsButtonOff;
-    pEnableHintsButtonOff = NULL;
-    delete pEnableHintsButtonOn;
-    pEnableHintsButtonOn = NULL;
-    delete pFullscreenModeButtonOff;
-    pFullscreenModeButtonOff = NULL;
-    delete pFullscreenModeButtonOn;
-    pFullscreenModeButtonOn = NULL;
-    delete pEnableSkippingUnseenDialogButtonOff;
-    pEnableSkippingUnseenDialogButtonOff = NULL;
-    delete pEnableSkippingUnseenDialogButtonOn;
-    pEnableSkippingUnseenDialogButtonOn = NULL;
+    delete pTutorialsButton;
+    pTutorialsButton = NULL;
+    delete pEnableHintsButton;
+    pEnableHintsButton = NULL;
+    delete pFullscreenModeButton;
+    pFullscreenModeButton = NULL;
+    delete pEnableSkippingUnseenDialogButton;
+    pEnableSkippingUnseenDialogButton = NULL;
 #ifdef ENABLE_DEBUG_MODE
-    delete pDebugModeButtonOff;
-    pDebugModeButtonOff = NULL;
-    delete pDebugModeButtonOn;
-    pDebugModeButtonOn = NULL;
+    delete pDebugModeButton;
+    pDebugModeButton = NULL;
 #endif
 
     delete pBackgroundMusicSlider;
@@ -148,20 +135,21 @@ OptionsScreen::~OptionsScreen()
     delete pBackgroundMusicSlider;
     pBackgroundMusicSlider = NULL;
 
-    delete pGameplayPositionInEase;
-    pGameplayPositionInEase = NULL;
-    delete pAudioPositionInEase;
-    pAudioPositionInEase = NULL;
     delete pOpacityInEase;
     pOpacityInEase = NULL;
     delete pOpacityOutEase;
     pOpacityOutEase = NULL;
 
-    EventProviders::GetImageButtonEventProvider()->ClearListener(this);
+    EventProviders::GetTextButtonEventProvider()->ClearListener(this);
 }
 
 void OptionsScreen::LoadResources()
 {
+    MLIFont *pTitleScreenFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("TitleScreenFont");
+    MLIFont *pTabFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("OptionsScreen/TabFont");
+    MLIFont *pSelectedTabFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("OptionsScreen/SelectedTabFont");
+    MLIFont *pOptionFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("OptionsScreen/OptionFont");
+
     finishedLoadingAnimations = false;
 
     delete pFadeSprite;
@@ -173,169 +161,97 @@ void OptionsScreen::LoadResources()
     pBackgroundVideo->LoadFile();
 
     delete pGameplayButton;
-    pGameplayButton =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/GameplayMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/GameplayMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/GameplayMouseDown.png"),
-            562,
-            182
-        );
+    pGameplayButton = new TextButton("Gameplay", pTabFont);
+    pGameplayButton->SetIsEnabled(false);
+    pGameplayButton->SetDisabledFont(pSelectedTabFont);
+    pGameplayButton->SetDisabledTextColor(Color(1.0, 0.0, 0.0, 0.0));
+    pGameplayButton->SetX(SelectedGameplayButtonX);
+    pGameplayButton->SetY(SelectedGameplayButtonY);
     pGameplayButton->SetClickSoundEffect("ButtonClick3");
 
-    delete pGameplaySelectedSprite;
-    pGameplaySelectedSprite = ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/GameplaySelected.png");
-
     delete pAudioButton;
-    pAudioButton =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/AudioMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/AudioMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/AudioMouseDown.png"),
-            607,
-            182
-        );
+    pAudioButton = new TextButton("Audio", pTabFont);
+    pAudioButton->SetDisabledFont(pSelectedTabFont);
+    pAudioButton->SetDisabledTextColor(Color(1.0, 0.0, 0.0, 0.0));
+    pAudioButton->SetX(AudioButtonX);
+    pAudioButton->SetY(AudioButtonY);
     pAudioButton->SetClickSoundEffect("ButtonClick3");
-
-    delete pAudioSelectedSprite;
-    pAudioSelectedSprite = ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/AudioSelected.png");
 
     delete pDividerSprite;
     pDividerSprite = ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/Divider.png");
 
     delete pDefaultsButton;
-    pDefaultsButton =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/DefaultsMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/DefaultsMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/DefaultsMouseDown.png"),
-            36,
-            488
-        );
+    pDefaultsButton = new TextButton("Defaults", pTitleScreenFont);
+    pDefaultsButton->SetX(36);
+    pDefaultsButton->SetY(488);
     pDefaultsButton->SetClickSoundEffect("ButtonClick2");
 
     delete pBackButton;
-    pBackButton =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/BackMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/BackMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/BackMouseDown.png"),
-            821,
-            488
-        );
+    pBackButton = new TextButton("Back", pTitleScreenFont);
+    pBackButton->SetX(821);
+    pBackButton->SetY(488);
     pBackButton->SetClickSoundEffect("ButtonClick4");
 
-    delete pTutorialsButtonOff;
-    pTutorialsButtonOff =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/TutorialsCheckBoxOffMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/TutorialsCheckBoxOffMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/TutorialsCheckBoxOffMouseDown.png"),
-            354,
-            251
-        );
-    pTutorialsButtonOff->SetClickSoundEffect("ButtonClick2");
+    // gameplay page buttons {
 
-    delete pTutorialsButtonOn;
-    pTutorialsButtonOn =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/TutorialsCheckBoxOnMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/TutorialsCheckBoxOnMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/TutorialsCheckBoxOnMouseDown.png"),
-            354,
-            251
-        );
-    pTutorialsButtonOn->SetClickSoundEffect("ButtonClick2");
+    vector<TextButton *> buttons;
 
-    delete pEnableHintsButtonOff;
-    pEnableHintsButtonOff =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/HintsCheckBoxOffMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/HintsCheckBoxOffMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/HintsCheckBoxOffMouseDown.png"),
-            354,
-            319
-        );
-    pEnableHintsButtonOff->SetClickSoundEffect("ButtonClick2");
+    delete pTutorialsButton;
+    pTutorialsButton = new TextButton("Enable tutorials", pOptionFont, true /*checkable*/);
+    pTutorialsButton->SetChecked(gEnableTutorials);
+    buttons.push_back(pTutorialsButton);
 
-    delete pEnableHintsButtonOn;
-    pEnableHintsButtonOn =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/HintsCheckBoxOnMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/HintsCheckBoxOnMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/HintsCheckBoxOnMouseDown.png"),
-            354,
-            319
-        );
-    pEnableHintsButtonOn->SetClickSoundEffect("ButtonClick2");
+    delete pEnableHintsButton;
+    pEnableHintsButton = new TextButton("Enable evidence combination and partner ability hints", pOptionFont, true /*checkable*/);
+    pEnableHintsButton->SetChecked(gEnableHints);
+    buttons.push_back(pEnableHintsButton);
 
-    delete pFullscreenModeButtonOff;
-    pFullscreenModeButtonOff =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/FullscreenCheckBoxOffMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/FullscreenCheckBoxOffMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/FullscreenCheckBoxOffMouseDown.png"),
-            354,
-            397
-        );
-    pFullscreenModeButtonOff->SetClickSoundEffect("ButtonClick2");
+    delete pFullscreenModeButton;
+    pFullscreenModeButton = new TextButton("Fullscreen mode", pOptionFont, true /*checkable*/);
+    pFullscreenModeButton->SetChecked(gEnableFullscreen);
+    buttons.push_back(pFullscreenModeButton);
 
-    delete pFullscreenModeButtonOn;
-    pFullscreenModeButtonOn =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/FullscreenCheckBoxOnMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/FullscreenCheckBoxOnMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/FullscreenCheckBoxOnMouseDown.png"),
-            354,
-            397
-        );
-    pFullscreenModeButtonOn->SetClickSoundEffect("ButtonClick2");
-
-    delete pEnableSkippingUnseenDialogButtonOff;
-    pEnableSkippingUnseenDialogButtonOff =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOffMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOffMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOffMouseDown.png"),
-            354,
-            459
-        );
-    pEnableSkippingUnseenDialogButtonOff->SetClickSoundEffect("ButtonClick2");
-
-    delete pEnableSkippingUnseenDialogButtonOn;
-    pEnableSkippingUnseenDialogButtonOn =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOnMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOnMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/SkipDialogCheckBoxOnMouseDown.png"),
-            354,
-            459
-        );
-    pEnableSkippingUnseenDialogButtonOn->SetClickSoundEffect("ButtonClick2");
+    delete pEnableSkippingUnseenDialogButton;
+    pEnableSkippingUnseenDialogButton = new TextButton("Enable skipping unseen dialogue", pOptionFont, true /*checkable*/);
+    pEnableSkippingUnseenDialogButton->SetChecked(gEnableSkippingUnseenDialog);
+    buttons.push_back(pEnableSkippingUnseenDialogButton);
 
 #ifdef ENABLE_DEBUG_MODE
-    delete pDebugModeButtonOff;
-    pDebugModeButtonOff =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("_Debug/image/OptionsScreen/DebugModeCheckBoxOffMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("_Debug/image/OptionsScreen/DebugModeCheckBoxOffMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("_Debug/image/OptionsScreen/DebugModeCheckBoxOffMouseDown.png"),
-            354,
-            484
-        );
-    pDebugModeButtonOff->SetClickSoundEffect("ButtonClick2");
-
-    delete pDebugModeButtonOn;
-    pDebugModeButtonOn =
-        new ImageButton(
-            ResourceLoader::GetInstance()->LoadImage("_Debug/image/OptionsScreen/DebugModeCheckBoxOnMouseOff.png"),
-            ResourceLoader::GetInstance()->LoadImage("_Debug/image/OptionsScreen/DebugModeCheckBoxOnMouseOver.png"),
-            ResourceLoader::GetInstance()->LoadImage("_Debug/image/OptionsScreen/DebugModeCheckBoxOnMouseDown.png"),
-            354,
-            484
-        );
-    pDebugModeButtonOn->SetClickSoundEffect("ButtonClick2");
+    delete pDebugModeButton;
+    pDebugModeButton = new TextButton("Debug mode", pOptionFont, true /*checkable*/);
+    buttons.push_back(pDebugModeButton);
 #endif
+
+    RectangleWH buttonsRect(354, 251, 350, 254);
+
+    // setup some common properties
+    for (vector<TextButton *>::iterator it = buttons.begin(); it != buttons.end(); it++)
+    {
+        (*it)->SetMaxWidth(buttonsRect.GetWidth());
+        (*it)->SetClickSoundEffect("ButtonClick2");
+    }
+
+    // place buttons
+    double buttonsHeight = 0;
+    for (vector<TextButton *>::iterator it = buttons.begin(); it != buttons.end(); it++)
+    {
+        buttonsHeight += (*it)->GetHeight();
+    }
+
+    double spacing = buttons.size() > 1
+            ? (buttonsRect.GetHeight() - buttonsHeight) / (buttons.size() - 1)
+            : 0;
+
+    double y = buttonsRect.GetY();
+    for (vector<TextButton *>::iterator it = buttons.begin(); it != buttons.end(); it++)
+    {
+        (*it)->SetX(buttonsRect.GetX());
+        (*it)->SetY(y);
+        y += (*it)->GetHeight();
+        y += spacing;
+    }
+
+    // } gameplay page buttons
 
     delete pBackgroundMusicSlider;
     pBackgroundMusicSlider = new Slider("Background music", 317, 259);
@@ -368,11 +284,6 @@ void OptionsScreen::Init()
     pSoundEffectsSlider->SetCurrentValue(gSoundEffectsVolume);
     pVoiceSlider->SetCurrentValue(gVoiceVolume);
 
-    pGameplayPositionInEase->Begin();
-    pGameplayPositionInEase->Finish();
-
-    pAudioPositionInEase->Reset();
-
     pOpacityInEase->Begin();
     pOpacityInEase->Finish();
 
@@ -390,21 +301,14 @@ void OptionsScreen::Update(int delta)
     if (!pFadeSprite->IsReady() ||
         !pBackgroundVideo->IsReady() ||
         !pGameplayButton->IsReady() ||
-        !pGameplaySelectedSprite->IsReady() ||
         !pAudioButton->IsReady() ||
-        !pAudioSelectedSprite->IsReady() ||
         !pDividerSprite->IsReady() ||
-        !pTutorialsButtonOff->IsReady() ||
-        !pTutorialsButtonOn->IsReady() ||
-        !pEnableHintsButtonOff->IsReady() ||
-        !pEnableHintsButtonOn->IsReady() ||
-        !pFullscreenModeButtonOff->IsReady() ||
-        !pFullscreenModeButtonOn->IsReady() ||
-        !pEnableSkippingUnseenDialogButtonOff->IsReady() ||
-        !pEnableSkippingUnseenDialogButtonOn->IsReady()
+        !pTutorialsButton->IsReady() ||
+        !pEnableHintsButton->IsReady() ||
+        !pFullscreenModeButton->IsReady() ||
+        !pEnableSkippingUnseenDialogButton->IsReady()
 #ifdef ENABLE_DEBUG_MODE
-        || !pDebugModeButtonOff->IsReady()
-        || !pDebugModeButtonOn->IsReady()
+        || !pDebugModeButton->IsReady()
 #endif
         )
     {
@@ -444,20 +348,8 @@ void OptionsScreen::Update(int delta)
     }
 
     bool isTransitioning =
-        (pGameplayPositionInEase->GetIsStarted() && !pGameplayPositionInEase->GetIsFinished()) ||
-        (pAudioPositionInEase->GetIsStarted() && !pAudioPositionInEase->GetIsFinished()) ||
         (pOpacityInEase->GetIsStarted() && !pOpacityInEase->GetIsFinished()) ||
         (pOpacityOutEase->GetIsStarted() && !pOpacityOutEase->GetIsFinished());
-
-    if (pGameplayPositionInEase->GetIsStarted() && !pGameplayPositionInEase->GetIsFinished())
-    {
-        pGameplayPositionInEase->Update(delta);
-    }
-
-    if (pAudioPositionInEase->GetIsStarted() && !pAudioPositionInEase->GetIsFinished())
-    {
-        pAudioPositionInEase->Update(delta);
-    }
 
     if (pOpacityInEase->GetIsStarted() && !pOpacityInEase->GetIsFinished())
     {
@@ -468,6 +360,9 @@ void OptionsScreen::Update(int delta)
     {
         pOpacityOutEase->Update(delta);
     }
+
+    pGameplayButton->Update(delta);
+    pAudioButton->Update(delta);
 
     // We don't want any mouse clicks to go through when we're transitioning,
     // so we'll early-out here when we are.
@@ -487,51 +382,13 @@ void OptionsScreen::Update(int delta)
 
     if (selectedPage == SelectedPageGameplay)
     {
-        if (gEnableTutorials)
-        {
-            pTutorialsButtonOn->Update(delta);
-        }
-        else
-        {
-            pTutorialsButtonOff->Update(delta);
-        }
-
-        if (gEnableHints)
-        {
-            pEnableHintsButtonOn->Update(delta);
-        }
-        else
-        {
-            pEnableHintsButtonOff->Update(delta);
-        }
-
-        if (gEnableFullscreen)
-        {
-            pFullscreenModeButtonOn->Update(delta);
-        }
-        else
-        {
-            pFullscreenModeButtonOff->Update(delta);
-        }
-
-        if (gEnableSkippingUnseenDialog)
-        {
-            pEnableSkippingUnseenDialogButtonOn->Update(delta);
-        }
-        else
-        {
-            pEnableSkippingUnseenDialogButtonOff->Update(delta);
-        }
+        pTutorialsButton->Update(delta);
+        pEnableHintsButton->Update(delta);
+        pFullscreenModeButton->Update(delta);
+        pEnableSkippingUnseenDialogButton->Update(delta);
 
 #ifdef ENABLE_DEBUG_MODE
-        if (gEnableDebugMode)
-        {
-            pDebugModeButtonOn->Update(delta);
-        }
-        else
-        {
-            pDebugModeButtonOff->Update(delta);
-        }
+        pDebugModeButton->Update(delta);
 #endif
     }
     else if (selectedPage == SelectedPageAudio)
@@ -580,19 +437,13 @@ void OptionsScreen::Draw()
 
     if (!pFadeSprite->IsReady() ||
         !pGameplayButton->IsReady() ||
-        !pGameplaySelectedSprite->IsReady() ||
         !pAudioButton->IsReady() ||
-        !pAudioSelectedSprite->IsReady() ||
         !pDividerSprite->IsReady() ||
-        !pTutorialsButtonOff->IsReady() ||
-        !pTutorialsButtonOn->IsReady() ||
-        !pFullscreenModeButtonOff->IsReady() ||
-        !pFullscreenModeButtonOn->IsReady() ||
-        !pEnableSkippingUnseenDialogButtonOff->IsReady() ||
-        !pEnableSkippingUnseenDialogButtonOn->IsReady()
+        !pTutorialsButton->IsReady() ||
+        !pFullscreenModeButton->IsReady() ||
+        !pEnableSkippingUnseenDialogButton->IsReady()
 #ifdef ENABLE_DEBUG_MODE
-        || !pDebugModeButtonOff->IsReady()
-        || !pDebugModeButtonOn->IsReady()
+        || !pDebugModeButton->IsReady()
 #endif
         )
     {
@@ -605,65 +456,24 @@ void OptionsScreen::Draw()
 
     pDividerSprite->Draw(Vector2(319, 237));
 
-    double gameplayButtonXOffset = selectedPage == SelectedPageGameplay ? pGameplayPositionInEase->GetCurrentValue() - 272 : 0;
-    double gameplaySelectedSpriteXOffset = selectedPage == SelectedPageGameplay ? pGameplayPositionInEase->GetCurrentValue() : 0;
-    double audioButtonXOffset = selectedPage == SelectedPageAudio ? pAudioPositionInEase->GetCurrentValue() - 316 : 0;
-    double audioSelectedSpriteXOffset = selectedPage == SelectedPageAudio ? pAudioPositionInEase->GetCurrentValue() : 0;
+    pGameplayButton->Draw();
+    pAudioButton->Draw();
+
     double gameplayOpacity = selectedPage == SelectedPageGameplay ? pOpacityInEase->GetCurrentValue() : pOpacityOutEase->GetCurrentValue();
-    double gameplayButtonOpacity = selectedPage == SelectedPageGameplay ? pOpacityOutEase->GetCurrentValue() : pOpacityInEase->GetCurrentValue();
     double audioOpacity = selectedPage == SelectedPageAudio ? pOpacityInEase->GetCurrentValue() : pOpacityOutEase->GetCurrentValue();
-    double audioButtonOpacity = selectedPage == SelectedPageAudio ? pOpacityOutEase->GetCurrentValue() : pOpacityInEase->GetCurrentValue();
 
-    pGameplayButton->Draw(Vector2(gameplayButtonXOffset, 0), gameplayButtonOpacity);
-    pGameplaySelectedSprite->Draw(Vector2(292 + gameplaySelectedSpriteXOffset, 184), Color(gameplayOpacity, 1.0, 1.0, 1.0));
-    pAudioButton->Draw(Vector2(audioButtonXOffset, 0), audioButtonOpacity);
-    pAudioSelectedSprite->Draw(Vector2(292 + audioSelectedSpriteXOffset, 184), Color(audioOpacity, 1.0, 1.0, 1.0));
-
-    if (gEnableTutorials)
-    {
-        pTutorialsButtonOn->Draw(gameplayOpacity);
-    }
-    else
-    {
-        pTutorialsButtonOff->Draw(gameplayOpacity);
-    }
-
-    if (gEnableHints)
-    {
-        pEnableHintsButtonOn->Draw(gameplayOpacity);
-    }
-    else
-    {
-        pEnableHintsButtonOff->Draw(gameplayOpacity);
-    }
-
-    if (gEnableFullscreen)
-    {
-        pFullscreenModeButtonOn->Draw(gameplayOpacity);
-    }
-    else
-    {
-        pFullscreenModeButtonOff->Draw(gameplayOpacity);
-    }
-
-    if (gEnableSkippingUnseenDialog)
-    {
-        pEnableSkippingUnseenDialogButtonOn->Draw(gameplayOpacity);
-    }
-    else
-    {
-        pEnableSkippingUnseenDialogButtonOff->Draw(gameplayOpacity);
-    }
+    pTutorialsButton->SetOpacity(gameplayOpacity);
+    pTutorialsButton->Draw();
+    pEnableHintsButton->SetOpacity(gameplayOpacity);
+    pEnableHintsButton->Draw();
+    pFullscreenModeButton->SetOpacity(gameplayOpacity);
+    pFullscreenModeButton->Draw();
+    pEnableSkippingUnseenDialogButton->SetOpacity(gameplayOpacity);
+    pEnableSkippingUnseenDialogButton->Draw();
 
 #ifdef ENABLE_DEBUG_MODE
-    if (gEnableDebugMode)
-    {
-        pDebugModeButtonOn->Draw(gameplayOpacity);
-    }
-    else
-    {
-        pDebugModeButtonOff->Draw(gameplayOpacity);
-    }
+    pDebugModeButton->SetOpacity(gameplayOpacity);
+    pDebugModeButton->Draw();
 #endif
 
     pBackgroundMusicSlider->Draw(audioOpacity);
@@ -673,30 +483,40 @@ void OptionsScreen::Draw()
     pFadeSprite->Draw(Vector2(0, 0), Color(fadeOpacity, 1, 1, 1));
 }
 
-void OptionsScreen::OnButtonClicked(ImageButton *pSender)
+void OptionsScreen::OnButtonClicked(TextButton *pSender)
 {
     if (pSender == pGameplayButton)
     {
+        pGameplayButton->SetIsEnabled(false);
+        pGameplayButton->MoveTo(SelectedGameplayButtonX, SelectedGameplayButtonY, TransitionDurationMs);
+
+        pAudioButton->SetIsEnabled(true);
+        pAudioButton->Reappear(AudioButtonX, AudioButtonY, TransitionDurationMs);
+
         selectedPage = SelectedPageGameplay;
 
-        pGameplayPositionInEase->Begin();
-        pAudioPositionInEase->Reset();
         pOpacityInEase->Begin();
         pOpacityOutEase->Begin();
     }
     else if (pSender == pAudioButton)
     {
+        pGameplayButton->SetIsEnabled(true);
+        pGameplayButton->Reappear(GameplayButtonX, GameplayButtonY, TransitionDurationMs);
+
+        pAudioButton->SetIsEnabled(false);
+        pAudioButton->MoveTo(SelectedAudioButtonX, SelectedGameplayButtonY, TransitionDurationMs);
+
         selectedPage = SelectedPageAudio;
 
-        pGameplayPositionInEase->Reset();
-        pAudioPositionInEase->Begin();
         pOpacityInEase->Begin();
         pOpacityOutEase->Begin();
     }
     else if (pSender == pDefaultsButton)
     {
         gEnableTutorials = gEnableTutorialsDefault;
+        pTutorialsButton->SetChecked(gEnableTutorials);
         gEnableHints = gEnableHintsDefault;
+        pEnableHintsButton->SetChecked(gEnableHints);
 
         if (gEnableFullscreen != gEnableFullscreenDefault)
         {
@@ -704,10 +524,13 @@ void OptionsScreen::OnButtonClicked(ImageButton *pSender)
         }
 
         gEnableFullscreen = gEnableFullscreenDefault;
+        pFullscreenModeButton->SetChecked(gEnableFullscreen);
         gEnableSkippingUnseenDialog = gEnableSkippingUnseenDialogDefault;
+        pEnableSkippingUnseenDialogButton->SetChecked(gEnableSkippingUnseenDialog);
 
         #ifdef ENABLE_DEBUG_MODE
         gEnableDebugMode = gEnableDebugModeDefault;
+        pDebugModeButton->SetChecked(pDebugModeButton);
         #endif
 
         if (gBackgroundMusicVolume != gBackgroundMusicVolumeDefault)
@@ -744,48 +567,27 @@ void OptionsScreen::OnButtonClicked(ImageButton *pSender)
     {
         pFadeOutEase->Begin();
     }
-    else if (pSender == pTutorialsButtonOff)
+    else if (pSender == pTutorialsButton)
     {
-        gEnableTutorials = true;
+        gEnableTutorials = pTutorialsButton->GetChecked();
     }
-    else if (pSender == pTutorialsButtonOn)
+    else if (pSender == pEnableHintsButton)
     {
-        gEnableTutorials = false;
+        gEnableHints = pEnableHintsButton->GetChecked();
     }
-    else if (pSender == pEnableHintsButtonOff)
-    {
-        gEnableHints = true;
-    }
-    else if (pSender == pEnableHintsButtonOn)
-    {
-        gEnableHints = false;
-    }
-    else if (pSender == pFullscreenModeButtonOff)
+    else if (pSender == pFullscreenModeButton)
     {
         gToggleFullscreen = true;
-        gEnableFullscreen = true;
+        gEnableFullscreen = pFullscreenModeButton->GetChecked();
     }
-    else if (pSender == pFullscreenModeButtonOn)
+    else if (pSender == pEnableSkippingUnseenDialogButton)
     {
-        gToggleFullscreen = true;
-        gEnableFullscreen = false;
-    }
-    else if (pSender == pEnableSkippingUnseenDialogButtonOff)
-    {
-        gEnableSkippingUnseenDialog = true;
-    }
-    else if (pSender == pEnableSkippingUnseenDialogButtonOn)
-    {
-        gEnableSkippingUnseenDialog = false;
+        gEnableSkippingUnseenDialog = pEnableSkippingUnseenDialogButton->GetChecked();
     }
 #ifdef ENABLE_DEBUG_MODE
-    else if (pSender == pDebugModeButtonOff)
+    else if (pSender == pDebugModeButton)
     {
-        gEnableDebugMode = true;
-    }
-    else if (pSender == pDebugModeButtonOn)
-    {
-        gEnableDebugMode = false;
+        gEnableDebugMode = pDebugModeButton->GetChecked();
     }
 #endif
 }

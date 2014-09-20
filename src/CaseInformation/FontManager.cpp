@@ -27,13 +27,21 @@
  * SOFTWARE.
  */
 
+#include <set>
+
 #include "FontManager.h"
 
 FontManager::~FontManager()
 {
+    set<MLIFont *> deletedFonts;
+
     for (map<string, MLIFont *>::iterator iter = fontByIdMap.begin(); iter != fontByIdMap.end(); ++iter)
     {
-        delete iter->second;
+        if (deletedFonts.find(iter->second) == deletedFonts.end())
+        {
+            delete iter->second;
+            deletedFonts.insert(iter->second);
+        }
     }
 }
 

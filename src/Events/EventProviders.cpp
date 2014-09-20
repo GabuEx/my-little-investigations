@@ -37,6 +37,7 @@
 #include "LocationEventProvider.h"
 #include "PromptOverlayEventProvider.h"
 #include "SelectorEventProvider.h"
+#include "TextButtonEventProvider.h"
 
 ButtonEventProvider *EventProviders::pButtonEventProvider = NULL;
 ButtonArrayEventProvider *EventProviders::pButtonArrayEventProvider = NULL;
@@ -47,6 +48,7 @@ ImageButtonEventProvider *EventProviders::pImageButtonEventProvider = NULL;
 LocationEventProvider *EventProviders::pLocationEventProvider = NULL;
 PromptOverlayEventProvider *EventProviders::pPromptOverlayEventProvider = NULL;
 SelectorEventProvider *EventProviders::pSelectorEventProvider = NULL;
+TextButtonEventProvider *EventProviders::pTextButtonEventProvider = NULL;
 
 void EventProviders::Init()
 {
@@ -59,6 +61,7 @@ void EventProviders::Init()
     pLocationEventProvider = new LocationEventProvider();
     pPromptOverlayEventProvider = new PromptOverlayEventProvider();
     pSelectorEventProvider = new SelectorEventProvider();
+    pTextButtonEventProvider = new TextButtonEventProvider();
 }
 
 void EventProviders::Close()
@@ -81,4 +84,6 @@ void EventProviders::Close()
     pPromptOverlayEventProvider = NULL;
     delete pSelectorEventProvider;
     pSelectorEventProvider = NULL;
+    delete pTextButtonEventProvider;
+    pTextButtonEventProvider = NULL;
 }

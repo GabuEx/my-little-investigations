@@ -39,6 +39,7 @@ class ImageButtonEventProvider;
 class LocationEventProvider;
 class PromptOverlayEventProvider;
 class SelectorEventProvider;
+class TextButtonEventProvider;
 
 class EventProviders
 {
@@ -55,6 +56,7 @@ public:
     static LocationEventProvider * GetLocationEventProvider() { return pLocationEventProvider; }
     static PromptOverlayEventProvider * GetPromptOverlayEventProvider() { return pPromptOverlayEventProvider; }
     static SelectorEventProvider * GetSelectorEventProvider() { return pSelectorEventProvider; }
+    static TextButtonEventProvider * GetTextButtonEventProvider() { return pTextButtonEventProvider; }
 
 private:
     static ButtonEventProvider *pButtonEventProvider;
@@ -66,6 +68,7 @@ private:
     static LocationEventProvider *pLocationEventProvider;
     static PromptOverlayEventProvider *pPromptOverlayEventProvider;
     static SelectorEventProvider *pSelectorEventProvider;
+    static TextButtonEventProvider *pTextButtonEventProvider;
 };
 
 #endif

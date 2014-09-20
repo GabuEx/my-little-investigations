@@ -35,6 +35,7 @@
 #include "../EasingFunctions.h"
 #include "../Image.h"
 #include "../Video.h"
+#include "../UserInterface/TextWidget.h"
 
 class LogoScreen : public MLIScreen
 {
@@ -51,7 +52,7 @@ public:
     bool GetShowCursor() { return true; }
 
 private:
-    Image *pDisclaimerSprite;
+    TextWidget *pDisclaimerTextWidget;
     Video *pLogoVideo;
 
     EasingFunction *pInEase;

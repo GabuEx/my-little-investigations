@@ -34,17 +34,14 @@
 #include "../enums.h"
 #include "../Rectangle.h"
 #include "../Image.h"
+#include "../UserInterface/TextWidget.h"
 
 class SkipArrow
 {
 public:
     static void Initialize(
         Image *pArrowImage,
-        Image *pArrowImageInverted,
-        Image *pFFwdImage,
-        Image *pSkipImage,
-        Image *pFFwdImageInverted,
-        Image *pSkipImageInverted);
+        Image *pArrowImageInverted);
 
     SkipArrow()
     {
@@ -89,12 +86,15 @@ public:
     void Reset();
 
 private:
+
+    void UpdateTextWidget();
+
     static Image *pArrowImage;
     static Image *pArrowImageInverted;
-    static Image *pFFwdImage;
-    static Image *pSkipImage;
-    static Image *pFFwdImageInverted;
-    static Image *pSkipImageInverted;
+    static MLIFont *pFont;
+    static MLIFont *pInvertedFont;
+
+    TextWidget textWidget;
 
     int xPosition;
     int yPosition;

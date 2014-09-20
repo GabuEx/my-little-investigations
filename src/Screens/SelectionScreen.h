@@ -35,13 +35,14 @@
 #include "../EasingFunctions.h"
 #include "../Image.h"
 #include "../Video.h"
-#include "../Events/ImageButtonEventProvider.h"
+#include "../Events/TextButtonEventProvider.h"
 #include "../Events/PromptOverlayEventProvider.h"
 #include "../Events/SelectorEventProvider.h"
 #include "../UserInterface/PromptOverlay.h"
 #include "../UserInterface/Selector.h"
+#include "../UserInterface/TextWidget.h"
 
-class SelectionScreen : public MLIScreen, public ImageButtonEventListener, public PromptOverlayEventListener, public SelectorEventListener
+class SelectionScreen : public MLIScreen, public TextButtonEventListener, public PromptOverlayEventListener, public SelectorEventListener
 {
 public:
     SelectionScreen(SelectionScreenType type);
@@ -54,7 +55,7 @@ public:
     void Draw();
 
     void OnSelectorSelectionChanged(Selector *pSender, SelectorItem *pSelectedItem);
-    void OnButtonClicked(ImageButton *pSender);
+    void OnButtonClicked(TextButton *pSender);
     void OnPromptOverlayValueReturned(PromptOverlay *pSender, const string &value);
 
 private:
@@ -92,18 +93,19 @@ private:
 
     string caseTitle;
     Image *pDividerSprite;
-    vector<string> descriptionLines;
+//    vector<string> descriptionLines;
+    TextWidget *pDescriptionWidget;
 
     string filePath;
     string fileExtension;
     string saveName;
 
-    ImageButton *pStartCaseButton;
-    ImageButton *pSelectCaseButton;
-    ImageButton *pSaveButton;
-    ImageButton *pLoadButton;
-    ImageButton *pDeleteButton;
-    ImageButton *pBackButton;
+    TextButton *pStartCaseButton;
+    TextButton *pSelectCaseButton;
+    TextButton *pSaveButton;
+    TextButton *pLoadButton;
+    TextButton *pDeleteButton;
+    TextButton *pBackButton;
 
     bool finishedLoadingAnimations;
     SelectionScreenType type;
