@@ -291,10 +291,10 @@ void TextButton::SetMaxWidth(double maxWidth)
 
 bool TextButton::IsAnimationPlaying() const
 {
-    return (pXEase != NULL && pXEase->IsRunning())
-            || (pYEase != NULL && pYEase->IsRunning())
-            || (pFadeInEase != NULL && pFadeInEase->IsRunning())
-            || (pFadeOutEase != NULL && pFadeOutEase->IsRunning());
+    return pXEase != NULL && pXEase->IsRunning()
+            || pYEase != NULL && pYEase->IsRunning()
+            || pFadeInEase != NULL && pFadeInEase->IsRunning()
+            || pFadeOutEase != NULL && pFadeOutEase->IsRunning();
 }
 
 void TextButton::UpdateAnimation(int delta)
@@ -344,6 +344,6 @@ void TextButton::UpdateSize()
 
     textWidget.FitSizeToContent();
 
-    SetWidth((GetCheckable() ? checkBoxSize.GetX() + Padding : 0) + textWidget.GetWidth());
-    SetHeight(max((GetCheckable() ? checkBoxSize.GetY() : 0), textWidget.GetHeight()));
+    SetWidth(checkBoxSize.GetX() + Padding + textWidget.GetWidth());
+    SetHeight(max(checkBoxSize.GetY(), textWidget.GetHeight()));
 }

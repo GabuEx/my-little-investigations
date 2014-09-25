@@ -39,7 +39,7 @@ const string CandleSpriteSheetId = "TitleScreenCandleSpriteSheet";
 const int CandleDimensionsPx = 32;
 const int LongFadeFromBlackDurationMs = 1000;
 const int FadeFromBlackDurationMs = 300;
-const int ButtonAreaStartHeight = 175;
+const int ButtonAreaStartHeight = 184;
 const int ButtonSpacing = 18;
 
 TitleScreen::TitleScreen()
