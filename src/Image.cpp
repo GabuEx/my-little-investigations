@@ -412,6 +412,26 @@ void Image::Draw(
         return;
     }
 
+    double horizontalOffsetToUse = 0.0;
+    double verticalOffsetToUse = 0.0;
+    double horizontalScaleToUse = 1.0;
+    double verticalScaleToUse = 1.0;
+
+#ifdef GAME_EXECUTABLE
+    if (gIsSavingScreenshot)
+    {
+        horizontalScaleToUse = (double)gScreenshotWidth / gScreenWidth;
+        verticalScaleToUse = (double)gScreenshotHeight / gScreenHeight;
+    }
+    else if (gIsFullscreen)
+    {
+        horizontalOffsetToUse = gHorizontalOffset;
+        verticalOffsetToUse = gVerticalOffset;
+        horizontalScaleToUse = gScreenScale;
+        verticalScaleToUse = gScreenScale;
+    }
+#endif
+
     // Adjust the clip rect such that we're also clipping to the screen as well.
     if (position.GetX() < 0)
     {
@@ -445,7 +465,12 @@ void Image::Draw(
         clipRect.SetHeight(clipRect.GetHeight() - yAdjustment);
     }
 
-    if (position.GetX() + clipRect.GetWidth() >= gScreenWidth)
+    // Note that if we're not using screen scaling, then the clip rect doesn't properly reflect
+    // how large this image needs to be before it's off the edge of the screen.
+    // To account for that, we'll divide by the scale to get the "effective" clip rect dimension
+    // for use in this purpose.
+
+    if (position.GetX() + clipRect.GetWidth() / (!useScreenScaling ? horizontalScaleToUse : 1.0) >= gScreenWidth)
     {
         double widthAdjustment = position.GetX() + clipRect.GetWidth() - gScreenWidth;
 
@@ -457,7 +482,7 @@ void Image::Draw(
         clipRect.SetWidth(clipRect.GetWidth() - widthAdjustment);
     }
 
-    if (position.GetY() + clipRect.GetHeight() >= gScreenHeight)
+    if (position.GetY() + clipRect.GetHeight() / (!useScreenScaling ? verticalScaleToUse : 1.0) >= gScreenHeight)
     {
         double heightAdjustment = position.GetY() + clipRect.GetHeight() - gScreenHeight;
 
@@ -474,26 +499,6 @@ void Image::Draw(
     {
         return;
     }
-
-    double horizontalOffsetToUse = 0.0;
-    double verticalOffsetToUse = 0.0;
-    double horizontalScaleToUse = 1.0;
-    double verticalScaleToUse = 1.0;
-
-#ifdef GAME_EXECUTABLE
-    if (gIsSavingScreenshot)
-    {
-        horizontalScaleToUse = (double)gScreenshotWidth / gScreenWidth;
-        verticalScaleToUse = (double)gScreenshotHeight / gScreenHeight;
-    }
-    else if (gIsFullscreen)
-    {
-        horizontalOffsetToUse = gHorizontalOffset;
-        verticalOffsetToUse = gVerticalOffset;
-        horizontalScaleToUse = gScreenScale;
-        verticalScaleToUse = gScreenScale;
-    }
-#endif
 
     SDL_Rect srcRect =
         {
