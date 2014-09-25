@@ -157,7 +157,9 @@ void Image::Reload(SDL_Surface *pSurface, bool loadImmediately)
     this->height = this->pSurface->h;
 
 #ifdef GAME_EXECUTABLE
-    if (gUiThreadId != SDL_ThreadID() || !loadImmediately)
+    Uint32 currentThreadId = SDL_ThreadID();
+
+    if (gUiThreadId != currentThreadId || !loadImmediately)
     {
         ResourceLoader::GetInstance()->AddImage(this);
     }
