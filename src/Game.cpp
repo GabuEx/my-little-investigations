@@ -475,9 +475,9 @@ void Game::Init()
     MLIFont *pHandwritingSmallFont = new MLIFont("fonts/JennaSue.ttf", 22);
     MLIFont *pPromptOverlayFont = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 42);
     MLIFont *pPromptOverlayTextFont = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 48);
-    MLIFont *pPromptOverlayFontOutlined = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 42, 2);
-    MLIFont *pPromptOverlayTextFontOutlined = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 48, 2);
-    MLIFont *pPromptOverlayTextFontOutlinedInverted = new MLIFont("fonts/FayesMousewriting_quotemapped.ttf", 48, 2, false, true);
+    MLIFont *pPromptOverlayFontOutlined = new MLIFont("fonts/BLACKPLOTAN.otf", 36, 1);
+    MLIFont *pPromptOverlayTextFontOutlined = new MLIFont("fonts/Nougat ExtraBlack.ttf", 40, 1);
+    MLIFont *pPromptOverlayTextFontOutlinedInverted = new MLIFont("fonts/Nougat ExtraBlack.ttf", 40, 1, false, true);
 
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("MouseOverFont", pMouseOverFont);
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("DialogFont", pDialogFont);
