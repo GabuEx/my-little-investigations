@@ -186,18 +186,18 @@ void SelectionScreen::LoadResources()
     pDividerSprite = ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/RightDivider.png");
 
     delete pStartCaseButton;
-    pStartCaseButton = new TextButton("Start case", pStartFont);
+    pStartCaseButton = new TextButton("Start Case", pStartFont);
     pStartCaseButton->SetX(580);
     pStartCaseButton->SetY(426);
 
     delete pSelectCaseButton;
-    pSelectCaseButton = new TextButton("Select case", pStartFont);
+    pSelectCaseButton = new TextButton("Select Case", pStartFont);
     pSelectCaseButton->SetX(580);
     pSelectCaseButton->SetY(426);
     pSelectCaseButton->SetClickSoundEffect("ButtonClick3");
 
     delete pSaveButton;
-    pSaveButton = new TextButton("Select case", pStartFont);
+    pSaveButton = new TextButton("Save Game", pStartFont);
     pSaveButton->SetX(587);
     pSaveButton->SetY(426);
 
