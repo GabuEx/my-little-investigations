@@ -105,12 +105,12 @@ EvidenceManager::~EvidenceManager()
         delete iter->second;
     }
 
-    for (map<EvidenceIdPair, Conversation *>::iterator iter = idPairToCombinationConversationMap.begin(); iter != idPairToCombinationConversationMap.end(); ++iter)
+    for (map<EvidenceIdPair, Encounter *>::iterator iter = idPairToCombinationEncounterMap.begin(); iter != idPairToCombinationEncounterMap.end(); ++iter)
     {
         delete iter->second;
     }
 
-    delete pWrongCombinationConversation;
+    delete pWrongCombinationEncounter;
 }
 
 Sprite * EvidenceManager::GetSmallSpriteForId(const string &id)
@@ -162,11 +162,11 @@ void EvidenceManager::DisableEvidenceWithId(const string &id)
     CheckAreEvidenceCombinations();
 }
 
-Conversation * EvidenceManager::GetConversationForEvidenceCombination(const string &evidenceId1, const string &evidenceId2)
+Encounter * EvidenceManager::GetEncounterForEvidenceCombination(const string &evidenceId1, const string &evidenceId2)
 {
     EvidenceIdPair pair(evidenceId1, evidenceId2);
 
-    for (map<EvidenceIdPair, Conversation *>::iterator iter = idPairToCombinationConversationMap.begin(); iter != idPairToCombinationConversationMap.end(); ++iter)
+    for (map<EvidenceIdPair, Encounter *>::iterator iter = idPairToCombinationEncounterMap.begin(); iter != idPairToCombinationEncounterMap.end(); ++iter)
     {
         if (pair == iter->first)
         {
@@ -174,7 +174,7 @@ Conversation * EvidenceManager::GetConversationForEvidenceCombination(const stri
         }
     }
 
-    return GetWrongCombinationConversation();
+    return GetWrongCombinationEncounter();
 }
 
 void EvidenceManager::Reset()
@@ -278,7 +278,10 @@ void EvidenceManager::LoadFromXml(XmlReader *pReader)
 
     while (pReader->MoveToNextListItem())
     {
-        idPairToCombinationConversationMap[EvidenceIdPair(pReader)] = Conversation::LoadFromXml(pReader);
+        Encounter *pEncounter = new Encounter();
+        pEncounter->SetOneShotConversation(Conversation::LoadFromXml(pReader));
+        pEncounter->SetOwnsOneShotConversation(true);
+        idPairToCombinationEncounterMap[EvidenceIdPair(pReader)] = pEncounter;
     }
 
     pReader->EndElement();
@@ -294,7 +297,9 @@ void EvidenceManager::LoadFromXml(XmlReader *pReader)
     pReader->EndElement();
 
     pReader->StartElement("WrongCombinationConversation");
-    pWrongCombinationConversation = Conversation::LoadFromXml(pReader);
+    pWrongCombinationEncounter = new Encounter();
+    pWrongCombinationEncounter->SetOneShotConversation(Conversation::LoadFromXml(pReader));
+    pWrongCombinationEncounter->SetOwnsOneShotConversation(true);
     pReader->EndElement();
 
     pReader->EndElement();
@@ -304,7 +309,7 @@ void EvidenceManager::CheckAreEvidenceCombinations()
 {
     areEvidenceCombinations = false;
 
-    for (map<EvidenceIdPair, Conversation *>::iterator iter = idPairToCombinationConversationMap.begin(); iter != idPairToCombinationConversationMap.end(); ++iter)
+    for (map<EvidenceIdPair, Encounter *>::iterator iter = idPairToCombinationEncounterMap.begin(); iter != idPairToCombinationEncounterMap.end(); ++iter)
     {
         EvidenceIdPair idPair = iter->first;
 

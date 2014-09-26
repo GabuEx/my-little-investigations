@@ -222,7 +222,6 @@ Location::Location(XmlReader *pReader)
     pPartnerCharacter = NULL;
     pTransitionAtPlayer = NULL;
     pCurrentEncounter = NULL;
-    pEvidenceCombinationEncounter = NULL;
     pCurrentInteractiveElement = NULL;
     pCurrentInteractiveForegroundElement = NULL;
     pCurrentInteractiveCrowd = NULL;
@@ -445,7 +444,6 @@ Location::Location(const Location &other)
     pPartnerCharacter = NULL;
     pTransitionAtPlayer = NULL;
     pCurrentEncounter = NULL;
-    pEvidenceCombinationEncounter = NULL;
     pCurrentInteractiveElement = NULL;
     pCurrentInteractiveForegroundElement = NULL;
     pCurrentInteractiveCrowd = NULL;
@@ -553,9 +551,6 @@ Location::~Location()
     {
         delete loopingSoundList[i];
     }
-
-    delete pEvidenceCombinationEncounter;
-    pEvidenceCombinationEncounter = NULL;
 
     delete pInEasePartner;
     pInEasePartner = NULL;
@@ -1262,12 +1257,9 @@ void Location::Update(int delta)
         {
             return;
         }
-        else if (pEvidenceSelector->GetEvidenceCombinationConversation() != NULL)
+        else if (pEvidenceSelector->GetEvidenceCombinationEncounter() != NULL)
         {
-            delete pEvidenceCombinationEncounter;
-            pEvidenceCombinationEncounter = new Encounter();
-            pEvidenceCombinationEncounter->SetOneShotConversation(pEvidenceSelector->GetEvidenceCombinationConversation());
-            pCurrentEncounter = pEvidenceCombinationEncounter;
+            pCurrentEncounter = pEvidenceSelector->GetEvidenceCombinationEncounter();
             pCurrentEncounter->Begin();
 
             return;

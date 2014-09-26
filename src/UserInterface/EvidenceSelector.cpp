@@ -172,12 +172,16 @@ EvidenceSelector::EvidenceSelector(bool isCancelable, bool isForCombination)
 
 EvidenceSelector::~EvidenceSelector()
 {
-    for (int i = 0; i < numItems; i++)
+    if (ppItems != NULL)
     {
-        delete ppItems[i];
-    }
+        for (int i = 0; i < numItems; i++)
+        {
+            delete ppItems[i];
+        }
 
-    delete [] ppItems;
+        delete [] ppItems;
+        ppItems = NULL;
+    }
 
     delete pEvidenceDescription;
     pEvidenceDescription = NULL;
@@ -293,7 +297,7 @@ void EvidenceSelector::Begin()
 
     LoadEvidence();
 
-    SetEvidenceCombinationConversation(NULL);
+    SetEvidenceCombinationEncounter(NULL);
     pCombineWithTab->SetIsEnabled(Case::GetInstance()->GetEvidenceManager()->GetCanCombineEvidence());
 
     pEvidenceTab->SetIsHidden(true, false);
@@ -438,7 +442,7 @@ void EvidenceSelector::Update(int delta)
 
         if (pCombineTab->GetIsClicked())
         {
-            SetEvidenceCombinationConversation(Case::GetInstance()->GetEvidenceManager()->GetConversationForEvidenceCombination(itemSetAsideForCombinationId, selectedItemId));
+            SetEvidenceCombinationEncounter(Case::GetInstance()->GetEvidenceManager()->GetEncounterForEvidenceCombination(itemSetAsideForCombinationId, selectedItemId));
             Close();
         }
         else if (pCombineWithTab->GetIsClicked())
@@ -781,7 +785,7 @@ void EvidenceSelector::Init(bool isCancelable, bool isForCombination)
 
     this->animationOffset = 0;
     this->isShowing = false;
-    this->pEvidenceCombinationConversation = NULL;
+    this->pEvidenceCombinationEncounter = NULL;
 }
 
 void EvidenceSelector::UpdateSelectedItem(EvidenceSelectorItem *pItem)

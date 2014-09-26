@@ -128,13 +128,13 @@ public:
     {
         evidenceCount = 0;
         areEvidenceCombinations = false;
-        pWrongCombinationConversation = NULL;
+        pWrongCombinationEncounter = NULL;
     }
 
     ~EvidenceManager();
 
-    Conversation * GetWrongCombinationConversation() { return this->pWrongCombinationConversation; }
-    void SetWrongCombinationConversation(Conversation *pWrongCombinationConversation) { this->pWrongCombinationConversation = pWrongCombinationConversation; }
+    Encounter * GetWrongCombinationEncounter() { return this->pWrongCombinationEncounter; }
+    void SetWrongCombinationEncounter(Encounter *pWrongCombinationEncounter) { this->pWrongCombinationEncounter = pWrongCombinationEncounter; }
 
     bool GetHasEvidence() const { return this->evidenceCount > 0; }
     bool GetCanCombineEvidence() const { return this->evidenceCount > 1; }
@@ -153,7 +153,7 @@ public:
     void EnableEvidenceWithId(const string &id);
     void DisableEvidenceWithId(const string &id);
 
-    Conversation * GetConversationForEvidenceCombination(const string &evidenceId1, const string &evidenceId2);
+    Encounter * GetEncounterForEvidenceCombination(const string &evidenceId1, const string &evidenceId2);
     void Reset();
 
     void CacheState();
@@ -168,7 +168,7 @@ private:
     void CheckAreEvidenceCombinations();
 
     map<string, Evidence *> idToItemMap;
-    map<EvidenceIdPair, Conversation *> idPairToCombinationConversationMap;
+    map<EvidenceIdPair, Encounter *> idPairToCombinationEncounterMap;
     vector<string> idList;
 
     int evidenceCount;
@@ -179,7 +179,7 @@ private:
     map<Evidence *, bool> evidenceToCachedEnabledStateMap;
     map<Evidence *, bool> evidenceToCachedHiddenStateMap;
 
-    Conversation *pWrongCombinationConversation;
+    Encounter *pWrongCombinationEncounter;
 };
 
 #endif

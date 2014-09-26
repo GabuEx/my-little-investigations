@@ -473,12 +473,6 @@ void Conversation::DrawBackground(double xOffset, double yOffset)
 
 void Conversation::Reset()
 {
-    if (pState != NULL)
-    {
-        pState->ResetForConversation();
-        pState = NULL;
-    }
-
     if (pLastContinuousAction != NULL)
     {
         pLastContinuousAction->Reset();
@@ -486,6 +480,15 @@ void Conversation::Reset()
 
     pCurrentContinuousAction = NULL;
     SetIsFinished(false);
+}
+
+void Conversation::ResetState()
+{
+    if (pState != NULL)
+    {
+        pState->ResetForConversation();
+        pState = NULL;
+    }
 }
 
 Conversation * Conversation::LoadFromXml(XmlReader *pReader)

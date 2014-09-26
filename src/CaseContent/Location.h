@@ -303,7 +303,6 @@ private:
     map<string, StartPosition> transitionIdToPartnerStartPositionMap;
 
     Encounter *pCurrentEncounter;
-    Encounter *pEvidenceCombinationEncounter;
     InteractiveElement *pCurrentInteractiveElement;
     ForegroundElement *pCurrentInteractiveForegroundElement;
     Crowd *pCurrentInteractiveCrowd;

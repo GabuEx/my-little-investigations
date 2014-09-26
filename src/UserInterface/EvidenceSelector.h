@@ -37,7 +37,7 @@
 #include "../MLIFont.h"
 #include "../Image.h"
 
-class Conversation;
+class Encounter;
 
 class EvidenceSelector
 {
@@ -84,8 +84,8 @@ public:
     bool GetIsShowing() const { return this->isShowing; }
     void SetIsShowing(bool isShowing) { this->isShowing = isShowing; }
 
-    Conversation * GetEvidenceCombinationConversation() { return this->pEvidenceCombinationConversation; }
-    void SetEvidenceCombinationConversation(Conversation *pEvidenceCombinationConversation) { this->pEvidenceCombinationConversation = pEvidenceCombinationConversation; }
+    Encounter * GetEvidenceCombinationEncounter() { return this->pEvidenceCombinationEncounter; }
+    void SetEvidenceCombinationEncounter(Encounter *pEvidenceCombinationEncounter) { this->pEvidenceCombinationEncounter = pEvidenceCombinationEncounter; }
 
     void LoadEvidence();
 
@@ -141,7 +141,7 @@ private:
 
     bool isShowing;
 
-    Conversation *pEvidenceCombinationConversation;
+    Encounter *pEvidenceCombinationEncounter;
 };
 
 #endif

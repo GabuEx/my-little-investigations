@@ -177,6 +177,7 @@ public:
     virtual void DrawBackground(double xOffset, double yOffset);
     virtual void Reset();
     virtual void ResetTopics() { }
+    void ResetState();
 
     static Conversation * LoadFromXml(XmlReader *pReader);
 

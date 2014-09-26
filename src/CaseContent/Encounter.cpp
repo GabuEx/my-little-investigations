@@ -520,7 +520,7 @@ void Encounter::Update(int delta)
                 SetTransitionRequest(state.GetTransitionRequest());
             }
 
-            state.ResetForConversation();
+            pCurrentConversation->ResetState();
 
             if (pCurrentConversation != GetOneShotConversation() && !exitRequested)
             {
