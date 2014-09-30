@@ -63,7 +63,7 @@ SkipArrow::SkipArrow(int xPosition, int yPosition, int bounceDistance, bool isCl
     textWidget.SetX(xPosition);
     textWidget.SetY(yPosition);
 
-    textWidget.SetText(isFFwd ? "F Fwd" : "Skip");
+    textWidget.SetText(isFFwd ? pgLocalizableContent->GetText("SkipArrow/FastForwardText") : pgLocalizableContent->GetText("SkipArrow/SkipText"));
     textWidget.SetFont(isDown ? pInvertedFont : pFont);
     textWidget.SetTextColor(NormalColor);
     textWidget.FitSizeToContent();

@@ -222,6 +222,11 @@ int main(int argc, char * argv[])
     {
         return 0;
     }
+
+    {
+        XmlReader localizableContentReader("XML/LocalizableContent.xml");
+        pgLocalizableContent = new LocalizableContent(&localizableContentReader);
+    }
 #endif
 
     // Create the game and initialize all of its components, or just quit if we can't.
@@ -496,6 +501,11 @@ int main(int argc, char * argv[])
     }
 
 #ifdef GAME_EXECUTABLE
+    // Delete this before Game::Finish() is called, since otherwise we'll AV
+    // if we try to delete this object's semaphore after SDL is cleaned up.
+    delete pgLocalizableContent;
+    pgLocalizableContent = NULL;
+
     // The game's done now, so finish it up.
     CommonCaseResources::Close();
 #endif

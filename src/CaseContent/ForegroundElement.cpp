@@ -422,7 +422,7 @@ void HiddenForegroundElement::Update(int delta, Vector2 offsetVector)
     }
     else
     {
-        MouseHelper::SetMouseOverText("?");
+        MouseHelper::SetMouseOverText(pgLocalizableContent->GetText("ForegroundElement/UnknownHiddenElementText"));
         SetIsClicked(MouseHelper::ClickedAnywhere() || MouseHelper::DoubleClickedAnywhere() || KeyboardHelper::ClickPressed());
 
         if (GetIsClicked())

@@ -390,9 +390,9 @@ void Selector::PopulateWithCases(bool requireSaveFilesExist)
 {
     Reset();
 
-    SelectorSection *pOfficialCasesSection = new SelectorSection("Official Cases");
-    SelectorSection *pCustomCasesSection = new SelectorSection("Custom Cases");
-    SelectorSection *pIncompatibleCasesSection = new SelectorSection("Incompatible Cases");
+    SelectorSection *pOfficialCasesSection = new SelectorSection(pgLocalizableContent->GetText("Selector/OfficialCasesText"));
+    SelectorSection *pCustomCasesSection = new SelectorSection(pgLocalizableContent->GetText("Selector/CustomCasesText"));
+    SelectorSection *pIncompatibleCasesSection = new SelectorSection(pgLocalizableContent->GetText("Selector/IncompatibleCasesText"));
 
     vector<string> caseFilePaths = GetCaseFilePaths();
     vector<CaseSelectorItem *> officialCaseList;

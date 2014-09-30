@@ -389,7 +389,7 @@ ButtonArray::ButtonArray()
     ppVisibleButtons = new Button*[maxVisibleButtonCount];
     pUpArrow = new Arrow((int)dialogRect.GetX() + (int)dialogRect.GetWidth() / 2 - 12, (int)dialogRect.GetY() + 10, ArrowDirectionUp, 10 /* bounceDistance */, true /* isClickable */);
     pDownArrow = new Arrow((int)dialogRect.GetX() + (int)dialogRect.GetWidth() / 2 - 12, (int)dialogRect.GetY() + (int)dialogRect.GetHeight() - 20 - 10, ArrowDirectionDown, 10 /* bounceDistance */, true /* isClickable */);
-    pBackTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, "BACK", true /* isCancel */);
+    pBackTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, pgLocalizableContent->GetText("ButtonArray/BackText"), true /* isCancel */);
     isCancelable = false;
 }
 
@@ -404,7 +404,7 @@ ButtonArray::ButtonArray(int maxVisibleButtonCount, int x, int y, int width, int
     ppVisibleButtons = new Button*[maxVisibleButtonCount];
     pUpArrow = new Arrow((int)dialogRect.GetX() + (int)dialogRect.GetWidth() / 2 - 12, (int)dialogRect.GetY() + 10, ArrowDirectionUp, 10 /* bounceDistance */, true /* isClickable */);
     pDownArrow = new Arrow((int)dialogRect.GetX() + (int)dialogRect.GetWidth() / 2 - 12, (int)dialogRect.GetY() + (int)dialogRect.GetHeight() - 20 - 10, ArrowDirectionDown, 10 /* bounceDistance */, true /* isClickable */);
-    pBackTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, "BACK", true /* isCancel */);
+    pBackTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, pgLocalizableContent->GetText("ButtonArray/BackText"), true /* isCancel */);
     isCancelable = false;
 }
 
@@ -466,7 +466,7 @@ void ButtonArray::Load(vector<ButtonArrayLoadParameters> loadParametersList)
     if (loadParametersList.size() == 0)
     {
         // If we have no actual buttons, then load a dummy button.
-        Button *pButton = new Button(0, "(no conversation options)");
+        Button *pButton = new Button(0, pgLocalizableContent->GetText("ButtonArray/NoConversationOptionsText"));
         pButton->SetIsDisabled(true);
         buttonList.push_back(pButton);
     }

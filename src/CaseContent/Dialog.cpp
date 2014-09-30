@@ -91,11 +91,11 @@ Dialog::Dialog(const string &filePath, int timeBeforeDialogInitial, int delayBef
     this->isConfrontation = isConfrontation;
     this->isStatic = false;
 
-    this->pPressForInfoTab = new Tab(gScreenWidth - 3 * TabWidth - 14, true /* isClickable */, "PRESS FOR INFO");
-    this->pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, "PRESENT EVIDENCE");
+    this->pPressForInfoTab = new Tab(gScreenWidth - 3 * TabWidth - 14, true /* isClickable */, pgLocalizableContent->GetText("Dialog/PressForInfoText"));
+    this->pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, pgLocalizableContent->GetText("Dialog/PresentEvidenceText"));
     this->pCurrentPartner = NULL;
     this->pUsePartnerTab = new Tab(gScreenWidth / 2 - TabWidth / 2, true /* isClickable */, "", false /* useCancelClickSoundEffect */, TabRowTop);
-    this->pEndInterrogationTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, isConfrontation ? "BACK TO TOPICS" : "END INTERROGATION");
+    this->pEndInterrogationTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, isConfrontation ? pgLocalizableContent->GetText("Dialog/BackToTopicsText") : pgLocalizableContent->GetText("Dialog/EndInterrogationText"));
 
     this->pState = NULL;
 

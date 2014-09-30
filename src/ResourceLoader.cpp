@@ -26,7 +26,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
- 
+
 #include "XmlReader.h"
 #include "MLIException.h"
 #include "ResourceLoader.h"
@@ -190,9 +190,11 @@ tinyxml2::XMLDocument * ResourceLoader::LoadDocument(const string &relativeFileP
     if (pLoadingSemaphore != NULL)
     {
         SDL_SemWait(pLoadingSemaphore);
-        if (pCaseResourcesSource != NULL)
+        pRW = pCommonResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
+
+        if (pRW == NULL && pCaseResourcesSource != NULL)
         {
-            pRW = pCaseResourcesSource->LoadFile(relativeFilePath,&pMemToFree);
+            pRW = pCaseResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
         }
         SDL_SemPost(pLoadingSemaphore);
     }

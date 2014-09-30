@@ -36,19 +36,32 @@
 
 const unsigned int CacheSize = 256;
 
-MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool isBold, bool invertedColors)
+MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool invertedColors)
     : ttfFilePath(ttfFilePath),
       fontSize(fontSize),
       strokeWidth(strokeWidth),
-      isBold(isBold),
       cache(CacheSize, new CacheItemHandler(this)),
       invertedColors(invertedColors)
-
 {
     pTtfFont = NULL;
 
     Reinit();
 }
+
+#ifdef GAME_EXECUTABLE
+MLIFont::MLIFont(const string &fontId, int strokeWidth, bool invertedColors)
+    : strokeWidth(strokeWidth),
+      cache(CacheSize, new CacheItemHandler(this)),
+      invertedColors(invertedColors)
+{
+    ttfFilePath = pgLocalizableContent->GetFont(fontId).Filename;
+    fontSize = pgLocalizableContent->GetFont(fontId).Size;
+
+    pTtfFont = NULL;
+
+    Reinit();
+}
+#endif
 
 MLIFont::~MLIFont()
 {
@@ -78,12 +91,6 @@ void MLIFont::Reinit()
     #else
         pTtfFont = TTF_OpenFont(ttfFilePath.c_str(), fontSize * scale + 0.5);
     #endif
-
-    if (isBold)
-    {
-        TTF_SetFontStyle(pTtfFont, TTF_STYLE_BOLD);
-    }
-
 }
 
 Image *MLIFont::RenderGlyph(uint32_t c)

@@ -38,13 +38,6 @@ const int opacityFadeDurationMs = 1000;
 const int disclaimerShowDurationMs = 3000;
 const int textPadding = 50;
 
-const char *DisclaimerText =
-"My Little Pony: Friendship is Magic and all related characters and settings are the property of Hasbro, Inc.\n"
-"\n"
-"This is a fan-made game made solely out of love for the series.\n"
-"\n"
-"Its creators will never make any money from it and are not in any way affiliated with Hasbro, Inc.";
-
 LogoScreen::LogoScreen()
 {
     pDisclaimerTextWidget = NULL;
@@ -70,10 +63,10 @@ LogoScreen::~LogoScreen()
 
 void LogoScreen::LoadResources()
 {
-    MLIFont *pFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("LogoScreenFont");
+    MLIFont *pFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("DisclaimerFont");
 
     delete pDisclaimerTextWidget;
-    pDisclaimerTextWidget = new TextWidget(DisclaimerText, pFont, Color::White, HAlignmentCenter, VAlignmentCenter);
+    pDisclaimerTextWidget = new TextWidget(pgLocalizableContent->GetText("LogoScreen/DisclaimerText"), pFont, Color::White, HAlignmentCenter, VAlignmentCenter);
     pDisclaimerTextWidget->SetX(textPadding);
     pDisclaimerTextWidget->SetY(textPadding);
     pDisclaimerTextWidget->SetWidth(gScreenWidth - textPadding * 2);

@@ -145,7 +145,7 @@ OptionsScreen::~OptionsScreen()
 
 void OptionsScreen::LoadResources()
 {
-    MLIFont *pTitleScreenFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("TitleScreenFont");
+    MLIFont *pTitleScreenFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("MenuFont");
     MLIFont *pTabFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("OptionsScreen/TabFont");
     MLIFont *pSelectedTabFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("OptionsScreen/SelectedTabFont");
     MLIFont *pOptionFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("OptionsScreen/OptionFont");
@@ -161,7 +161,7 @@ void OptionsScreen::LoadResources()
     pBackgroundVideo->LoadFile();
 
     delete pGameplayButton;
-    pGameplayButton = new TextButton("Gameplay", pTabFont);
+    pGameplayButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/GameplayText"), pTabFont);
     pGameplayButton->SetIsEnabled(false);
     pGameplayButton->SetDisabledFont(pSelectedTabFont);
     pGameplayButton->SetDisabledTextColor(Color(1.0, 0.0, 0.0, 0.0));
@@ -170,7 +170,7 @@ void OptionsScreen::LoadResources()
     pGameplayButton->SetClickSoundEffect("ButtonClick3");
 
     delete pAudioButton;
-    pAudioButton = new TextButton("Audio", pTabFont);
+    pAudioButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/AudioText"), pTabFont);
     pAudioButton->SetDisabledFont(pSelectedTabFont);
     pAudioButton->SetDisabledTextColor(Color(1.0, 0.0, 0.0, 0.0));
     pAudioButton->SetX(AudioButtonX);
@@ -181,13 +181,13 @@ void OptionsScreen::LoadResources()
     pDividerSprite = ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/Divider.png");
 
     delete pDefaultsButton;
-    pDefaultsButton = new TextButton("Defaults", pTitleScreenFont);
+    pDefaultsButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/DefaultsText"), pTitleScreenFont);
     pDefaultsButton->SetX(36);
     pDefaultsButton->SetY(488);
     pDefaultsButton->SetClickSoundEffect("ButtonClick2");
 
     delete pBackButton;
-    pBackButton = new TextButton("Back", pTitleScreenFont);
+    pBackButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/BackText"), pTitleScreenFont);
     pBackButton->SetX(821);
     pBackButton->SetY(488);
     pBackButton->SetClickSoundEffect("ButtonClick4");
@@ -197,28 +197,28 @@ void OptionsScreen::LoadResources()
     vector<TextButton *> buttons;
 
     delete pTutorialsButton;
-    pTutorialsButton = new TextButton("Enable tutorials", pOptionFont, true /*checkable*/);
+    pTutorialsButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/EnableTutorialsText"), pOptionFont, true /*checkable*/);
     pTutorialsButton->SetChecked(gEnableTutorials);
     buttons.push_back(pTutorialsButton);
 
     delete pEnableHintsButton;
-    pEnableHintsButton = new TextButton("Enable evidence combination and partner ability hints", pOptionFont, true /*checkable*/);
+    pEnableHintsButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/EnableHintsText"), pOptionFont, true /*checkable*/);
     pEnableHintsButton->SetChecked(gEnableHints);
     buttons.push_back(pEnableHintsButton);
 
     delete pFullscreenModeButton;
-    pFullscreenModeButton = new TextButton("Fullscreen mode", pOptionFont, true /*checkable*/);
+    pFullscreenModeButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/FullscreenModeText"), pOptionFont, true /*checkable*/);
     pFullscreenModeButton->SetChecked(gEnableFullscreen);
     buttons.push_back(pFullscreenModeButton);
 
     delete pEnableSkippingUnseenDialogButton;
-    pEnableSkippingUnseenDialogButton = new TextButton("Enable skipping unseen dialogue", pOptionFont, true /*checkable*/);
+    pEnableSkippingUnseenDialogButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/EnableSkipText"), pOptionFont, true /*checkable*/);
     pEnableSkippingUnseenDialogButton->SetChecked(gEnableSkippingUnseenDialog);
     buttons.push_back(pEnableSkippingUnseenDialogButton);
 
 #ifdef ENABLE_DEBUG_MODE
     delete pDebugModeButton;
-    pDebugModeButton = new TextButton("Debug mode", pOptionFont, true /*checkable*/);
+    pDebugModeButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/DebugModeText"), pOptionFont, true /*checkable*/);
     buttons.push_back(pDebugModeButton);
 #endif
 
@@ -254,11 +254,11 @@ void OptionsScreen::LoadResources()
     // } gameplay page buttons
 
     delete pBackgroundMusicSlider;
-    pBackgroundMusicSlider = new Slider("Background music", 317, 259);
+    pBackgroundMusicSlider = new Slider(pgLocalizableContent->GetText("OptionsScreen/BackgroundMusicText"), 317, 259);
     delete pSoundEffectsSlider;
-    pSoundEffectsSlider = new Slider("Sound effects", 317, 344);
+    pSoundEffectsSlider = new Slider(pgLocalizableContent->GetText("OptionsScreen/SoundEffectsText"), 317, 344);
     delete pVoiceSlider;
-    pVoiceSlider = new Slider("Voice", 317, 433);
+    pVoiceSlider = new Slider(pgLocalizableContent->GetText("OptionsScreen/VoiceText"), 317, 433);
 
     finishedLoadingAnimations = true;
 }

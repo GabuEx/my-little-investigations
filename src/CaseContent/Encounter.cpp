@@ -34,9 +34,6 @@
 #include "../CaseContent/Dialog.h"
 #include "../CaseInformation/Case.h"
 
-const string ExitText = "EXIT";
-const string PresentEvidenceText = "PRESENT EVIDENCE";
-
 const int OpacityAnimationDuration = 250;
 const int DialogBackgroundAnimationDuration = 250;
 const int CharacterAnimationDuration = 250;
@@ -82,8 +79,8 @@ Encounter::Encounter()
     pEvidenceSelector = new EvidenceSelector(true /* isCancelable */);
 
     pCharacterNameTab = new Tab(0, false /* isClickable */);
-    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, ExitText);
-    pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, PresentEvidenceText);
+    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, pgLocalizableContent->GetText("Encounter/ExitText"));
+    pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, pgLocalizableContent->GetText("Encounter/PresentEvidenceText"));
 
     ownsOneShotConversation = false;
     isFinished = false;
@@ -123,8 +120,8 @@ Encounter::Encounter(XmlReader *pReader)
     pEvidenceSelector = new EvidenceSelector(true /* isCancelable */);
 
     pCharacterNameTab = new Tab(0, false /* isClickable */);
-    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, ExitText);
-    pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, PresentEvidenceText);
+    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, pgLocalizableContent->GetText("Encounter/ExitText"));
+    pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, pgLocalizableContent->GetText("Encounter/PresentEvidenceText"));
 
     ownsOneShotConversation = false;
     isFinished = false;
@@ -823,7 +820,10 @@ void Encounter::RefreshButtonArrayContents()
             {
                 ButtonArrayLoadParameters loadParameters;
 
-                loadParameters.text = pInterrogation->GetName() + " (Interrogation)";
+                char text[256];
+                sprintf(text, pgLocalizableContent->GetText("Encounter/InterrogationDesignationFormatText").c_str(), pInterrogation->GetName().c_str());
+
+                loadParameters.text = string(text);
 
                 if (pInterrogation->GetRequiredPartnerId().length() > 0 && pInterrogation->GetWrongPartnerUsed() && Case::GetInstance()->GetPartnerManager()->GetPartnerFromId(pInterrogation->GetRequiredPartnerId()) != NULL)
                 {
@@ -845,7 +845,10 @@ void Encounter::RefreshButtonArrayContents()
             {
                 ButtonArrayLoadParameters loadParameters;
 
-                loadParameters.text = pConfrontation->GetName() + " (Confrontation)";
+                char text[256];
+                sprintf(text, pgLocalizableContent->GetText("Encounter/ConfrontationDesignationFormatText").c_str(), pConfrontation->GetName().c_str());
+
+                loadParameters.text = string(text);
 
                 if (pConfrontation->GetRequiredPartnerId().length() > 0 && pConfrontation->GetWrongPartnerUsed() && Case::GetInstance()->GetPartnerManager()->GetPartnerFromId(pConfrontation->GetRequiredPartnerId()) != NULL)
                 {

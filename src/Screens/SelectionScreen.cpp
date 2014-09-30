@@ -49,9 +49,6 @@ MLIFont *SelectionScreen::pSmallFont = NULL;
 const int FadeFromBlackDurationMs = 300;
 const int SelectorWidth = 248;
 
-const string yesString = "Yes";
-const string noString = "No";
-
 SelectionScreen::SelectionScreen(SelectionScreenType type)
 {
     pFadeSprite = NULL;
@@ -166,7 +163,7 @@ void SelectionScreen::LoadResources()
 {
     EnsureFonts();
 
-    MLIFont *pTitleScreenFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("TitleScreenFont");
+    MLIFont *pTitleScreenFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("MenuFont");
     MLIFont *pStartFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("SelectionScreen/StartFont");
 
     finishedLoadingAnimations = false;
@@ -186,50 +183,50 @@ void SelectionScreen::LoadResources()
     pDividerSprite = ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/RightDivider.png");
 
     delete pStartCaseButton;
-    pStartCaseButton = new TextButton("Start Case", pStartFont);
+    pStartCaseButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/StartCaseText"), pStartFont);
     pStartCaseButton->SetX(580);
     pStartCaseButton->SetY(426);
 
     delete pSelectCaseButton;
-    pSelectCaseButton = new TextButton("Select Case", pStartFont);
+    pSelectCaseButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/SelectCaseText"), pStartFont);
     pSelectCaseButton->SetX(580);
     pSelectCaseButton->SetY(426);
     pSelectCaseButton->SetClickSoundEffect("ButtonClick3");
 
     delete pSaveButton;
-    pSaveButton = new TextButton("Save Game", pStartFont);
+    pSaveButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/SaveGameText"), pStartFont);
     pSaveButton->SetX(587);
     pSaveButton->SetY(426);
 
     delete pLoadButton;
-    pLoadButton = new TextButton("Load Game", pStartFont);
+    pLoadButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/LoadGameText"), pStartFont);
     pLoadButton->SetX(587);
     pLoadButton->SetY(426);
 
     delete pDeleteButton;
-    pDeleteButton = new TextButton("Delete Game", pStartFont);
+    pDeleteButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/DeleteGameText"), pStartFont);
     pDeleteButton->SetX(571);
     pDeleteButton->SetY(365);
 
     delete pBackButton;
-    pBackButton = new TextButton("Back", pTitleScreenFont);
+    pBackButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/BackText"), pTitleScreenFont);
     pBackButton->SetX(840);
     pBackButton->SetY(488);
     pBackButton->SetClickSoundEffect("ButtonClick4");
 
     delete pDeleteConfirmOverlay;
-    pDeleteConfirmOverlay = new PromptOverlay("Really delete save?", false /* allowsTextEntry */);
-    pDeleteConfirmOverlay->AddButton(yesString);
-    pDeleteConfirmOverlay->AddButton(noString);
+    pDeleteConfirmOverlay = new PromptOverlay(pgLocalizableContent->GetText("SelectionScreen/DeleteConfirmationText"), false /* allowsTextEntry */);
+    pDeleteConfirmOverlay->AddButton(pgLocalizableContent->GetText("SelectionScreen/YesText"));
+    pDeleteConfirmOverlay->AddButton(pgLocalizableContent->GetText("SelectionScreen/NoText"));
     pDeleteConfirmOverlay->FinalizeButtons();
 
     delete pEnterSaveNameOverlay;
-    pEnterSaveNameOverlay = new PromptOverlay("Enter save name:", true /* allowsTextEntry */);
+    pEnterSaveNameOverlay = new PromptOverlay(pgLocalizableContent->GetText("SelectionScreen/SaveNamePromptText"), true /* allowsTextEntry */);
     pEnterSaveNameOverlay->SetMaxPixelWidth(SelectorWidth, CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("HandwritingLargeFont"));
 
     delete pIncompatibleCaseNotificationOverlay;
-    pIncompatibleCaseNotificationOverlay = new PromptOverlay("This case is incompatible with this version of My Little Investigations.\n\nCurrent version: %s\nRequired version: %s\n\nPlease update to the latest version to play this case.", false /* allowsTextEntry */);
-    pIncompatibleCaseNotificationOverlay->AddButton("OK");
+    pIncompatibleCaseNotificationOverlay = new PromptOverlay(pgLocalizableContent->GetText("SelectionScreen/IncompatibleCaseFormatText"), false /* allowsTextEntry */);
+    pIncompatibleCaseNotificationOverlay->AddButton(pgLocalizableContent->GetText("SelectionScreen/OKText"));
     pIncompatibleCaseNotificationOverlay->FinalizeButtons();
 
     delete pDescriptionWidget;
@@ -656,7 +653,7 @@ void SelectionScreen::OnButtonClicked(TextButton *pSender)
         else
         {
             char promptOverlayText[1024];
-            sprintf(promptOverlayText, "This case is incompatible with this version of My Little Investigations.\n\nCurrent version: %s\nRequired version: %s\n\nPlease update to the latest version to play this case.", ((string)gVersion).c_str(), ((string)selectionRequiredVersion).c_str());
+            sprintf(promptOverlayText, pgLocalizableContent->GetText("SelectionScreen/IncompatibleCaseText").c_str(), ((string)gVersion).c_str(), ((string)selectionRequiredVersion).c_str());
 
             pIncompatibleCaseNotificationOverlay->SetHeaderText(promptOverlayText);
             pIncompatibleCaseNotificationOverlay->Begin();
@@ -668,7 +665,7 @@ void SelectionScreen::OnButtonClicked(TextButton *pSender)
         vector<string> filePaths = GetSaveFilePathsForCase(lastCaseUuid);
 
         pSelector->Reset();
-        SelectorSection *pSection = new SelectorSection("Save files");
+        SelectorSection *pSection = new SelectorSection(pgLocalizableContent->GetText("SelectionScreen/SaveFilesText"));
 
         if (type == SelectionScreenTypeSaveGame && ResourceLoader::GetInstance()->LoadTemporaryCase(gCaseFilePath))
         {
@@ -813,7 +810,7 @@ void SelectionScreen::OnButtonClicked(TextButton *pSender)
 
 void SelectionScreen::OnPromptOverlayValueReturned(PromptOverlay *pSender, const string &value)
 {
-    if (pSender == pDeleteConfirmOverlay && value == yesString)
+    if (pSender == pDeleteConfirmOverlay && value == pgLocalizableContent->GetText("SelectionScreen/YesText"))
     {
         remove(filePath.c_str());
         pSelector->DeleteCurrentItem();

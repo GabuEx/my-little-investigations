@@ -154,6 +154,6 @@ void PartnerInformation::Draw(int animationOffsetPartner, int yOffset)
         currentYOffset += pBodyFont->GetLineHeight() + AbilityDescriptionExtraLineHeight;
     }
 
-    pHeadingFont->Draw("Passive ability", passiveAbilityHeadingPosition + offsetVector);
-    pHeadingFont->Draw("Active ability", activeAbilityHeadingPosition + offsetVector);
+    pHeadingFont->Draw(pgLocalizableContent->GetText("PartnerInformation/PassiveAbilityText"), passiveAbilityHeadingPosition + offsetVector);
+    pHeadingFont->Draw(pgLocalizableContent->GetText("PartnerInformation/ActiveAbilityText"), activeAbilityHeadingPosition + offsetVector);
 }

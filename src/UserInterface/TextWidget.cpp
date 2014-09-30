@@ -50,8 +50,6 @@ TextWidget::~TextWidget()
 
 }
 
-
-
 void TextWidget::Draw(double x, double y) const
 {
     if (pFont == NULL)

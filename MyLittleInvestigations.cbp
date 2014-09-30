@@ -314,6 +314,8 @@
 		<Unit filename="src/KeyboardHelper.h" />
 		<Unit filename="src/Line.cpp" />
 		<Unit filename="src/Line.h" />
+		<Unit filename="src/LocalizableContent.cpp" />
+		<Unit filename="src/LocalizableContent.h" />
 		<Unit filename="src/MLIException.cpp" />
 		<Unit filename="src/MLIException.h" />
 		<Unit filename="src/MLIFont.cpp" />

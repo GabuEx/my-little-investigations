@@ -41,7 +41,7 @@ GameScreen::GameScreen()
     caseIsReady = false;
     caseNeedsReset = false;
     startedLoadingResources = false;
-    numLoadingDots = 1;
+    loadingTextStage = 0;
     timeSinceLastLoadingDotsUpdate = 0;
 
     pConfrontationEntranceBackgroundVideo = NULL;
@@ -157,11 +157,11 @@ void GameScreen::Update(int delta)
         while (timeSinceLastLoadingDotsUpdate > LoadingDotsUpdateDelayMs)
         {
             timeSinceLastLoadingDotsUpdate -= LoadingDotsUpdateDelayMs;
-            numLoadingDots++;
+            loadingTextStage++;
 
-            if (numLoadingDots > 3)
+            if (loadingTextStage > 2)
             {
-                numLoadingDots = 1;
+                loadingTextStage = 0;
             }
         }
 
@@ -218,23 +218,35 @@ void GameScreen::Draw()
 
     if (!caseIsReady)
     {
-        string loadingString = "Loading";
+        char loadingStringForWidth[256];
+        char loadingString[256];
+
         string loadStage = Case::GetInstance()->GetLoadStage();
 
-        if (loadStage.length() > 0)
-        {
-            loadingString += " " + loadStage;
-        }
+        sprintf(loadingStringForWidth, pgLocalizableContent->GetText("GameScreen/LoadingFormatTextForWidth").c_str(), loadStage.c_str());
 
         MLIFont *pFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("MouseOverFont");
-        int stringWidth = pFont->GetWidth(loadingString);
+        int stringWidth = pFont->GetWidth(string(loadingStringForWidth));
 
-        for (int i = 0; i < numLoadingDots; i++)
+        switch (loadingTextStage)
         {
-            loadingString += ".";
+        case 0:
+            sprintf(loadingString, pgLocalizableContent->GetText("GameScreen/LoadingFormatText0").c_str(), loadStage.c_str());
+            break;
+
+        case 1:
+            sprintf(loadingString, pgLocalizableContent->GetText("GameScreen/LoadingFormatText1").c_str(), loadStage.c_str());
+            break;
+
+        case 2:
+            sprintf(loadingString, pgLocalizableContent->GetText("GameScreen/LoadingFormatText2").c_str(), loadStage.c_str());
+            break;
+
+        default:
+            throw MLIException("We should never enter loading text stage 3 or higher.");
         }
 
-        pFont->Draw(loadingString, (Vector2(gScreenWidth, gScreenHeight) * 0.5) - (Vector2(stringWidth, pFont->GetLineHeight()) * 0.5));
+        pFont->Draw(string(loadingString), (Vector2(gScreenWidth, gScreenHeight) * 0.5) - (Vector2(stringWidth, pFont->GetLineHeight()) * 0.5));
 
         return;
     }

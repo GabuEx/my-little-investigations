@@ -97,3 +97,7 @@ Version gVersion(1, 0, 0);
 #ifdef UPDATER
 string gVersionsXmlFilePath = "";
 #endif
+
+#ifdef GAME_EXECUTABLE
+LocalizableContent *pgLocalizableContent = NULL;
+#endif

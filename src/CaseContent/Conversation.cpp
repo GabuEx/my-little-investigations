@@ -44,9 +44,6 @@
 
 const double MillisecondsBetweenMouthMovement = 100;
 
-const char *pFastForwardText = "FAST FORWARD";
-const char *pStopText = "STOP";
-
 const int IconOffscreenOffset = 300;
 const double HealthNumberDamageScale = 0.6;
 const double ConfrontationEntranceAnimationDuration = 4536; // ms;
@@ -73,7 +70,7 @@ Conversation::UnlockCondition * Conversation::UnlockCondition::LoadFromXml(XmlRe
     }
     else
     {
-        throw new MLIException("Unknown unlock condition type.");
+        throw MLIException("Unknown unlock condition type.");
     }
 }
 
@@ -261,7 +258,7 @@ void Conversation::Begin(State *pState)
     pState->SetCurrentConfrontation(NULL);
 
     pSkipTab->Reset();
-    pSkipTab->SetText(pFastForwardText);
+    pSkipTab->SetText(pgLocalizableContent->GetText("Conversation/FastForwardText"));
     pSkipArrow->Reset();
 
     Case::GetInstance()->GetAudioManager()->LowerMusicVolumeForDialog();
@@ -295,11 +292,11 @@ void Conversation::Update(int delta)
 
             if (pState->GetIsFastForwarding())
             {
-                pSkipTab->SetText(pStopText);
+                pSkipTab->SetText(pgLocalizableContent->GetText("Conversation/StopText"));
             }
             else
             {
-                pSkipTab->SetText(pFastForwardText);
+                pSkipTab->SetText(pgLocalizableContent->GetText("Conversation/FastForwardText"));
             }
         }
     }
@@ -307,7 +304,7 @@ void Conversation::Update(int delta)
     {
         pState->SetIsFastForwarding(false);
         pSkipTab->Reset();
-        pSkipTab->SetText(pFastForwardText);
+        pSkipTab->SetText(pgLocalizableContent->GetText("Conversation/FastForwardText"));
     }
 
     if (pState->GetIsFastForwarding())
@@ -526,7 +523,7 @@ void Conversation::LoadFromXmlCore(XmlReader *pReader)
 {
     pCurrentContinuousAction = NULL;
     pLastContinuousAction = NULL;
-    pSkipTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, pFastForwardText, false /* useCancelClickSoundEffect */, TabRowTop);
+    pSkipTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Conversation/FastForwardText"), false /* useCancelClickSoundEffect */, TabRowTop);
     pSkipArrow = new SkipArrow(789, 8 + TabHeight, 10, false /* isClickable */, true /* isFFwd */);
 
     if (pReader->ElementExists("Id"))
@@ -1128,7 +1125,7 @@ void Conversation::ShowDialogAction::Begin(State *pState)
 
     if (speakerPosition == CharacterPositionUnknown)
     {
-        speakerName = "????";
+        speakerName = pgLocalizableContent->GetText("Conversation/UnknownCharacterNameText");
     }
     else if (speakerPosition == CharacterPositionOffscreen)
     {

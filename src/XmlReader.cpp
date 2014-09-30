@@ -71,7 +71,11 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
     {
 #endif
         pDocument = new XMLDocument();
-        pDocument->LoadFile(pFilePath);
+
+        if (pDocument->LoadFile(pFilePath) != XML_NO_ERROR)
+        {
+            throw MLIException(string("File not found: ") + filePath);
+        }
 #ifdef GAME_EXECUTABLE
     }
 #endif
@@ -149,9 +153,7 @@ int XmlReader::ReadIntElement(const char *pElementName)
 {
     int value;
     StartElement(pElementName);
-    XMLError error = pCurrentNode->ToElement()->QueryIntText(&value);
-    if (error != XML_NO_ERROR)
-        throw MLIException("XML: error, expect int.");
+    value = ReadInt();
     EndElement();
     return value;
 }
@@ -160,9 +162,7 @@ double XmlReader::ReadDoubleElement(const char *pElementName)
 {
     double value;
     StartElement(pElementName);
-    XMLError error = pCurrentNode->ToElement()->QueryDoubleText(&value);
-    if (error != XML_NO_ERROR)
-        throw MLIException("XML: error, expect double.");
+    value = ReadDouble();
     EndElement();
     return value;
 }
@@ -171,31 +171,73 @@ bool XmlReader::ReadBooleanElement(const char *pElementName)
 {
     bool value;
     StartElement(pElementName);
-    XMLError error = pCurrentNode->ToElement()->QueryBoolText(&value);
-    if (error != XML_NO_ERROR)
-        throw MLIException("XML: error, expect double.");
+    value = ReadBoolean();
     EndElement();
     return value;
 }
 
 string XmlReader::ReadTextElement(const char *pElementName)
 {
+    string value;
     StartElement(pElementName);
-    const char *value = pCurrentNode->ToElement()->GetText();
+    value = ReadText();
     EndElement();
+    return value;
+}
+
+#ifdef GAME_EXECUTABLE
+Image * XmlReader::ReadPngElement(const char *pElementName)
+{
+    Image *pValue = NULL;
+    StartElement(pElementName);
+    pValue = ReadPng();
+    EndElement();
+    return pValue;
+}
+#endif
+
+int XmlReader::ReadInt()
+{
+    int value;
+    XMLError error = pCurrentNode->ToElement()->QueryIntText(&value);
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML error: expected int.");
+    return value;
+}
+
+double XmlReader::ReadDouble()
+{
+    double value;
+    XMLError error = pCurrentNode->ToElement()->QueryDoubleText(&value);
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML error: expected double.");
+    return value;
+}
+
+bool XmlReader::ReadBoolean()
+{
+    bool value;
+    XMLError error = pCurrentNode->ToElement()->QueryBoolText(&value);
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML error: expected Boolean.");
+    return value;
+}
+
+string XmlReader::ReadText()
+{
+    const char *value = pCurrentNode->ToElement()->GetText();
     // looks like tinyxml2 collapse "<tag> </tag>" and return NULL
     // with GetText() despite of PRESERVE_WHITESPACE flag
     if (value == NULL)
         return string();
     else
         return string(value);
-
 }
 
 #ifdef GAME_EXECUTABLE
-Image * XmlReader::ReadPngElement(const char *pElementName)
+Image * XmlReader::ReadPng()
 {
-    string s = ReadTextElement(pElementName);
+    string s = ReadText();
 
     string decodedString;
     CryptoPP::StringSource(s, true, new CryptoPP::Base64Decoder(new CryptoPP::StringSink(decodedString)));
@@ -211,3 +253,44 @@ Image * XmlReader::ReadPngElement(const char *pElementName)
     return pSprite;
 }
 #endif
+
+bool XmlReader::AttributeExists(const char *pAttributeName)
+{
+    return pCurrentNode->ToElement()->Attribute(pAttributeName) != NULL;
+}
+
+int XmlReader::ReadIntAttribute(const char *pAttributeName)
+{
+    int value;
+    XMLError error = pCurrentNode->ToElement()->QueryIntAttribute(pAttributeName, &value);
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML error: expected int.");
+    return value;
+}
+
+double XmlReader::ReadDoubleAttribute(const char *pAttributeName)
+{
+    double value;
+    XMLError error = pCurrentNode->ToElement()->QueryDoubleAttribute(pAttributeName, &value);
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML error: expected double.");
+    return value;
+}
+
+bool XmlReader::ReadBooleanAttribute(const char *pAttributeName)
+{
+    bool value;
+    XMLError error = pCurrentNode->ToElement()->QueryBoolAttribute(pAttributeName, &value);
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML error: expected Boolean.");
+    return value;
+}
+
+string XmlReader::ReadTextAttribute(const char *pAttributeName)
+{
+    const char *value = pCurrentNode->ToElement()->Attribute(pAttributeName);
+    if (value == NULL)
+        return string();
+    else
+        return string(value);
+}

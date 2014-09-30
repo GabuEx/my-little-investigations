@@ -1,5 +1,5 @@
 /**
- * Basic header/include file for GameScreen.cpp.
+ * Basic header/include file for LocalizableContent.cpp.
  *
  * @author GabuEx, dawnmew
  * @since 1.0
@@ -27,57 +27,51 @@
  * SOFTWARE.
  */
 
-#ifndef GAMESCREEN_H
-#define GAMESCREEN_H
+#ifndef LOCALIZABLECONTENT_H
+#define LOCALIZABLECONTENT_H
 
-#include "MLIScreen.h"
-#include "../CaseContent/Area.h"
-#include "../Events/CaseParsingEventProvider.h"
+#include "XmlReader.h"
 
-class GameScreen : public MLIScreen, public CaseParsingEventListener
+#include <SDL2/SDL.h>
+
+#include <map>
+#include <string>
+
+using namespace std;
+
+class LocalizableContent
 {
-private:
-    class LoadCaseParameters
+public:
+    struct Font
     {
-    public:
-        LoadCaseParameters(const string &caseFilePath)
+        Font()
+            : Filename("")
+            , Size(0)
         {
-            this->caseFilePath = caseFilePath;
         }
 
-        string GetCaseFilePath() { return this->caseFilePath; }
+        Font(string filename, int size)
+            : Filename(filename)
+            , Size(size)
+        {
+        }
 
-    private:
-        string caseFilePath;
+        string Filename;
+        int Size;
     };
 
-public:
-    GameScreen();
-    virtual ~GameScreen();
+    LocalizableContent();
+    LocalizableContent(XmlReader *pReader);
+    ~LocalizableContent();
 
-    void LoadResources();
-    void UnloadResources();
-    virtual void Init();
-    static int LoadCaseStatic(void *pData);
-    static int UnloadCaseStatic(void *pData);
-    void Update(int delta);
-    void UpdateAudio(int delta);
-    void Draw();
-    void OnCaseParsingComplete(const string &caseFileName);
+    LocalizableContent::Font GetFont(const string &fontId);
+    string GetText(const string &textId);
 
 private:
-    int loadingTextStage;
-    int timeSinceLastLoadingDotsUpdate;
+    SDL_sem *pAccessSemaphore;
 
-    bool caseIsReady;
-    bool caseNeedsReset;
-    bool startedLoadingResources;
-    bool isFinishing;
-
-    Video *pConfrontationEntranceBackgroundVideo;
-    Video *pConfrontationEntranceVfxVideo;
-
-    Video *pSpeedLinesVideo;
+    map<string, LocalizableContent::Font> fontIdToFontMap;
+    map<string, string> textIdToTextMap;
 };
 
 #endif

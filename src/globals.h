@@ -30,6 +30,10 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#ifdef GAME_EXECUTABLE
+#include "LocalizableContent.h"
+#endif
+
 #include "Version.h"
 
 #include <SDL2/SDL.h>
@@ -114,6 +118,10 @@ extern Version gVersion;
 
 #ifdef UPDATER
 extern string gVersionsXmlFilePath;
+#endif
+
+#ifdef GAME_EXECUTABLE
+extern LocalizableContent *pgLocalizableContent;
 #endif
 
 #endif

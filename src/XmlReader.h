@@ -54,6 +54,7 @@ public:
     void EndElement();
     void StartList(const char *pListElementName);
     bool MoveToNextListItem();
+
     int ReadIntElement(const char *pElementName);
     double ReadDoubleElement(const char *pElementName);
     bool ReadBooleanElement(const char *pElementName);
@@ -62,6 +63,21 @@ public:
 #ifdef GAME_EXECUTABLE
     Image * ReadPngElement(const char *pElementName);
 #endif
+
+    int ReadInt();
+    double ReadDouble();
+    bool ReadBoolean();
+    string ReadText();
+
+#ifdef GAME_EXECUTABLE
+    Image * ReadPng();
+#endif
+
+    bool AttributeExists(const char *pAttributeName);
+    int ReadIntAttribute(const char *pAttributeName);
+    double ReadDoubleAttribute(const char *pAttributeName);
+    bool ReadBooleanAttribute(const char *pAttributeName);
+    string ReadTextAttribute(const char *pAttributeName);
 
 private:
     string filePath;

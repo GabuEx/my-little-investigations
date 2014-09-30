@@ -62,7 +62,7 @@ TitleScreen::TitleScreen()
     pOptionsButton = NULL;
     pExitButton = NULL;
 
-    pNoCasesPrompt = new PromptOverlay("No cases are installed!\nYou should either install some or reinstall My Little Investigations.", false /* allowsTextEntry */);
+    pNoCasesPrompt = new PromptOverlay(pgLocalizableContent->GetText("TitleScreen/NoCasesText"), false /* allowsTextEntry */);
     pNoCasesPrompt->AddButton("OK");
     pNoCasesPrompt->FinalizeButtons();
 
@@ -112,7 +112,7 @@ void TitleScreen::LoadResources()
 {
     finishedLoadingAnimations = false;
 
-    MLIFont *pTitleScreenFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("TitleScreenFont");
+    MLIFont *pTitleScreenFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("MenuFont");
 
     delete pBackgroundSprite;
     pBackgroundSprite = ResourceLoader::GetInstance()->LoadImage("image/TitleScreen/Background.png");
@@ -122,13 +122,13 @@ void TitleScreen::LoadResources()
     pFadeInSprite = ResourceLoader::GetInstance()->LoadImage("image/TitleScreen/FadeInBackground.png");
 
     delete pNewGameButton;
-    pNewGameButton = new TextButton("New Game", pTitleScreenFont);
+    pNewGameButton = new TextButton(pgLocalizableContent->GetText("TitleScreen/NewGameText"), pTitleScreenFont);
     delete pLoadGameButton;
-    pLoadGameButton = new TextButton("Load Game", pTitleScreenFont);
+    pLoadGameButton = new TextButton(pgLocalizableContent->GetText("TitleScreen/LoadGameText"), pTitleScreenFont);
     delete pOptionsButton;
-    pOptionsButton = new TextButton("Options", pTitleScreenFont);
+    pOptionsButton = new TextButton(pgLocalizableContent->GetText("TitleScreen/OptionsText"), pTitleScreenFont);
     delete pExitButton;
-    pExitButton = new TextButton("Exit", pTitleScreenFont);
+    pExitButton = new TextButton(pgLocalizableContent->GetText("TitleScreen/ExitText"), pTitleScreenFont);
 
     int totalButtonHeight =
         pNewGameButton->GetHeight() +
