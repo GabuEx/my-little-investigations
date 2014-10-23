@@ -32,6 +32,11 @@
 
 class XmlReader;
 
+#ifdef CASE_CREATOR
+#include <QPoint>
+#include <QSize>
+#endif
+
 class Vector2
 {
 public:
@@ -57,7 +62,7 @@ public:
     const Vector2 operator+(const Vector2 &rhs) const;
     const Vector2 operator-(const Vector2 &rhs) const;
     const Vector2 operator*(const double &scalar) const;
-    const double operator*(const Vector2 &rhs) const;
+    double operator*(const Vector2 &rhs) const;
 
     bool operator==(const Vector2 &other) const;
     bool operator!=(const Vector2 &other) const;
@@ -65,6 +70,11 @@ public:
     bool operator<(const Vector2 &other) const;
 
     Vector2(XmlReader *pReader);
+
+#ifdef CASE_CREATOR
+    QPoint ToQPoint();
+    QSize ToQSize();
+#endif
 
 private:
     double x;

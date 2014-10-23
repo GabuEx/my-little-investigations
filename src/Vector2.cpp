@@ -107,7 +107,7 @@ const Vector2 Vector2::operator*(const double &scalar) const
     return Vector2(*this) *= scalar;
 }
 
-const double Vector2::operator*(const Vector2 &other) const
+double Vector2::operator*(const Vector2 &other) const
 {
     return x * other.x + y * other.y;
 }
@@ -141,3 +141,15 @@ Vector2::Vector2(XmlReader *pReader)
     y = pReader->ReadDoubleElement("Y");
     pReader->EndElement();
 }
+
+#ifdef CASE_CREATOR
+QPoint Vector2::ToQPoint()
+{
+    return QPoint((int)x, (int)y);
+}
+
+QSize Vector2::ToQSize()
+{
+    return QSize((int)x, (int)y);
+}
+#endif

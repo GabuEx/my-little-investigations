@@ -81,3 +81,10 @@ RectangleWH::RectangleWH(XmlReader *pReader)
 
     pReader->EndElement();
 }
+
+#ifdef CASE_CREATOR
+QRect RectangleWH::ToQRect()
+{
+    return QRect((int)x, (int)y, (int)width, (int)height);
+}
+#endif

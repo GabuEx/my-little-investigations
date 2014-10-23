@@ -22,7 +22,9 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 #include <SDL2/SDL.h>
+#endif
 
 #ifndef TINYXML2_INCLUDED
 #define TINYXML2_INCLUDED
@@ -1554,7 +1556,9 @@ public:
         an errorID.
     */
 
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     XMLError LoadFile( SDL_RWops* );
+#endif
 
     /**
     	Save the XML file to disk.
