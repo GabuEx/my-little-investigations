@@ -30,6 +30,7 @@
 #include "MLIFont.h"
 #include "globals.h"
 #include "ResourceLoader.h"
+#include "AutoSemaphore.h"
 #include "utf8cpp/utf8.h"
 
 #include <iostream>
@@ -44,6 +45,7 @@ MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool 
       invertedColors(invertedColors)
 {
     pTtfFont = NULL;
+    pAccessSemaphore = SDL_CreateSemaphore(1);
 
     Reinit();
 }
@@ -58,6 +60,7 @@ MLIFont::MLIFont(const string &fontId, int strokeWidth, bool invertedColors)
     fontSize = pgLocalizableContent->GetFont(fontId).Size;
 
     pTtfFont = NULL;
+    pAccessSemaphore = SDL_CreateSemaphore(1);
 
     Reinit();
 }
@@ -70,6 +73,9 @@ MLIFont::~MLIFont()
         TTF_CloseFont(pTtfFont);
     }
     pTtfFont = NULL;
+
+    SDL_DestroySemaphore(pAccessSemaphore);
+    pAccessSemaphore = NULL;
 }
 
 void MLIFont::Reinit()
@@ -247,6 +253,8 @@ void MLIFont::Draw(const string &s, Vector2 position, Color color, RectangleWH c
 
 void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, double scale, RectangleWH clipRect)
 {
+    AutoSemaphore sem(pAccessSemaphore);
+
     // If we're trying to draw an empty string, we can just return -
     // we're not gonna draw anything anyhow.
     if (s.length() == 0)
@@ -335,6 +343,7 @@ void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, doubl
 
 double MLIFont::GetWidth(const string &s)
 {
+    AutoSemaphore sem(pAccessSemaphore);
     CheckScale();
 
     double x = 0;
@@ -378,6 +387,7 @@ double MLIFont::GetWidth(const string &s)
 
 double MLIFont::GetHeight(const string &s)
 {
+    AutoSemaphore sem(pAccessSemaphore);
     CheckScale();
     int w, h;
 
@@ -387,18 +397,21 @@ double MLIFont::GetHeight(const string &s)
 
 double MLIFont::GetLineHeight()
 {
+    AutoSemaphore sem(pAccessSemaphore);
     CheckScale();
     return (double)TTF_FontHeight(pTtfFont) / GetFontScale();
 }
 
 double MLIFont::GetLineAscent()
 {
+    AutoSemaphore sem(pAccessSemaphore);
     CheckScale();
     return (double)TTF_FontAscent(pTtfFont) / GetFontScale();
 }
 
 double MLIFont::GetLineDescent()
 {
+    AutoSemaphore sem(pAccessSemaphore);
     CheckScale();
     return (double)TTF_FontDescent(pTtfFont) / GetFontScale();
 }

@@ -1725,6 +1725,7 @@ XMLError XMLDocument::LoadFile( FILE* fp )
     return _errorID;
 }
 
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 XMLError XMLDocument::LoadFile( SDL_RWops* fp )
 {
     Clear();
@@ -1765,7 +1766,7 @@ XMLError XMLDocument::LoadFile( SDL_RWops* fp )
     ParseDeep( _charBuffer + (p-_charBuffer), 0 );
     return _errorID;
 }
-
+#endif
 
 XMLError XMLDocument::SaveFile( const char* filename, bool compact )
 {

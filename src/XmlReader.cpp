@@ -29,13 +29,15 @@
 
 #include "XmlReader.h"
 
+#ifndef CASE_CREATOR
 #include "Image.h"
+
+#include <cryptopp/base64.h>
+#endif
 
 #ifdef GAME_EXECUTABLE
 #include "ResourceLoader.h"
 #endif
-
-#include <cryptopp/base64.h>
 
 using namespace tinyxml2;
 
@@ -83,6 +85,7 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
 
+#ifndef CASE_CREATOR
 void XmlReader::ParseXmlContent(const string &xmlContent)
 {
     delete pDocument;
@@ -93,6 +96,18 @@ void XmlReader::ParseXmlContent(const string &xmlContent)
 
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
+#else
+void XmlReader::ParseXmlContent(const QString &xmlContent)
+{
+    delete pDocument;
+    pDocument = new XMLDocument();
+    XMLError error = pDocument->Parse(xmlContent.toUtf8().constData());
+    if (error != XML_NO_ERROR)
+        throw MLIException("XML: Error while parsing file.");
+
+    pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
+}
+#endif
 
 void XmlReader::StartElement(const char *pElementName)
 {
@@ -176,6 +191,7 @@ bool XmlReader::ReadBooleanElement(const char *pElementName)
     return value;
 }
 
+#ifndef CASE_CREATOR
 string XmlReader::ReadTextElement(const char *pElementName)
 {
     string value;
@@ -184,7 +200,18 @@ string XmlReader::ReadTextElement(const char *pElementName)
     EndElement();
     return value;
 }
+#else
+QString XmlReader::ReadTextElement(const char *pElementName)
+{
+    QString value;
+    StartElement(pElementName);
+    value = ReadText();
+    EndElement();
+    return value;
+}
+#endif
 
+#ifndef CASE_CREATOR
 #ifdef GAME_EXECUTABLE
 Image * XmlReader::ReadPngElement(const char *pElementName)
 {
@@ -193,6 +220,16 @@ Image * XmlReader::ReadPngElement(const char *pElementName)
     pValue = ReadPng();
     EndElement();
     return pValue;
+}
+#endif
+#else
+QImage XmlReader::ReadPngElement(const char *pElementName)
+{
+    QImage value;
+    StartElement(pElementName);
+    value = ReadPng();
+    EndElement();
+    return value;
 }
 #endif
 
@@ -223,6 +260,7 @@ bool XmlReader::ReadBoolean()
     return value;
 }
 
+#ifndef CASE_CREATOR
 string XmlReader::ReadText()
 {
     const char *value = pCurrentNode->ToElement()->GetText();
@@ -233,7 +271,20 @@ string XmlReader::ReadText()
     else
         return string(value);
 }
+#else
+QString XmlReader::ReadText()
+{
+    const char *value = pCurrentNode->ToElement()->GetText();
+    // looks like tinyxml2 collapse "<tag> </tag>" and return NULL
+    // with GetText() despite of PRESERVE_WHITESPACE flag
+    if (value == NULL)
+        return QString();
+    else
+        return QString(value);
+}
+#endif
 
+#ifndef CASE_CREATOR
 #ifdef GAME_EXECUTABLE
 Image * XmlReader::ReadPng()
 {
@@ -251,6 +302,15 @@ Image * XmlReader::ReadPng()
     delete [] pDecodedString;
 
     return pSprite;
+}
+#endif
+#else
+QImage XmlReader::ReadPng()
+{
+    QString s = ReadText();
+
+    QByteArray imageBytes = QByteArray::fromBase64(QByteArray(s.toUtf8().constData(), s.length()));
+    return QImage(imageBytes);
 }
 #endif
 

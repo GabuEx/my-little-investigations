@@ -310,6 +310,14 @@ void Image::Draw(
     double scale,
     Color color)
 {
+#ifdef GAME_EXECUTABLE
+    Uint32 currentThreadId = SDL_ThreadID();
+
+    if (gUiThreadId != currentThreadId)
+    {
+        throw new MLIException("All images must be drawn on the UI thread.");
+    }
+#endif
 
     // If this isn't a valid sprite, then we just won't draw anything.
     if (!valid)

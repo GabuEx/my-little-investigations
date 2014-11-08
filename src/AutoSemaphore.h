@@ -1,5 +1,7 @@
 /**
- * Basic header/include file for Polygon.cpp.
+ * Helper object that automatically waits on and then posts to a semaphore
+ * on construction and destruction, respectively.
+ * Useful to ensure that a semaphore is posted to when an operation completes.
  *
  * @author GabuEx, dawnmew
  * @since 1.0
@@ -27,39 +29,27 @@
  * SOFTWARE.
  */
 
-#ifndef POLYGON_H
-#define POLYGON_H
+#ifndef AUTOSEMAPHORE_H
+#define AUTOSEMAPHORE_H
 
-#include "Rectangle.h"
-#include "Vector2.h"
+#include <SDL2/SDL.h>
 
-#ifndef CASE_CREATOR
-#include <vector>
-#else
-#include <QList>
-#endif
-
-using namespace std;
-
-class XmlReader;
-
-class GeometricPolygon
+class AutoSemaphore
 {
 public:
-    GeometricPolygon() {}
-    GeometricPolygon(XmlReader *pReader);
+    AutoSemaphore(SDL_sem *pSemaphore)
+    {
+        this->pSemaphore = pSemaphore;
+        SDL_SemWait(pSemaphore);
+    }
 
-    bool Contains(Vector2 point);
-    RectangleWH GetBoundingBox();
-
-    const GeometricPolygon operator-(const Vector2 &other) const;
+    ~AutoSemaphore()
+    {
+        SDL_SemPost(pSemaphore);
+    }
 
 private:
-#ifndef CASE_CREATOR
-    vector<Vector2> points;
-#else
-    QList<Vector2> points;
-#endif
+    SDL_sem *pSemaphore;
 };
 
 #endif

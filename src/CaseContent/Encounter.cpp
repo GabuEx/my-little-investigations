@@ -778,15 +778,15 @@ void Encounter::RefreshButtonArrayContents()
     {
         Conversation *pConversation = conversationList[i];
 
-        if (pConversation->GetIsEnabled() && (pConversation->GetRequiredPartnerId().length() == 0 || !pConversation->GetHasBeenCompleted()))
+        if (pConversation->GetIsEnabled())
         {
             ButtonArrayLoadParameters loadParameters;
 
             loadParameters.text = pConversation->GetName();
 
-            if (pConversation->GetIsLocked() || (pConversation->GetRequiredPartnerId().length() > 0 && pConversation->GetWrongPartnerUsed() && Case::GetInstance()->GetPartnerManager()->GetPartnerFromId(pConversation->GetRequiredPartnerId()) != NULL))
+            if (pConversation->GetIsLocked())
             {
-                loadParameters.lockCount = pConversation->GetIsLocked() ? pConversation->GetLockCount() : 1;
+                loadParameters.lockCount = pConversation->GetLockCount();
             }
 
             loadParameters.unlockedLockCount = 0;
@@ -824,12 +824,6 @@ void Encounter::RefreshButtonArrayContents()
                 sprintf(text, pgLocalizableContent->GetText("Encounter/InterrogationDesignationFormatText").c_str(), pInterrogation->GetName().c_str());
 
                 loadParameters.text = string(text);
-
-                if (pInterrogation->GetRequiredPartnerId().length() > 0 && pInterrogation->GetWrongPartnerUsed() && Case::GetInstance()->GetPartnerManager()->GetPartnerFromId(pInterrogation->GetRequiredPartnerId()) != NULL)
-                {
-                    loadParameters.lockCount = 1;
-                }
-
                 loadParametersList.push_back(loadParameters);
             }
         }
@@ -849,12 +843,6 @@ void Encounter::RefreshButtonArrayContents()
                 sprintf(text, pgLocalizableContent->GetText("Encounter/ConfrontationDesignationFormatText").c_str(), pConfrontation->GetName().c_str());
 
                 loadParameters.text = string(text);
-
-                if (pConfrontation->GetRequiredPartnerId().length() > 0 && pConfrontation->GetWrongPartnerUsed() && Case::GetInstance()->GetPartnerManager()->GetPartnerFromId(pConfrontation->GetRequiredPartnerId()) != NULL)
-                {
-                    loadParameters.lockCount = 1;
-                }
-
                 loadParametersList.push_back(loadParameters);
             }
         }
@@ -930,9 +918,7 @@ void Encounter::OnMainMenuButtonClicked(int id)
     {
         Conversation *pConversation = allConversationList[i];
 
-        if (!pConversation->GetIsEnabled() ||
-                (pConversation->GetRequiredPartnerId().length() > 0 && pConversation->GetHasBeenCompleted()) ||
-                (pConversation->GetDisappearsAfterCompleted() && pConversation->GetHasBeenCompleted()))
+        if (!pConversation->GetIsEnabled() || (pConversation->GetDisappearsAfterCompleted() && pConversation->GetHasBeenCompleted()))
         {
             id++;
         }

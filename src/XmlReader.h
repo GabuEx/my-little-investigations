@@ -34,9 +34,16 @@
 #include "tinyxml2/tinyxml2.h"
 #include "MLIException.h"
 
+#ifdef CASE_CREATOR
+#include <QString>
+#include <QImage>
+#endif
+
 using namespace std;
 
+#ifdef GAME_EXECUTABLE
 class Image;
+#endif
 
 class XmlReader
 {
@@ -47,7 +54,11 @@ public:
     ~XmlReader();
 
     void ParseXmlFile(const char *pFilePath);
+#ifndef CASE_CREATOR
     void ParseXmlContent(const string &xmlContent);
+#else
+    void ParseXmlContent(const QString &xmlContent);
+#endif
 
     void StartElement(const char *pElementName);
     bool ElementExists(const char *pElementName);
@@ -58,19 +69,35 @@ public:
     int ReadIntElement(const char *pElementName);
     double ReadDoubleElement(const char *pElementName);
     bool ReadBooleanElement(const char *pElementName);
+#ifndef CASE_CREATOR
     string ReadTextElement(const char *pElementName);
+#else
+    QString ReadTextElement(const char *pElementName);
+#endif
 
+#ifndef CASE_CREATOR
 #ifdef GAME_EXECUTABLE
     Image * ReadPngElement(const char *pElementName);
+#endif
+#else
+    QImage ReadPngElement(const char *pElementName);
 #endif
 
     int ReadInt();
     double ReadDouble();
     bool ReadBoolean();
+#ifndef CASE_CREATOR
     string ReadText();
+#else
+    QString ReadText();
+#endif
 
+#ifndef CASE_CREATOR
 #ifdef GAME_EXECUTABLE
     Image * ReadPng();
+#endif
+#else
+    QImage ReadPng();
 #endif
 
     bool AttributeExists(const char *pAttributeName);

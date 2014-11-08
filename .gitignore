@@ -51,3 +51,4 @@ mli-versions.xml
 *.cscope_file_list
 *.pro
 *.pro.user
+build-*

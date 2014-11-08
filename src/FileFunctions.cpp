@@ -29,6 +29,8 @@
 
 #include "FileFunctions.h"
 
+#include <SDL2/SDL.h>
+
 #include "KeyboardHelper.h"
 
 #include "Utils.h"

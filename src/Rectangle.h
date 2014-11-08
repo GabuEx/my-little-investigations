@@ -32,6 +32,10 @@
 
 class XmlReader;
 
+#ifdef CASE_CREATOR
+#include <QRect>
+#endif
+
 class RectangleWH
 {
 public:
@@ -53,6 +57,10 @@ public:
     bool operator!=(const RectangleWH &other) const;
 
     RectangleWH(XmlReader *pReader);
+
+#ifdef CASE_CREATOR
+    QRect ToQRect();
+#endif
 
 private:
     double x;
