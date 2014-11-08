@@ -30,7 +30,12 @@
 #ifndef COLOR_H
 #define COLOR_H
 
+#ifndef CASE_CREATOR
 #include "SDL2/SDL_stdinc.h"
+#else
+#include <QtGlobal>
+#endif
+
 class XmlReader;
 
 class Color
@@ -43,16 +48,32 @@ public:
 
     double GetA() const { return this->a; }
     double GetIntA() const { return this->intA; }
+#ifndef CASE_CREATOR
     void SetA(double a) { this->a = a; this->intA = (Uint8)(a * 255); }
+#else
+    void SetA(double a) { this->a = a; this->intA = (qint8)(a * 255); }
+#endif
     double GetR() const { return this->r; }
     double GetIntR() const { return this->intR; }
+#ifndef CASE_CREATOR
     void SetR(double r) { this->r = r; this->intR = (Uint8)(r * 255); }
+#else
+    void SetR(double r) { this->r = r; this->intR = (qint8)(r * 255); }
+#endif
     double GetG() const { return this->g; }
     double GetIntG() const { return this->intG; }
+#ifndef CASE_CREATOR
     void SetG(double g) { this->g = g; this->intG = (Uint8)(g * 255); }
+#else
+    void SetG(double g) { this->g = g; this->intG = (qint8)(g * 255); }
+#endif
     double GetB() const { return this->b; }
     double GetIntB() const { return this->intB; }
+#ifndef CASE_CREATOR
     void SetB(double b) { this->b = b; this->intB = (Uint8)(b * 255); }
+#else
+    void SetB(double b) { this->b = b; this->intB = (qint8)(b * 255); }
+#endif
 
     Color & operator=(const Color &rhs);
 
@@ -67,10 +88,17 @@ private:
     double g;
     double b;
 
+#ifndef CASE_CREATOR
     Uint8 intA;
     Uint8 intR;
     Uint8 intG;
     Uint8 intB;
+#else
+    qint8 intA;
+    qint8 intR;
+    qint8 intG;
+    qint8 intB;
+#endif
 };
 
 #endif

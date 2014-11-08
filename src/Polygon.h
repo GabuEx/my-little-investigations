@@ -32,7 +32,12 @@
 
 #include "Rectangle.h"
 #include "Vector2.h"
+
+#ifndef CASE_CREATOR
 #include <vector>
+#else
+#include <QList>
+#endif
 
 using namespace std;
 
@@ -50,7 +55,11 @@ public:
     const GeometricPolygon operator-(const Vector2 &other) const;
 
 private:
+#ifndef CASE_CREATOR
     vector<Vector2> points;
+#else
+    QList<Vector2> points;
+#endif
 };
 
 #endif

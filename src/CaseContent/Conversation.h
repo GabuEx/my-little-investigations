@@ -69,7 +69,7 @@ public:
         virtual bool GetIsConditionMet() = 0;
 
         virtual bool GetHasHandledMetCondition() { return this->hasHandledMetCondition; }
-        virtual void SetHasHandledMetCondition(bool hasHandledMetCondition) { this->hasHandledMetCondition = hasHandledMetCondition; };
+        virtual void SetHasHandledMetCondition(bool hasHandledMetCondition) { this->hasHandledMetCondition = hasHandledMetCondition; }
 
         virtual bool Equals(UnlockCondition *pOtherCondition) = 0;
         virtual void SaveToXml(XmlWriter *pWriter) = 0;
@@ -144,9 +144,6 @@ public:
 
     vector<UnlockCondition *> * GetUnlockConditions() { return &this->unlockConditions; }
 
-    string GetRequiredPartnerId() const { return this->requiredPartnerId; }
-    void SetRequiredPartnerId(const string &requiredPartnerId) { this->requiredPartnerId = requiredPartnerId; }
-
     bool GetIsEnabled() const { return this->isEnabled; }
     void SetIsEnabled(bool isEnabled) { this->isEnabled = isEnabled; }
 
@@ -192,7 +189,6 @@ protected:
     string id;
     string name;
     vector<UnlockCondition *> unlockConditions;
-    string requiredPartnerId;
     bool isEnabled;
     State *pState;
 
@@ -892,79 +888,6 @@ protected:
 
     private:
         StopAnimationAction(XmlReader *pReader);
-    };
-
-    class BeginCheckPartnerAction : public SingleAction
-    {
-        friend class Conversation;
-
-    public:
-        int GetRightIndex() { return this->rightIndex; }
-        void SetRightIndex(int rightIndex) { this->rightIndex = rightIndex; }
-
-        int GetWrongIndex() { return this->wrongIndex; }
-        void SetWrongIndex(int wrongIndex) { this->wrongIndex = wrongIndex; }
-
-        virtual void Execute(State *pState);
-
-    private:
-        BeginCheckPartnerAction(XmlReader *pReader);
-
-        string partnerId;
-
-        // Action index to branch to if the right partner is present.
-        int rightIndex;
-
-        // Action index to branch to if the right partner is not present.
-        int wrongIndex;
-    };
-
-    // Dummy placeholder to jump to when the right partner is present.
-    class BranchIfRightAction : public SingleAction
-    {
-        friend class Conversation;
-
-    public:
-        int GetEndIndex() { return this->endIndex; }
-        void SetEndIndex(int endIndex) { this->endIndex = endIndex; }
-
-        virtual void Execute(State *pState);
-
-    private:
-        BranchIfRightAction(XmlReader *pReader);
-
-        // Action index to branch to representing the end of this branch statement.
-        int endIndex;
-    };
-
-    // Dummy placeholder to jump to when the right partner is not present.
-    class BranchIfWrongAction : public SingleAction
-    {
-        friend class Conversation;
-
-    public:
-        int GetEndIndex() { return this->endIndex; }
-        void SetEndIndex(int endIndex) { this->endIndex = endIndex; }
-
-        virtual void Execute(State *pState);
-
-    private:
-        BranchIfWrongAction(XmlReader *pReader);
-
-        // Action index to branch to representing the end of this branch statement.
-        int endIndex;
-    };
-
-    // Dummy placeholder to jump to when finished with a check partner action.
-    class EndCheckPartnerAction : public SingleAction
-    {
-        friend class Conversation;
-
-    public:
-        virtual void Execute(State *pState);
-
-    private:
-        EndCheckPartnerAction(XmlReader *pReader);
     };
 
     // Sets the current partner to the partner designated by the given ID.
