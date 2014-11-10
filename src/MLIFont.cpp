@@ -44,6 +44,8 @@ MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool 
       cache(CacheSize, new CacheItemHandler(this)),
       invertedColors(invertedColors)
 {
+    EnsureUIThread();
+
     pTtfFont = NULL;
     pAccessSemaphore = SDL_CreateSemaphore(1);
 
@@ -56,6 +58,8 @@ MLIFont::MLIFont(const string &fontId, int strokeWidth, bool invertedColors)
       cache(CacheSize, new CacheItemHandler(this)),
       invertedColors(invertedColors)
 {
+    EnsureUIThread();
+
     ttfFilePath = pgLocalizableContent->GetFont(fontId).Filename;
     fontSize = pgLocalizableContent->GetFont(fontId).Size;
 
@@ -68,6 +72,8 @@ MLIFont::MLIFont(const string &fontId, int strokeWidth, bool invertedColors)
 
 MLIFont::~MLIFont()
 {
+    EnsureUIThread();
+
     if (pTtfFont != NULL)
     {
         TTF_CloseFont(pTtfFont);
@@ -80,6 +86,8 @@ MLIFont::~MLIFont()
 
 void MLIFont::Reinit()
 {
+    EnsureUIThread();
+
     // clean up first
 
     if (pTtfFont != NULL)
@@ -101,6 +109,7 @@ void MLIFont::Reinit()
 
 Image *MLIFont::RenderGlyph(uint32_t c)
 {
+    EnsureUIThread();
     CheckScale();
 
     // render char
@@ -195,6 +204,7 @@ Image *MLIFont::RenderGlyph(uint32_t c)
 
 int MLIFont::GetKernedWidth(uint32_t c1, uint32_t c2)
 {
+    EnsureUIThread();
     CheckScale();
 
     pair<uint32_t, uint32_t> charPair(c1, c2);
@@ -253,7 +263,7 @@ void MLIFont::Draw(const string &s, Vector2 position, Color color, RectangleWH c
 
 void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, double scale, RectangleWH clipRect)
 {
-    AutoSemaphore sem(pAccessSemaphore);
+    EnsureUIThread();
 
     // If we're trying to draw an empty string, we can just return -
     // we're not gonna draw anything anyhow.
@@ -343,7 +353,7 @@ void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, doubl
 
 double MLIFont::GetWidth(const string &s)
 {
-    AutoSemaphore sem(pAccessSemaphore);
+    EnsureUIThread();
     CheckScale();
 
     double x = 0;
@@ -387,7 +397,7 @@ double MLIFont::GetWidth(const string &s)
 
 double MLIFont::GetHeight(const string &s)
 {
-    AutoSemaphore sem(pAccessSemaphore);
+    EnsureUIThread();
     CheckScale();
     int w, h;
 
@@ -397,21 +407,21 @@ double MLIFont::GetHeight(const string &s)
 
 double MLIFont::GetLineHeight()
 {
-    AutoSemaphore sem(pAccessSemaphore);
+    EnsureUIThread();
     CheckScale();
     return (double)TTF_FontHeight(pTtfFont) / GetFontScale();
 }
 
 double MLIFont::GetLineAscent()
 {
-    AutoSemaphore sem(pAccessSemaphore);
+    EnsureUIThread();
     CheckScale();
     return (double)TTF_FontAscent(pTtfFont) / GetFontScale();
 }
 
 double MLIFont::GetLineDescent()
 {
-    AutoSemaphore sem(pAccessSemaphore);
+    EnsureUIThread();
     CheckScale();
     return (double)TTF_FontDescent(pTtfFont) / GetFontScale();
 }

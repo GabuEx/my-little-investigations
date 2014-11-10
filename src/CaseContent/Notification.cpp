@@ -97,56 +97,7 @@ void Notification::Init(const string &rawNotificationText, const string &partner
     animationOffsetEvidence = 0;
     arrowOffset = 0;
     isFinished = false;
-
-    double allowedWidth = textAreaRect.GetWidth() - desiredPadding * 2;
-    deque<string> wordList = split(rawNotificationText, ' ');
-
-    while (!wordList.empty())
-    {
-        string curString = "";
-        double curTextWidth = 0;
-        bool lineDone = false;
-        bool addSpace = false;
-
-        while (!lineDone)
-        {
-            string curWord = (addSpace ? " " : "") + wordList.front();
-            double curStringWidth = pTextFont->GetWidth(curWord);
-
-            if (curTextWidth + curStringWidth < allowedWidth)
-            {
-                curString += curWord;
-                curTextWidth += curStringWidth;
-                wordList.pop_front();
-                addSpace = true;
-
-                if (wordList.empty())
-                {
-                    lineDone = true;
-                }
-            }
-            else
-            {
-                lineDone = true;
-            }
-        }
-
-        textLines.push_back(curString);
-    }
-
-    double yPosition = textAreaRect.GetY() + textAreaRect.GetHeight() / 2;
-
-    for (unsigned int i = 0; i < textLines.size(); i++)
-    {
-        yPosition -= pTextFont->GetHeight(textLines[i]) / 2;
-    }
-
-    for (unsigned int i = 0; i < textLines.size(); i++)
-    {
-        Vector2 textLineSize = Vector2(pTextFont->GetWidth(textLines[i]), pTextFont->GetHeight(textLines[i]));
-        textLinePositions.push_back(Vector2(textAreaRect.GetX() + textAreaRect.GetWidth() / 2 - textLineSize.GetX() / 2, yPosition));
-        yPosition += textLineSize.GetY();
-    }
+    this->rawNotificationText = rawNotificationText;
 
     if (partnerId.length() > 0 && partnerId != "None")
     {
@@ -230,6 +181,59 @@ string Notification::GetNotificationSoundEffect()
 
 void Notification::Begin()
 {
+    if (rawNotificationText.length() > 0 && textLines.empty())
+    {
+        double allowedWidth = textAreaRect.GetWidth() - desiredPadding * 2;
+        deque<string> wordList = split(rawNotificationText, ' ');
+
+        while (!wordList.empty())
+        {
+            string curString = "";
+            double curTextWidth = 0;
+            bool lineDone = false;
+            bool addSpace = false;
+
+            while (!lineDone)
+            {
+                string curWord = (addSpace ? " " : "") + wordList.front();
+                double curStringWidth = pTextFont->GetWidth(curWord);
+
+                if (curTextWidth + curStringWidth < allowedWidth)
+                {
+                    curString += curWord;
+                    curTextWidth += curStringWidth;
+                    wordList.pop_front();
+                    addSpace = true;
+
+                    if (wordList.empty())
+                    {
+                        lineDone = true;
+                    }
+                }
+                else
+                {
+                    lineDone = true;
+                }
+            }
+
+            textLines.push_back(curString);
+        }
+
+        double yPosition = textAreaRect.GetY() + textAreaRect.GetHeight() / 2;
+
+        for (unsigned int i = 0; i < textLines.size(); i++)
+        {
+            yPosition -= pTextFont->GetHeight(textLines[i]) / 2;
+        }
+
+        for (unsigned int i = 0; i < textLines.size(); i++)
+        {
+            Vector2 textLineSize = Vector2(pTextFont->GetWidth(textLines[i]), pTextFont->GetHeight(textLines[i]));
+            textLinePositions.push_back(Vector2(textAreaRect.GetX() + textAreaRect.GetWidth() / 2 - textLineSize.GetX() / 2, yPosition));
+            yPosition += textLineSize.GetY();
+        }
+    }
+
     SetIsFinished(false);
     playSound(GetNotificationSoundEffect());
     animationOffsetText = gScreenWidth;
