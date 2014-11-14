@@ -32,6 +32,14 @@
 #include "XmlReader.h"
 #include <limits>
 
+// vector<T>.size() is an unsigned int, whereas QList<T>.size() is a signed int.
+// No idea why, but we need to do this in order not to get a compiler warning.
+#ifndef CASE_CREATOR
+typedef unsigned int PointsIntType;
+#else
+typedef int PointsIntType;
+#endif
+
 GeometricPolygon::GeometricPolygon(XmlReader *pReader)
 {
     pReader->StartElement("Polygon");
@@ -52,7 +60,7 @@ RectangleWH GeometricPolygon::GetBoundingBox()
     double maxX = points[0].GetX();
     double maxY = points[0].GetY();
 
-    for (unsigned int i = 1; i < points.size(); i++)
+    for (PointsIntType i = 1; i < points.size(); i++)
     {
         if (points[i].GetX() < minX)
         {
@@ -87,7 +95,7 @@ bool GeometricPolygon::Contains(Vector2 point)
     bool oddNumberOfCrossings = false;
     int lastIndex = points.size() - 1;
 
-    for (unsigned int index = 0; index < points.size(); index++)
+    for (PointsIntType index = 1; index < points.size(); index++)
     {
         // For the edge that we're currently on, the ray can only
         // potentially pass through it if the y-coordinates of the
@@ -124,7 +132,7 @@ const GeometricPolygon GeometricPolygon::operator-(const Vector2 &other) const
 {
     GeometricPolygon newPolygon = *this;
 
-    for (unsigned int i = 0; i < newPolygon.points.size(); i++)
+    for (PointsIntType i = 1; i < newPolygon.points.size(); i++)
     {
         newPolygon.points[i] -= other;
     }
