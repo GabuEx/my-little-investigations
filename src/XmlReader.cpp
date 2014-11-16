@@ -85,29 +85,16 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
 
-#ifndef CASE_CREATOR
-void XmlReader::ParseXmlContent(const string &xmlContent)
+void XmlReader::ParseXmlContent(const XmlReaderString &xmlContent)
 {
     delete pDocument;
     pDocument = new XMLDocument();
-    XMLError error = pDocument->Parse(xmlContent.c_str());
+    XMLError error = pDocument->Parse(XmlReaderStringToCharArray(xmlContent));
     if (error != XML_NO_ERROR)
         throw MLIException("XML: Error while parsing file.");
 
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
-#else
-void XmlReader::ParseXmlContent(const QString &xmlContent)
-{
-    delete pDocument;
-    pDocument = new XMLDocument();
-    XMLError error = pDocument->Parse(xmlContent.toUtf8().constData());
-    if (error != XML_NO_ERROR)
-        throw MLIException("XML: Error while parsing file.");
-
-    pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
-}
-#endif
 
 void XmlReader::StartElement(const char *pElementName)
 {
@@ -191,41 +178,19 @@ bool XmlReader::ReadBooleanElement(const char *pElementName)
     return value;
 }
 
-#ifndef CASE_CREATOR
-string XmlReader::ReadTextElement(const char *pElementName)
+XmlReaderString XmlReader::ReadTextElement(const char *pElementName)
 {
-    string value;
+    XmlReaderString value;
     StartElement(pElementName);
     value = ReadText();
     EndElement();
     return value;
 }
-#else
-QString XmlReader::ReadTextElement(const char *pElementName)
-{
-    QString value;
-    StartElement(pElementName);
-    value = ReadText();
-    EndElement();
-    return value;
-}
-#endif
 
-#ifndef CASE_CREATOR
 #ifdef GAME_EXECUTABLE
-Image * XmlReader::ReadPngElement(const char *pElementName)
+XmlReaderImage XmlReader::ReadPngElement(const char *pElementName)
 {
-    Image *pValue = NULL;
-    StartElement(pElementName);
-    pValue = ReadPng();
-    EndElement();
-    return pValue;
-}
-#endif
-#else
-QImage XmlReader::ReadPngElement(const char *pElementName)
-{
-    QImage value;
+    XmlReaderImage value;
     StartElement(pElementName);
     value = ReadPng();
     EndElement();
@@ -260,29 +225,16 @@ bool XmlReader::ReadBoolean()
     return value;
 }
 
-#ifndef CASE_CREATOR
-string XmlReader::ReadText()
+XmlReaderString XmlReader::ReadText()
 {
     const char *value = pCurrentNode->ToElement()->GetText();
     // looks like tinyxml2 collapse "<tag> </tag>" and return NULL
     // with GetText() despite of PRESERVE_WHITESPACE flag
     if (value == NULL)
-        return string();
+        return XmlReaderString();
     else
-        return string(value);
+        return XmlReaderString(value);
 }
-#else
-QString XmlReader::ReadText()
-{
-    const char *value = pCurrentNode->ToElement()->GetText();
-    // looks like tinyxml2 collapse "<tag> </tag>" and return NULL
-    // with GetText() despite of PRESERVE_WHITESPACE flag
-    if (value == NULL)
-        return QString();
-    else
-        return QString(value);
-}
-#endif
 
 #ifndef CASE_CREATOR
 #ifdef GAME_EXECUTABLE
@@ -346,11 +298,11 @@ bool XmlReader::ReadBooleanAttribute(const char *pAttributeName)
     return value;
 }
 
-string XmlReader::ReadTextAttribute(const char *pAttributeName)
+XmlReaderString XmlReader::ReadTextAttribute(const char *pAttributeName)
 {
     const char *value = pCurrentNode->ToElement()->Attribute(pAttributeName);
     if (value == NULL)
-        return string();
+        return XmlReaderString();
     else
-        return string(value);
+        return XmlReaderString(value);
 }

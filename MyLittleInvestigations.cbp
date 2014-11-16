@@ -381,6 +381,7 @@
 		<Unit filename="src/Version.h" />
 		<Unit filename="src/Video.cpp" />
 		<Unit filename="src/Video.h" />
+		<Unit filename="src/XmlIncludes.h" />
 		<Unit filename="src/XmlReader.cpp" />
 		<Unit filename="src/XmlReader.h" />
 		<Unit filename="src/XmlWriter.cpp" />

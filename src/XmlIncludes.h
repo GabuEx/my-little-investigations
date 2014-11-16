@@ -1,5 +1,5 @@
 /**
- * Basic header/include file for XmlWriter.cpp.
+ * Include file containing defines used by both XmlReader and XmlWriter.
  *
  * @author GabuEx, dawnmew
  * @since 1.0
@@ -27,39 +27,30 @@
  * SOFTWARE.
  */
 
-#ifndef XMLWRITER_H
-#define XMLWRITER_H
+#ifndef XMLINCLUDES_H
+#define XMLINCLUDES_H
 
-#include "XmlIncludes.h"
-
-#include <sstream>
-#include <stack>
-
-class XmlWriter
-{
-public:
-    XmlWriter(const char *pFilePath, const char *pFilePathExtension = NULL, bool makeHumanReadable = false);
-    ~XmlWriter();
-
-    void StartElement(const XmlReaderString &elementName);
-    void EndElement();
-    void WriteIntElement(const XmlReaderString &elementName, int elementValue);
-    void WriteDoubleElement(const XmlReaderString &elementName, double elementValue);
-    void WriteBooleanElement(const XmlReaderString &elementName, bool elementValue);
-    void WriteTextElement(const XmlReaderString &elementName, const XmlReaderString &elementValue);
-    void WritePngElement(const XmlReaderString &elementName, void *pElementValue, size_t elementSize);
-
-private:
-    void StartElement(const XmlReaderString &elementName, bool addCarriageReturn);
-
-    bool makeHumanReadable;
-    int indentLevel;
-
-    stringstream stringStream;
-    string filePath;
-    string filePathExtension;
-    stack<XmlReaderString> elementNameStack;
-    stack<bool> shouldUnindentStack;
-};
-
+#ifndef CASE_CREATOR
+#include <string>
+#else
+#include <QString>
+#include <QImage>
 #endif
+
+using namespace std;
+
+#ifndef CASE_CREATOR
+class Image;
+
+typedef string XmlReaderString;
+typedef Image * XmlReaderImage;
+
+#define XmlReaderStringToCharArray(s) s.c_str()
+#else
+typedef QString XmlReaderString;
+typedef QImage XmlReaderImage;
+
+#define XmlReaderStringToCharArray(s) s.toStdString().c_str()
+#endif
+
+#endif // XMLINCLUDES_H
