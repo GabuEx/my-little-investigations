@@ -36,6 +36,8 @@
 #ifndef CASE_CREATOR
 #include <vector>
 #else
+class XmlWriter;
+
 #include <QList>
 #endif
 
@@ -48,6 +50,12 @@ class GeometricPolygon
 public:
     GeometricPolygon() {}
     GeometricPolygon(XmlReader *pReader);
+
+#ifdef CASE_CREATOR
+    void SaveToProjectFile(XmlWriter *pWriter);
+#endif
+
+    bool Empty() { return points.empty(); }
 
     bool Contains(Vector2 point);
     RectangleWH GetBoundingBox();

@@ -35,6 +35,8 @@
 #ifndef CASE_CREATOR
 #include <cryptopp/base64.h>
 #include <cryptopp/sha.h>
+#else
+#include "CaseCreator/CaseContent/CaseContent.h"
 #endif
 
 XmlWriter::XmlWriter(const char *pFilePath, const char *pFilePathExtension, bool makeHumanReadable)
@@ -162,6 +164,16 @@ void XmlWriter::WriteTextElement(const XmlReaderString &elementName, const XmlRe
     stringStream << XmlReaderStringToCharArray(elementValue);
     EndElement();
 }
+
+#ifdef CASE_CREATOR
+void XmlWriter::WriteFilePathElement(const XmlReaderString &elementName, const XmlReaderString &elementValue)
+{
+    // We always store file paths as relative paths but use them as absolute paths,
+    // so convert this to a relative path before returning it.
+    WriteTextElement(elementName, CaseContent::GetInstance()->AbsolutePathToRelativePath(elementValue));
+}
+
+#endif
 
 #ifndef CASE_CREATOR
 void XmlWriter::WritePngElement(const XmlReaderString &elementName, void *pElementValue, size_t elementSize)

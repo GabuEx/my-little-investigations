@@ -30,6 +30,10 @@
 #include "Rectangle.h"
 #include "XmlReader.h"
 
+#ifdef CASE_CREATOR
+#include "XmlWriter.h"
+#endif
+
 RectangleWH::RectangleWH()
 {
     this->x = 0;
@@ -83,8 +87,60 @@ RectangleWH::RectangleWH(XmlReader *pReader)
 }
 
 #ifdef CASE_CREATOR
-QRect RectangleWH::ToQRect()
+void RectangleWH::SaveToProjectFile(XmlWriter *pWriter)
+{
+    pWriter->StartElement("Rectangle");
+
+    pWriter->WriteDoubleElement("X", x);
+    pWriter->WriteDoubleElement("Y", y);
+    pWriter->WriteDoubleElement("Width", width);
+    pWriter->WriteDoubleElement("Height", height);
+
+    pWriter->EndElement();
+}
+
+RectangleWH & RectangleWH::operator+=(const Vector2 &rhs)
+{
+    x += rhs.GetX();
+    y += rhs.GetY();
+
+    return *this;
+}
+
+RectangleWH & RectangleWH::operator-=(const Vector2 &rhs)
+{
+    x -= rhs.GetX();
+    y -= rhs.GetY();
+
+    return *this;
+}
+
+const RectangleWH RectangleWH::operator+(const Vector2 &other) const
+{
+    return RectangleWH(*this) += other;
+}
+
+const RectangleWH RectangleWH::operator-(const Vector2 &other) const
+{
+    return RectangleWH(*this) -= other;
+}
+
+QRect RectangleWH::ToQRect() const
 {
     return QRect((int)x, (int)y, (int)width, (int)height);
+}
+
+QRectF RectangleWH::ToQRectF() const
+{
+    return QRectF(x, y, width, height);
+}
+
+bool RectangleWH::ContainsPoint(Vector2 point) const
+{
+    return
+        point.GetX() >= x &&
+        point.GetY() >= y &&
+        point.GetX() <= x + width &&
+        point.GetY() <= y + height;
 }
 #endif

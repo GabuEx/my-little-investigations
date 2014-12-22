@@ -62,6 +62,10 @@ public:
     XmlReaderImage ReadPngElement(const char *pElementName);
 #endif
 
+#ifdef CASE_CREATOR
+    XmlReaderString ReadFilePathElement(const char *pElementName);
+#endif
+
     int ReadInt();
     double ReadDouble();
     bool ReadBoolean();
@@ -71,11 +75,19 @@ public:
     XmlReaderImage ReadPng();
 #endif
 
+#ifdef CASE_CREATOR
+    XmlReaderString ReadFilePath();
+#endif
+
     bool AttributeExists(const char *pAttributeName);
     int ReadIntAttribute(const char *pAttributeName);
     double ReadDoubleAttribute(const char *pAttributeName);
     bool ReadBooleanAttribute(const char *pAttributeName);
     XmlReaderString ReadTextAttribute(const char *pAttributeName);
+
+#ifdef CASE_CREATOR
+    XmlReaderString ReadFilePathAttribute(const char *pAttributeName);
+#endif
 
 private:
     string filePath;

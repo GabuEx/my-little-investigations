@@ -37,6 +37,8 @@
 #ifndef CASE_CREATOR
 typedef unsigned int PointsIntType;
 #else
+#include "XmlWriter.h"
+
 typedef int PointsIntType;
 #endif
 
@@ -53,8 +55,30 @@ GeometricPolygon::GeometricPolygon(XmlReader *pReader)
     pReader->EndElement();
 }
 
+#ifdef CASE_CREATOR
+void GeometricPolygon::SaveToProjectFile(XmlWriter *pWriter)
+{
+    pWriter->StartElement("Polygon");
+
+    for (Vector2 point : points)
+    {
+        pWriter->StartElement("Vertex");
+        pWriter->WriteDoubleElement("X", point.GetX());
+        pWriter->WriteDoubleElement("Y", point.GetY());
+        pWriter->EndElement();
+    }
+
+    pWriter->EndElement();
+}
+#endif
+
 RectangleWH GeometricPolygon::GetBoundingBox()
 {
+    if (points.empty())
+    {
+        return RectangleWH();
+    }
+
     double minX = points[0].GetX();
     double minY = points[0].GetY();
     double maxX = points[0].GetX();
@@ -95,7 +119,7 @@ bool GeometricPolygon::Contains(Vector2 point)
     bool oddNumberOfCrossings = false;
     int lastIndex = points.size() - 1;
 
-    for (PointsIntType index = 1; index < points.size(); index++)
+    for (PointsIntType index = 0; index < points.size(); index++)
     {
         // For the edge that we're currently on, the ray can only
         // potentially pass through it if the y-coordinates of the
@@ -132,7 +156,7 @@ const GeometricPolygon GeometricPolygon::operator-(const Vector2 &other) const
 {
     GeometricPolygon newPolygon = *this;
 
-    for (PointsIntType i = 1; i < newPolygon.points.size(); i++)
+    for (PointsIntType i = 0; i < newPolygon.points.size(); i++)
     {
         newPolygon.points[i] -= other;
     }

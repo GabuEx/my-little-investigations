@@ -33,7 +33,12 @@
 class XmlReader;
 
 #ifdef CASE_CREATOR
+class XmlWriter;
+
+#include "Vector2.h"
+
 #include <QRect>
+#include <QRectF>
 #endif
 
 class RectangleWH
@@ -59,7 +64,18 @@ public:
     RectangleWH(XmlReader *pReader);
 
 #ifdef CASE_CREATOR
-    QRect ToQRect();
+    void SaveToProjectFile(XmlWriter *pWriter);
+
+    RectangleWH & operator+=(const Vector2 &rhs);
+    RectangleWH & operator-=(const Vector2 &rhs);
+
+    const RectangleWH operator+(const Vector2 &rhs) const;
+    const RectangleWH operator-(const Vector2 &rhs) const;
+
+    QRect ToQRect() const;
+    QRectF ToQRectF() const;
+
+    bool ContainsPoint(Vector2 point) const;
 #endif
 
 private:

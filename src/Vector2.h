@@ -33,7 +33,10 @@
 class XmlReader;
 
 #ifdef CASE_CREATOR
+class XmlWriter;
+
 #include <QPoint>
+#include <QPointF>
 #include <QSize>
 #endif
 
@@ -42,6 +45,10 @@ class Vector2
 public:
     Vector2();
     Vector2(double x, double y);
+
+#ifdef CASE_CREATOR
+    Vector2(const QPointF &qPointF);
+#endif
 
     double GetX() const { return this->x; }
     void SetX(double x) { this->x = x; }
@@ -72,8 +79,11 @@ public:
     Vector2(XmlReader *pReader);
 
 #ifdef CASE_CREATOR
-    QPoint ToQPoint();
-    QSize ToQSize();
+    void SaveToProjectFile(XmlWriter *pWriter);
+
+    QPoint ToQPoint() const;
+    QPointF ToQPointF() const;
+    QSize ToQSize() const;
 #endif
 
 private:

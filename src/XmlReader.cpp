@@ -33,6 +33,8 @@
 #include "Image.h"
 
 #include <cryptopp/base64.h>
+#else
+#include "CaseCreator/CaseContent/CaseContent.h"
 #endif
 
 #ifdef GAME_EXECUTABLE
@@ -187,12 +189,23 @@ XmlReaderString XmlReader::ReadTextElement(const char *pElementName)
     return value;
 }
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(CASE_CREATOR)
 XmlReaderImage XmlReader::ReadPngElement(const char *pElementName)
 {
     XmlReaderImage value;
     StartElement(pElementName);
     value = ReadPng();
+    EndElement();
+    return value;
+}
+#endif
+
+#ifdef CASE_CREATOR
+XmlReaderString XmlReader::ReadFilePathElement(const char *pElementName)
+{
+    XmlReaderString value;
+    StartElement(pElementName);
+    value = ReadFilePath();
     EndElement();
     return value;
 }
@@ -266,6 +279,15 @@ QImage XmlReader::ReadPng()
 }
 #endif
 
+#ifdef CASE_CREATOR
+XmlReaderString XmlReader::ReadFilePath()
+{
+    // We always store file paths as relative paths but use them as absolute paths,
+    // so convert this to an absolute path before returning it.
+    return CaseContent::GetInstance()->RelativePathToAbsolutePath(ReadText());
+}
+#endif
+
 bool XmlReader::AttributeExists(const char *pAttributeName)
 {
     return pCurrentNode->ToElement()->Attribute(pAttributeName) != NULL;
@@ -306,3 +328,12 @@ XmlReaderString XmlReader::ReadTextAttribute(const char *pAttributeName)
     else
         return XmlReaderString(value);
 }
+
+#ifdef CASE_CREATOR
+XmlReaderString XmlReader::ReadFilePathAttribute(const char *pAttributeName)
+{
+    // We always store file paths as relative paths but use them as absolute paths,
+    // so convert this to an absolute path before returning it.
+    return CaseContent::GetInstance()->RelativePathToAbsolutePath(ReadTextAttribute(pAttributeName));
+}
+#endif

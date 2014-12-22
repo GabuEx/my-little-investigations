@@ -49,6 +49,10 @@ public:
     void WriteTextElement(const XmlReaderString &elementName, const XmlReaderString &elementValue);
     void WritePngElement(const XmlReaderString &elementName, void *pElementValue, size_t elementSize);
 
+#ifdef CASE_CREATOR
+    void WriteFilePathElement(const XmlReaderString &elementName, const XmlReaderString &elementValue);
+#endif
+
 private:
     void StartElement(const XmlReaderString &elementName, bool addCarriageReturn);
 
