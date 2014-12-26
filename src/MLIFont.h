@@ -79,6 +79,7 @@ private:
     int GetKernedWidth(uint32_t c1, uint32_t c2);
 
     TTF_Font *pTtfFont;
+    void *pTtfFontMem;
     SDL_sem *pAccessSemaphore;
 
     class CacheItemHandler : public MRUCache<uint32_t, Image *>::ItemHandler

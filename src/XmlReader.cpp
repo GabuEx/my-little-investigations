@@ -50,11 +50,13 @@ XmlReader::XmlReader()
 
 XmlReader::XmlReader(const char *pFilePath)
 {
+    pDocument = NULL;
     ParseXmlFile(pFilePath);
 }
 
 XmlReader::XmlReader(const XmlReader &other)
 {
+    pDocument = NULL;
     ParseXmlFile(other.filePath.c_str());
 }
 
@@ -68,6 +70,7 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
 {
     filePath = string(pFilePath);
 
+    delete pDocument;
 #ifdef GAME_EXECUTABLE
     pDocument = ResourceLoader::GetInstance()->LoadDocument(pFilePath);
 
@@ -78,6 +81,7 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
 
         if (pDocument->LoadFile(pFilePath) != XML_NO_ERROR)
         {
+            delete pDocument;
             throw MLIException(string("File not found: ") + filePath);
         }
 #ifdef GAME_EXECUTABLE
@@ -93,7 +97,10 @@ void XmlReader::ParseXmlContent(const XmlReaderString &xmlContent)
     pDocument = new XMLDocument();
     XMLError error = pDocument->Parse(XmlReaderStringToCharArray(xmlContent));
     if (error != XML_NO_ERROR)
+    {
+        delete pDocument;
         throw MLIException("XML: Error while parsing file.");
+    }
 
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }

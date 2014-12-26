@@ -43,9 +43,6 @@
 #define AV_PIX_FMT_BGRA PIX_FMT_BGRA
 #define AV_PIX_FMT_ARGB PIX_FMT_ARGB
 #endif
-#ifndef av_frame_alloc
-#define av_frame_alloc avcodec_alloc_frame
-#endif
 
 const string CommonFilesId = "CommonFiles";
 
@@ -91,6 +88,8 @@ Video::Video(XmlReader *pReader)
     pImageConvertContext = NULL;
     pCachedTexturePixels = NULL;
     pTexture = NULL;
+
+    this->texturesRecreatedCount = gTexturesRecreatedCount;
 
     pReader->StartElement("Video");
     id = pReader->ReadTextElement("Id");
@@ -282,7 +281,7 @@ void Video::UnloadFile()
     {
         isReady = false;
 
-        delete pCachedTexturePixels;
+        delete[] pCachedTexturePixels;
         pCachedTexturePixels = NULL;
         SDL_DestroyTexture(pTexture);
         pTexture = NULL;

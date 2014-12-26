@@ -231,7 +231,6 @@ Location::Location(XmlReader *pReader)
     pAreaHitBox = NULL;
     animationOffsetPartner = gScreenWidth;
     movingDirectly = false;
-    pPathfindingThread = NULL;
     pPathfindingValuesSemaphore = SDL_CreateSemaphore(1);
     lastPathfindingThreadId = 0;
 
@@ -453,7 +452,6 @@ Location::Location(const Location &other)
     pAreaHitBox = NULL;
     animationOffsetPartner = gScreenWidth;
     movingDirectly = false;
-    pPathfindingThread = NULL;
     pPathfindingValuesSemaphore = SDL_CreateSemaphore(1);
     lastPathfindingThreadId = 0;
 
@@ -582,11 +580,8 @@ Location::~Location()
     pOptionsTab = NULL;
     delete pQuitTab;
     pQuitTab = NULL;
-
-    if (pPathfindingThread != NULL)
-    {
-        SDL_WaitThread(pPathfindingThread, NULL);
-    }
+    delete pQuitConfirmOverlay;
+    pQuitConfirmOverlay = NULL;
 
     SDL_DestroySemaphore(pPathfindingValuesSemaphore);
 
@@ -3233,7 +3228,8 @@ void Location::StartCharacterOnPath(FieldCharacter *pCharacter, Vector2 endPosit
 
     if (doAsync)
     {
-        pPathfindingThread = SDL_CreateThread(Location::PerformPathfindingStatic, "PathfindingThread", new PathfindingThreadParameters(this, pCharacter, currentPosition, endPosition, characterStateIfMoving, lastPathfindingThreadId));
+        SDL_Thread *pThread = SDL_CreateThread(Location::PerformPathfindingStatic, "PathfindingThread", new PathfindingThreadParameters(this, pCharacter, currentPosition, endPosition, characterStateIfMoving, lastPathfindingThreadId));
+        SDL_DetachThread(pThread);
         SDL_SemPost(pPathfindingValuesSemaphore);
     }
     else
@@ -3316,7 +3312,6 @@ void Location::PerformPathfinding(FieldCharacter *pCharacter, Vector2 startPosit
         }
     }
 
-    pPathfindingThread = NULL;
     SDL_SemPost(pPathfindingValuesSemaphore);
 }
 
@@ -3547,7 +3542,7 @@ queue<Vector2> Location::GetPathForCharacterBetweenPoints(FieldCharacter *pChara
         }
     }
 
-    return *ReconstructPath(&cameFrom, closestPoint, goal);
+    return ReconstructPath(&cameFrom, closestPoint, goal);
 }
 
 double Location::HeuristicCostEstimate(Vector2 start, Vector2 end)
@@ -3818,42 +3813,32 @@ bool Location::TestCollisionWithLocationElements(FieldCharacter *pCharacter, Vec
     return false;
 }
 
-queue<Vector2> * Location::ReconstructPath(map<Vector2, Vector2> *pCameFrom, Vector2 currentNode, Vector2 goalNode)
+queue<Vector2> Location::ReconstructPath(map<Vector2, Vector2> *pCameFrom, Vector2 currentNode, Vector2 goalNode)
 {
-    queue<Vector2> *pCurrentQueue = NULL;
+    queue<Vector2> currentQueue;
 
     if (pCameFrom->count(currentNode) > 0)
     {
-        pCurrentQueue = ReconstructPath(pCameFrom, (*pCameFrom)[currentNode]);
-        pCurrentQueue->push(goalNode);
+        currentQueue = ReconstructPath(pCameFrom, (*pCameFrom)[currentNode]);
+        currentQueue.push(goalNode);
     }
-    else
-    {
-        pCurrentQueue = new queue<Vector2>();
+    // Don't add the current node here - there's no reason to
+    // add the start node to the queue, as we're already there.
 
-        // Don't add the current node here - there's no reason to
-        // add the start node to the queue, as we're already there.
-    }
-
-    return pCurrentQueue;
+    return currentQueue;
 }
 
-queue<Vector2> * Location::ReconstructPath(map<Vector2, Vector2> *pCameFrom, Vector2 currentNode)
+queue<Vector2> Location::ReconstructPath(map<Vector2, Vector2> *pCameFrom, Vector2 currentNode)
 {
-    queue<Vector2> *pCurrentQueue = NULL;
+    queue<Vector2> currentQueue;
 
     if (pCameFrom->count(currentNode) > 0)
     {
-        pCurrentQueue = ReconstructPath(pCameFrom, (*pCameFrom)[currentNode]);
-        pCurrentQueue->push(currentNode);
+        currentQueue = ReconstructPath(pCameFrom, (*pCameFrom)[currentNode]);
+        currentQueue.push(currentNode);
     }
-    else
-    {
-        pCurrentQueue = new queue<Vector2>();
+    // Don't add the current node here - there's no reason to
+    // add the start node to the queue, as we're already there.
 
-        // Don't add the current node here - there's no reason to
-        // add the start node to the queue, as we're already there.
-    }
-
-    return pCurrentQueue;
+    return currentQueue;
 }
