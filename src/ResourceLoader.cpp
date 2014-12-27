@@ -267,11 +267,9 @@ void ResourceLoader::LoadVideo(
     pRWOpsIOContext->Seek(pRWOpsIOContext, 0, RW_SEEK_SET);
     memset(pBuffer + IOContextBufferSize, 0, AVPROBE_PADDING_SIZE);
 
-    AVProbeData probeData;
+    AVProbeData probeData = {};
     probeData.buf = pBuffer;
     probeData.buf_size = IOContextBufferSize;
-    probeData.filename = NULL;
-    probeData.mime_type = NULL;
 
     pFormatContext->iformat = av_probe_input_format(&probeData, 1);
     av_free(pBuffer);

@@ -34,7 +34,7 @@
 #include "XmlReader.h"
 #include <math.h>
 
-#ifndef AVPixelFormat
+#if LIBAVUTIL_VERSION_INT < AV_VERSION_INT(51,42,0)
 #define AVPixelFormat PixelFormat
 #define AV_PIX_FMT_YUVJ420P PIX_FMT_YUVJ420P
 #define AV_PIX_FMT_YUV420P PIX_FMT_YUV420P
@@ -42,6 +42,10 @@
 #define AV_PIX_FMT_YUVJ420P PIX_FMT_YUVJ420P
 #define AV_PIX_FMT_BGRA PIX_FMT_BGRA
 #define AV_PIX_FMT_ARGB PIX_FMT_ARGB
+#endif
+#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(55,28,1)
+#define av_frame_alloc avcodec_alloc_frame
+#define av_frame_free avcodec_free_frame
 #endif
 
 const string CommonFilesId = "CommonFiles";
@@ -287,7 +291,7 @@ void Video::UnloadFile()
         pTexture = NULL;
         sws_freeContext(pImageConvertContext);
         pImageConvertContext = NULL;
-        av_freep(&pFrame);
+        av_frame_free(&pFrame);
         avcodec_close(pCodecContext);
         pCodecContext = NULL;
         avformat_close_input(&pFormatContext);
