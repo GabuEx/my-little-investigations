@@ -514,7 +514,9 @@ void Case::UpdateLoadedTextures(const string &newLocationId, bool waitUntilLoade
 {
     SetWaitUntilLoaded(waitUntilLoaded);
     SetIsLoadingSprites(true);
+    #ifdef MLI_DEBUG
     cout << "Loading sprites for location \"" << newLocationId << "\"." << endl;
+    #endif
     pSpriteManager->FinishUpdateLoadedTextures(newLocationId);
     pAnimationManager->FinishUpdateLoadedTextures(newLocationId);
     SetWantsToLoadResources(true);

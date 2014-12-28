@@ -516,15 +516,27 @@ void Selector::PopulateWithCases(bool requireSaveFilesExist)
     {
         AddSection(pOfficialCasesSection);
     }
+    else
+    {
+        delete pOfficialCasesSection;
+    }
 
     if (pCustomCasesSection->GetCount() > 0)
     {
         AddSection(pCustomCasesSection);
     }
+    else
+    {
+        delete pCustomCasesSection;
+    }
 
     if (pIncompatibleCasesSection->GetCount() > 0)
     {
         AddSection(pIncompatibleCasesSection);
+    }
+    else
+    {
+        delete pIncompatibleCasesSection;
     }
 
     Init();

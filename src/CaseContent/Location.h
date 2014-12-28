@@ -274,8 +274,8 @@ private:
     list<Vector2> GetNeighbors(FieldCharacter *pCharacter, Vector2 position, Vector2 goal, double tileSize);
     bool TestCollisionWithLocationElements(FieldCharacter *pCharacter, Vector2 position);
     bool TestCollisionWithLocationElements(FieldCharacter *pCharacter, Vector2 position, CollisionParameter *pParam);
-    queue<Vector2> * ReconstructPath(map<Vector2, Vector2> *pCameFrom, Vector2 currentNode, Vector2 goalNode);
-    queue<Vector2> * ReconstructPath(map<Vector2, Vector2> *pCameFrom, Vector2 currentNode);
+    queue<Vector2> ReconstructPath(map<Vector2, Vector2> *pCameFrom, Vector2 currentNode, Vector2 goalNode);
+    queue<Vector2> ReconstructPath(map<Vector2, Vector2> *pCameFrom, Vector2 currentNode);
 
     static Image *pFadeSprite;
     static FieldCharacter *pCurrentPlayerCharacter;
@@ -349,7 +349,6 @@ private:
 
     bool movingDirectly;
 
-    SDL_Thread *pPathfindingThread;
     SDL_sem *pPathfindingValuesSemaphore;
     int lastPathfindingThreadId;
 

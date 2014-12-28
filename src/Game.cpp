@@ -419,6 +419,12 @@ void Game::Finish()
 
     // Stop playing music/SFX/dialog and shut down the audio thread.
     quitAudio();
+
+    // Unload preloaded music and free memory
+    for (unsigned int i = 0; i < builtInBgmCount; i++)
+    {
+        ResourceLoader::GetInstance()->UnloadMusic(bgmIdList[i]);
+    }
 #else
     // Cleanup network connectivity functionality.
     curl_easy_cleanup(gpCurlHandle);
@@ -433,6 +439,10 @@ void Game::Finish()
 
     // Close all open fonts and shut down the font thread.
     TTF_Quit();
+
+#ifdef GAME_EXECUTABLE
+    EventProviders::Close();
+#endif
 
     // Free the renderer and window.
     if (gpRenderer != NULL)
@@ -493,6 +503,7 @@ void Game::Init()
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("HandwritingMediumFont", pHandwritingMediumFont);
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("HandwritingSmallFont", pHandwritingSmallFont);
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("PromptOverlayFont", pPromptOverlayFont);
+    CommonCaseResources::GetInstance()->GetFontManager()->AddFont("PromptOverlayTextFont", pPromptOverlayTextFont);
 
     CommonCaseResources::GetInstance()->GetFontManager()->AddFont("DisclaimerFont", pDisclaimerFont);
 

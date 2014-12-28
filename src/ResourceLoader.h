@@ -81,6 +81,11 @@ public:
     {
         av_freep(&pIOContext);
         av_freep(&pBuffer);
+        if(pRW != NULL)
+        {
+            SDL_RWclose(pRW);
+            pRW = NULL;
+        }
     }
 
     static int Read(void *opaque, unsigned char *buf, int buf_size)
@@ -226,7 +231,7 @@ public:
     Image * LoadImage(const string &relativeFilePath);
     void ReloadImage(Image *pSprite, const string &originFilePath);
     tinyxml2::XMLDocument * LoadDocument(const string &relativeFilePath);
-    TTF_Font * LoadFont(const string &relativeFilePath, int ptSize);
+    TTF_Font * LoadFont(const string &relativeFilePath, int ptSize, void **pMemToFree);
 
     void LoadVideo(
         const string &relativeFilePath,

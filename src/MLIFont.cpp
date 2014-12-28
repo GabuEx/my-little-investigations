@@ -47,6 +47,7 @@ MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool 
     EnsureUIThread();
 
     pTtfFont = NULL;
+    pTtfFontMem = NULL;
     pAccessSemaphore = SDL_CreateSemaphore(1);
 
     Reinit();
@@ -64,6 +65,7 @@ MLIFont::MLIFont(const string &fontId, int strokeWidth, bool invertedColors)
     fontSize = pgLocalizableContent->GetFont(fontId).Size;
 
     pTtfFont = NULL;
+    pTtfFontMem = NULL;
     pAccessSemaphore = SDL_CreateSemaphore(1);
 
     Reinit();
@@ -80,6 +82,9 @@ MLIFont::~MLIFont()
     }
     pTtfFont = NULL;
 
+    free(pTtfFontMem);
+    pTtfFontMem = NULL;
+
     SDL_DestroySemaphore(pAccessSemaphore);
     pAccessSemaphore = NULL;
 }
@@ -93,6 +98,8 @@ void MLIFont::Reinit()
     if (pTtfFont != NULL)
         TTF_CloseFont(pTtfFont);
     pTtfFont = NULL;
+    free(pTtfFontMem);
+    pTtfFontMem = NULL;
     cache.clear();
     kernedWidthCache.clear();
 
@@ -101,7 +108,7 @@ void MLIFont::Reinit()
 
     // setup font
     #ifdef GAME_EXECUTABLE
-        pTtfFont = ResourceLoader::GetInstance()->LoadFont(ttfFilePath, fontSize * scale);
+        pTtfFont = ResourceLoader::GetInstance()->LoadFont(ttfFilePath, fontSize * scale, &pTtfFontMem);
     #else
         pTtfFont = TTF_OpenFont(ttfFilePath.c_str(), fontSize * scale + 0.5);
     #endif

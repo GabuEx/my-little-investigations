@@ -128,6 +128,7 @@ SDL_Surface * ResourceLoader::LoadRawSurface(const string &relativeFilePath)
 
     if(pRW==NULL) return NULL;
     SDL_Surface * pSurface = IMG_Load_RW(pRW,1);
+    free(pMemToFree);
     return pSurface;
 }
 
@@ -202,21 +203,22 @@ tinyxml2::XMLDocument * ResourceLoader::LoadDocument(const string &relativeFileP
     if (pRW == NULL) return NULL;
     tinyxml2::XMLDocument * pDocument = new tinyxml2::XMLDocument();
     pDocument->LoadFile(pRW);
+    SDL_RWclose(pRW);
     free(pMemToFree);
     return pDocument;
 }
 
-TTF_Font * ResourceLoader::LoadFont(const string &relativeFilePath, int ptSize)
+TTF_Font * ResourceLoader::LoadFont(const string &relativeFilePath, int ptSize, void **ppMemToFree)
 {
-    void *pMemToFree = NULL;
+    *ppMemToFree = NULL;
     SDL_RWops * pRW = NULL;
 
     SDL_SemWait(pLoadingSemaphore);
-    pRW = pCommonResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
+    pRW = pCommonResourcesSource->LoadFile(relativeFilePath, ppMemToFree);
 
     if (pRW == NULL && pCaseResourcesSource != NULL)
     {
-        pRW = pCaseResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
+        pRW = pCaseResourcesSource->LoadFile(relativeFilePath, ppMemToFree);
     }
     SDL_SemPost(pLoadingSemaphore);
     if (pRW == NULL) return NULL;
@@ -260,17 +262,19 @@ void ResourceLoader::LoadVideo(
     pFormatContext->flags = AVFMT_FLAG_CUSTOM_IO;
 
     // At this point we should determine the input format.
-    pRWOpsIOContext->Read(pRWOpsIOContext, pRWOpsIOContext->GetBuffer(), IOContextBufferSize);
+    unsigned char *pBuffer = reinterpret_cast<unsigned char *>(av_malloc(IOContextBufferSize + AVPROBE_PADDING_SIZE));
+    pRWOpsIOContext->Read(pRWOpsIOContext, pBuffer, IOContextBufferSize);
     pRWOpsIOContext->Seek(pRWOpsIOContext, 0, RW_SEEK_SET);
+    memset(pBuffer + IOContextBufferSize, 0, AVPROBE_PADDING_SIZE);
 
-    AVProbeData probeData;
-    probeData.buf = pRWOpsIOContext->GetBuffer();
+    AVProbeData probeData = {};
+    probeData.buf = pBuffer;
     probeData.buf_size = IOContextBufferSize;
-    probeData.filename = "";
 
     pFormatContext->iformat = av_probe_input_format(&probeData, 1);
+    av_free(pBuffer);
 
-    if (avformat_open_input(&pFormatContext, "DummyFilename", NULL, NULL) < 0)
+    if (avformat_open_input(&pFormatContext, NULL, NULL, NULL) < 0)
     {
         throw MLIException("Couldn't open video file!");
     }
@@ -328,12 +332,12 @@ void ResourceLoader::PreloadMusic(const string &id, const string &relativeFilePa
     }
     SDL_SemPost(pLoadingSemaphore);
 
-    if (pRWA == NULL || pRWB == NULL)
+    if (pRWA == NULL || pRWB == NULL || !preloadMusic(id, pRWA, pRWB))
     {
+        free(pMemToFreeA);
+        free(pMemToFreeB);
         return;
     }
-
-    preloadMusic(id, pRWA, pRWB);
 
     musicIdToMemToFreeMap[id + "_A"] = pMemToFreeA;
     musicIdToMemToFreeMap[id + "_B"] = pMemToFreeB;

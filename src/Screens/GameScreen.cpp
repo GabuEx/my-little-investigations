@@ -117,7 +117,8 @@ void GameScreen::Update(int delta)
 {
     if (!caseIsReady && gCaseFilePath.length() > 0)
     {
-        SDL_CreateThread(GameScreen::LoadCaseStatic, "LoadCaseThread", new LoadCaseParameters(gCaseFilePath));
+        SDL_Thread *pThread = SDL_CreateThread(GameScreen::LoadCaseStatic, "LoadCaseThread", new LoadCaseParameters(gCaseFilePath));
+        SDL_DetachThread(pThread);
         gCaseFilePath = "";
     }
 
@@ -194,7 +195,8 @@ void GameScreen::Update(int delta)
     {
         stopMusic();
         isFinishing = true;
-        SDL_CreateThread(GameScreen::UnloadCaseStatic, "UnloadCaseThread", this);
+        SDL_Thread *pThread = SDL_CreateThread(GameScreen::UnloadCaseStatic, "UnloadCaseThread", this);
+        SDL_DetachThread(pThread);
         return;
     }
 

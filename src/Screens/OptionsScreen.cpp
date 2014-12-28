@@ -132,8 +132,8 @@ OptionsScreen::~OptionsScreen()
     pBackgroundMusicSlider = NULL;
     delete pSoundEffectsSlider;
     pSoundEffectsSlider = NULL;
-    delete pBackgroundMusicSlider;
-    pBackgroundMusicSlider = NULL;
+    delete pVoiceSlider;
+    pVoiceSlider = NULL;
 
     delete pOpacityInEase;
     pOpacityInEase = NULL;
