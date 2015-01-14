@@ -245,6 +245,16 @@ bool Conversation::GetIsNotificationNext()
 
 void Conversation::Begin(State *pState)
 {
+    if (pSkipTab == NULL)
+    {
+        pSkipTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Conversation/FastForwardText"), false /* useCancelClickSoundEffect */, TabRowTop);
+    }
+
+    if (pSkipArrow == NULL)
+    {
+        pSkipArrow = new SkipArrow(789, 8 + TabHeight, 10, false /* isClickable */, true /* isFFwd */);
+    }
+
     this->Reset();
     this->pState = pState;
     this->initialBgmId = getPlayingMusic();
@@ -518,8 +528,8 @@ void Conversation::LoadFromXmlCore(XmlReader *pReader)
 {
     pCurrentContinuousAction = NULL;
     pLastContinuousAction = NULL;
-    pSkipTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Conversation/FastForwardText"), false /* useCancelClickSoundEffect */, TabRowTop);
-    pSkipArrow = new SkipArrow(789, 8 + TabHeight, 10, false /* isClickable */, true /* isFFwd */);
+    pSkipTab = NULL;
+    pSkipArrow = NULL;
 
     if (pReader->ElementExists("Id"))
     {

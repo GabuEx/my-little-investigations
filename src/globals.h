@@ -124,4 +124,6 @@ extern string gVersionsXmlFilePath;
 extern LocalizableContent *pgLocalizableContent;
 #endif
 
+void EnsureUIThread();
+
 #endif

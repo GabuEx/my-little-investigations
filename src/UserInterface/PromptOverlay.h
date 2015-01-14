@@ -114,11 +114,13 @@ private:
     static MLIFont *pTextEntryFont;
     static Image *pDarkeningImage;
 
+    string headerText;
     deque<string> headerTextLines;
 
     bool allowsTextEntry;
     string textEntered;
     vector<string> buttonTextList;
+    vector<string> finalizedButtonTextList;
     vector<PromptButton *> buttonList;
 
     EasingFunction *pFadeInEase;

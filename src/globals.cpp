@@ -29,6 +29,11 @@
 
 #include "globals.h"
 
+#ifdef GAME_EXECUTABLE
+#include "MLIException.h"
+#include <SDL2/SDL.h>
+#endif
+
 SDL_Window *gpWindow = NULL;
 SDL_Renderer *gpRenderer = NULL;
 Uint16 gScreenWidth = 0;
@@ -101,3 +106,15 @@ string gVersionsXmlFilePath = "";
 #ifdef GAME_EXECUTABLE
 LocalizableContent *pgLocalizableContent = NULL;
 #endif
+
+void EnsureUIThread()
+{
+#ifdef GAME_EXECUTABLE
+    Uint32 currentThreadId = SDL_ThreadID();
+
+    if (currentThreadId != gUiThreadId)
+    {
+        throw new MLIException("This method can only be called on the UI thread.");
+    }
+#endif
+}

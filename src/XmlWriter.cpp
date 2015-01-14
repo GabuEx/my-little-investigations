@@ -31,10 +31,15 @@
 #include "Utils.h"
 
 #include <fstream>
+
+#ifndef CASE_CREATOR
 #include <cryptopp/base64.h>
 #include <cryptopp/sha.h>
+#else
+#include "CaseCreator/CaseContent/CaseContent.h"
+#endif
 
-XmlWriter::XmlWriter(const char *pFilePath, const char *pFilePathExtension)
+XmlWriter::XmlWriter(const char *pFilePath, const char *pFilePathExtension, bool makeHumanReadable)
 {
     filePath = string(pFilePath);
 
@@ -43,8 +48,16 @@ XmlWriter::XmlWriter(const char *pFilePath, const char *pFilePathExtension)
         filePathExtension = string(pFilePathExtension);
     }
 
+    this->makeHumanReadable = makeHumanReadable;
+    indentLevel = 0;
+
     stringStream.str("");
     stringStream << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
+
+    if (makeHumanReadable)
+    {
+        stringStream << endl;
+    }
 }
 
 XmlWriter::~XmlWriter()
@@ -52,6 +65,7 @@ XmlWriter::~XmlWriter()
     string fileContents = stringStream.str();
     string fullFilePath = filePath;
 
+#ifndef CASE_CREATOR
     // If we have an extension, that means that the file path is just a directory,
     // and that we want to hash the file contents to generate a file name.
     if (filePathExtension.length() > 0)
@@ -61,6 +75,7 @@ XmlWriter::~XmlWriter()
         sha256.CalculateDigest(hash, reinterpret_cast<const byte *>(fileContents.c_str()), fileContents.length());
         fullFilePath += UuidFromSHA256Hash(hash) + filePathExtension;
     }
+#endif
 
     ofstream fileStream;
     fileStream.open(fullFilePath.c_str(), ios_base::out | ios_base::trunc);
@@ -68,48 +83,105 @@ XmlWriter::~XmlWriter()
     fileStream.close();
 }
 
-void XmlWriter::StartElement(const string &elementName)
+void XmlWriter::StartElement(const XmlReaderString &elementName)
 {
-    stringStream << "<" << elementName.c_str() << ">";
+    StartElement(elementName, true /* addCarriageReturn */);
+}
+
+void XmlWriter::StartElement(const XmlReaderString &elementName, bool addCarriageReturn)
+{
+    if (makeHumanReadable)
+    {
+        for (int i = 0; i < indentLevel; i++)
+        {
+            stringStream << "    ";
+        }
+    }
+
+    stringStream << "<" << XmlReaderStringToCharArray(elementName) << ">";
+
+    if (makeHumanReadable && addCarriageReturn)
+    {
+        stringStream << endl;
+        indentLevel++;
+    }
+
     elementNameStack.push(elementName);
+    shouldUnindentStack.push(addCarriageReturn);
 }
 
 void XmlWriter::EndElement()
 {
-    stringStream << "</" << elementNameStack.top().c_str() << ">";
+    bool shouldUnindent = shouldUnindentStack.top();
+    shouldUnindentStack.pop();
+
+    if (shouldUnindent)
+    {
+        indentLevel--;
+    }
+
+    if (makeHumanReadable && shouldUnindent)
+    {
+        for (int i = 0; i < indentLevel; i++)
+        {
+            stringStream << "    ";
+        }
+    }
+
+    stringStream << "</" << XmlReaderStringToCharArray(elementNameStack.top()) << ">";
     elementNameStack.pop();
+
+    if (makeHumanReadable)
+    {
+        stringStream << endl;
+    }
 }
 
-void XmlWriter::WriteIntElement(const string &elementName, int elementValue)
+void XmlWriter::WriteIntElement(const XmlReaderString &elementName, int elementValue)
 {
-    StartElement(elementName);
+    StartElement(elementName, false /* addCarriageReturn */);
     stringStream << elementValue;
     EndElement();
 }
 
-void XmlWriter::WriteDoubleElement(const string &elementName, double elementValue)
+void XmlWriter::WriteDoubleElement(const XmlReaderString &elementName, double elementValue)
 {
-    StartElement(elementName);
+    StartElement(elementName, false /* addCarriageReturn */);
     stringStream << elementValue;
     EndElement();
 }
 
-void XmlWriter::WriteBooleanElement(const string &elementName, bool elementValue)
+void XmlWriter::WriteBooleanElement(const XmlReaderString &elementName, bool elementValue)
 {
-    StartElement(elementName);
+    StartElement(elementName, false /* addCarriageReturn */);
     stringStream << (elementValue ? "true" : "false");
     EndElement();
 }
 
-void XmlWriter::WriteTextElement(const string &elementName, const string &elementValue)
+void XmlWriter::WriteTextElement(const XmlReaderString &elementName, const XmlReaderString &elementValue)
 {
-    StartElement(elementName);
-    stringStream << elementValue.c_str();
+    StartElement(elementName, false /* addCarriageReturn */);
+    stringStream << XmlReaderStringToCharArray(elementValue);
     EndElement();
 }
 
-void XmlWriter::WritePngElement(const string &elementName, void *pElementValue, size_t elementSize)
+#ifdef CASE_CREATOR
+void XmlWriter::WriteFilePathElement(const XmlReaderString &elementName, const XmlReaderString &elementValue)
 {
+    // We always store file paths as relative paths but use them as absolute paths,
+    // so convert this to a relative path before returning it.
+    WriteTextElement(elementName, CaseContent::GetInstance()->AbsolutePathToRelativePath(elementValue));
+}
+
+#endif
+
+#ifndef CASE_CREATOR
+void XmlWriter::WritePngElement(const XmlReaderString &elementName, void *pElementValue, size_t elementSize)
+#else
+void XmlWriter::WritePngElement(const XmlReaderString &, void *, size_t )
+#endif
+{
+#ifndef CASE_CREATOR
     char *pElementString = reinterpret_cast<char *>(pElementValue);
 
     string encodedString;
@@ -118,4 +190,5 @@ void XmlWriter::WritePngElement(const string &elementName, void *pElementValue, 
     StartElement(elementName);
     stringStream << encodedString;
     EndElement();
+#endif
 }

@@ -1,5 +1,5 @@
 /**
- * Basic header/include file for Polygon.cpp.
+ * Include file containing defines used by both XmlReader and XmlWriter.
  *
  * @author GabuEx, dawnmew
  * @since 1.0
@@ -27,47 +27,30 @@
  * SOFTWARE.
  */
 
-#ifndef POLYGON_H
-#define POLYGON_H
-
-#include "Rectangle.h"
-#include "Vector2.h"
+#ifndef XMLINCLUDES_H
+#define XMLINCLUDES_H
 
 #ifndef CASE_CREATOR
-#include <vector>
+#include <string>
 #else
-class XmlWriter;
-
-#include <QList>
+#include <QString>
+#include <QImage>
 #endif
 
 using namespace std;
 
-class XmlReader;
-
-class GeometricPolygon
-{
-public:
-    GeometricPolygon() {}
-    GeometricPolygon(XmlReader *pReader);
-
-#ifdef CASE_CREATOR
-    void SaveToProjectFile(XmlWriter *pWriter);
-#endif
-
-    bool Empty() { return points.empty(); }
-
-    bool Contains(Vector2 point);
-    RectangleWH GetBoundingBox();
-
-    const GeometricPolygon operator-(const Vector2 &other) const;
-
-private:
 #ifndef CASE_CREATOR
-    vector<Vector2> points;
-#else
-    QList<Vector2> points;
-#endif
-};
+class Image;
 
+typedef string XmlReaderString;
+typedef Image * XmlReaderImage;
+
+#define XmlReaderStringToCharArray(s) s.c_str()
+#else
+typedef QString XmlReaderString;
+typedef QImage XmlReaderImage;
+
+#define XmlReaderStringToCharArray(s) s.toStdString().c_str()
 #endif
+
+#endif // XMLINCLUDES_H

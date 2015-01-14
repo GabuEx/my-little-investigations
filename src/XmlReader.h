@@ -30,20 +30,11 @@
 #ifndef XMLREADER_H
 #define XMLREADER_H
 
+#include "XmlIncludes.h"
+
 #include <stack>
 #include "tinyxml2/tinyxml2.h"
 #include "MLIException.h"
-
-#ifdef CASE_CREATOR
-#include <QString>
-#include <QImage>
-#endif
-
-using namespace std;
-
-#ifdef GAME_EXECUTABLE
-class Image;
-#endif
 
 class XmlReader
 {
@@ -54,11 +45,7 @@ public:
     ~XmlReader();
 
     void ParseXmlFile(const char *pFilePath);
-#ifndef CASE_CREATOR
-    void ParseXmlContent(const string &xmlContent);
-#else
-    void ParseXmlContent(const QString &xmlContent);
-#endif
+    void ParseXmlContent(const XmlReaderString &xmlContent);
 
     void StartElement(const char *pElementName);
     bool ElementExists(const char *pElementName);
@@ -69,42 +56,38 @@ public:
     int ReadIntElement(const char *pElementName);
     double ReadDoubleElement(const char *pElementName);
     bool ReadBooleanElement(const char *pElementName);
-#ifndef CASE_CREATOR
-    string ReadTextElement(const char *pElementName);
-#else
-    QString ReadTextElement(const char *pElementName);
+    XmlReaderString ReadTextElement(const char *pElementName);
+
+#if defined(GAME_EXECUTABLE) || defined(CASE_CREATOR)
+    XmlReaderImage ReadPngElement(const char *pElementName);
 #endif
 
-#ifndef CASE_CREATOR
-#ifdef GAME_EXECUTABLE
-    Image * ReadPngElement(const char *pElementName);
-#endif
-#else
-    QImage ReadPngElement(const char *pElementName);
+#ifdef CASE_CREATOR
+    XmlReaderString ReadFilePathElement(const char *pElementName);
 #endif
 
     int ReadInt();
     double ReadDouble();
     bool ReadBoolean();
-#ifndef CASE_CREATOR
-    string ReadText();
-#else
-    QString ReadText();
+    XmlReaderString ReadText();
+
+#if defined(GAME_EXECUTABLE) || defined(CASE_CREATOR)
+    XmlReaderImage ReadPng();
 #endif
 
-#ifndef CASE_CREATOR
-#ifdef GAME_EXECUTABLE
-    Image * ReadPng();
-#endif
-#else
-    QImage ReadPng();
+#ifdef CASE_CREATOR
+    XmlReaderString ReadFilePath();
 #endif
 
     bool AttributeExists(const char *pAttributeName);
     int ReadIntAttribute(const char *pAttributeName);
     double ReadDoubleAttribute(const char *pAttributeName);
     bool ReadBooleanAttribute(const char *pAttributeName);
-    string ReadTextAttribute(const char *pAttributeName);
+    XmlReaderString ReadTextAttribute(const char *pAttributeName);
+
+#ifdef CASE_CREATOR
+    XmlReaderString ReadFilePathAttribute(const char *pAttributeName);
+#endif
 
 private:
     string filePath;

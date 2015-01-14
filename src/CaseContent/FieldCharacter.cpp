@@ -69,6 +69,7 @@ FieldCharacter::FieldCharacter()
     isMouseOver = false;
     isClicked = false;
     pCondition = NULL;
+    interactFromAnywhere = false;
 }
 
 FieldCharacter::FieldCharacter(const string &characterId, const string &characterName, string characterStandingAnimationIds[], string characterWalkingAnimationIds[], string characterRunningAnimationIds[])
@@ -105,6 +106,7 @@ FieldCharacter::FieldCharacter(const string &characterId, const string &characte
     isMouseOver = false;
     isClicked = false;
     pCondition = NULL;
+    interactFromAnywhere = false;
 }
 
 FieldCharacter::FieldCharacter(XmlReader *pReader)
@@ -229,6 +231,8 @@ FieldCharacter::~FieldCharacter()
 {
     delete pHitBox;
     pHitBox = NULL;
+    delete pCondition;
+    pCondition = NULL;
 }
 
 void FieldCharacter::SetSpriteDirection(FieldCharacterDirection spriteDirection)
@@ -553,6 +557,7 @@ bool FieldCharacter::TestCollisionAtPosition(Vector2 position, HitBox *pHitBox, 
 FieldCharacter * FieldCharacter::Clone()
 {
     FieldCharacter *pCloneCharacter = new FieldCharacter(GetId(), GetName(), characterStandingAnimationIds, characterWalkingAnimationIds, characterRunningAnimationIds);
+    pCloneCharacter->interactFromAnywhere = interactFromAnywhere;
     pCloneCharacter->SetHitBox(GetHitBox()->Clone());
     pCloneCharacter->SetAnchorPosition(GetAnchorPosition());
     pCloneCharacter->SetClickRect(GetClickRect());

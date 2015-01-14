@@ -33,6 +33,8 @@
 #include "Image.h"
 
 #include <cryptopp/base64.h>
+#else
+#include "CaseCreator/CaseContent/CaseContent.h"
 #endif
 
 #ifdef GAME_EXECUTABLE
@@ -48,11 +50,13 @@ XmlReader::XmlReader()
 
 XmlReader::XmlReader(const char *pFilePath)
 {
+    pDocument = NULL;
     ParseXmlFile(pFilePath);
 }
 
 XmlReader::XmlReader(const XmlReader &other)
 {
+    pDocument = NULL;
     ParseXmlFile(other.filePath.c_str());
 }
 
@@ -66,6 +70,7 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
 {
     filePath = string(pFilePath);
 
+    delete pDocument;
 #ifdef GAME_EXECUTABLE
     pDocument = ResourceLoader::GetInstance()->LoadDocument(pFilePath);
 
@@ -76,6 +81,7 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
 
         if (pDocument->LoadFile(pFilePath) != XML_NO_ERROR)
         {
+            delete pDocument;
             throw MLIException(string("File not found: ") + filePath);
         }
 #ifdef GAME_EXECUTABLE
@@ -85,29 +91,19 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
 
-#ifndef CASE_CREATOR
-void XmlReader::ParseXmlContent(const string &xmlContent)
+void XmlReader::ParseXmlContent(const XmlReaderString &xmlContent)
 {
     delete pDocument;
     pDocument = new XMLDocument();
-    XMLError error = pDocument->Parse(xmlContent.c_str());
+    XMLError error = pDocument->Parse(XmlReaderStringToCharArray(xmlContent));
     if (error != XML_NO_ERROR)
+    {
+        delete pDocument;
         throw MLIException("XML: Error while parsing file.");
+    }
 
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
-#else
-void XmlReader::ParseXmlContent(const QString &xmlContent)
-{
-    delete pDocument;
-    pDocument = new XMLDocument();
-    XMLError error = pDocument->Parse(xmlContent.toUtf8().constData());
-    if (error != XML_NO_ERROR)
-        throw MLIException("XML: Error while parsing file.");
-
-    pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
-}
-#endif
 
 void XmlReader::StartElement(const char *pElementName)
 {
@@ -191,43 +187,32 @@ bool XmlReader::ReadBooleanElement(const char *pElementName)
     return value;
 }
 
-#ifndef CASE_CREATOR
-string XmlReader::ReadTextElement(const char *pElementName)
+XmlReaderString XmlReader::ReadTextElement(const char *pElementName)
 {
-    string value;
+    XmlReaderString value;
     StartElement(pElementName);
     value = ReadText();
     EndElement();
     return value;
 }
-#else
-QString XmlReader::ReadTextElement(const char *pElementName)
+
+#if defined(GAME_EXECUTABLE) || defined(CASE_CREATOR)
+XmlReaderImage XmlReader::ReadPngElement(const char *pElementName)
 {
-    QString value;
+    XmlReaderImage value;
     StartElement(pElementName);
-    value = ReadText();
+    value = ReadPng();
     EndElement();
     return value;
 }
 #endif
 
-#ifndef CASE_CREATOR
-#ifdef GAME_EXECUTABLE
-Image * XmlReader::ReadPngElement(const char *pElementName)
+#ifdef CASE_CREATOR
+XmlReaderString XmlReader::ReadFilePathElement(const char *pElementName)
 {
-    Image *pValue = NULL;
+    XmlReaderString value;
     StartElement(pElementName);
-    pValue = ReadPng();
-    EndElement();
-    return pValue;
-}
-#endif
-#else
-QImage XmlReader::ReadPngElement(const char *pElementName)
-{
-    QImage value;
-    StartElement(pElementName);
-    value = ReadPng();
+    value = ReadFilePath();
     EndElement();
     return value;
 }
@@ -260,29 +245,16 @@ bool XmlReader::ReadBoolean()
     return value;
 }
 
-#ifndef CASE_CREATOR
-string XmlReader::ReadText()
+XmlReaderString XmlReader::ReadText()
 {
     const char *value = pCurrentNode->ToElement()->GetText();
     // looks like tinyxml2 collapse "<tag> </tag>" and return NULL
     // with GetText() despite of PRESERVE_WHITESPACE flag
     if (value == NULL)
-        return string();
+        return XmlReaderString();
     else
-        return string(value);
+        return XmlReaderString(value);
 }
-#else
-QString XmlReader::ReadText()
-{
-    const char *value = pCurrentNode->ToElement()->GetText();
-    // looks like tinyxml2 collapse "<tag> </tag>" and return NULL
-    // with GetText() despite of PRESERVE_WHITESPACE flag
-    if (value == NULL)
-        return QString();
-    else
-        return QString(value);
-}
-#endif
 
 #ifndef CASE_CREATOR
 #ifdef GAME_EXECUTABLE
@@ -311,6 +283,15 @@ QImage XmlReader::ReadPng()
 
     QByteArray imageBytes = QByteArray::fromBase64(QByteArray(s.toUtf8().constData(), s.length()));
     return QImage(imageBytes);
+}
+#endif
+
+#ifdef CASE_CREATOR
+XmlReaderString XmlReader::ReadFilePath()
+{
+    // We always store file paths as relative paths but use them as absolute paths,
+    // so convert this to an absolute path before returning it.
+    return CaseContent::GetInstance()->RelativePathToAbsolutePath(ReadText());
 }
 #endif
 
@@ -346,11 +327,20 @@ bool XmlReader::ReadBooleanAttribute(const char *pAttributeName)
     return value;
 }
 
-string XmlReader::ReadTextAttribute(const char *pAttributeName)
+XmlReaderString XmlReader::ReadTextAttribute(const char *pAttributeName)
 {
     const char *value = pCurrentNode->ToElement()->Attribute(pAttributeName);
     if (value == NULL)
-        return string();
+        return XmlReaderString();
     else
-        return string(value);
+        return XmlReaderString(value);
 }
+
+#ifdef CASE_CREATOR
+XmlReaderString XmlReader::ReadFilePathAttribute(const char *pAttributeName)
+{
+    // We always store file paths as relative paths but use them as absolute paths,
+    // so convert this to an absolute path before returning it.
+    return CaseContent::GetInstance()->RelativePathToAbsolutePath(ReadTextAttribute(pAttributeName));
+}
+#endif

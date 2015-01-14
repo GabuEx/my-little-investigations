@@ -31,6 +31,10 @@
 #include "XmlReader.h"
 #include <math.h>
 
+#ifdef CASE_CREATOR
+#include "XmlWriter.h"
+#endif
+
 Vector2::Vector2()
 {
     this->x = 0;
@@ -42,6 +46,14 @@ Vector2::Vector2(double x, double y)
     this->x = x;
     this->y = y;
 }
+
+#ifdef CASE_CREATOR
+Vector2::Vector2(const QPointF &qPointF)
+{
+    this->x = qPointF.x();
+    this->y = qPointF.y();
+}
+#endif
 
 Vector2 & Vector2::operator=(const Vector2 &rhs)
 {
@@ -143,12 +155,25 @@ Vector2::Vector2(XmlReader *pReader)
 }
 
 #ifdef CASE_CREATOR
-QPoint Vector2::ToQPoint()
+void Vector2::SaveToProjectFile(XmlWriter *pWriter)
+{
+    pWriter->StartElement("Vector2");
+    pWriter->WriteDoubleElement("X", x);
+    pWriter->WriteDoubleElement("Y", y);
+    pWriter->EndElement();
+}
+
+QPoint Vector2::ToQPoint() const
 {
     return QPoint((int)x, (int)y);
 }
 
-QSize Vector2::ToQSize()
+QPointF Vector2::ToQPointF() const
+{
+    return QPointF((qreal)x, (qreal)y);
+}
+
+QSize Vector2::ToQSize() const
 {
     return QSize((int)x, (int)y);
 }

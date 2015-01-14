@@ -30,30 +30,40 @@
 #ifndef XMLWRITER_H
 #define XMLWRITER_H
 
+#include "XmlIncludes.h"
+
 #include <sstream>
 #include <stack>
-
-using namespace std;
 
 class XmlWriter
 {
 public:
-    XmlWriter(const char *pFilePath, const char *pFilePathExtension = NULL);
+    XmlWriter(const char *pFilePath, const char *pFilePathExtension = NULL, bool makeHumanReadable = false);
     ~XmlWriter();
 
-    void StartElement(const string &elementName);
+    void StartElement(const XmlReaderString &elementName);
     void EndElement();
-    void WriteIntElement(const string &elementName, int elementValue);
-    void WriteDoubleElement(const string &elementName, double elementValue);
-    void WriteBooleanElement(const string &elementName, bool elementValue);
-    void WriteTextElement(const string &elementName, const string &elementValue);
-    void WritePngElement(const string &elementName, void *pElementValue, size_t elementSize);
+    void WriteIntElement(const XmlReaderString &elementName, int elementValue);
+    void WriteDoubleElement(const XmlReaderString &elementName, double elementValue);
+    void WriteBooleanElement(const XmlReaderString &elementName, bool elementValue);
+    void WriteTextElement(const XmlReaderString &elementName, const XmlReaderString &elementValue);
+    void WritePngElement(const XmlReaderString &elementName, void *pElementValue, size_t elementSize);
+
+#ifdef CASE_CREATOR
+    void WriteFilePathElement(const XmlReaderString &elementName, const XmlReaderString &elementValue);
+#endif
 
 private:
+    void StartElement(const XmlReaderString &elementName, bool addCarriageReturn);
+
+    bool makeHumanReadable;
+    int indentLevel;
+
     stringstream stringStream;
     string filePath;
     string filePathExtension;
-    stack<string> elementNameStack;
+    stack<XmlReaderString> elementNameStack;
+    stack<bool> shouldUnindentStack;
 };
 
 #endif

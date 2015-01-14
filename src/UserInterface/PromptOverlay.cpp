@@ -128,7 +128,7 @@ PromptOverlay::PromptOverlay(const string &headerText, bool allowsTextEntry)
 {
     yOffset = 0;
 
-    SetHeaderText(headerText);
+    this->headerText = headerText;
     this->allowsTextEntry = allowsTextEntry;
 
     if (allowsTextEntry)
@@ -176,40 +176,51 @@ void PromptOverlay::AddButton(const string &text)
 void PromptOverlay::FinalizeButtons()
 {
     // If we've already finalized the buttons, do nothing.
-    if (buttonList.size() > 0)
+    if (finalizedButtonTextList.size() > 0)
     {
         return;
     }
 
-    // First we'll find the max button width - we'll scale the
-    // spacing between buttons based on that.
-    double maxButtonWidth = 0;
-
-    for (unsigned int i = 0; i < buttonTextList.size(); i++)
-    {
-        double width = pTextFont->GetWidth(buttonTextList[i]);
-
-        if (width > maxButtonWidth)
-        {
-            maxButtonWidth = width;
-        }
-    }
-
-    double currentButtonXPosition = (gScreenWidth - maxButtonWidth * buttonTextList.size() - ButtonSpacing * (buttonTextList.size() - 1)) / 2;
-
-    // Now that we know the max button width, we'll create and place the buttons.
-    for (unsigned int i = 0; i < buttonTextList.size(); i++)
-    {
-        string text = buttonTextList[i];
-        buttonList.push_back(new PromptButton(Vector2(currentButtonXPosition, gScreenHeight / 2 + pTextFont->GetLineHeight() + (allowsTextEntry ? pTextEntryFont->GetLineHeight() / 2 : 0) + yOffset), text));
-        currentButtonXPosition += maxButtonWidth + ButtonSpacing;
-    }
-
+    finalizedButtonTextList = buttonTextList;
     buttonTextList.clear();
 }
 
 void PromptOverlay::Begin(const string &initialText)
 {
+    if (headerText.length() > 0 && headerTextLines.empty())
+    {
+        SetHeaderText(headerText);
+    }
+
+    if (!finalizedButtonTextList.empty())
+    {
+        // First we'll find the max button width - we'll scale the
+        // spacing between buttons based on that.
+        double maxButtonWidth = 0;
+
+        for (unsigned int i = 0; i < finalizedButtonTextList.size(); i++)
+        {
+            double width = pTextFont->GetWidth(finalizedButtonTextList[i]);
+
+            if (width > maxButtonWidth)
+            {
+                maxButtonWidth = width;
+            }
+        }
+
+        double currentButtonXPosition = (gScreenWidth - maxButtonWidth * finalizedButtonTextList.size() - ButtonSpacing * (finalizedButtonTextList.size() - 1)) / 2;
+
+        // Now that we know the max button width, we'll create and place the buttons.
+        for (unsigned int i = 0; i < finalizedButtonTextList.size(); i++)
+        {
+            string text = finalizedButtonTextList[i];
+            buttonList.push_back(new PromptButton(Vector2(currentButtonXPosition, gScreenHeight / 2 + pTextFont->GetLineHeight() + (allowsTextEntry ? pTextEntryFont->GetLineHeight() / 2 : 0) + yOffset), text));
+            currentButtonXPosition += maxButtonWidth + ButtonSpacing;
+        }
+
+        finalizedButtonTextList.clear();
+    }
+
     Reset();
 
     pFadeInEase->Begin();

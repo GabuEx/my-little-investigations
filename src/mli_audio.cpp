@@ -109,7 +109,11 @@ bool preloadMusic(const string &id, SDL_RWops *pFileOpsA, SDL_RWops *pFileOpsB)
     Mix_Music *pMusicA = Mix_LoadMUS_RW(pFileOpsA, true);
     if(pMusicA == NULL) return false;
     Mix_Music *pMusicB = Mix_LoadMUS_RW(pFileOpsB, true);
-    if(pMusicB == NULL) return false;
+    if(pMusicB == NULL)
+    {
+        Mix_FreeMusic(pMusicA);
+        return false;
+    }
     music[id+"_A"] = pMusicA;
     music[id+"_B"] = pMusicB;
     return true;
@@ -466,8 +470,11 @@ void quitAudio()
         stopDialog();
         Mix_HaltChannel(-1);
         for(map<string,Mix_Music*>::const_iterator iter = music.begin(); iter != music.end(); ++iter) Mix_FreeMusic(iter->second);
+        music.clear();
         for(map<string,Mix_Chunk*>::const_iterator iter = dialog.begin(); iter != dialog.end(); ++iter) Mix_FreeChunk(iter->second);
+        dialog.clear();
         for(map<string,Mix_Chunk*>::const_iterator iter = sfx.begin(); iter != sfx.end(); ++iter) Mix_FreeChunk(iter->second);
+        sfx.clear();
         Mix_CloseAudio();
     }
 }

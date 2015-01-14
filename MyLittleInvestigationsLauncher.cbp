@@ -194,6 +194,7 @@
 		<Unit filename="src/Utils.h" />
 		<Unit filename="src/Version.cpp" />
 		<Unit filename="src/Version.h" />
+		<Unit filename="src/XmlIncludes.h" />
 		<Unit filename="src/XmlReader.cpp" />
 		<Unit filename="src/XmlReader.h" />
 		<Unit filename="src/XmlWriter.cpp" />

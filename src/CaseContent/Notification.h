@@ -78,6 +78,7 @@ private:
     static Vector2 evidenceCenterPoint;
     static Image *pDirectionArrow;
 
+    string rawNotificationText;
     vector<string> textLines;
     vector<Vector2> textLinePositions;
     PartnerInformation *pPartnerInformation;
