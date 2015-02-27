@@ -110,7 +110,7 @@ LocalizableContent *pgLocalizableContent = NULL;
 void EnsureUIThread()
 {
 #ifdef GAME_EXECUTABLE
-    Uint32 currentThreadId = SDL_ThreadID();
+    SDL_threadID currentThreadId = SDL_ThreadID();
 
     if (currentThreadId != gUiThreadId)
     {
