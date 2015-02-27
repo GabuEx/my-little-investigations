@@ -59,7 +59,7 @@ double gFramerate = 0.0;
 string gTitle = "";
 
 #ifdef GAME_EXECUTABLE
-Uint32 gUiThreadId = 0;
+SDL_threadID gUiThreadId = 0;
 
 string gCaseFilePath = "";
 string gSaveFilePath = "";
