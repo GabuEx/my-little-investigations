@@ -17,6 +17,10 @@ string pUserApplicationSupportPath;
 string pDialogSeenListsPath;
 string pSavesPath;
 
+static NSString *NSCasesPath;
+static NSString *NSUserCasesPath;
+static NSString *NSSavesPath;
+
 /* Main entry point to executable - should *not* be SDL_main! */
 void BeginOSX()
 {
@@ -28,17 +32,14 @@ void BeginOSX()
     NSString *pStrUserApplicationSupportPath = [defaultManager userApplicationSupportDirectory];
 
     /* Next, create the folders that the executable will need during execution if they don't already exist. */
-    NSString *pStrLocalGameApplicationSupportPath = nil;
-    NSString *pStrCasesPath = nil;
-    NSString *pStrUserGameApplicationSupportPath = nil;
-    NSString *pStrDialogSeenListsPath = nil;
-    NSString *pStrSavesPath = nil;
+	NSString *pStrLocalGameApplicationSupportPath = pStrLocalApplicationSupportPath;
+	NSString *pStrUserGameApplicationSupportPath = [pStrUserApplicationSupportPath stringByAppendingPathComponent:@"My Little Investigations"];
+	NSString *pStrDialogSeenListsPath = [pStrUserGameApplicationSupportPath stringByAppendingPathComponent:@"DialogSeenLists"];
 
-    pStrLocalGameApplicationSupportPath = [pStrLocalApplicationSupportPath stringByAppendingPathComponent:@"My Little Investigations"];
-    pStrCasesPath = [pStrLocalGameApplicationSupportPath stringByAppendingPathComponent:@"Cases"];
-    pStrUserGameApplicationSupportPath = [pStrUserApplicationSupportPath stringByAppendingPathComponent:@"My Little Investigations"];
-    pStrDialogSeenListsPath = [pStrUserGameApplicationSupportPath stringByAppendingPathComponent:@"DialogSeenLists"];
-    pStrSavesPath = [pStrUserGameApplicationSupportPath stringByAppendingPathComponent:@"Saves"];
+	NSCasesPath = [[pStrLocalGameApplicationSupportPath stringByAppendingPathComponent:@"Cases"] retain];
+	NSUserCasesPath = [[pStrUserGameApplicationSupportPath stringByAppendingPathComponent:@"Cases"] retain];
+	NSSavesPath = [[pStrUserGameApplicationSupportPath stringByAppendingPathComponent:@"Saves"] retain];
+
 
 	NSError *error = nil;
 
@@ -49,18 +50,24 @@ void BeginOSX()
 		error:&error];
 
 	[defaultManager
-		createDirectoryAtPath:pStrSavesPath
+		createDirectoryAtPath:NSSavesPath
 		withIntermediateDirectories:YES
 		attributes:nil
 		error:&error];
 
+	[defaultManager
+	 createDirectoryAtPath:NSUserCasesPath
+	 withIntermediateDirectories:YES
+	 attributes:nil
+	 error:&error];
+
     pLocalApplicationSupportPath = [pStrLocalGameApplicationSupportPath fileSystemRepresentation];
-    pCasesPath = [pStrCasesPath fileSystemRepresentation];
+    pCasesPath = [NSCasesPath fileSystemRepresentation];
     pUserApplicationSupportPath = [pStrUserGameApplicationSupportPath fileSystemRepresentation];
     pDialogSeenListsPath = [pStrDialogSeenListsPath fileSystemRepresentation];
-    pSavesPath = [pStrSavesPath fileSystemRepresentation];
+    pSavesPath = [NSSavesPath fileSystemRepresentation];
 
-    [pPool release];
+    [pPool drain];
 }
 
 vector<string> GetCaseFilePathsOSX()
@@ -69,12 +76,9 @@ vector<string> GetCaseFilePathsOSX()
     NSError *error = nil;
     NSFileManager *defaultManager = [NSFileManager defaultManager];
 
-    //TODO: Save the NSString as, say, a static pointer.
-    NSString *casesPath = [defaultManager stringWithFileSystemRepresentation:pCasesPath.c_str() length: pCasesPath.size()];
-
     NSArray *pCaseFileList =
         [defaultManager
-            contentsOfDirectoryAtPath: casesPath
+            contentsOfDirectoryAtPath: NSCasesPath
             error:&error];
 
     vector<string> ppCaseFileList;
@@ -87,9 +91,25 @@ vector<string> GetCaseFilePathsOSX()
             continue;
         }
 
-        NSString *pStrCaseFilePath = [casesPath stringByAppendingPathComponent:pStrCaseFileName];
+        NSString *pStrCaseFilePath = [NSCasesPath stringByAppendingPathComponent:pStrCaseFileName];
 		ppCaseFileList.push_back(string([pStrCaseFilePath fileSystemRepresentation]));
     }
+
+	// Cases in the user's folder
+	pCaseFileList = [defaultManager
+					 contentsOfDirectoryAtPath: NSUserCasesPath
+					 error:&error];
+
+	for (NSString *object in pCaseFileList)
+	{
+		//Ignore UNIX hidden files, like OS X's .DS_Store
+		if ([object hasPrefix:@"."])
+		{
+			continue;
+		}
+		NSString *fullCasePath = [NSUserCasesPath stringByAppendingPathComponent:object];
+		ppCaseFileList.push_back(string([fullCasePath fileSystemRepresentation]));
+	}
 
     [pool drain];
     return ppCaseFileList;
@@ -102,18 +122,17 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
 	NSFileManager *defaultManager = [NSFileManager defaultManager];
 
     //TODO: Save the NSString as, say, a static pointer.
-    NSString *pStrCaseSavesFilePath = [defaultManager stringWithFileSystemRepresentation:pSavesPath.c_str() length: pSavesPath.size()];
-    pStrCaseSavesFilePath = [pStrCaseSavesFilePath stringByAppendingPathComponent:[NSString stringWithUTF8String:pCaseUuid.c_str()]];
+    NSString *currentCaseSavePath = [NSSavesPath stringByAppendingPathComponent:[NSString stringWithUTF8String:pCaseUuid.c_str()]];
 
     [defaultManager
-        createDirectoryAtPath:pStrCaseSavesFilePath
+        createDirectoryAtPath: currentCaseSavePath
         withIntermediateDirectories:YES
         attributes:nil
         error:&error];
 
     NSArray *pSaveFileList =
         [defaultManager
-            contentsOfDirectoryAtPath:pStrCaseSavesFilePath
+            contentsOfDirectoryAtPath: currentCaseSavePath
             error:&error];
 
     vector<string> ppSaveFilePathList;
@@ -126,7 +145,7 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
             continue;
         }
 
-        NSString *pStrSaveFilePath = [pStrCaseSavesFilePath stringByAppendingPathComponent:pStrSaveFileName];
+        NSString *pStrSaveFilePath = [currentCaseSavePath stringByAppendingPathComponent:pStrSaveFileName];
 		ppSaveFilePathList.push_back(string([pStrSaveFilePath fileSystemRepresentation]));
     }
 

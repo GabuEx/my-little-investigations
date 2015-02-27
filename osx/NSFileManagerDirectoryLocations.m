@@ -158,18 +158,7 @@ NSString * const DirectoryLocationDomain = @"DirectoryLocationDomain";
 //
 - (NSString *)localApplicationSupportDirectory
 {
-	NSError *error;
-	NSString *result =
-		[self
-			findOrCreateDirectory:NSApplicationSupportDirectory
-			inDomain:NSLocalDomainMask
-			appendPathComponent:nil
-			error:&error];
-	if (!result)
-	{
-		NSLog(@"Unable to find or create application support directory:\n%@", error);
-	}
-	return result;
+	return [[NSBundle mainBundle] resourcePath];
 }
 
 @end
