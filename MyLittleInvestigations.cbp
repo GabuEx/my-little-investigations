@@ -72,7 +72,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
-					<Add option="-DMACOSX_DEPLOYMENT_TARGET=10.6" />
+					<Add option="-mmacosx-version-min=10.6" />
 					<Add option="-DMLI_DEBUG" />
 					<Add option="-D__OSX" />
 					<Add directory="osx" />
@@ -90,6 +90,7 @@
 					<Add option="-lswscale" />
 					<Add option="-lcryptopp" />
 					<Add option="-Wl,-rpath,@loader_path/../Frameworks" />
+					<Add option="-mmacosx-version-min=10.6" />
 					<Add directory="osx" />
 				</Linker>
 			</Target>
@@ -103,7 +104,7 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-fexpensive-optimizations" />
 					<Add option="-O3" />
-					<Add option="-DMACOSX_DEPLOYMENT_TARGET=10.6" />
+					<Add option="-mmacosx-version-min=10.6" />
 					<Add option="-D__OSX" />
 					<Add directory="osx" />
 				</Compiler>
@@ -121,6 +122,7 @@
 					<Add option="-lcryptopp" />
 					<Add option="-headerpad_max_install_names" />
 					<Add option="-Wl,-rpath,@loader_path/../Frameworks" />
+					<Add option="-mmacosx-version-min=10.6" />
 					<Add directory="osx" />
 				</Linker>
 				<ExtraCommands>

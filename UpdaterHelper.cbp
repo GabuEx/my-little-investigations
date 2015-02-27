@@ -30,7 +30,11 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add option="-mmacosx-version-min=10.6" />
 		</Compiler>
+		<Linker>
+			<Add option="-mmacosx-version-min=10.6" />
+		</Linker>
 		<Unit filename="src/main_UpdaterHelper.cpp" />
 		<Extensions>
 			<code_completion />
