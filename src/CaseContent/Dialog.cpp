@@ -258,7 +258,7 @@ Dialog * Dialog::CreateForString(const string &dialogText, const string &filePat
             if (curTextWidth + curStringWidth <= allowedWidth)
             {
                 string stringToPrependOnNext;
-                stringToTest = pDialog->ParseEvents(fullString.length() + curstring.length(), stringToTest, &stringToPrependOnNext);
+                stringToTest = pDialog->ParseEvents((int)(fullString.length() + curstring.length()), stringToTest, &stringToPrependOnNext);
                 curstring += stringToTest;
                 curTextWidth += curStringWidth;
                 wordList.pop_front();
@@ -286,7 +286,7 @@ Dialog * Dialog::CreateForString(const string &dialogText, const string &filePat
 
     if (delayBeforeContinuing >= 0)
     {
-        pDialog->AddPausePosition(fullString.length(), delayBeforeContinuing);
+        pDialog->AddPausePosition((int)fullString.length(), delayBeforeContinuing);
     }
 
     if (filePath.length() > 0)
@@ -587,7 +587,7 @@ void Dialog::Update(int delta)
                     string::const_iterator begin = GetText().begin() + curTextPosition;
                     string::const_iterator end = begin;
                     utf8::advance(end, positionsToAdvance, GetText().end());
-                    curTextPosition = curTextPosition + distance(begin, end);
+                    curTextPosition = curTextPosition + (int)distance(begin, end);
                 }
                 catch (utf8::not_enough_room ex)
                 {
@@ -1064,7 +1064,7 @@ void Dialog::Finish(bool shouldPlaySfx)
         dialogEventIteratorSet = true;
     }
 
-    curTextPosition = GetText().length();
+    curTextPosition = (int)GetText().length();
 
     if (pCurrentDialogEvent != NULL)
     {
@@ -1173,8 +1173,8 @@ string Dialog::ParseEvents(int lineOffset, const string &stringToParse, string *
 
     while (parsedString.find('{') != string::npos && parsedString.find('}') != string::npos)
     {
-        int eventStart = parsedString.find('{');
-        int eventEnd = parsedString.find('}');
+        int eventStart = (int)parsedString.find('{');
+        int eventEnd = (int)parsedString.find('}');
 
         deque<string> eventComponents = split(parsedString.substr(eventStart + 1, eventEnd - eventStart - 1), ':');
         string replacementText = "";

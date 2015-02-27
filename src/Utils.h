@@ -46,7 +46,7 @@ typedef int (*PFNPROGRESSCALLBACK)(void *, double, double, double, double);
 deque<string> &split(const string &s, char delim, deque<string> &tokens);
 deque<string> split(const string &s, char delim);
 
-bool SignatureIsValid(const byte *pFileData, unsigned int fileSize, const string &hexEncodedSignature);
+bool SignatureIsValid(const byte *pFileData, size_t fileSize, const string &hexEncodedSignature);
 
 string UuidFromSHA256Hash(byte hash[]);
 
