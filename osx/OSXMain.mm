@@ -113,7 +113,7 @@ vector<string> GetCaseFilePathsOSX()
         }
 
         NSString *pStrCaseFilePath = [NSCasesPath stringByAppendingPathComponent:pStrCaseFileName];
-		ppCaseFileList.push_back(string([pStrCaseFilePath fileSystemRepresentation]));
+        ppCaseFileList.push_back(string([pStrCaseFilePath fileSystemRepresentation]));
     }
 
     // Cases in the user's folder
@@ -173,12 +173,12 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
     return ppSaveFilePathList;
 }
 
-string GetVersionStringOSX(string PropertyListFilePath)
+string GetVersionStringOSX()
 {
     AUTORELEASE_POOL_START
     NSBundle *ourBundle = [NSBundle mainBundle];
     NSDictionary *infoPlist = ourBundle.infoDictionary;
-    NSString *versStr = infoPlist[@"CFBundleVersion"];
+    NSString *versStr = [infoPlist objectForKey:@"CFBundleVersion"];
     return versStr != nil ? versStr.UTF8String : "";
     AUTORELEASE_POOL_STOP
 }
@@ -191,7 +191,10 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
     NSFileManager *defaultManager = [NSFileManager defaultManager];
     NSString *pErrorDesc = nil;
     //TODO: Save the NSString as, say, a static pointer.
-    NSString *pProperyListPath = [defaultManager stringWithFileSystemRepresentation:pPropertyListFilePath.c_str() length: pPropertyListFilePath.size()];
+    NSString *pProperyListPath = [defaultManager
+								  stringWithFileSystemRepresentation:pPropertyListFilePath.c_str()
+								  length: pPropertyListFilePath.size()];
+	pProperyListPath = pProperyListPath.stringByStandardizingPath;
 
     if (![defaultManager fileExistsAtPath:pProperyListPath])
     {
@@ -206,7 +209,9 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
         return NULL;
     }
 
-    [pPropertyListDictionaryMutable setObject:[NSString stringWithUTF8String:pVersionString.c_str()] forKey:@"VersionString"];
+    NSString *newStringValue = [NSString stringWithUTF8String:pVersionString.c_str()];
+    [pPropertyListDictionaryMutable setObject:newStringValue forKey:@"CFBundleShortVersionString"];
+    [pPropertyListDictionaryMutable setObject:newStringValue forKey:@"CFBundleVersion"];
 
     NSData *pData = [NSPropertyListSerialization
         dataFromPropertyList:pPropertyListDictionaryMutable

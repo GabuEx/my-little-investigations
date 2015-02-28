@@ -464,7 +464,7 @@ string GetCommonResourcesFilePath()
 #ifdef __OSX
 string GetPropertyListPath()
 {
-    return executionPath + ".." + pathSeparator + "Resources" + pathSeparator + "MyLittleInvestigations.plist";
+    return executionPath + ".." + pathSeparator + "Info.plist";
 }
 #endif
 
