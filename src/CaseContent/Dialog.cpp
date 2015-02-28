@@ -587,7 +587,7 @@ void Dialog::Update(int delta)
                     string::const_iterator begin = GetText().begin() + curTextPosition;
                     string::const_iterator end = begin;
                     utf8::advance(end, positionsToAdvance, GetText().end());
-                    curTextPosition = curTextPosition + (int)distance(begin, end);
+                    curTextPosition += (int)distance(begin, end);
                 }
                 catch (utf8::not_enough_room ex)
                 {

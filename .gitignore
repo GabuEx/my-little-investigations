@@ -29,7 +29,7 @@ ipch/*
 Release/*
 src/Release/*
 *.dll
-**/*.DS_Store
+.DS_Store
 **/._*
 MyLittleInvestigations.app/*
 *.depend

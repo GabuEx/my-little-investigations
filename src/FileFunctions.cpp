@@ -83,6 +83,9 @@ tstring StringToTString(string str)
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+static string GetPropertyListPath();
+
 #elif __unix
 #include <dirent.h>
 #include <pwd.h>
@@ -488,7 +491,7 @@ Version GetCurrentVersion()
 
     RegCloseKey(hKey);
 #elif __OSX
-    versionString = GetVersionStringOSX(GetPropertyListPath());
+    versionString = GetVersionStringOSX();
 #elif __unix
     string versionFilePath = commonAppDataPath + string(".version");
     if(Exists(versionFilePath))
