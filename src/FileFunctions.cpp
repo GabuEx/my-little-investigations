@@ -435,6 +435,8 @@ bool CopyCaseFileToCaseFolder(const string &caseFilePath, const string &caseUuid
 
         success = CopyFileA(caseFilePath.c_str(), (filePath + string("\\") + caseUuid + string(".mlicase")).c_str(), false /* bFailIfExists */) == TRUE;
     }
+    #elif defined(__OSX)
+    success = CopyCaseUserOSX(caseFilePath, caseUuid);
     #endif
 
     return success;
