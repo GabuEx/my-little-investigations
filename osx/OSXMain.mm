@@ -93,47 +93,69 @@ void BeginOSX()
 
 vector<string> GetCaseFilePathsOSX()
 {
-    vector<string> ppCaseFileList;
-
     AUTORELEASE_POOL_START
-    NSError *error = nil;
+    NSError *error;
     NSFileManager *defaultManager = [NSFileManager defaultManager];
 
-    NSArray *pCaseFileList =
-        [defaultManager
-            contentsOfDirectoryAtPath: NSCasesPath
-            error:&error];
+    NSArray *caseFiles = [defaultManager
+                          contentsOfDirectoryAtPath: NSCasesPath
+                          error:&error];
 
-    for (NSString *pStrCaseFileName in pCaseFileList)
-    {
-       //Ignore UNIX hidden files, like OS X's .DS_Store
-        if ([pStrCaseFileName hasPrefix:@"."])
-        {
+    NSMutableArray *uniqueCaseList;
+    vector<string> caseFileList;
+    NSMutableArray *localCaseList = [[NSMutableArray alloc] initWithCapacity:caseFiles.count];
+
+    for (NSString *object in caseFiles) {
+        //Ignore UNIX hidden files, like OS X's .DS_Store
+        if ([object hasPrefix:@"."]) {
             continue;
         }
 
-        NSString *pStrCaseFilePath = [NSCasesPath stringByAppendingPathComponent:pStrCaseFileName];
-        ppCaseFileList.push_back(string([pStrCaseFilePath fileSystemRepresentation]));
+        NSString *fullCasePath = [NSCasesPath stringByAppendingPathComponent:object];
+        [localCaseList addObject:fullCasePath];
     }
 
     // Cases in the user's folder
-    pCaseFileList = [defaultManager
-                     contentsOfDirectoryAtPath: NSUserCasesPath
-                     error:&error];
+    caseFiles = [defaultManager
+                 contentsOfDirectoryAtPath: NSUserCasesPath
+                 error:&error];
     
-    for (NSString *object in pCaseFileList)
-    {
+    NSMutableArray *userCaseList = [[NSMutableArray alloc] initWithCapacity:caseFiles.count];
+    
+    for (NSString *object in caseFiles) {
         //Ignore UNIX hidden files, like OS X's .DS_Store
-        if ([object hasPrefix:@"."])
-        {
+        if ([object hasPrefix:@"."]) {
             continue;
         }
         NSString *fullCasePath = [NSUserCasesPath stringByAppendingPathComponent:object];
-        ppCaseFileList.push_back(string([fullCasePath fileSystemRepresentation]));
+        [userCaseList addObject:fullCasePath];
     }
 
+    uniqueCaseList = [[NSMutableArray alloc] initWithCapacity:localCaseList.count + userCaseList.count];
+
+    AUTORELEASE_POOL_START
+    NSIndexSet *uniqueLocalCases = [localCaseList indexesOfObjectsPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *lastPathComponent = [obj lastPathComponent];
+        
+        return ![caseFiles containsObject:lastPathComponent];
+    }];
+
+    //prefer a user's case over the local cases
+    [uniqueCaseList addObjectsFromArray:[localCaseList objectsAtIndexes:uniqueLocalCases]];
+    [uniqueCaseList addObjectsFromArray:userCaseList];
     AUTORELEASE_POOL_STOP
-    return ppCaseFileList;
+
+    [localCaseList release]; localCaseList = nil;
+    [userCaseList release]; userCaseList = nil;
+
+    for (NSString *path in uniqueCaseList) {
+        caseFileList.push_back(string([path fileSystemRepresentation]));
+    }
+    [uniqueCaseList release]; uniqueCaseList = nil;
+    
+    return caseFileList;
+    
+    AUTORELEASE_POOL_STOP
 }
 
 vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
