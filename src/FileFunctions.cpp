@@ -204,11 +204,11 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
         // trailing slash unless it's explicit.
         // stringByAppendingPathComponent has no way of doing this
         // explicitly, though.
-        commonAppDataPath = string(pLocalApplicationSupportPath) + "/";
-        casesPath = string(pCasesPath) + "/";
-        userAppDataPath = string(pUserApplicationSupportPath) + "/";
-        dialogSeenListsPath = string(pDialogSeenListsPath) + "/";
-        savesPath = string(pSavesPath) + "/";
+        commonAppDataPath = pLocalApplicationSupportPath + "/";
+        casesPath = pCasesPath + "/";
+        userAppDataPath = pUserApplicationSupportPath + "/";
+        dialogSeenListsPath = pDialogSeenListsPath + "/";
+        savesPath = pSavesPath + "/";
 #elif __unix
         pathSeparator = "/";
         otherPathSeparator = "\\";

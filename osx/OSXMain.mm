@@ -23,7 +23,9 @@ static NSString *NSSavesPath;
 
 #define kCaseExt @"mlicase"
 
-#if __clang__ && __has_feature(objc_arc)
+// Only use the autorelease directive on OS X 10.7 or later SDKs
+// as they should a recent enough version of Clang to use it.
+#if __clang__ && defined(MAC_OS_X_VERSION_10_7)
 #define AUTORELEASE_POOL @autoreleasepool
 #define AUTORELEASE_POOL_START @autoreleasepool {
 #else
@@ -52,22 +54,22 @@ void BeginOSX()
     NSFileManager *defaultManager = [NSFileManager defaultManager];
 
     /* Create our Application Support folders if they don't exist yet and store the paths */
-    NSString *pStrLocalApplicationSupportPath = [defaultManager localApplicationSupportDirectory];
-    NSString *pStrUserApplicationSupportPath = [defaultManager userApplicationSupportDirectory];
+    NSString *localAppSupport = [defaultManager localApplicationSupportDirectory];
+    NSString *userAppSupport = [defaultManager userApplicationSupportDirectory];
 
     /* Next, create the folders that the executable will need during execution if they don't already exist. */
-    NSString *pStrLocalGameApplicationSupportPath = pStrLocalApplicationSupportPath;
-    NSString *pStrUserGameApplicationSupportPath = [pStrUserApplicationSupportPath stringByAppendingPathComponent:@"My Little Investigations"];
-    NSString *pStrDialogSeenListsPath = [pStrUserGameApplicationSupportPath stringByAppendingPathComponent:@"DialogSeenLists"];
+    NSString *localGameAppSupportPath = localAppSupport;
+    NSString *userGameAppSupportPath = [userAppSupport stringByAppendingPathComponent:@"My Little Investigations"];
+    NSString *dialogSeenPath = [userGameAppSupportPath stringByAppendingPathComponent:@"DialogSeenLists"];
 
-    NSCasesPath = [[pStrLocalGameApplicationSupportPath stringByAppendingPathComponent:@"Cases"] retain];
-    NSUserCasesPath = [[pStrUserGameApplicationSupportPath stringByAppendingPathComponent:@"Cases"] retain];
-    NSSavesPath = [[pStrUserGameApplicationSupportPath stringByAppendingPathComponent:@"Saves"] retain];
+    NSCasesPath = [[localGameAppSupportPath stringByAppendingPathComponent:@"Cases"] retain];
+    NSUserCasesPath = [[userGameAppSupportPath stringByAppendingPathComponent:@"Cases"] retain];
+    NSSavesPath = [[userGameAppSupportPath stringByAppendingPathComponent:@"Saves"] retain];
 
 	NSError *error = nil;
 
 	[defaultManager
-		createDirectoryAtPath:pStrDialogSeenListsPath
+		createDirectoryAtPath:dialogSeenPath
 		withIntermediateDirectories:YES
 		attributes:nil
 		error:&error];
@@ -84,10 +86,10 @@ void BeginOSX()
         attributes:nil
         error:&error];
 
-    pLocalApplicationSupportPath = [pStrLocalGameApplicationSupportPath fileSystemRepresentation];
+    pLocalApplicationSupportPath = [localGameAppSupportPath fileSystemRepresentation];
     pCasesPath = [NSCasesPath fileSystemRepresentation];
-    pUserApplicationSupportPath = [pStrUserGameApplicationSupportPath fileSystemRepresentation];
-    pDialogSeenListsPath = [pStrDialogSeenListsPath fileSystemRepresentation];
+    pUserApplicationSupportPath = [userGameAppSupportPath fileSystemRepresentation];
+    pDialogSeenListsPath = [dialogSeenPath fileSystemRepresentation];
     pSavesPath = [NSSavesPath fileSystemRepresentation];
 
     AUTORELEASE_POOL_STOP
@@ -96,7 +98,7 @@ void BeginOSX()
 vector<string> GetCaseFilePathsOSX()
 {
     AUTORELEASE_POOL_START
-    NSError *error;
+    NSError *error = nil;
     NSFileManager *defaultManager = [NSFileManager defaultManager];
 
     NSArray *caseFiles = [defaultManager
@@ -160,7 +162,7 @@ vector<string> GetCaseFilePathsOSX()
     AUTORELEASE_POOL_STOP
 }
 
-vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
+vector<string> GetSaveFilePathsForCaseOSX(const string &pCaseUuid)
 {
     vector<string> ppSaveFilePathList;
 
@@ -190,7 +192,7 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
         }
 
         NSString *pStrSaveFilePath = [currentCaseSavePath stringByAppendingPathComponent:pStrSaveFileName];
-		ppSaveFilePathList.push_back(string([pStrSaveFilePath fileSystemRepresentation]));
+        ppSaveFilePathList.push_back(string([pStrSaveFilePath fileSystemRepresentation]));
     }
 
     AUTORELEASE_POOL_STOP
@@ -207,7 +209,7 @@ string GetVersionStringOSX()
     AUTORELEASE_POOL_STOP
 }
 
-char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, string pVersionString, unsigned long *pVersionStringLength)
+char *GetPropertyListXMLForVersionStringOSX(const string &pPropertyListFilePath, const string &pVersionString, unsigned long *pVersionStringLength)
 {
     AUTORELEASE_POOL_START
     *pVersionStringLength = 0;
@@ -218,29 +220,30 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
     NSString *pProperyListPath = [defaultManager
 								  stringWithFileSystemRepresentation:pPropertyListFilePath.c_str()
 								  length: pPropertyListFilePath.size()];
-	pProperyListPath = pProperyListPath.stringByStandardizingPath;
+	pProperyListPath = [pProperyListPath stringByStandardizingPath];
 
     if (![defaultManager fileExistsAtPath:pProperyListPath])
     {
         return NULL;
     }
 
-    NSMutableDictionary *pPropertyListDictionaryMutable =
-        [NSMutableDictionary dictionaryWithContentsOfFile:pProperyListPath];
+    NSMutableDictionary *plistDict =
+        [[NSMutableDictionary alloc] initWithContentsOfFile:pProperyListPath];
 
-    if (pPropertyListDictionaryMutable == NULL)
+    if (plistDict == NULL)
     {
         return NULL;
     }
 
     NSString *newStringValue = [NSString stringWithUTF8String:pVersionString.c_str()];
-    [pPropertyListDictionaryMutable setObject:newStringValue forKey:@"CFBundleShortVersionString"];
-    [pPropertyListDictionaryMutable setObject:newStringValue forKey:@"CFBundleVersion"];
+    [plistDict setObject:newStringValue forKey:@"CFBundleShortVersionString"];
+    [plistDict setObject:newStringValue forKey:@"CFBundleVersion"];
 
     NSData *pData = [NSPropertyListSerialization
-        dataFromPropertyList:pPropertyListDictionaryMutable
+        dataFromPropertyList:plistDict
         format:NSPropertyListXMLFormat_v1_0
         errorDescription:&pErrorDesc];
+    [plistDict release];
 
     if (pData == NULL)
     {
