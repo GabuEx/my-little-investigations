@@ -36,7 +36,7 @@ Color Color::White = Color(1.0, 1.0, 1.0, 1.0);
 Color::Color()
 {
     SetA(0.0);
-    SetB(0.0);
+    SetR(0.0);
     SetG(0.0);
     SetB(0.0);
 }
