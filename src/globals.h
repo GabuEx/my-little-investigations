@@ -75,7 +75,7 @@ extern double gFramerate;
 extern string gTitle;
 
 #ifdef GAME_EXECUTABLE
-extern Uint32 gUiThreadId;
+extern SDL_threadID gUiThreadId;
 
 extern string gCaseFilePath;
 extern string gSaveFilePath;
