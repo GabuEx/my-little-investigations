@@ -117,7 +117,7 @@ bool GeometricPolygon::Contains(Vector2 point)
     // If it passes through an odd number of edges, then the point
     // is inside the polygon; otherwise, it's outside.
     bool oddNumberOfCrossings = false;
-    int lastIndex = points.size() - 1;
+    int lastIndex = int(points.size() - 1);
 
     for (PointsIntType index = 0; index < points.size(); index++)
     {

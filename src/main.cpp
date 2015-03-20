@@ -67,11 +67,9 @@ using namespace std;
 
 #ifdef GAME_EXECUTABLE
 string title = "My Little Investigations";
-#endif
-#ifdef UPDATER
+#elif defined(UPDATER)
 string title = "My Little Investigations Updater";
-#endif
-#ifdef LAUNCHER
+#elif defined(LAUNCHER)
 string title = "My Little Investigations Launcher";
 #endif
 
@@ -182,6 +180,10 @@ int main(int argc, char * argv[])
 #endif
 
 #ifdef GAME_EXECUTABLE
+
+    // Enable dropping a file onto the game's icon.
+    SDL_EventState(SDL_DROPFILE, SDL_ENABLE);
+
     // Initialize the resource loader.  If this fails, the common resource data file is missing,
     // which is a very bad thing.  Quit if this happens to be the case.
     if (!ResourceLoader::GetInstance()->Init(GetCommonResourcesFilePath()))
@@ -369,6 +371,30 @@ int main(int argc, char * argv[])
 
                 case SDL_TEXTINPUT:
                     TextInputHelper::NotifyTextInput(event.text.text);
+                    break;
+
+                case SDL_DROPFILE:
+                {
+                    string caseFileName = string(event.drop.file);
+                    SDL_free(event.drop.file);
+                    string caseUuid;
+                    
+                    if (ValidateCaseFile(caseFileName, &caseUuid))
+                    {
+                        if (CopyCaseFileToCaseFolder(caseFileName, caseUuid))
+                        {
+                            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_INFORMATION, "Success", "Successfully installed case file!", gpWindow);
+                        }
+                        else
+                        {
+                            SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Failure", "Couldn't install case file - unable to copy it to the case directory.", gpWindow);
+                        }
+                    }
+                    else
+                    {
+                        SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Failure", "Couldn't install case file - it appears to be corrupt.", gpWindow);
+                    }
+                }
                     break;
             #endif
 

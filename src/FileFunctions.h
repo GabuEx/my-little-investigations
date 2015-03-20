@@ -60,10 +60,6 @@ string GetFileNameFromFilePath(const string &path);
 
 string GetCommonResourcesFilePath();
 
-#ifdef __OSX
-string GetPropertyListPath();
-#endif
-
 string GetVersionFilePath();
 Version GetCurrentVersion();
 

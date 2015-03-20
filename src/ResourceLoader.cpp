@@ -467,7 +467,7 @@ void ResourceLoader::RemoveImage(Image *pImage)
 {
     SDL_SemWait(pQueueSemaphore);
 
-    for (int i = smartSpriteQueue.size() - 1; i >= 0; i--)
+    for (int i = (int)(smartSpriteQueue.size() - 1); i >= 0; i--)
     {
         if (smartSpriteQueue[i] == pImage)
         {

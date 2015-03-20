@@ -83,6 +83,9 @@ tstring StringToTString(string str)
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+
+static string GetPropertyListPath();
+
 #elif __unix
 #include <dirent.h>
 #include <pwd.h>
@@ -201,11 +204,11 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
         // trailing slash unless it's explicit.
         // stringByAppendingPathComponent has no way of doing this
         // explicitly, though.
-        commonAppDataPath = string(pLocalApplicationSupportPath) + "/";
-        casesPath = string(pCasesPath) + "/";
-        userAppDataPath = string(pUserApplicationSupportPath) + "/";
-        dialogSeenListsPath = string(pDialogSeenListsPath) + "/";
-        savesPath = string(pSavesPath) + "/";
+        commonAppDataPath = pLocalApplicationSupportPath + "/";
+        casesPath = pCasesPath + "/";
+        userAppDataPath = pUserApplicationSupportPath + "/";
+        dialogSeenListsPath = pDialogSeenListsPath + "/";
+        savesPath = pSavesPath + "/";
 #elif __unix
         pathSeparator = "/";
         otherPathSeparator = "\\";
@@ -432,6 +435,8 @@ bool CopyCaseFileToCaseFolder(const string &caseFilePath, const string &caseUuid
 
         success = CopyFileA(caseFilePath.c_str(), (filePath + string("\\") + caseUuid + string(".mlicase")).c_str(), false /* bFailIfExists */) == TRUE;
     }
+    #elif defined(__OSX)
+    success = CopyCaseUserOSX(caseFilePath, caseUuid);
     #endif
 
     return success;
@@ -459,9 +464,9 @@ string GetCommonResourcesFilePath()
 }
 
 #ifdef __OSX
-string GetPropertyListPath()
+__unused string GetPropertyListPath()
 {
-    return executionPath + ".." + pathSeparator + "Resources" + pathSeparator + "MyLittleInvestigations.plist";
+    return executionPath + ".." + pathSeparator + "Info.plist";
 }
 #endif
 
@@ -488,7 +493,7 @@ Version GetCurrentVersion()
 
     RegCloseKey(hKey);
 #elif __OSX
-    versionString = GetVersionStringOSX(GetPropertyListPath());
+    versionString = GetVersionStringOSX();
 #elif __unix
     string versionFilePath = commonAppDataPath + string(".version");
     if(Exists(versionFilePath))
