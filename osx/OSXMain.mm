@@ -215,20 +215,20 @@ char *GetPropertyListXMLForVersionStringOSX(const string &pPropertyListFilePath,
     *pVersionStringLength = 0;
 
     NSFileManager *defaultManager = [NSFileManager defaultManager];
-    NSString *pErrorDesc = nil;
+    NSError *pErrorDesc = nil;
     //TODO: Save the NSString as, say, a static pointer.
-    NSString *pProperyListPath = [defaultManager
+    NSString *propertyListPath = [defaultManager
 								  stringWithFileSystemRepresentation:pPropertyListFilePath.c_str()
 								  length: pPropertyListFilePath.size()];
-	pProperyListPath = [pProperyListPath stringByStandardizingPath];
+	propertyListPath = [propertyListPath stringByStandardizingPath];
 
-    if (![defaultManager fileExistsAtPath:pProperyListPath])
+    if (![defaultManager fileExistsAtPath:propertyListPath])
     {
         return NULL;
     }
 
     NSMutableDictionary *plistDict =
-        [[NSMutableDictionary alloc] initWithContentsOfFile:pProperyListPath];
+        [[NSMutableDictionary alloc] initWithContentsOfFile:propertyListPath];
 
     if (plistDict == NULL)
     {
@@ -240,9 +240,10 @@ char *GetPropertyListXMLForVersionStringOSX(const string &pPropertyListFilePath,
     [plistDict setObject:newStringValue forKey:@"CFBundleVersion"];
 
     NSData *pData = [NSPropertyListSerialization
-        dataFromPropertyList:plistDict
+        dataWithPropertyList:plistDict
         format:NSPropertyListXMLFormat_v1_0
-        errorDescription:&pErrorDesc];
+        options:0
+        error:&pErrorDesc];
     [plistDict release];
 
     if (pData == NULL)
