@@ -458,6 +458,11 @@ string GetCommonResourcesFilePath()
     return commonAppDataPath + "common.dat";
 }
 
+string GetWindowIconFilePath()
+{
+    return commonAppDataPath + "mli.png";
+}
+
 #ifdef __OSX
 string GetPropertyListPath()
 {
