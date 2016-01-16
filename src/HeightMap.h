@@ -68,15 +68,31 @@ protected:
 
     class HeightLine : public Line
     {
+        BEGIN_DERIVED_XML_STORABLE_OBJECT(HeightLine, Line)
+            XML_STORABLE_INT(heightAtLine)
+        END_XML_STORABLE_OBJECT()
+
     public:
         HeightLine()
         {
             heightAtLine = 0;
         }
 
-        HeightLine(XmlReader *pReader);
+        HeightLine(const HeightLine &other)
+            : Line(other)
+        {
+            heightAtLine = other.heightAtLine;
+        }
 
         int GetHeightAtLine() { return this->heightAtLine; }
+
+        HeightLine & operator=(const HeightLine &rhs)
+        {
+            Line::operator=(rhs);
+            this->heightAtLine = rhs.heightAtLine;
+
+            return *this;
+        }
 
     private:
         int heightAtLine;

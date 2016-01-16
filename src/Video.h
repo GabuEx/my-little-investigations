@@ -64,11 +64,11 @@ public:
 
     void Begin();
     void Update(int delta);
-    void Draw(Vector2 position);
-    void Draw(Vector2 position, bool flipHorizontally);
-    void Draw(Vector2 position, Color color);
-    void Draw(Vector2 position, bool flipHorizontally, Color color);
-    void Draw(Vector2 position, bool flipHorizontally, Color color, RectangleWH clipRect);
+    void Draw(const Vector2 &position);
+    void Draw(const Vector2 &position, bool flipHorizontally);
+    void Draw(const Vector2 &position, const Color &color);
+    void Draw(const Vector2 &position, bool flipHorizontally, const Color &color);
+    void Draw(const Vector2 &position, bool flipHorizontally, const Color &color, const RectangleWH &clipRect);
     void Reset();
     void Finish();
 

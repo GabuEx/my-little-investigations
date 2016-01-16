@@ -42,15 +42,15 @@ using namespace std;
 #ifndef CASE_CREATOR
 class Image;
 
-typedef string XmlReaderString;
-typedef Image * XmlReaderImage;
+typedef string XmlString;
+typedef Image * XmlImage;
 
-#define XmlReaderStringToCharArray(s) s.c_str()
+#define XmlStringToCharArray(s) s.c_str()
 #else
-typedef QString XmlReaderString;
-typedef QImage XmlReaderImage;
+typedef QString XmlString;
+typedef QImage XmlImage;
 
-#define XmlReaderStringToCharArray(s) s.toStdString().c_str()
+#define XmlStringToCharArray(s) s.toStdString().c_str()
 #endif
 
 #endif // XMLINCLUDES_H

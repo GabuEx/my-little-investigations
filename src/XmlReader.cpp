@@ -48,16 +48,16 @@ XmlReader::XmlReader()
     pDocument = NULL;
 }
 
-XmlReader::XmlReader(const char *pFilePath)
+XmlReader::XmlReader(const XmlString &filePath)
 {
     pDocument = NULL;
-    ParseXmlFile(pFilePath);
+    ParseXmlFile(filePath);
 }
 
 XmlReader::XmlReader(const XmlReader &other)
 {
     pDocument = NULL;
-    ParseXmlFile(other.filePath.c_str());
+    ParseXmlFile(other.filePath);
 }
 
 XmlReader::~XmlReader()
@@ -66,23 +66,23 @@ XmlReader::~XmlReader()
     pDocument = NULL;
 }
 
-void XmlReader::ParseXmlFile(const char *pFilePath)
+void XmlReader::ParseXmlFile(const XmlString &filePath)
 {
-    filePath = string(pFilePath);
+    this->filePath = filePath;
 
     delete pDocument;
 #ifdef GAME_EXECUTABLE
-    pDocument = ResourceLoader::GetInstance()->LoadDocument(pFilePath);
+    pDocument = ResourceLoader::GetInstance()->LoadDocument(filePath);
 
     if (pDocument == NULL)
     {
 #endif
         pDocument = new XMLDocument();
 
-        if (pDocument->LoadFile(pFilePath) != XML_NO_ERROR)
+        if (pDocument->LoadFile(XmlStringToCharArray(filePath)) != XML_NO_ERROR)
         {
             delete pDocument;
-            throw MLIException(string("File not found: ") + filePath);
+            throw MLIException(string("File not found: ") + string(XmlStringToCharArray(filePath)));
         }
 #ifdef GAME_EXECUTABLE
     }
@@ -91,11 +91,11 @@ void XmlReader::ParseXmlFile(const char *pFilePath)
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
 
-void XmlReader::ParseXmlContent(const XmlReaderString &xmlContent)
+void XmlReader::ParseXmlContent(const XmlString &xmlContent)
 {
     delete pDocument;
     pDocument = new XMLDocument();
-    XMLError error = pDocument->Parse(XmlReaderStringToCharArray(xmlContent));
+    XMLError error = pDocument->Parse(XmlStringToCharArray(xmlContent));
     if (error != XML_NO_ERROR)
     {
         delete pDocument;
@@ -105,9 +105,9 @@ void XmlReader::ParseXmlContent(const XmlReaderString &xmlContent)
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
 }
 
-void XmlReader::StartElement(const char *pElementName)
+void XmlReader::StartElement(const XmlString &elementName)
 {
-    XMLElement *pElement = pCurrentNode->FirstChildElement(pElementName);
+    XMLElement *pElement = pCurrentNode->FirstChildElement(XmlStringToCharArray(elementName));
 
     if (pElement == NULL)
     {
@@ -118,9 +118,9 @@ void XmlReader::StartElement(const char *pElementName)
     pCurrentNode = dynamic_cast<XMLNode *>(pElement);
 }
 
-bool XmlReader::ElementExists(const char *pElementName)
+bool XmlReader::ElementExists(const XmlString &elementName)
 {
-    XMLElement *pElement = pCurrentNode->FirstChildElement(pElementName);
+    XMLElement *pElement = pCurrentNode->FirstChildElement(XmlStringToCharArray(elementName));
 
     return pElement != NULL;
 }
@@ -130,9 +130,9 @@ void XmlReader::EndElement()
     pCurrentNode = pCurrentNode->Parent();
 }
 
-void XmlReader::StartList(const char *pListElementName)
+void XmlReader::StartList(const XmlString &elementName)
 {
-    listStack.push(XMLList(string(pListElementName)));
+    listStack.push(XMLList(elementName));
 }
 
 bool XmlReader::MoveToNextListItem()
@@ -140,9 +140,9 @@ bool XmlReader::MoveToNextListItem()
     XMLList &topList = listStack.top();
     XMLElement *pElement = NULL;
     if (topList.started)
-        pElement = pCurrentNode->NextSiblingElement(topList.elementsName.c_str());
+        pElement = pCurrentNode->NextSiblingElement(XmlStringToCharArray(topList.elementsName));
     else
-        pElement = pCurrentNode->FirstChildElement(topList.elementsName.c_str());
+        pElement = pCurrentNode->FirstChildElement(XmlStringToCharArray(topList.elementsName));
 
     if (pElement != NULL)
     {
@@ -160,47 +160,47 @@ bool XmlReader::MoveToNextListItem()
 
 }
 
-int XmlReader::ReadIntElement(const char *pElementName)
+int XmlReader::ReadIntElement(const XmlString &elementName)
 {
     int value;
-    StartElement(pElementName);
+    StartElement(elementName);
     value = ReadInt();
     EndElement();
     return value;
 }
 
-double XmlReader::ReadDoubleElement(const char *pElementName)
+double XmlReader::ReadDoubleElement(const XmlString &elementName)
 {
     double value;
-    StartElement(pElementName);
+    StartElement(elementName);
     value = ReadDouble();
     EndElement();
     return value;
 }
 
-bool XmlReader::ReadBooleanElement(const char *pElementName)
+bool XmlReader::ReadBooleanElement(const XmlString &elementName)
 {
     bool value;
-    StartElement(pElementName);
+    StartElement(elementName);
     value = ReadBoolean();
     EndElement();
     return value;
 }
 
-XmlReaderString XmlReader::ReadTextElement(const char *pElementName)
+XmlString XmlReader::ReadTextElement(const XmlString &elementName)
 {
-    XmlReaderString value;
-    StartElement(pElementName);
+    XmlString value;
+    StartElement(elementName);
     value = ReadText();
     EndElement();
     return value;
 }
 
 #if defined(GAME_EXECUTABLE) || defined(CASE_CREATOR)
-XmlReaderImage XmlReader::ReadPngElement(const char *pElementName)
+XmlImage XmlReader::ReadPngElement(const XmlString &elementName)
 {
-    XmlReaderImage value;
-    StartElement(pElementName);
+    XmlImage value;
+    StartElement(elementName);
     value = ReadPng();
     EndElement();
     return value;
@@ -208,10 +208,10 @@ XmlReaderImage XmlReader::ReadPngElement(const char *pElementName)
 #endif
 
 #ifdef CASE_CREATOR
-XmlReaderString XmlReader::ReadFilePathElement(const char *pElementName)
+XmlString XmlReader::ReadFilePathElement(const XmlString &elementName)
 {
-    XmlReaderString value;
-    StartElement(pElementName);
+    XmlString value;
+    StartElement(elementName);
     value = ReadFilePath();
     EndElement();
     return value;
@@ -245,15 +245,15 @@ bool XmlReader::ReadBoolean()
     return value;
 }
 
-XmlReaderString XmlReader::ReadText()
+XmlString XmlReader::ReadText()
 {
     const char *value = pCurrentNode->ToElement()->GetText();
     // looks like tinyxml2 collapse "<tag> </tag>" and return NULL
     // with GetText() despite of PRESERVE_WHITESPACE flag
     if (value == NULL)
-        return XmlReaderString();
+        return XmlString();
     else
-        return XmlReaderString(value);
+        return XmlString(value);
 }
 
 #ifndef CASE_CREATOR
@@ -287,7 +287,7 @@ QImage XmlReader::ReadPng()
 #endif
 
 #ifdef CASE_CREATOR
-XmlReaderString XmlReader::ReadFilePath()
+XmlString XmlReader::ReadFilePath()
 {
     // We always store file paths as relative paths but use them as absolute paths,
     // so convert this to an absolute path before returning it.
@@ -295,52 +295,52 @@ XmlReaderString XmlReader::ReadFilePath()
 }
 #endif
 
-bool XmlReader::AttributeExists(const char *pAttributeName)
+bool XmlReader::AttributeExists(const XmlString &attributeName)
 {
-    return pCurrentNode->ToElement()->Attribute(pAttributeName) != NULL;
+    return pCurrentNode->ToElement()->Attribute(XmlStringToCharArray(attributeName)) != NULL;
 }
 
-int XmlReader::ReadIntAttribute(const char *pAttributeName)
+int XmlReader::ReadIntAttribute(const XmlString &attributeName)
 {
     int value;
-    XMLError error = pCurrentNode->ToElement()->QueryIntAttribute(pAttributeName, &value);
+    XMLError error = pCurrentNode->ToElement()->QueryIntAttribute(XmlStringToCharArray(attributeName), &value);
     if (error != XML_NO_ERROR)
         throw MLIException("XML error: expected int.");
     return value;
 }
 
-double XmlReader::ReadDoubleAttribute(const char *pAttributeName)
+double XmlReader::ReadDoubleAttribute(const XmlString &attributeName)
 {
     double value;
-    XMLError error = pCurrentNode->ToElement()->QueryDoubleAttribute(pAttributeName, &value);
+    XMLError error = pCurrentNode->ToElement()->QueryDoubleAttribute(XmlStringToCharArray(attributeName), &value);
     if (error != XML_NO_ERROR)
         throw MLIException("XML error: expected double.");
     return value;
 }
 
-bool XmlReader::ReadBooleanAttribute(const char *pAttributeName)
+bool XmlReader::ReadBooleanAttribute(const XmlString &attributeName)
 {
     bool value;
-    XMLError error = pCurrentNode->ToElement()->QueryBoolAttribute(pAttributeName, &value);
+    XMLError error = pCurrentNode->ToElement()->QueryBoolAttribute(XmlStringToCharArray(attributeName), &value);
     if (error != XML_NO_ERROR)
         throw MLIException("XML error: expected Boolean.");
     return value;
 }
 
-XmlReaderString XmlReader::ReadTextAttribute(const char *pAttributeName)
+XmlString XmlReader::ReadTextAttribute(const XmlString &attributeName)
 {
-    const char *value = pCurrentNode->ToElement()->Attribute(pAttributeName);
+    const char *value = pCurrentNode->ToElement()->Attribute(XmlStringToCharArray(attributeName));
     if (value == NULL)
-        return XmlReaderString();
+        return XmlString();
     else
-        return XmlReaderString(value);
+        return XmlString(value);
 }
 
 #ifdef CASE_CREATOR
-XmlReaderString XmlReader::ReadFilePathAttribute(const char *pAttributeName)
+XmlString XmlReader::ReadFilePathAttribute(const XmlString &attributeName)
 {
     // We always store file paths as relative paths but use them as absolute paths,
     // so convert this to an absolute path before returning it.
-    return CaseContent::GetInstance()->RelativePathToAbsolutePath(ReadTextAttribute(pAttributeName));
+    return CaseContent::GetInstance()->RelativePathToAbsolutePath(ReadTextAttribute(attributeName));
 }
 #endif

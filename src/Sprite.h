@@ -48,7 +48,7 @@ public:
         managerSource = ManagerSourceCommonResources;
     }
 
-    Sprite(const string &spriteSheetImageId, RectangleWH spriteClipRect)
+    Sprite(const string &spriteSheetImageId, const RectangleWH &spriteClipRect)
     {
         this->spriteSheetImageId = spriteSheetImageId;
         this->spriteClipRect = spriteClipRect;

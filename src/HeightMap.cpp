@@ -155,11 +155,3 @@ int ParabolicHeightMap::GetHighestHeight()
 {
     return max(heightLine1.GetHeightAtLine(), max(heightLine2.GetHeightAtLine(), heightLine3.GetHeightAtLine()));
 }
-
-ParabolicHeightMap::HeightLine::HeightLine(XmlReader *pReader)
-{
-    pReader->StartElement("HeightLine");
-    LoadFromXmlCore(pReader);
-    heightAtLine = pReader->ReadIntElement("HeightAtLine");
-    pReader->EndElement();
-}

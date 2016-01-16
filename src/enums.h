@@ -30,9 +30,17 @@
 #ifndef ENUMS_H
 #define ENUMS_H
 
+#ifdef CASE_CREATOR
+#include <QString>
+
+typedef QString StringType;
+#else
 #include <string>
 
 using namespace std;
+
+typedef string StringType;
+#endif
 
 enum DirectNavigationDirection
 {
@@ -166,13 +174,14 @@ enum VAlignment
     VAlignmentBottom
 };
 
-CharacterDirection StringToCharacterDirection(const string &s);
-string CharacterDirectionToString(CharacterDirection d);
-CharacterPosition StringToCharacterPosition(const string &s);
-FieldCharacterDirection StringToFieldCharacterDirection(const string &s);
-string FieldCharacterDirectionToString(FieldCharacterDirection d);
-FieldCharacterState StringToFieldCharacterState(const string &s);
-FieldCustomCursorState StringToFieldCustomCursorState(const string &s);
-TransitionDirection StringToTransitionDirection(const string &s);
+CharacterDirection StringToCharacterDirection(const StringType &s);
+StringType CharacterDirectionToString(CharacterDirection d);
+CharacterPosition StringToCharacterPosition(const StringType &s);
+StringType CharacterPositionToString(const CharacterPosition p);
+FieldCharacterDirection StringToFieldCharacterDirection(const StringType &s);
+StringType FieldCharacterDirectionToString(FieldCharacterDirection d);
+FieldCharacterState StringToFieldCharacterState(const StringType &s);
+FieldCustomCursorState StringToFieldCustomCursorState(const StringType &s);
+TransitionDirection StringToTransitionDirection(const StringType &s);
 
 #endif

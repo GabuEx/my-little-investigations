@@ -32,55 +32,57 @@
 
 #ifndef CASE_CREATOR
 #include "SDL2/SDL_stdinc.h"
+
+#define ColorIntType Uint8
 #else
 #include <QtGlobal>
+
+#define ColorIntType qint8
 #endif
 
-class XmlReader;
+#include "XmlStorableObject.h"
 
-class Color
+class Color : public XmlStorableObject
 {
+    BEGIN_XML_STORABLE_OBJECT(Color)
+        XML_STORABLE_DOUBLE(a)
+        XML_STORABLE_DOUBLE(r)
+        XML_STORABLE_DOUBLE(g)
+        XML_STORABLE_DOUBLE(b)
+    END_XML_STORABLE_OBJECT()
+
 public:
     static Color White;
 
     Color();
+    Color(const Color &other);
     Color(double a, double r, double g, double b);
+
+    static Color CreateFromXml(XmlReader *pReader)
+    {
+        return Color(pReader);
+    }
+
+    void SaveElementsToXml(XmlWriter *pWriter);
+    void LoadElementsFromXml(XmlReader *pReader);
 
     double GetA() const { return this->a; }
     double GetIntA() const { return this->intA; }
-#ifndef CASE_CREATOR
-    void SetA(double a) { this->a = a; this->intA = (Uint8)(a * 255); }
-#else
-    void SetA(double a) { this->a = a; this->intA = (qint8)(a * 255); }
-#endif
+    void SetA(double a) { this->a = a; this->intA = (ColorIntType)(a * 255); }
     double GetR() const { return this->r; }
     double GetIntR() const { return this->intR; }
-#ifndef CASE_CREATOR
-    void SetR(double r) { this->r = r; this->intR = (Uint8)(r * 255); }
-#else
-    void SetR(double r) { this->r = r; this->intR = (qint8)(r * 255); }
-#endif
+    void SetR(double r) { this->r = r; this->intR = (ColorIntType)(r * 255); }
     double GetG() const { return this->g; }
     double GetIntG() const { return this->intG; }
-#ifndef CASE_CREATOR
-    void SetG(double g) { this->g = g; this->intG = (Uint8)(g * 255); }
-#else
-    void SetG(double g) { this->g = g; this->intG = (qint8)(g * 255); }
-#endif
+    void SetG(double g) { this->g = g; this->intG = (ColorIntType)(g * 255); }
     double GetB() const { return this->b; }
     double GetIntB() const { return this->intB; }
-#ifndef CASE_CREATOR
-    void SetB(double b) { this->b = b; this->intB = (Uint8)(b * 255); }
-#else
-    void SetB(double b) { this->b = b; this->intB = (qint8)(b * 255); }
-#endif
+    void SetB(double b) { this->b = b; this->intB = (ColorIntType)(b * 255); }
 
     Color & operator=(const Color &rhs);
 
     bool operator==(const Color &other) const;
     bool operator!=(const Color &other) const;
-
-    Color(XmlReader *pReader);
 
 private:
     double a;
@@ -88,17 +90,10 @@ private:
     double g;
     double b;
 
-#ifndef CASE_CREATOR
-    Uint8 intA;
-    Uint8 intR;
-    Uint8 intG;
-    Uint8 intB;
-#else
-    qint8 intA;
-    qint8 intR;
-    qint8 intG;
-    qint8 intB;
-#endif
+    ColorIntType intA;
+    ColorIntType intR;
+    ColorIntType intG;
+    ColorIntType intB;
 };
 
 #endif

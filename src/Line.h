@@ -31,13 +31,23 @@
 #define LINE_H
 
 #include "Vector2.h"
+#include "XmlStorableObject.h"
 
-class XmlReader;
-
-class Line
+class Line : public XmlStorableObject
 {
+    BEGIN_XML_STORABLE_OBJECT(Line)
+        XML_STORABLE_CUSTOM_OBJECT(pointInLine, Vector2::CreateFromXml)
+        XML_STORABLE_CUSTOM_OBJECT(directionVector, Vector2::CreateFromXml)
+    END_XML_STORABLE_OBJECT()
+
 public:
     Line() {}
+
+    Line(const Line &other)
+    {
+        this->pointInLine = other.pointInLine;
+        this->directionVector = other.directionVector;
+    }
 
     Line(Vector2 pointInLine, Vector2 directionVector)
     {
@@ -45,13 +55,18 @@ public:
         this->directionVector = directionVector.Normalize();
     }
 
-    Line(XmlReader *pReader);
+    virtual ~Line() { }
 
     Vector2 GetMinimalDisplacementToPoint(Vector2 point) const;
     Vector2 GetIntersectionPointWith(Line otherLine) const;
 
-protected:
-    void LoadFromXmlCore(XmlReader *pReader);
+    Line & operator=(const Line &rhs)
+    {
+        this->pointInLine = rhs.pointInLine;
+        this->directionVector = rhs.directionVector;
+
+        return *this;
+    }
 
 private:
     Vector2 pointInLine;

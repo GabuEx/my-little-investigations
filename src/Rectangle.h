@@ -30,22 +30,36 @@
 #ifndef RECTANGLE_H
 #define RECTANGLE_H
 
-class XmlReader;
+#include "XmlStorableObject.h"
 
 #ifdef CASE_CREATOR
-class XmlWriter;
-
 #include "Vector2.h"
 
 #include <QRect>
 #include <QRectF>
 #endif
 
-class RectangleWH
+class RectangleWH : public XmlStorableObject
 {
+    BEGIN_NAMED_XML_STORABLE_OBJECT(RectangleWH, Rectangle)
+        XML_STORABLE_DOUBLE(x)
+        XML_STORABLE_DOUBLE(y)
+        XML_STORABLE_DOUBLE(width)
+        XML_STORABLE_DOUBLE(height)
+    END_XML_STORABLE_OBJECT()
+
 public:
     RectangleWH();
+    RectangleWH(const RectangleWH &other);
     RectangleWH(double x, double y, double width, double height);
+#ifdef CASE_CREATOR
+    RectangleWH(QRectF rect);
+#endif
+
+    static RectangleWH CreateFromXml(XmlReader *pReader)
+    {
+        return RectangleWH(pReader);
+    }
 
     double GetX() const { return this->x; }
     void SetX(double x) { this->x = x; }
@@ -61,11 +75,7 @@ public:
     bool operator==(const RectangleWH &other) const;
     bool operator!=(const RectangleWH &other) const;
 
-    RectangleWH(XmlReader *pReader);
-
 #ifdef CASE_CREATOR
-    void SaveToProjectFile(XmlWriter *pWriter);
-
     RectangleWH & operator+=(const Vector2 &rhs);
     RectangleWH & operator-=(const Vector2 &rhs);
 

@@ -42,37 +42,34 @@ typedef unsigned int PointsIntType;
 typedef int PointsIntType;
 #endif
 
-GeometricPolygon::GeometricPolygon(XmlReader *pReader)
+GeometricPolygon::GeometricPolygon(const GeometricPolygon &other)
 {
-    pReader->StartElement("Polygon");
-    pReader->StartList("Vertex");
-
-    while (pReader->MoveToNextListItem())
+    for (PointsIntType i = 0; i < other.points.size(); i++)
     {
-        points.push_back(Vector2(pReader->ReadDoubleElement("X"), pReader->ReadDoubleElement("Y")));
+        points.push_back(other.points[i]);
     }
-
-    pReader->EndElement();
 }
 
-#ifdef CASE_CREATOR
-void GeometricPolygon::SaveToProjectFile(XmlWriter *pWriter)
+void GeometricPolygon::LoadElementsFromXml(XmlReader *pReader)
 {
-    pWriter->StartElement("Polygon");
+    bool useAutomatedXmlFormat = pReader->ElementExists("Points");
 
-    for (Vector2 point : points)
+    if (useAutomatedXmlFormat)
     {
-        pWriter->StartElement("Vertex");
-        pWriter->WriteDoubleElement("X", point.GetX());
-        pWriter->WriteDoubleElement("Y", point.GetY());
-        pWriter->EndElement();
+        XmlStorableObject::LoadElementsFromXml(pReader);
     }
+    else
+    {
+        pReader->StartList("Vertex");
 
-    pWriter->EndElement();
+        while (pReader->MoveToNextListItem())
+        {
+            points.push_back(Vector2(pReader->ReadDoubleElement("X"), pReader->ReadDoubleElement("Y")));
+        }
+    }
 }
-#endif
 
-RectangleWH GeometricPolygon::GetBoundingBox()
+RectangleWH GeometricPolygon::GetBoundingBox() const
 {
     if (points.empty())
     {
@@ -152,14 +149,42 @@ bool GeometricPolygon::Contains(Vector2 point)
     return oddNumberOfCrossings;
 }
 
-const GeometricPolygon GeometricPolygon::operator-(const Vector2 &other) const
+GeometricPolygon & GeometricPolygon::operator=(const GeometricPolygon &rhs)
 {
-    GeometricPolygon newPolygon = *this;
-
-    for (PointsIntType i = 0; i < newPolygon.points.size(); i++)
+    for (PointsIntType i = 0; i < rhs.points.size(); i++)
     {
-        newPolygon.points[i] -= other;
+        points.push_back(rhs.points[i]);
     }
 
-    return newPolygon;
+    return *this;
+}
+
+GeometricPolygon & GeometricPolygon::operator+=(const Vector2 &rhs)
+{
+    for (PointsIntType i = 0; i < points.size(); i++)
+    {
+        points[i] += rhs;
+    }
+
+    return *this;
+}
+
+GeometricPolygon & GeometricPolygon::operator-=(const Vector2 &rhs)
+{
+    for (PointsIntType i = 0; i < points.size(); i++)
+    {
+        points[i] -= rhs;
+    }
+
+    return *this;
+}
+
+const GeometricPolygon GeometricPolygon::operator+(const Vector2 &rhs) const
+{
+    return GeometricPolygon(*this) += rhs;
+}
+
+const GeometricPolygon GeometricPolygon::operator-(const Vector2 &rhs) const
+{
+    return GeometricPolygon(*this) -= rhs;
 }

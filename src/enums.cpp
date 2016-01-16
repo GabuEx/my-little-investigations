@@ -29,7 +29,7 @@
 
 #include "enums.h"
 
-CharacterDirection StringToCharacterDirection(const string &s)
+CharacterDirection StringToCharacterDirection(const StringType &s)
 {
     if (s == "Left")
     {
@@ -45,7 +45,7 @@ CharacterDirection StringToCharacterDirection(const string &s)
     }
 }
 
-string CharacterDirectionToString(CharacterDirection d)
+StringType CharacterDirectionToString(CharacterDirection d)
 {
     if (d == CharacterDirectionLeft)
     {
@@ -61,7 +61,7 @@ string CharacterDirectionToString(CharacterDirection d)
     }
 }
 
-CharacterPosition StringToCharacterPosition(const string &s)
+CharacterPosition StringToCharacterPosition(const StringType &s)
 {
     if (s == "Left")
     {
@@ -85,7 +85,31 @@ CharacterPosition StringToCharacterPosition(const string &s)
     }
 }
 
-FieldCharacterDirection StringToFieldCharacterDirection(const string &s)
+StringType CharacterPositionToString(const CharacterPosition p)
+{
+    if (p == CharacterPositionLeft)
+    {
+        return "Left";
+    }
+    else if (p == CharacterPositionRight)
+    {
+        return "Right";
+    }
+    else if (p == CharacterPositionUnknown)
+    {
+        return "Unknown";
+    }
+    else if (p == CharacterPositionOffscreen)
+    {
+        return "Offscreen";
+    }
+    else
+    {
+        return "None";
+    }
+}
+
+FieldCharacterDirection StringToFieldCharacterDirection(const StringType &s)
 {
     if (s == "Up")
     {
@@ -113,7 +137,7 @@ FieldCharacterDirection StringToFieldCharacterDirection(const string &s)
     }
 }
 
-string FieldCharacterDirectionToString(FieldCharacterDirection d)
+StringType FieldCharacterDirectionToString(FieldCharacterDirection d)
 {
     if (d == FieldCharacterDirectionUp)
     {
@@ -141,7 +165,7 @@ string FieldCharacterDirectionToString(FieldCharacterDirection d)
     }
 }
 
-FieldCharacterState StringToFieldCharacterState(const string &s)
+FieldCharacterState StringToFieldCharacterState(const StringType &s)
 {
     if (s == "Standing")
     {
@@ -161,7 +185,7 @@ FieldCharacterState StringToFieldCharacterState(const string &s)
     }
 }
 
-FieldCustomCursorState StringToFieldCustomCursorState(const string &s)
+FieldCustomCursorState StringToFieldCustomCursorState(const StringType &s)
 {
     if (s == "None")
     {
@@ -185,7 +209,7 @@ FieldCustomCursorState StringToFieldCustomCursorState(const string &s)
     }
 }
 
-TransitionDirection StringToTransitionDirection(const string &s)
+TransitionDirection StringToTransitionDirection(const StringType &s)
 {
     if (s == "North")
     {

@@ -287,28 +287,28 @@ void Image::FlagFontSource(MLIFont *pFont)
     pSource = new FontSource(pFont);
 }
 
-void Image::Draw(Vector2 position)
+void Image::Draw(const Vector2 &position)
 {
     Draw(position, RectangleWH(0, 0, width, height), false, false, 1.0, Color::White);
 }
 
-void Image::Draw(Vector2 position, Color color)
+void Image::Draw(const Vector2 &position, const Color &color)
 {
     Draw(position, RectangleWH(0, 0, width, height), false, false, 1.0, color);
 }
 
-void Image::Draw(Vector2 position, bool flipHorizontally, bool flipVertically, Color color)
+void Image::Draw(const Vector2 &position, bool flipHorizontally, bool flipVertically, const Color &color)
 {
     Draw(position, RectangleWH(0, 0, width, height), flipHorizontally, flipVertically, 1.0, color);
 }
 
 void Image::Draw(
-    Vector2 position,
-    RectangleWH clipRect,
+    const Vector2 &position,
+    const RectangleWH &clipRect,
     bool flipHorizontally,
     bool flipVertically,
     double scale,
-    Color color)
+    const Color &color)
 {
     EnsureUIThread();
 
@@ -401,7 +401,7 @@ void Image::Draw(
     bool flipHorizontally,
     bool flipVertically,
     double scale,
-    Color color,
+    const Color &color,
     bool useScreenScaling)
 {
     // If the alpha channel of the color overlay is zero (i.e., completely transparent),

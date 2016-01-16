@@ -31,13 +31,6 @@
 #include "XmlReader.h"
 #include <math.h>
 
-Line::Line(XmlReader *pReader)
-{
-    pReader->StartElement("Line");
-    LoadFromXmlCore(pReader);
-    pReader->EndElement();
-}
-
 Vector2 Line::GetMinimalDisplacementToPoint(Vector2 point) const
 {
     Line perpendicularLine = Line(point, Vector2(-directionVector.GetY(), directionVector.GetX()));
@@ -73,15 +66,4 @@ Vector2 Line::GetIntersectionPointWith(Line otherLine) const
     }
 
     return Vector2(x, y);
-}
-
-void Line::LoadFromXmlCore(XmlReader *pReader)
-{
-    pReader->StartElement("PointInLine");
-    pointInLine = Vector2(pReader);
-    pReader->EndElement();
-
-    pReader->StartElement("DirectionVector");
-    directionVector = Vector2(pReader);
-    pReader->EndElement();
 }

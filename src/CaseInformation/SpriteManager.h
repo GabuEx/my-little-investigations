@@ -45,7 +45,7 @@ public:
 
     Sprite * GetSpriteFromId(const string &id);
     Image * GetImageFromId(const string &id);
-    void AddSprite(const string &id, const string &spriteSheetId, RectangleWH spriteClipRect);
+    void AddSprite(const string &id, const string &spriteSheetId, const RectangleWH &spriteClipRect);
     void AddImage(const string &id, Image *pImage);
     void LoadImageFromFilePath(const string &id);
     void DeleteImage(const string &id);

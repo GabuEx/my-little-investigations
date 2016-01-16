@@ -32,42 +32,53 @@
 
 #include "Rectangle.h"
 #include "Vector2.h"
+#include "XmlStorableObject.h"
 
 #ifndef CASE_CREATOR
 #include <vector>
-#else
-class XmlWriter;
 
+#define PolygonListType vector
+#else
 #include <QList>
+
+#define PolygonListType QList
 #endif
 
 using namespace std;
 
-class XmlReader;
-
-class GeometricPolygon
+class GeometricPolygon : public XmlStorableObject
 {
+    BEGIN_NAMED_XML_STORABLE_OBJECT(GeometricPolygon, Polygon)
+        XML_STORABLE_CUSTOM_OBJECT_LIST(points, Vector2::CreateFromXml)
+    END_XML_STORABLE_OBJECT()
+
 public:
     GeometricPolygon() {}
-    GeometricPolygon(XmlReader *pReader);
+    GeometricPolygon(const GeometricPolygon &other);
+    virtual ~GeometricPolygon() { }
 
-#ifdef CASE_CREATOR
-    void SaveToProjectFile(XmlWriter *pWriter);
-#endif
+    static GeometricPolygon CreateFromXml(XmlReader *pReader)
+    {
+        return GeometricPolygon(pReader);
+    }
 
-    bool Empty() { return points.empty(); }
+    void LoadElementsFromXml(XmlReader *pReader);
+
+    bool Empty() const { return points.empty(); }
 
     bool Contains(Vector2 point);
-    RectangleWH GetBoundingBox();
+    RectangleWH GetBoundingBox() const;
 
-    const GeometricPolygon operator-(const Vector2 &other) const;
+    GeometricPolygon & operator=(const GeometricPolygon &rhs);
+
+    GeometricPolygon & operator+=(const Vector2 &rhs);
+    GeometricPolygon & operator-=(const Vector2 &rhs);
+
+    const GeometricPolygon operator+(const Vector2 &rhs) const;
+    const GeometricPolygon operator-(const Vector2 &rhs) const;
 
 private:
-#ifndef CASE_CREATOR
-    vector<Vector2> points;
-#else
-    QList<Vector2> points;
-#endif
+    PolygonListType<Vector2> points;
 };
 
 #endif

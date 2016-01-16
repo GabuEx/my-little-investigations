@@ -73,7 +73,7 @@ Image * SpriteManager::GetImageFromId(const string &id)
     return pSprite;
 }
 
-void SpriteManager::AddSprite(const string &id, const string &spriteSheetId, RectangleWH spriteClipRect)
+void SpriteManager::AddSprite(const string &id, const string &spriteSheetId, const RectangleWH &spriteClipRect)
 {
     spriteByIdMap[id] = new Sprite(spriteSheetId, spriteClipRect);
     spriteByIdMap[id]->SetManagerSource(managerSource);

@@ -40,69 +40,69 @@ class XmlReader
 {
 public:
     XmlReader();
-    XmlReader(const char *pFilePath);
+    XmlReader(const XmlString &filePath);
     XmlReader(const XmlReader &other);
     ~XmlReader();
 
-    void ParseXmlFile(const char *pFilePath);
-    void ParseXmlContent(const XmlReaderString &xmlContent);
+    void ParseXmlFile(const XmlString &filePath);
+    void ParseXmlContent(const XmlString &xmlContent);
 
-    void StartElement(const char *pElementName);
-    bool ElementExists(const char *pElementName);
+    void StartElement(const XmlString &elementName);
+    bool ElementExists(const XmlString &elementName);
     void EndElement();
-    void StartList(const char *pListElementName);
+    void StartList(const XmlString &elementName);
     bool MoveToNextListItem();
 
-    int ReadIntElement(const char *pElementName);
-    double ReadDoubleElement(const char *pElementName);
-    bool ReadBooleanElement(const char *pElementName);
-    XmlReaderString ReadTextElement(const char *pElementName);
+    int ReadIntElement(const XmlString &elementName);
+    double ReadDoubleElement(const XmlString &elementName);
+    bool ReadBooleanElement(const XmlString &elementName);
+    XmlString ReadTextElement(const XmlString &elementName);
 
 #if defined(GAME_EXECUTABLE) || defined(CASE_CREATOR)
-    XmlReaderImage ReadPngElement(const char *pElementName);
+    XmlImage ReadPngElement(const XmlString &elementName);
 #endif
 
 #ifdef CASE_CREATOR
-    XmlReaderString ReadFilePathElement(const char *pElementName);
+    XmlString ReadFilePathElement(const XmlString &elementName);
 #endif
 
     int ReadInt();
     double ReadDouble();
     bool ReadBoolean();
-    XmlReaderString ReadText();
+    XmlString ReadText();
 
 #if defined(GAME_EXECUTABLE) || defined(CASE_CREATOR)
-    XmlReaderImage ReadPng();
+    XmlImage ReadPng();
 #endif
 
 #ifdef CASE_CREATOR
-    XmlReaderString ReadFilePath();
+    XmlString ReadFilePath();
 #endif
 
-    bool AttributeExists(const char *pAttributeName);
-    int ReadIntAttribute(const char *pAttributeName);
-    double ReadDoubleAttribute(const char *pAttributeName);
-    bool ReadBooleanAttribute(const char *pAttributeName);
-    XmlReaderString ReadTextAttribute(const char *pAttributeName);
+    bool AttributeExists(const XmlString &attributeName);
+    int ReadIntAttribute(const XmlString &attributeName);
+    double ReadDoubleAttribute(const XmlString &attributeName);
+    bool ReadBooleanAttribute(const XmlString &attributeName);
+    XmlString ReadTextAttribute(const XmlString &attributeName);
 
 #ifdef CASE_CREATOR
-    XmlReaderString ReadFilePathAttribute(const char *pAttributeName);
+    XmlString ReadFilePathAttribute(const XmlString &attributeName);
 #endif
 
 private:
-    string filePath;
+    XmlString filePath;
     tinyxml2::XMLDocument *pDocument;
     tinyxml2::XMLNode *pCurrentNode;
 
     struct XMLList
     {
-        XMLList(string elementsName)
+        XMLList(XmlString elementsName)
             : elementsName(elementsName)
             , started(false)
         {
         }
 
-        string elementsName;
+        XmlString elementsName;
         bool started; // indicate, if we actually start iterate over list
     };
 

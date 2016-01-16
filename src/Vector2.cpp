@@ -41,6 +41,12 @@ Vector2::Vector2()
     this->y = 0;
 }
 
+Vector2::Vector2(const Vector2 &other)
+{
+    this->x = other.x;
+    this->y = other.y;
+}
+
 Vector2::Vector2(double x, double y)
 {
     this->x = x;
@@ -146,23 +152,7 @@ bool Vector2::operator<(const Vector2 &other) const
     }
 }
 
-Vector2::Vector2(XmlReader *pReader)
-{
-    pReader->StartElement("Vector2");
-    x = pReader->ReadDoubleElement("X");
-    y = pReader->ReadDoubleElement("Y");
-    pReader->EndElement();
-}
-
 #ifdef CASE_CREATOR
-void Vector2::SaveToProjectFile(XmlWriter *pWriter)
-{
-    pWriter->StartElement("Vector2");
-    pWriter->WriteDoubleElement("X", x);
-    pWriter->WriteDoubleElement("Y", y);
-    pWriter->EndElement();
-}
-
 QPoint Vector2::ToQPoint() const
 {
     return QPoint((int)x, (int)y);

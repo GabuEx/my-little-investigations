@@ -30,25 +30,36 @@
 #ifndef VECTOR2_H
 #define VECTOR2_H
 
-class XmlReader;
+#include "XmlStorableObject.h"
 
 #ifdef CASE_CREATOR
-class XmlWriter;
-
 #include <QPoint>
 #include <QPointF>
 #include <QSize>
 #endif
 
-class Vector2
+class Vector2 : public XmlStorableObject
 {
+    BEGIN_XML_STORABLE_OBJECT(Vector2)
+        XML_STORABLE_DOUBLE(x)
+        XML_STORABLE_DOUBLE(y)
+    END_XML_STORABLE_OBJECT()
+
 public:
     Vector2();
+    Vector2(const Vector2 &other);
     Vector2(double x, double y);
 
 #ifdef CASE_CREATOR
     Vector2(const QPointF &qPointF);
 #endif
+
+    virtual ~Vector2() { }
+
+    static Vector2 CreateFromXml(XmlReader *pReader)
+    {
+        return Vector2(pReader);
+    }
 
     double GetX() const { return this->x; }
     void SetX(double x) { this->x = x; }
@@ -76,11 +87,7 @@ public:
 
     bool operator<(const Vector2 &other) const;
 
-    Vector2(XmlReader *pReader);
-
 #ifdef CASE_CREATOR
-    void SaveToProjectFile(XmlWriter *pWriter);
-
     QPoint ToQPoint() const;
     QPointF ToQPointF() const;
     QSize ToQSize() const;

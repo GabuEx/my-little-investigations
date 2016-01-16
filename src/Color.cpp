@@ -41,12 +41,36 @@ Color::Color()
     SetB(0.0);
 }
 
+Color::Color(const Color &other)
+{
+    SetA(other.GetA());
+    SetR(other.GetR());
+    SetG(other.GetG());
+    SetB(other.GetB());
+}
+
 Color::Color(double a, double r, double g, double b)
 {
     SetA(std::max(std::min(a, 1.0), 0.0));
     SetR(std::max(std::min(r, 1.0), 0.0));
     SetG(std::max(std::min(g, 1.0), 0.0));
     SetB(std::max(std::min(b, 1.0), 0.0));
+}
+
+void Color::SaveElementsToXml(XmlWriter *pWriter)
+{
+    pWriter->WriteDoubleElement("A", GetA() * 255.0);
+    pWriter->WriteDoubleElement("R", GetR() * 255.0);
+    pWriter->WriteDoubleElement("G", GetG() * 255.0);
+    pWriter->WriteDoubleElement("B", GetB() * 255.0);
+}
+
+void Color::LoadElementsFromXml(XmlReader *pReader)
+{
+    SetA(pReader->ReadDoubleElement("A") / 255.0);
+    SetR(pReader->ReadDoubleElement("R") / 255.0);
+    SetG(pReader->ReadDoubleElement("G") / 255.0);
+    SetB(pReader->ReadDoubleElement("B") / 255.0);
 }
 
 Color & Color::operator=(const Color &rhs)
@@ -76,16 +100,4 @@ bool Color::operator==(const Color &other) const
 bool Color::operator!=(const Color &other) const
 {
     return !(*this == other);
-}
-
-Color::Color(XmlReader *pReader)
-{
-    pReader->StartElement("Color");
-
-    SetA(pReader->ReadDoubleElement("A") / 255.0);
-    SetR(pReader->ReadDoubleElement("R") / 255.0);
-    SetG(pReader->ReadDoubleElement("G") / 255.0);
-    SetB(pReader->ReadDoubleElement("B") / 255.0);
-
-    pReader->EndElement();
 }

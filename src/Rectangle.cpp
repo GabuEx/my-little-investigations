@@ -42,6 +42,14 @@ RectangleWH::RectangleWH()
     this->height = 0;
 }
 
+RectangleWH::RectangleWH(const RectangleWH &other)
+{
+    this->x = other.x;
+    this->y = other.y;
+    this->width = other.width;
+    this->height = other.height;
+}
+
 RectangleWH::RectangleWH(double x, double y, double width, double height)
 {
     this->x = x;
@@ -49,6 +57,16 @@ RectangleWH::RectangleWH(double x, double y, double width, double height)
     this->width = width;
     this->height = height;
 }
+
+#ifdef CASE_CREATOR
+RectangleWH::RectangleWH(QRectF rect)
+{
+    this->x = (double)rect.x();
+    this->y = (double)rect.y();
+    this->width = (double)rect.width();
+    this->height = (double)rect.height();
+}
+#endif
 
 RectangleWH & RectangleWH::operator=(const RectangleWH &rhs)
 {
@@ -74,31 +92,7 @@ bool RectangleWH::operator!=(const RectangleWH &other) const
     return !(*this == other);
 }
 
-RectangleWH::RectangleWH(XmlReader *pReader)
-{
-    pReader->StartElement("Rectangle");
-
-    this->x = pReader->ReadDoubleElement("X");
-    this->y = pReader->ReadDoubleElement("Y");
-    this->width = pReader->ReadDoubleElement("Width");
-    this->height = pReader->ReadDoubleElement("Height");
-
-    pReader->EndElement();
-}
-
 #ifdef CASE_CREATOR
-void RectangleWH::SaveToProjectFile(XmlWriter *pWriter)
-{
-    pWriter->StartElement("Rectangle");
-
-    pWriter->WriteDoubleElement("X", x);
-    pWriter->WriteDoubleElement("Y", y);
-    pWriter->WriteDoubleElement("Width", width);
-    pWriter->WriteDoubleElement("Height", height);
-
-    pWriter->EndElement();
-}
-
 RectangleWH & RectangleWH::operator+=(const Vector2 &rhs)
 {
     x += rhs.GetX();
@@ -115,14 +109,14 @@ RectangleWH & RectangleWH::operator-=(const Vector2 &rhs)
     return *this;
 }
 
-const RectangleWH RectangleWH::operator+(const Vector2 &other) const
+const RectangleWH RectangleWH::operator+(const Vector2 &rhs) const
 {
-    return RectangleWH(*this) += other;
+    return RectangleWH(*this) += rhs;
 }
 
-const RectangleWH RectangleWH::operator-(const Vector2 &other) const
+const RectangleWH RectangleWH::operator-(const Vector2 &rhs) const
 {
-    return RectangleWH(*this) -= other;
+    return RectangleWH(*this) -= rhs;
 }
 
 QRect RectangleWH::ToQRect() const
