@@ -38,11 +38,14 @@
 class XmlWriter
 {
 public:
-    XmlWriter(const char *pFilePath, const char *pFilePathExtension = NULL, bool makeHumanReadable = false);
+    XmlWriter(const char *pFilePath, const char *pFilePathExtension = NULL, bool makeHumanReadable = false, int formattingVersion = 1);
     ~XmlWriter();
 
     void StartElement(const XmlString &elementName);
+    void VerifyCurrentElement(const XmlString &expectedElementName);
     void EndElement();
+
+    void WriteEmptyElement(const XmlString &elementName);
     void WriteIntElement(const XmlString &elementName, int elementValue);
     void WriteDoubleElement(const XmlString &elementName, double elementValue);
     void WriteBooleanElement(const XmlString &elementName, bool elementValue);

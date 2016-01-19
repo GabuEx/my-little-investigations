@@ -57,20 +57,24 @@ Color::Color(double a, double r, double g, double b)
     SetB(std::max(std::min(b, 1.0), 0.0));
 }
 
-void Color::SaveElementsToXml(XmlWriter *pWriter)
-{
-    pWriter->WriteDoubleElement("A", GetA() * 255.0);
-    pWriter->WriteDoubleElement("R", GetR() * 255.0);
-    pWriter->WriteDoubleElement("G", GetG() * 255.0);
-    pWriter->WriteDoubleElement("B", GetB() * 255.0);
-}
-
 void Color::LoadElementsFromXml(XmlReader *pReader)
 {
-    SetA(pReader->ReadDoubleElement("A") / 255.0);
-    SetR(pReader->ReadDoubleElement("R") / 255.0);
-    SetG(pReader->ReadDoubleElement("G") / 255.0);
-    SetB(pReader->ReadDoubleElement("B") / 255.0);
+    switch (pReader->GetFormattingVersion())
+    {
+    case 1:
+        SetA(pReader->ReadDoubleElement("A") / 255.0);
+        SetR(pReader->ReadDoubleElement("R") / 255.0);
+        SetG(pReader->ReadDoubleElement("G") / 255.0);
+        SetB(pReader->ReadDoubleElement("B") / 255.0);
+        break;
+
+    case 2:
+        XmlStorableObject::LoadElementsFromXml(pReader);
+        break;
+
+    default:
+        throw new MLIException("Unknown XML formatting version.");
+    }
 }
 
 Color & Color::operator=(const Color &rhs)

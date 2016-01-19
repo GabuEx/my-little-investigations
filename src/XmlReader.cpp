@@ -46,17 +46,18 @@ using namespace tinyxml2;
 XmlReader::XmlReader()
 {
     pDocument = NULL;
+    formattingVersion = 1;
 }
 
 XmlReader::XmlReader(const XmlString &filePath)
+    : XmlReader()
 {
-    pDocument = NULL;
     ParseXmlFile(filePath);
 }
 
 XmlReader::XmlReader(const XmlReader &other)
+    : XmlReader()
 {
-    pDocument = NULL;
     ParseXmlFile(other.filePath);
 }
 
@@ -88,7 +89,7 @@ void XmlReader::ParseXmlFile(const XmlString &filePath)
     }
 #endif
 
-    pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
+    Init(pDocument);
 }
 
 void XmlReader::ParseXmlContent(const XmlString &xmlContent)
@@ -102,7 +103,17 @@ void XmlReader::ParseXmlContent(const XmlString &xmlContent)
         throw MLIException("XML: Error while parsing file.");
     }
 
+    Init(pDocument);
+}
+
+void XmlReader::Init(XMLDocument *pDocument)
+{
     pCurrentNode = dynamic_cast<XMLNode *>(pDocument);
+
+    if (ElementExists("FormattingVersion"))
+    {
+        formattingVersion = ReadIntElement("FormattingVersion");
+    }
 }
 
 void XmlReader::StartElement(const XmlString &elementName)
@@ -123,6 +134,24 @@ bool XmlReader::ElementExists(const XmlString &elementName)
     XMLElement *pElement = pCurrentNode->FirstChildElement(XmlStringToCharArray(elementName));
 
     return pElement != NULL;
+}
+
+void XmlReader::VerifyCurrentElement(const XmlString &expectedElementName)
+{
+#ifdef QT_DEBUG
+    XMLElement *pCurrentElement = dynamic_cast<XMLElement *>(pCurrentNode);
+
+    if (pCurrentElement == NULL || expectedElementName != XmlString(pCurrentElement->Name()))
+    {
+        char buffer[256];
+
+        sprintf(buffer, "XML: Expected element named '%s', instead found '%s'.",
+                XmlStringToCharArray(expectedElementName),
+                (pCurrentElement == NULL ? "NULL" : pCurrentElement->Name()));
+
+        throw new MLIException(buffer);
+    }
+#endif
 }
 
 void XmlReader::EndElement()

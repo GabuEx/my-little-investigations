@@ -47,8 +47,15 @@ public:
     void ParseXmlFile(const XmlString &filePath);
     void ParseXmlContent(const XmlString &xmlContent);
 
+private:
+    void Init(tinyxml2::XMLDocument *pDocument);
+
+public:
+    int GetFormattingVersion() { return formattingVersion; }
+
     void StartElement(const XmlString &elementName);
     bool ElementExists(const XmlString &elementName);
+    void VerifyCurrentElement(const XmlString &expectedElementName);
     void EndElement();
     void StartList(const XmlString &elementName);
     bool MoveToNextListItem();
@@ -107,6 +114,8 @@ private:
     };
 
     stack<XMLList> listStack;
+
+    int formattingVersion;
 };
 
 #endif

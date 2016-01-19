@@ -784,6 +784,11 @@ private:
             }
         }
 
+        bool HasElements()
+        {
+            return elementList.count() > 0;
+        }
+
         void ClearElements()
         {
             for (ElementInformation *pElement : elementList)
@@ -840,9 +845,19 @@ public:
     {
         InitStorageHandler();
 
-        pWriter->StartElement(objectName);
-        SaveElementsToXml(pWriter);
-        pWriter->EndElement();
+        // To increase readability, if we know that the element we're about to write
+        // has no child elements, then we'll just write it as an empty element.
+        if (storageHandler.HasElements())
+        {
+            pWriter->StartElement(objectName);
+            SaveElementsToXml(pWriter);
+            pWriter->VerifyCurrentElement(objectName);
+            pWriter->EndElement();
+        }
+        else
+        {
+            pWriter->WriteEmptyElement(objectName);
+        }
     }
 
     virtual void LoadFromXml(XmlReader *pReader)
@@ -851,6 +866,7 @@ public:
 
         pReader->StartElement(objectName);
         LoadElementsFromXml(pReader);
+        pReader->VerifyCurrentElement(objectName);
         pReader->EndElement();
     }
 
@@ -910,13 +926,13 @@ public: \
     } \
     static XmlString GetNameForXml() \
     { \
-        return #NAME; \
+        return RemoveScopeOperator(#NAME); \
     } \
 protected: \
     virtual void InitStorageHandler() \
     { \
-        SUPERCLASS_NAME::InitStorageHandler(); \
         ClearElements(); \
+        SUPERCLASS_NAME::InitStorageHandler(); \
         SetNameForXml(#NAME);
 
 #define XML_STORABLE_INT(NAME) XML_STORABLE_FIELD(Int, NAME)

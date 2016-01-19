@@ -39,7 +39,7 @@
 #include "CaseCreator/CaseContent/CaseContent.h"
 #endif
 
-XmlWriter::XmlWriter(const char *pFilePath, const char *pFilePathExtension, bool makeHumanReadable)
+XmlWriter::XmlWriter(const char *pFilePath, const char *pFilePathExtension, bool makeHumanReadable, int formattingVersion)
 {
     filePath = string(pFilePath);
 
@@ -58,6 +58,8 @@ XmlWriter::XmlWriter(const char *pFilePath, const char *pFilePathExtension, bool
     {
         stringStream << endl;
     }
+
+    WriteIntElement("FormattingVersion", formattingVersion);
 }
 
 XmlWriter::~XmlWriter()
@@ -110,6 +112,24 @@ void XmlWriter::StartElement(const XmlString &elementName, bool addCarriageRetur
     shouldUnindentStack.push(addCarriageReturn);
 }
 
+void XmlWriter::VerifyCurrentElement(const XmlString &expectedElementName)
+{
+#ifdef QT_DEBUG
+    XmlString actualCurrentElement;
+
+    if (elementNameStack.empty() || expectedElementName != (actualCurrentElement = XmlStringToCharArray(elementNameStack.top())))
+    {
+        char buffer[256];
+
+        sprintf(buffer, "XML: Expected element named '%s', instead found '%s'.",
+                XmlStringToCharArray(expectedElementName),
+                (elementNameStack.empty() ? "NULL" : XmlStringToCharArray(actualCurrentElement)));
+
+        throw new MLIException(buffer);
+    }
+#endif
+}
+
 void XmlWriter::EndElement()
 {
     bool shouldUnindent = shouldUnindentStack.top();
@@ -130,6 +150,24 @@ void XmlWriter::EndElement()
 
     stringStream << "</" << XmlStringToCharArray(elementNameStack.top()) << ">";
     elementNameStack.pop();
+
+    if (makeHumanReadable)
+    {
+        stringStream << endl;
+    }
+}
+
+void XmlWriter::WriteEmptyElement(const XmlString &elementName)
+{
+    if (makeHumanReadable)
+    {
+        for (int i = 0; i < indentLevel; i++)
+        {
+            stringStream << "    ";
+        }
+    }
+
+    stringStream << "<" << XmlStringToCharArray(elementName) << " />";
 
     if (makeHumanReadable)
     {

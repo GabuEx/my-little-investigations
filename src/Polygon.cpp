@@ -52,20 +52,23 @@ GeometricPolygon::GeometricPolygon(const GeometricPolygon &other)
 
 void GeometricPolygon::LoadElementsFromXml(XmlReader *pReader)
 {
-    bool useAutomatedXmlFormat = pReader->ElementExists("Points");
-
-    if (useAutomatedXmlFormat)
+    switch (pReader->GetFormattingVersion())
     {
-        XmlStorableObject::LoadElementsFromXml(pReader);
-    }
-    else
-    {
+    case 1:
         pReader->StartList("Vertex");
 
         while (pReader->MoveToNextListItem())
         {
             points.push_back(Vector2(pReader->ReadDoubleElement("X"), pReader->ReadDoubleElement("Y")));
         }
+        break;
+
+    case 2:
+        XmlStorableObject::LoadElementsFromXml(pReader);
+        break;
+
+    default:
+        throw new MLIException("Unknown XML formatting version.");
     }
 }
 

@@ -63,7 +63,6 @@ public:
         return Color(pReader);
     }
 
-    void SaveElementsToXml(XmlWriter *pWriter);
     void LoadElementsFromXml(XmlReader *pReader);
 
     double GetA() const { return this->a; }
