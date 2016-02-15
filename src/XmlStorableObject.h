@@ -786,7 +786,7 @@ private:
 
         bool HasElements()
         {
-            return elementList.count() > 0;
+            return XmlListCount(elementList) > 0;
         }
 
         void ClearElements()
