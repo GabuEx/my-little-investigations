@@ -415,6 +415,10 @@
 		</Unit>
 		<Unit filename="src/tinyxml2/tinyxml2.cpp" />
 		<Unit filename="src/tinyxml2/tinyxml2.h" />
+		<Unit filename="src/utf8cpp/utf8.h" />
+		<Unit filename="src/utf8cpp/utf8/checked.h" />
+		<Unit filename="src/utf8cpp/utf8/core.h" />
+		<Unit filename="src/utf8cpp/utf8/unchecked.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
