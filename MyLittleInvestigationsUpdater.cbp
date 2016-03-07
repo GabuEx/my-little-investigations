@@ -171,6 +171,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-DUPDATER" />
@@ -229,6 +230,8 @@
 		<Unit filename="src/XmlIncludes.h" />
 		<Unit filename="src/XmlReader.cpp" />
 		<Unit filename="src/XmlReader.h" />
+		<Unit filename="src/XmlStorableObject.cpp" />
+		<Unit filename="src/XmlStorableObject.h" />
 		<Unit filename="src/XmlWriter.cpp" />
 		<Unit filename="src/XmlWriter.h" />
 		<Unit filename="src/enums.cpp" />

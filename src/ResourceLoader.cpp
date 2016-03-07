@@ -62,17 +62,66 @@ void ResourceLoader::Close()
     pInstance = NULL;
 }
 
-bool ResourceLoader::Init(const string &commonResourcesFilePath)
+bool ResourceLoader::Init(const string &commonResourcesFilePath, const string &commonLocalizedResourcesFilePath)
 {
     ArchiveSource *pCommonResourcesSource = NULL;
+    ArchiveSource *pCommonLocalizedResourcesSource = NULL;
 
     if (!ArchiveSource::CreateAndInit(commonResourcesFilePath, &pCommonResourcesSource))
     {
         return false;
     }
 
+    if (!ArchiveSource::CreateAndInit(commonLocalizedResourcesFilePath, &pCommonLocalizedResourcesSource))
+    {
+        return false;
+    }
+
     this->pCommonResourcesSource = pCommonResourcesSource;
+    this->pCommonLocalizedResourcesSource = pCommonLocalizedResourcesSource;
+    this->pCachedCommonLocalizedResourcesSource = NULL;
+    this->pCaseResourcesSource = NULL;
+    this->pCachedCaseResourcesSource = NULL;
     return true;
+}
+
+bool ResourceLoader::LoadNewCommonLocalizedResources(const string &commonLocalizedResourcesFilePath)
+{
+    bool retVal;
+
+    SDL_SemWait(pLoadingSemaphore);
+    delete pCommonLocalizedResourcesSource;
+    retVal = ArchiveSource::CreateAndInit(commonLocalizedResourcesFilePath, &pCommonLocalizedResourcesSource);
+    SDL_SemPost(pLoadingSemaphore);
+
+    return retVal;
+}
+
+bool ResourceLoader::LoadTemporaryCommonLocalizedResources(const string &commonLocalizedResourcesFilePath)
+{
+    UnloadTemporaryCommonLocalizedResources();
+
+    pCachedCommonLocalizedResourcesSource = pCommonLocalizedResourcesSource;
+    pCommonLocalizedResourcesSource = NULL;
+
+    bool retVal = ArchiveSource::CreateAndInit(commonLocalizedResourcesFilePath, &pCommonLocalizedResourcesSource);
+
+    if (!retVal)
+    {
+        UnloadTemporaryCommonLocalizedResources();
+    }
+
+    return retVal;
+}
+
+void ResourceLoader::UnloadTemporaryCommonLocalizedResources()
+{
+    if (pCachedCommonLocalizedResourcesSource != NULL)
+    {
+        delete pCommonLocalizedResourcesSource;
+        pCommonLocalizedResourcesSource = pCachedCommonLocalizedResourcesSource;
+        pCachedCommonLocalizedResourcesSource = NULL;
+    }
 }
 
 bool ResourceLoader::LoadCase(const string &caseFilePath)
@@ -191,7 +240,10 @@ tinyxml2::XMLDocument * ResourceLoader::LoadDocument(const string &relativeFileP
     if (pLoadingSemaphore != NULL)
     {
         SDL_SemWait(pLoadingSemaphore);
-        pRW = pCommonResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
+        if (pCommonLocalizedResourcesSource != NULL)
+        {
+            pRW = pCommonLocalizedResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
+        }
 
         if (pRW == NULL && pCaseResourcesSource != NULL)
         {
@@ -214,7 +266,7 @@ TTF_Font * ResourceLoader::LoadFont(const string &relativeFilePath, int ptSize, 
     SDL_RWops * pRW = NULL;
 
     SDL_SemWait(pLoadingSemaphore);
-    pRW = pCommonResourcesSource->LoadFile(relativeFilePath, ppMemToFree);
+    pRW = pCommonLocalizedResourcesSource->LoadFile(relativeFilePath, ppMemToFree);
 
     if (pRW == NULL && pCaseResourcesSource != NULL)
     {
@@ -418,6 +470,11 @@ void * ResourceLoader::LoadFileToMemory(const string &relativeFilePath, unsigned
     SDL_SemWait(pLoadingSemaphore);
     p = pCommonResourcesSource->LoadFileToMemory(relativeFilePath, &fileSize);
 
+    if (p == NULL)
+    {
+        p = pCommonLocalizedResourcesSource->LoadFileToMemory(relativeFilePath, &fileSize);
+    }
+
     if (p == NULL && pCaseResourcesSource != NULL)
     {
         p = pCaseResourcesSource->LoadFileToMemory(relativeFilePath, &fileSize);
@@ -435,6 +492,11 @@ void ResourceLoader::HashFile(const string &relativeFilePath, byte hash[CryptoPP
 
     SDL_SemWait(pLoadingSemaphore);
     p = pCommonResourcesSource->LoadFileToMemory(relativeFilePath, &fileSize);
+
+    if (p == NULL)
+    {
+        p = pCommonLocalizedResourcesSource->LoadFileToMemory(relativeFilePath, &fileSize);
+    }
 
     if (p == NULL && pCaseResourcesSource != NULL)
     {
@@ -653,6 +715,7 @@ void ResourceLoader::TryRunOneLoadStep()
 ResourceLoader::ResourceLoader()
 {
     pCommonResourcesSource = NULL;
+    pCommonLocalizedResourcesSource = NULL;
     pCaseResourcesSource = NULL;
     pCachedCaseResourcesSource = NULL;
 

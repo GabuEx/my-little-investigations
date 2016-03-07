@@ -31,27 +31,32 @@
 #define PROMPTOVERLAY_H
 
 #include "../EasingFunctions.h"
+#include "../LocalizableContent.h"
 #include "../MLIFont.h"
 #include "../Vector2.h"
 #include <deque>
 
 using namespace std;
 
-class PromptButton
+class PromptButton : public ILocalizableTextOwner
 {
 public:
     static void Initialize(MLIFont *pTextFont);
 
-    PromptButton(Vector2 position, const string &text)
+    PromptButton(Vector2 position, const string &textId)
     {
         this->position = position;
-        this->text = text;
+        this->textId = textId;
 
         this->isMouseOver = false;
         this->isMouseDown = false;
         this->isClicked = false;
         this->isEnabled = true;
+
+        ReloadLocalizableText();
     }
+
+    virtual ~PromptButton() {}
 
     bool GetIsClicked() { return this->isClicked; }
     string GetText() { return this->text; }
@@ -74,10 +79,13 @@ public:
     void Draw(double opacity);
     void Reset();
 
+    void ReloadLocalizableText() override;
+
 private:
     static MLIFont *pTextFont;
 
     Vector2 position;
+    string textId;
     string text;
 
     bool isMouseOver;
@@ -86,19 +94,20 @@ private:
     bool isEnabled;
 };
 
-class PromptOverlay
+class PromptOverlay : public ILocalizableTextOwner
 {
 public:
     static void Initialize(MLIFont *pTextFont, MLIFont *pTextEntryFont, Image *pDarkeningImage);
 
-    PromptOverlay(const string &headerText, bool allowsTextEntry);
-    ~PromptOverlay();
+    PromptOverlay(const string &headerTextId, bool allowsTextEntry);
+    virtual ~PromptOverlay();
 
     bool GetIsShowing() { return this->isShowing; }
 
+    void SetHeaderTextId(const string &headerTextId);
     void SetHeaderText(const string &headerText);
 
-    void AddButton(const string &text);
+    void AddButton(const string &textId);
     void FinalizeButtons();
 
     void Begin(const string &initialText = "");
@@ -109,18 +118,21 @@ public:
     void SetMaxPixelWidth(int pixelWidth, MLIFont *pFontToCheckAgainst) { this->maxPixelWidth = pixelWidth; this->pFontToCheckAgainst = pFontToCheckAgainst; }
     void KeepOpen();
 
+    void ReloadLocalizableText() override;
+
 private:
     static MLIFont *pTextFont;
     static MLIFont *pTextEntryFont;
     static Image *pDarkeningImage;
 
+    string headerTextId;
     string headerText;
     deque<string> headerTextLines;
 
     bool allowsTextEntry;
     string textEntered;
-    vector<string> buttonTextList;
-    vector<string> finalizedButtonTextList;
+    vector<string> buttonTextIdList;
+    vector<string> finalizedButtonTextIdList;
     vector<PromptButton *> buttonList;
 
     EasingFunction *pFadeInEase;

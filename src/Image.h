@@ -73,13 +73,15 @@ public:
     void Draw(const Vector2 &position);
     void Draw(const Vector2 &position, const Color &color);
     void Draw(const Vector2 &position, bool flipHorizontally, bool flipVertically, const Color &color);
+    void DrawNineGrid(const Vector2 &position, double drawWidth, double drawHeight, double left, double top, double right, double bottom);
 
     void Draw(
         const Vector2 &position,
         const RectangleWH &clipRect,
         bool flipHorizontally,
         bool flipVertically,
-        double scale,
+        double xScale,
+        double yScale,
         const Color &color);
 
     static void Draw(
@@ -88,7 +90,8 @@ public:
         RectangleWH clipRect,
         bool flipHorizontally,
         bool flipVertically,
-        double scale,
+        double xScale,
+        double yScale,
         const Color &color,
         bool useScreenScaling = true);
 

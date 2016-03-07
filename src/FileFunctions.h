@@ -48,6 +48,8 @@ void PopulateCaseSignatureMap();
 vector<string> GetCaseUuids();
 bool IsCaseCompleted(const string &caseUuid);
 bool CopyCaseFileToCaseFolder(const string &caseFilePath, const string &caseUuid);
+
+vector<string> GetLanguageResourcesFilePaths();
 #endif
 
 string ConvertSeparatorsInPath(string &path);
@@ -59,6 +61,7 @@ inline string ConvertSeparatorsInPath(const string &path)
 string GetFileNameFromFilePath(const string &path);
 
 string GetCommonResourcesFilePath();
+string GetLocalizedCommonResourcesDirectoryPath();
 
 #ifdef __OSX
 string GetPropertyListPath();

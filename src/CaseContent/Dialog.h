@@ -38,6 +38,7 @@
 #include "../UserInterface/Arrow.h"
 #include "../UserInterface/EvidenceSelector.h"
 #include "../UserInterface/Tab.h"
+#include "../SharedUtils.h"
 #include <deque>
 #include <string>
 
@@ -45,7 +46,7 @@ using namespace std;
 
 class State;
 
-class Dialog : public EvidenceSelectorEventListener
+class Dialog : public EvidenceSelectorEventListener, public IDialogEventsOwner
 {
     class DialogEvent;
 
@@ -107,114 +108,117 @@ public:
         return this->delayBeforeContinuing >= 0;
     }
 
-    static string StripEvents(const string &stringToStrip);
-
-    void AddSpeedChangePosition(int position, double newMillisecondsPerCharacterUpdate)
+    void AddSpeedChangePosition(int position, double newMillisecondsPerCharacterUpdate) override
     {
         this->dialogEventListOriginal.push_back(new SpeedChangeEvent(position, this, newMillisecondsPerCharacterUpdate));
     }
 
-    void AddEmotionChangePosition(int position, const string &newEmotionId)
+    void AddEmotionChangePosition(int position, const string &newEmotionId) override
     {
         this->dialogEventListOriginal.push_back(new SpeakerEmotionChangeEvent(position, this, newEmotionId));
     }
 
-    void AddEmotionOtherChangePosition(int position, const string &newEmotionId)
+    void AddEmotionOtherChangePosition(int position, const string &newEmotionId) override
     {
         this->dialogEventListOriginal.push_back(new OtherEmotionChangeEvent(position, this, newEmotionId));
     }
 
-    void AddPausePosition(int position, double millisecondDuration)
+    void AddPausePosition(int position, double millisecondDuration) override
     {
         this->dialogEventListOriginal.push_back(new PauseEvent(position, this, millisecondDuration));
     }
 
-    void AddAudioPausePosition(int position, double millisecondDuration)
+    void AddAudioPausePosition(int position, double millisecondDuration) override
     {
         this->dialogEventListOriginal.push_back(new AudioPauseEvent(position, this, millisecondDuration));
     }
 
-    void AddMouthChangePosition(int position, bool mouthIsOn)
+    void AddMouthChangePosition(int position, bool mouthIsOn) override
     {
         this->dialogEventListOriginal.push_back(new MouthChangeEvent(position, this, mouthIsOn));
     }
 
-    void AddPlaySoundPosition(int position, const string &id)
+    void StartAside(int position) override;
+    void EndAside(int position, int eventEnd, int parsedStringLength, string *pStringToPrependOnNext) override;
+    void StartEmphasis(int position) override;
+    void EndEmphasis(int position) override;
+
+    void AddPlaySoundPosition(int position, const string &id) override
     {
         this->dialogEventListOriginal.push_back(new PlaySoundEvent(position, this, id));
     }
 
-    void AddShakePosition(int position)
+    void AddShakePosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new ShakeEvent(position, this));
     }
 
-    void AddScreenShakePosition(int position, double shakeIntensity)
+    void AddScreenShakePosition(int position, double shakeIntensity) override
     {
         this->dialogEventListOriginal.push_back(new ScreenShakeEvent(position, this, shakeIntensity));
     }
 
-    void AddNextFramePosition(int position)
+    void AddNextFramePosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new NextFrameEvent(position, this));
     }
 
-    void AddPlayerDamagedPosition(int position)
+    void AddPlayerDamagedPosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new PlayerDamagedEvent(position, this));
     }
 
-    void AddOpponentDamagedPosition(int position)
+    void AddOpponentDamagedPosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new OpponentDamagedEvent(position, this));
     }
 
-    void AddPlayBgmPosition(int position, const string &id)
+    void AddPlayBgmPosition(int position, const string &id) override
     {
         this->dialogEventListOriginal.push_back(new PlayBgmEvent(position, this, id));
     }
 
-    void AddPlayBgmPermanentlyPosition(int position, const string &id)
+    void AddPlayBgmPermanentlyPosition(int position, const string &id) override
     {
         this->dialogEventListOriginal.push_back(new PlayBgmEvent(position, this, id, true /* isPermanent */));
     }
 
-    void AddStopBgmPosition(int position)
+    void AddStopBgmPosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new StopBgmEvent(position, this, false /* isInstant */, false /* isPermanent */));
     }
 
-    void AddStopBgmPermanentlyPosition(int position)
+    void AddStopBgmPermanentlyPosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new StopBgmEvent(position, this, false /* isInstant */, true /* isPermanent */));
     }
 
-    void AddStopBgmInstantlyPosition(int position)
+    void AddStopBgmInstantlyPosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new StopBgmEvent(position, this, true /* isInstant */, false /* isPermanent */));
     }
 
-    void AddStopBgmInstantlyPermanentlyPosition(int position)
+    void AddStopBgmInstantlyPermanentlyPosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new StopBgmEvent(position, this, true /* isInstant */, true /* isPermanent */));
     }
 
-    void AddZoomPosition(int position)
+    void AddZoomPosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new ZoomEvent(position, this));
     }
 
-    void AddEndZoomPosition(int position)
+    void AddEndZoomPosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new EndZoomEvent(position, this));
     }
 
-    void AddBeginBreakdownPosition(int position)
+    void AddBeginBreakdownPosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new BeginBreakdownEvent(position, this));
     }
 
-    void AddEndBreakdownPosition(int position)
+    void AddEndBreakdownPosition(int position) override
     {
         this->dialogEventListOriginal.push_back(new EndBreakdownEvent(position, this));
     }
@@ -234,8 +238,6 @@ public:
     void OnEvidenceSelectorClosing(EvidenceSelector *pSender);
 
 private:
-    string ParseEvents(int lineOffset, const string &stringToParse, string *pStringToPrependOnNext);
-
     void OnDirectlyNavigated(DirectNavigationDirection direction)
     {
         EventProviders::GetDialogEventProvider()->RaiseDirectlyNavigated(this, direction);

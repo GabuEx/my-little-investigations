@@ -247,7 +247,7 @@ void Conversation::Begin(State *pState)
 {
     if (pSkipTab == NULL)
     {
-        pSkipTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Conversation/FastForwardText"), false /* useCancelClickSoundEffect */, TabRowTop);
+        pSkipTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Conversation/FastForwardText"), false /* useCancelClickSoundEffect */, TabRowTop);
     }
 
     if (pSkipArrow == NULL)
@@ -264,7 +264,7 @@ void Conversation::Begin(State *pState)
     pState->SetCurrentConfrontation(NULL);
 
     pSkipTab->Reset();
-    pSkipTab->SetText(pgLocalizableContent->GetText("Conversation/FastForwardText"));
+    pSkipTab->SetText(gpLocalizableContent->GetText("Conversation/FastForwardText"));
     pSkipArrow->Reset();
 
     Case::GetInstance()->GetAudioManager()->LowerMusicVolumeForDialog();
@@ -298,11 +298,11 @@ void Conversation::Update(int delta)
 
             if (pState->GetIsFastForwarding())
             {
-                pSkipTab->SetText(pgLocalizableContent->GetText("Conversation/StopText"));
+                pSkipTab->SetText(gpLocalizableContent->GetText("Conversation/StopText"));
             }
             else
             {
-                pSkipTab->SetText(pgLocalizableContent->GetText("Conversation/FastForwardText"));
+                pSkipTab->SetText(gpLocalizableContent->GetText("Conversation/FastForwardText"));
             }
         }
     }
@@ -310,7 +310,7 @@ void Conversation::Update(int delta)
     {
         pState->SetIsFastForwarding(false);
         pSkipTab->Reset();
-        pSkipTab->SetText(pgLocalizableContent->GetText("Conversation/FastForwardText"));
+        pSkipTab->SetText(gpLocalizableContent->GetText("Conversation/FastForwardText"));
     }
 
     if (pState->GetIsFastForwarding())
@@ -1109,7 +1109,7 @@ void Conversation::ShowDialogAction::Begin(State *pState)
 
     if (speakerPosition == CharacterPositionUnknown)
     {
-        speakerName = pgLocalizableContent->GetText("Conversation/UnknownCharacterNameText");
+        speakerName = gpLocalizableContent->GetText("Conversation/UnknownCharacterNameText");
     }
     else if (speakerPosition == CharacterPositionOffscreen)
     {
@@ -3743,11 +3743,13 @@ void Confrontation::InitializeBeginConfrontationTopicSelectionAction::Draw(doubl
         false /* flipHorizontally */,
         false /* flipVertically */,
         1.0,
+        1.0,
         Color::White);
     pConfrontationEntranceBlockSprite->Draw(
         Vector2(gScreenWidth / 2 - blockPosition, yOffset), RectangleWH(0, 0, pConfrontationEntranceBlockSprite->width, pConfrontationEntranceBlockSprite->height),
         true /* flipHorizontally */,
         false /* flipVertically */,
+        1.0,
         1.0,
         Color::White);
 

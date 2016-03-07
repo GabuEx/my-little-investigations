@@ -346,7 +346,7 @@ void Tab::Draw(double xOffset, double yOffset)
         int clipTop = hideAnimationOffset < 0 ? -hideAnimationOffset : 0;
         int clipHeight = TabHeight - (hideAnimationOffset > 0 ? hideAnimationOffset : clipTop);
 
-        pBackgroundSprite->Draw(Vector2(xPosition + xOffset, yPosition + hideAnimationOffset + clipTop), RectangleWH(0, clipTop, TabWidth, clipHeight), false, false, 1.0, Color::White);
+        pBackgroundSprite->Draw(Vector2(xPosition + xOffset, yPosition + hideAnimationOffset + clipTop), RectangleWH(0, clipTop, TabWidth, clipHeight), false, false, 1.0, 1.0, Color::White);
         pFont->Draw(GetText(), textPosition, textColor, RectangleWH(xPosition + xOffset - textPosition.GetX(), yPosition - textPosition.GetY() + clipTop, TabWidth, clipHeight));
 
         if (GetTabImage() != NULL)

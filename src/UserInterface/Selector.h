@@ -35,6 +35,7 @@
 #include "../Rectangle.h"
 #include "../Image.h"
 #include "../Version.h"
+#include "../LocalizableContent.h"
 
 #include <string>
 #include <vector>
@@ -66,7 +67,7 @@ public:
     static bool CompareByCaseTitle(CaseSelectorItem *pItem1, CaseSelectorItem *pItem2)
     {
         string caseTitle1 = pItem1->GetCaseTitle();
-        string caseTitle2 = pItem1->GetCaseTitle();
+        string caseTitle2 = pItem2->GetCaseTitle();
 
         for (unsigned int i = 0; i < min(caseTitle1.length(), caseTitle2.length()); i++)
         {
@@ -162,7 +163,7 @@ public:
         pScreenshotFullSizeSprite = NULL;
     }
 
-    string GetDisplayString() const { return "New Save"; }
+    string GetDisplayString() const;
     bool GetShouldDisplayStar() const { return false; }
     Image * GetScreenshot() const { return this->pScreenshotSprite; }
     Image * GetScreenshotFullSize() const { return this->pScreenshotFullSizeSprite; }
@@ -172,25 +173,54 @@ private:
     Image *pScreenshotFullSizeSprite;
 };
 
-class SelectorSection
+class LanguageSelectorItem : public SelectorItem
 {
 public:
-    SelectorSection(const string &sectionTitle)
+    LanguageSelectorItem(const string &localizedResourcesFileName, const string &languageName)
+        : localizedResourcesFileName(localizedResourcesFileName)
+        , languageName(languageName)
     {
-        this->sectionTitle = sectionTitle;
     }
 
-    virtual ~SelectorSection()
+    static bool CompareByLanguageName(LanguageSelectorItem *pItem1, LanguageSelectorItem *pItem2)
     {
-        for (unsigned int i = 0; i < itemList.size(); i++)
+        string languageName1 = pItem1->GetLanguageName();
+        string languageName2 = pItem2->GetLanguageName();
+
+        for (unsigned int i = 0; i < min(languageName1.length(), languageName2.length()); i++)
         {
-            delete itemList[i];
+            if (languageName1[i] < languageName2[i])
+            {
+                return true;
+            }
+            else if (languageName2[i] < languageName1[i])
+            {
+                return false;
+            }
         }
 
-        itemList.clear();
+        return false;
     }
 
+    string GetDisplayString() const { return GetLanguageName(); }
+    bool GetShouldDisplayStar() const { return false; }
+    string GetLocalizedResourcesFileName() const { return localizedResourcesFileName; }
+    string GetLanguageName() const { return languageName; }
+
+private:
+    string localizedResourcesFileName;
+    string languageName;
+};
+
+class SelectorSection : public ILocalizableTextOwner
+{
+public:
+    SelectorSection(const string &sectionTitleId);
+    virtual ~SelectorSection();
+
     string GetTitle() const { return this->sectionTitle; }
+    void SetTitleId(const string &sectionTitleId) { this->sectionTitleId = sectionTitleId; ReloadLocalizableText(); }
+
     SelectorItem * GetItemAt(unsigned int index) { return this->itemList[index]; }
     string GetItemDisplayStringAt(unsigned int index) { return this->itemList[index]->GetDisplayString(); }
     bool GetItemShouldDisplayStarAt(unsigned int index) { return this->itemList[index]->GetShouldDisplayStar(); }
@@ -202,7 +232,10 @@ public:
         itemList.push_back(pSelectorItem);
     }
 
+    void ReloadLocalizableText() override;
+
 private:
+    string sectionTitleId;
     string sectionTitle;
     vector<SelectorItem *> itemList;
 };
@@ -235,6 +268,8 @@ public:
 
     void DeleteCurrentItem();
     void PopulateWithCases(bool requireSaveFilesExist);
+
+    void SelectItem(unsigned int sectionIndex, unsigned int itemIndex);
 
 private:
     static void EnsureFonts();

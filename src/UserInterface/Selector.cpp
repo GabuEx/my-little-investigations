@@ -50,6 +50,7 @@ Image *Selector::pStarSprite = NULL;
 const int HeaderOffset = 5; // px
 const int DividerPadding = 3; // px
 const int TextPadding = 8; // px
+const int HighlightCornerSize = 25; // px
 
 CaseSelectorItem::CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotFullSizeSprite, const string &caseUuid, const string &caseTitle, const string &caseDescription, const string &caseFilePath, bool isCompatible, Version requiredVersion)
 {
@@ -64,10 +65,40 @@ CaseSelectorItem::CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotF
     this->requiredVersion = requiredVersion;
 }
 
+string NewSaveSelectorItem::GetDisplayString() const
+{
+    return gpLocalizableContent->GetText("NewSaveSelectorItem/NewSaveText");
+}
+
+SelectorSection::SelectorSection(const string &sectionTitleId)
+{
+    this->sectionTitleId = sectionTitleId;
+    ReloadLocalizableText();
+
+    gpLocalizableContent->AddLocalizableTextOwner(this);
+}
+
+SelectorSection::~SelectorSection()
+{
+    gpLocalizableContent->RemoveLocalizableTextOwner(this);
+
+    for (unsigned int i = 0; i < itemList.size(); i++)
+    {
+        delete itemList[i];
+    }
+
+    itemList.clear();
+}
+
 void SelectorSection::DeleteItemAt(unsigned int index)
 {
     delete itemList[index];
     itemList.erase(itemList.begin() + index);
+}
+
+void SelectorSection::ReloadLocalizableText()
+{
+    sectionTitle = gpLocalizableContent->GetText(sectionTitleId);
 }
 
 void Selector::Initialize(Image *pDividerSprite, Image *pHighlightSprite, Image *pStarSprite)
@@ -297,7 +328,12 @@ void Selector::Draw()
 
             if (currentIndex == selectedIndex || currentIndex == mouseOverIndex)
             {
-                pHighlightSprite->Draw(Vector2(xCurrent + width / 2 - pHighlightSprite->width / 2, yCurrent + pLargeFont->GetLineHeight() / 2 - pHighlightSprite->height / 2));
+                //pHighlightSprite->Draw(Vector2(xCurrent + width / 2 - pHighlightSprite->width / 2, yCurrent + pLargeFont->GetLineHeight() / 2 - pHighlightSprite->height / 2));
+                pHighlightSprite->DrawNineGrid(
+                    Vector2(xCurrent - HighlightCornerSize / 2, yCurrent - HighlightCornerSize / 2),
+                    width + HighlightCornerSize,
+                    pLargeFont->GetLineHeight() + HighlightCornerSize,
+                    HighlightCornerSize, HighlightCornerSize, HighlightCornerSize, HighlightCornerSize);
             }
 
             pLargeFont->Draw(sectionList[currentSection]->GetItemDisplayStringAt(currentIndex - currentSectionStartIndex), Vector2(xCurrent, yCurrent), Color(1.0, 0.0, 0.0, 0.0));
@@ -390,9 +426,9 @@ void Selector::PopulateWithCases(bool requireSaveFilesExist)
 {
     Reset();
 
-    SelectorSection *pOfficialCasesSection = new SelectorSection(pgLocalizableContent->GetText("Selector/OfficialCasesText"));
-    SelectorSection *pCustomCasesSection = new SelectorSection(pgLocalizableContent->GetText("Selector/CustomCasesText"));
-    SelectorSection *pIncompatibleCasesSection = new SelectorSection(pgLocalizableContent->GetText("Selector/IncompatibleCasesText"));
+    SelectorSection *pOfficialCasesSection = new SelectorSection("Selector/OfficialCasesText");
+    SelectorSection *pCustomCasesSection = new SelectorSection("Selector/CustomCasesText");
+    SelectorSection *pIncompatibleCasesSection = new SelectorSection("Selector/IncompatibleCasesText");
 
     vector<string> caseFilePaths = GetCaseFilePaths();
     vector<CaseSelectorItem *> officialCaseList;
@@ -542,6 +578,23 @@ void Selector::PopulateWithCases(bool requireSaveFilesExist)
     Init();
 }
 
+void Selector::SelectItem(unsigned int sectionIndex, unsigned int itemIndex)
+{
+    unsigned int absoluteIndex = 0;
+
+    for (unsigned int i = 0; i < sectionIndex; i++)
+    {
+        absoluteIndex += sectionList[i]->GetCount();
+    }
+
+    absoluteIndex += itemIndex;
+
+    if (itemIndex < sectionList[sectionIndex]->GetCount())
+    {
+        selectedIndex = absoluteIndex;
+    }
+}
+
 void Selector::EnsureFonts()
 {
     if (pLargeFont == NULL)
@@ -569,7 +622,15 @@ void Selector::GetCurrentSectionAndIndex(unsigned int *pCurrentSection, unsigned
     while (currentSectionStartIndex + sectionList[currentSection]->GetCount() <= topIndex)
     {
         currentSectionStartIndex += sectionList[currentSection]->GetCount();
-        currentSection++;
+
+        if (currentSection == sectionList.size() - 1)
+        {
+            break;
+        }
+        else
+        {
+            currentSection++;
+        }
     }
 
     currentIndex = topIndex;

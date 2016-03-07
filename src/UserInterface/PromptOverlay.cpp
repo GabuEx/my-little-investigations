@@ -36,7 +36,7 @@
 #include "../MouseHelper.h"
 #include "../KeyboardHelper.h"
 #include "../TextInputHelper.h"
-#include "../Utils.h"
+#include "../SharedUtils.h"
 #include "../Events/PromptOverlayEventProvider.h"
 
 MLIFont *PromptButton::pTextFont = NULL;
@@ -117,6 +117,11 @@ void PromptButton::Reset()
     isMouseOver = false;
 }
 
+void PromptButton::ReloadLocalizableText()
+{
+    text = gpLocalizableContent->GetText(textId);
+}
+
 void PromptOverlay::Initialize(MLIFont *pTextFont, MLIFont *pTextEntryFont, Image *pDarkeningImage)
 {
     PromptOverlay::pTextFont = pTextFont;
@@ -124,17 +129,18 @@ void PromptOverlay::Initialize(MLIFont *pTextFont, MLIFont *pTextEntryFont, Imag
     PromptOverlay::pDarkeningImage = pDarkeningImage;
 }
 
-PromptOverlay::PromptOverlay(const string &headerText, bool allowsTextEntry)
+PromptOverlay::PromptOverlay(const string &headerTextId, bool allowsTextEntry)
 {
     yOffset = 0;
 
-    this->headerText = headerText;
+    this->headerTextId = headerTextId;
+    this->headerText = gpLocalizableContent->GetText(headerTextId);
     this->allowsTextEntry = allowsTextEntry;
 
     if (allowsTextEntry)
     {
-        AddButton("OK");
-        AddButton("Cancel");
+        AddButton("PromptOverlay/OKText");
+        AddButton("PromptOverlay/CancelText");
         FinalizeButtons();
     }
 
@@ -161,46 +167,51 @@ PromptOverlay::~PromptOverlay()
     pFadeOutEase = NULL;
 }
 
-void PromptOverlay::SetHeaderText(const string &headerText)
+void PromptOverlay::SetHeaderTextId(const string &headerTextId)
 {
-    this->headerTextLines = split(headerText, '\n');
-
-    yOffset = (pTextFont->GetLineHeight() * (this->headerTextLines.size() - 1)) / 2;
+    this->headerTextId = headerTextId;
+    ReloadLocalizableText();
 }
 
-void PromptOverlay::AddButton(const string &text)
+void PromptOverlay::SetHeaderText(const string &headerText)
 {
-    buttonTextList.push_back(text);
+    this->headerText = headerText;
+    ReloadLocalizableText();
+}
+
+void PromptOverlay::AddButton(const string &textId)
+{
+    buttonTextIdList.push_back(textId);
 }
 
 void PromptOverlay::FinalizeButtons()
 {
     // If we've already finalized the buttons, do nothing.
-    if (finalizedButtonTextList.size() > 0)
+    if (finalizedButtonTextIdList.size() > 0)
     {
         return;
     }
 
-    finalizedButtonTextList = buttonTextList;
-    buttonTextList.clear();
+    finalizedButtonTextIdList = buttonTextIdList;
+    buttonTextIdList.clear();
 }
 
 void PromptOverlay::Begin(const string &initialText)
 {
-    if (headerText.length() > 0 && headerTextLines.empty())
+    if (headerTextId.length() > 0 && headerTextLines.empty())
     {
-        SetHeaderText(headerText);
+        SetHeaderTextId(headerTextId);
     }
 
-    if (!finalizedButtonTextList.empty())
+    if (!finalizedButtonTextIdList.empty())
     {
         // First we'll find the max button width - we'll scale the
         // spacing between buttons based on that.
         double maxButtonWidth = 0;
 
-        for (unsigned int i = 0; i < finalizedButtonTextList.size(); i++)
+        for (unsigned int i = 0; i < finalizedButtonTextIdList.size(); i++)
         {
-            double width = pTextFont->GetWidth(finalizedButtonTextList[i]);
+            double width = pTextFont->GetWidth(gpLocalizableContent->GetText(finalizedButtonTextIdList[i]));
 
             if (width > maxButtonWidth)
             {
@@ -208,17 +219,17 @@ void PromptOverlay::Begin(const string &initialText)
             }
         }
 
-        double currentButtonXPosition = (gScreenWidth - maxButtonWidth * finalizedButtonTextList.size() - ButtonSpacing * (finalizedButtonTextList.size() - 1)) / 2;
+        double currentButtonXPosition = (gScreenWidth - maxButtonWidth * finalizedButtonTextIdList.size() - ButtonSpacing * (finalizedButtonTextIdList.size() - 1)) / 2;
 
         // Now that we know the max button width, we'll create and place the buttons.
-        for (unsigned int i = 0; i < finalizedButtonTextList.size(); i++)
+        for (unsigned int i = 0; i < finalizedButtonTextIdList.size(); i++)
         {
-            string text = finalizedButtonTextList[i];
-            buttonList.push_back(new PromptButton(Vector2(currentButtonXPosition, gScreenHeight / 2 + pTextFont->GetLineHeight() + (allowsTextEntry ? pTextEntryFont->GetLineHeight() / 2 : 0) + yOffset), text));
+            string textId = finalizedButtonTextIdList[i];
+            buttonList.push_back(new PromptButton(Vector2(currentButtonXPosition, gScreenHeight / 2 + pTextFont->GetLineHeight() + (allowsTextEntry ? pTextEntryFont->GetLineHeight() / 2 : 0) + yOffset), textId));
             currentButtonXPosition += maxButtonWidth + ButtonSpacing;
         }
 
-        finalizedButtonTextList.clear();
+        finalizedButtonTextIdList.clear();
     }
 
     Reset();
@@ -377,4 +388,15 @@ void PromptOverlay::Reset()
 void PromptOverlay::KeepOpen()
 {
     this->pFadeOutEase->Reset();
+}
+
+void PromptOverlay::ReloadLocalizableText()
+{
+    if (headerTextId.length() > 0)
+    {
+        headerText = gpLocalizableContent->GetText(headerTextId);
+    }
+
+    headerTextLines = split(headerText, '\n');
+    yOffset = (pTextFont->GetLineHeight() * (this->headerTextLines.size() - 1)) / 2;
 }

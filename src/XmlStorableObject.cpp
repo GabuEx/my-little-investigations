@@ -1,12 +1,11 @@
 #include "XmlStorableObject.h"
 
+#include "Utils.h"
+
 XmlString ToProperCase(XmlString s)
 {
 #ifndef CASE_CREATOR
-    if (s.length() > 0)
-    {
-        s[0] = toupper(s[0]);
-    }
+    s = ToProperCaseUnicode(s);
 #else
     if (s.length() > 0)
     {

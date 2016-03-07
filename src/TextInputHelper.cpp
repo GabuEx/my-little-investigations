@@ -30,6 +30,7 @@
 #include "TextInputHelper.h"
 
 #include "MLIFont.h"
+#include "Utils.h"
 
 string TextInputHelper::currentText = "";
 unsigned int TextInputHelper::caretPosition = 0;
@@ -95,11 +96,9 @@ void TextInputHelper::NotifyKeyState(SDL_Keycode keycode, bool isDown)
 
 void TextInputHelper::NotifyTextInput(const string &newText)
 {
-    SetNewText(
-        (caretPosition > 0 ? currentText.substr(0, caretPosition) : "") +
-            newText +
-            (caretPosition < currentText.length() ? currentText.substr(caretPosition) : ""),
-         caretPosition + 1);
+    int newCaretPosition;
+    string textWithInsertion = InsertString(newText, currentText, caretPosition, &newCaretPosition);
+    SetNewText(textWithInsertion, newCaretPosition);
 }
 
 void TextInputHelper::Update(int delta)
@@ -161,34 +160,36 @@ void TextInputHelper::HandleSpecialKey(SDL_Keycode keycode)
     case SDLK_BACKSPACE:
         if (caretPosition > 0)
         {
-            SetNewText(
-                currentText.substr(0, caretPosition - 1) +
-                    (caretPosition < currentText.length() ? currentText.substr(caretPosition) : ""),
-                caretPosition - 1);
+            int newCaretPosition = GetPreviousInsertionPosition(currentText, caretPosition);
+            string textWithDeletion = DeleteFromString(currentText, newCaretPosition, caretPosition);
+
+            SetNewText(textWithDeletion, newCaretPosition);
         }
         break;
 
     case SDLK_DELETE:
-        if (caretPosition > 0)
+        if (caretPosition < currentText.length())
         {
-            SetNewText(
-                currentText.substr(0, caretPosition) +
-                    (caretPosition < currentText.length() - 1 ? currentText.substr(caretPosition + 1) : ""),
-                caretPosition);
+            int newCaretPosition = GetNextInsertionPosition(currentText, caretPosition);
+            string textWithDeletion = DeleteFromString(currentText, caretPosition, newCaretPosition);
+
+            SetNewText(textWithDeletion, caretPosition);
         }
         break;
 
     case SDLK_LEFT:
         if (caretPosition > 0)
         {
-            SetNewText(currentText, caretPosition - 1);
+            int newCaretPosition = GetPreviousInsertionPosition(currentText, caretPosition);
+            SetNewText(currentText, newCaretPosition);
         }
         break;
 
     case SDLK_RIGHT:
         if (caretPosition < currentText.length())
         {
-            SetNewText(currentText, caretPosition + 1);
+            int newCaretPosition = GetNextInsertionPosition(currentText, caretPosition);
+            SetNewText(currentText, newCaretPosition);
         }
         break;
 

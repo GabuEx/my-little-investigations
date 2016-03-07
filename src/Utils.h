@@ -43,8 +43,18 @@ using namespace std;
 typedef int (*PFNPROGRESSCALLBACK)(void *, double, double, double, double);
 #endif
 
-deque<string> &split(const string &s, char delim, deque<string> &tokens);
-deque<string> split(const string &s, char delim);
+string ToUpperUnicode(const string& s);
+string ToProperCaseUnicode(const string& s);
+
+bool AdvanceStringIterator(string::const_iterator &begin, int positionsToAdvance, string::const_iterator end);
+bool PeekNextFromStringIterator(string::const_iterator begin, string::const_iterator end, uint32_t *pNext);
+bool GetNextFromStringIterator(string::const_iterator &begin, string::const_iterator end, uint32_t *pNext = NULL);
+bool GetPreviousFromStringIterator(string::const_iterator &begin, string::const_iterator end, uint32_t *pPrevious = NULL);
+
+string InsertString(const string &stringToInsert, const string &destinationString, int insertPosition, int *pNewInsertPosition);
+string DeleteFromString(const string &s, int startPosition, int endPosition);
+int GetNextInsertionPosition(const string &s, int currentInsertionPosition);
+int GetPreviousInsertionPosition(const string &s, int currentInsertionPosition);
 
 bool SignatureIsValid(const byte *pFileData, unsigned int fileSize, const string &hexEncodedSignature);
 

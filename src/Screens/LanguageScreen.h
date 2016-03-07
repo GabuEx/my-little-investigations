@@ -1,5 +1,5 @@
 /**
- * Basic header/include file for TitleScreen.cpp.
+ * Basic header/include file for LanguageScreen.cpp.
  *
  * @author GabuEx, dawnmew
  * @since 1.0
@@ -27,8 +27,8 @@
  * SOFTWARE.
  */
 
-#ifndef TITLESCREEN_H
-#define TITLESCREEN_H
+#ifndef LANGUAGESCREEN_H
+#define LANGUAGESCREEN_H
 
 #include "MLIScreen.h"
 #include "../Animation.h"
@@ -36,13 +36,17 @@
 #include "../Image.h"
 #include "../Video.h"
 #include "../Events/TextButtonEventProvider.h"
+#include "../Events/PromptOverlayEventProvider.h"
+#include "../Events/SelectorEventProvider.h"
 #include "../UserInterface/PromptOverlay.h"
+#include "../UserInterface/Selector.h"
+#include "../UserInterface/TextWidget.h"
 
-class TitleScreen : public MLIScreen, public TextButtonEventListener
+class LanguageScreen : public MLIScreen, public TextButtonEventListener, public SelectorEventListener
 {
 public:
-    TitleScreen();
-    ~TitleScreen();
+    LanguageScreen();
+    ~LanguageScreen();
 
     void LoadResources();
     void UnloadResources();
@@ -50,31 +54,27 @@ public:
     void Update(int delta);
     void Draw();
 
+    void OnSelectorSelectionChanged(Selector *pSender, SelectorItem *pSelectedItem);
     void OnButtonClicked(TextButton *pSender);
 
 private:
-    Image *pBackgroundSprite;
-    Image *pTitleSprite;
-    Image *pFadeInSprite;
+    void DeleteSelectorItems();
+
+    Image *pFadeSprite;
 
     double fadeOpacity;
-    EasingFunction *pLongFadeInEase;
     EasingFunction *pFadeInEase;
     EasingFunction *pFadeOutEase;
 
-    Video *pSpikeVideo;
-    Animation *pCandleAnimation;
-    Video *pTwilightVideo;
+    Video *pBackgroundVideo;
 
-    TextButton *pNewGameButton;
-    TextButton *pLoadGameButton;
-    TextButton *pOptionsButton;
-    TextButton *pSelectLanguageButton;
-    TextButton *pExitButton;
+    Selector *pSelector;
 
-    TextButton *pTestButton;
+    string localizedResourcesFileName;
+    string languageName;
 
-    PromptOverlay *pNoCasesPrompt;
+    TextButton *pApplyButton;
+    TextButton *pBackButton;
 
     bool finishedLoadingAnimations;
 };

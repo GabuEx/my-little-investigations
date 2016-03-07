@@ -32,14 +32,7 @@
 #include "../MouseHelper.h"
 #include "../KeyboardHelper.h"
 #include "../ResourceLoader.h"
-#include "../Utils.h"
 #include "../CaseInformation/Case.h"
-#include "../utf8cpp/utf8.h"
-#include <algorithm>
-#include <cctype>
-#include <cstdlib>
-#include <deque>
-#include <limits>
 
 #ifdef ENABLE_DEBUG_MODE
 #include "../FileFunctions.h"
@@ -49,9 +42,6 @@
 int Dialog::Height = 180; // px
 
 const double DefaultMillisecondsPerCharacterUpdate = 33;
-const double FullStopMillisecondPause = 500;
-const double HalfStopMillisecondPause = 250;
-const double EllipsisMillisecondPause = 150;
 
 Color NormalTextColor;
 const Color AsideTextColor = Color(1.0, 0.529, 0.809, 0.921); //Color.SkyBlue from C#
@@ -91,11 +81,11 @@ Dialog::Dialog(const string &filePath, int timeBeforeDialogInitial, int delayBef
     this->isConfrontation = isConfrontation;
     this->isStatic = false;
 
-    this->pPressForInfoTab = new Tab(gScreenWidth - 3 * TabWidth - 14, true /* isClickable */, pgLocalizableContent->GetText("Dialog/PressForInfoText"));
-    this->pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, pgLocalizableContent->GetText("Dialog/PresentEvidenceText"));
+    this->pPressForInfoTab = new Tab(gScreenWidth - 3 * TabWidth - 14, true /* isClickable */, gpLocalizableContent->GetText("Dialog/PressForInfoText"));
+    this->pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, gpLocalizableContent->GetText("Dialog/PresentEvidenceText"));
     this->pCurrentPartner = NULL;
     this->pUsePartnerTab = new Tab(gScreenWidth / 2 - TabWidth / 2, true /* isClickable */, "", false /* useCancelClickSoundEffect */, TabRowTop);
-    this->pEndInterrogationTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, isConfrontation ? pgLocalizableContent->GetText("Dialog/BackToTopicsText") : pgLocalizableContent->GetText("Dialog/EndInterrogationText"));
+    this->pEndInterrogationTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, isConfrontation ? gpLocalizableContent->GetText("Dialog/BackToTopicsText") : gpLocalizableContent->GetText("Dialog/EndInterrogationText"));
 
     this->pState = NULL;
 
@@ -191,96 +181,7 @@ Dialog * Dialog::CreateForString(const string &dialogText)
 Dialog * Dialog::CreateForString(const string &dialogText, const string &filePath, int timeBeforeDialogInitial, int delayBeforeContinuing, bool isInterrogation, bool isPassive, bool isConfrontation, bool canNavigateBack, bool canNavigateForward, bool presentEvidenceAutomatically, bool canStopPresentingEvidence)
 {
     Dialog *pDialog = new Dialog(filePath, timeBeforeDialogInitial, delayBeforeContinuing, isInterrogation, isPassive, isConfrontation, canNavigateBack, canNavigateForward, presentEvidenceAutomatically, canStopPresentingEvidence);
-
-    double allowedWidth = textAreaRect.GetWidth() - desiredPadding * 2;
-    string fullString = "";
-    deque<string> wordList = split(dialogText, ' ');
-
-    while (!wordList.empty())
-    {
-        string curstring = "";
-        double curTextWidth = 0;
-        bool lineDone = false;
-        bool addSpace = false;
-
-        if (fullString.length() > 0)
-        {
-            fullString += "\n";
-        }
-
-        while (!lineDone)
-        {
-            string stringToTest = (addSpace ? " " : "") + wordList.front();
-            double curStringWidth = pDialogFont->GetWidth(pDialog->StripEvents(stringToTest));
-
-            // If we've got a single word that takes up more than the entire length of the screen,
-            // then we need to split it up.
-            if (curTextWidth == 0 && curStringWidth > allowedWidth)
-            {
-                string testString = "";
-                string lastTestString = "";
-                curStringWidth = 0;
-
-                while (curStringWidth <= allowedWidth)
-                {
-                    if (stringToTest[0] == '{')
-                    {
-                        testString += stringToTest[0];
-                        stringToTest = stringToTest.substr(1);
-
-                        while (stringToTest[0] != '}')
-                        {
-                            testString += stringToTest[0];
-                            stringToTest = stringToTest.substr(1);
-                        }
-
-                        testString += stringToTest[0];
-                        stringToTest = stringToTest.substr(1);
-                    }
-
-                    lastTestString = testString;
-                    testString += stringToTest[0];
-                    double testCurStringWidth = pDialogFont->GetWidth(pDialog->StripEvents(testString));
-
-                    if (testCurStringWidth > allowedWidth)
-                    {
-                        break;
-                    }
-
-                    curStringWidth = testCurStringWidth;
-                    stringToTest = stringToTest.substr(1);
-                }
-
-                wordList.insert(wordList.begin() + 1, stringToTest);
-                stringToTest = lastTestString;
-            }
-
-            if (curTextWidth + curStringWidth <= allowedWidth)
-            {
-                string stringToPrependOnNext;
-                stringToTest = pDialog->ParseEvents(fullString.length() + curstring.length(), stringToTest, &stringToPrependOnNext);
-                curstring += stringToTest;
-                curTextWidth += curStringWidth;
-                wordList.pop_front();
-                addSpace = true;
-
-                if (wordList.empty())
-                {
-                    lineDone = true;
-                }
-                else
-                {
-                    wordList[0] = stringToPrependOnNext + wordList.front();
-                }
-            }
-            else
-            {
-                lineDone = true;
-            }
-        }
-
-        fullString += curstring;
-    }
+    string fullString = ParseRawDialog(pDialog, dialogText, textAreaRect, desiredPadding, pDialogFont);
 
     pDialog->SetText(fullString);
 
@@ -297,49 +198,59 @@ Dialog * Dialog::CreateForString(const string &dialogText, const string &filePat
     return pDialog;
 }
 
-string Dialog::StripEvents(const string &stringToStrip)
+void Dialog::StartAside(int position)
 {
-    string strippedString = stringToStrip;
+    Interval interval = Interval(textColorStack.back(), lastTextColorChangeIndex, position);
 
-    while (strippedString.find('{') != string::npos && strippedString.find('}') != string::npos)
+    textIntervalList.push_back(interval);
+    AddMouthChangePosition(position, false /* mouthIsOn */);
+
+    textColorStack.push_back(TextColorAside);
+    lastTextColorChangeIndex = position;
+}
+
+void Dialog::EndAside(int position, int eventEnd, int parsedStringLength, string *pStringToPrependOnNext)
+{
+    if (textColorStack.back() == TextColorAside)
     {
-        int eventStart = (int)strippedString.find('{');
-        deque<string> eventComponents = split(strippedString.substr(eventStart + 1, strippedString.find('}') - eventStart - 1), ':');
-        string replacementText = "";
-        transform(eventComponents[0].begin(), eventComponents[0].end(), eventComponents[0].begin(), ::tolower);
-        string testString = eventComponents[0];
+        Interval interval = Interval(TextColorAside, lastTextColorChangeIndex, position);
 
-        if (testString == "fullstop")
+        if (eventEnd + 1 == parsedStringLength)
         {
-            if (eventComponents.size() > 1)
-            {
-                replacementText = eventComponents[1];
-            }
-            else
-            {
-                replacementText = ".";
-            }
+            *pStringToPrependOnNext = "{Mouth:On}";
         }
-        else if (testString == "halfstop")
+        else
         {
-            if (eventComponents.size() > 1)
-            {
-                replacementText = eventComponents[1];
-            }
-            else
-            {
-                replacementText = ",";
-            }
-        }
-        else if (testString == "ellipsis")
-        {
-            replacementText = "...";
+            AddMouthChangePosition(position, true /* mouthIsOn */);
         }
 
-        strippedString = strippedString.substr(0, strippedString.find('{')) + replacementText + strippedString.substr(strippedString.find('}') + 1);
+        textIntervalList.push_back(interval);
+        textColorStack.pop_back();
+        lastTextColorChangeIndex = position;
     }
+}
 
-    return strippedString;
+void Dialog::StartEmphasis(int position)
+{
+    Interval interval = Interval(textColorStack.back(), lastTextColorChangeIndex, position);
+
+    textIntervalList.push_back(interval);
+
+    textColorStack.push_back(TextColorEmphasis);
+    lastTextColorChangeIndex = position;
+}
+
+void Dialog::EndEmphasis(int position)
+{
+    if (textColorStack.back() == TextColorEmphasis)
+    {
+        Interval interval = Interval(TextColorEmphasis, lastTextColorChangeIndex, position);
+
+        textIntervalList.push_back(interval);
+        textColorStack.pop_back();
+
+        lastTextColorChangeIndex = position;
+    }
 }
 
 string Dialog::GetString()
@@ -582,14 +493,15 @@ void Dialog::Update(int delta)
             if (!GetIsStarted() || millisecondsSinceLastUpdate > millisecondsPerCharacterUpdate)
             {
                 int positionsToAdvance = (int)(millisecondsSinceLastUpdate / millisecondsPerCharacterUpdate);
-                try
+
+                string::const_iterator begin = GetText().begin() + curTextPosition;
+                string::const_iterator end = begin;
+
+                if (AdvanceStringIterator(end, positionsToAdvance, GetText().end()))
                 {
-                    string::const_iterator begin = GetText().begin() + curTextPosition;
-                    string::const_iterator end = begin;
-                    utf8::advance(end, positionsToAdvance, GetText().end());
                     curTextPosition = curTextPosition + distance(begin, end);
                 }
-                catch (utf8::not_enough_room ex)
+                else
                 {
                     curTextPosition = (int)GetText().length();
                 }
@@ -1164,250 +1076,6 @@ void Dialog::OnEvidenceSelectorClosing(EvidenceSelector *pSender)
     {
         pConfrontation->ShowHealthIcons();
     }
-}
-
-string Dialog::ParseEvents(int lineOffset, const string &stringToParse, string *pStringToPrependOnNext)
-{
-    string parsedString = stringToParse;
-    *pStringToPrependOnNext = "";
-
-    while (parsedString.find('{') != string::npos && parsedString.find('}') != string::npos)
-    {
-        int eventStart = parsedString.find('{');
-        int eventEnd = parsedString.find('}');
-
-        deque<string> eventComponents = split(parsedString.substr(eventStart + 1, eventEnd - eventStart - 1), ':');
-        string replacementText = "";
-        transform(eventComponents[0].begin(), eventComponents[0].end(), eventComponents[0].begin(), ::tolower);
-        string testString = eventComponents[0];
-
-        if (testString == "speed")
-        {
-            double newMillisecondsPerCharacterUpdate = strtod(eventComponents[1].c_str(), NULL);
-            AddSpeedChangePosition(lineOffset + eventStart, newMillisecondsPerCharacterUpdate);
-        }
-        else if (testString == "emotion")
-        {
-            string newEmotion = eventComponents[1];
-            AddEmotionChangePosition(lineOffset + eventStart, newEmotion);
-        }
-        else if (testString == "otheremotion")
-        {
-            string newOtherEmotion = eventComponents[1];
-            AddEmotionOtherChangePosition(lineOffset + eventStart, newOtherEmotion);
-        }
-        else if (testString == "pause")
-        {
-            double millisecondDuration = strtod(eventComponents[1].c_str(), NULL);
-            AddPausePosition(lineOffset + eventStart, millisecondDuration);
-        }
-        else if (testString == "audiopause")
-        {
-            double millisecondDuration = strtod(eventComponents[1].c_str(), NULL);
-            AddAudioPausePosition(lineOffset + eventStart, millisecondDuration);
-         }
-        else if (testString == "mouth")
-        {
-            transform(eventComponents[1].begin(), eventComponents[1].end(), eventComponents[1].begin(), ::tolower);
-            bool mouthIsOn = eventComponents[1] == "on";
-            AddMouthChangePosition(lineOffset + eventStart, mouthIsOn);
-        }
-        else if (testString == "fullstop")
-        {
-            if (eventComponents.size() > 1)
-            {
-                replacementText = eventComponents[1];
-            }
-            else
-            {
-                replacementText = ".";
-            }
-
-            AddMouthChangePosition(lineOffset + eventStart, false /* mouthIsOn */);
-            AddPausePosition(lineOffset + eventStart + 1, FullStopMillisecondPause);
-
-            if (eventEnd + 1 == (int)parsedString.length())
-            {
-                *pStringToPrependOnNext = "{Mouth:On}";
-            }
-            else
-            {
-                AddMouthChangePosition(lineOffset + eventStart + 1, true /* mouthIsOn */);
-            }
-        }
-        else if (testString == "halfstop")
-        {
-            if (eventComponents.size() > 1)
-            {
-                replacementText = eventComponents[1];
-            }
-            else
-            {
-                replacementText = ",";
-            }
-
-            AddMouthChangePosition(lineOffset + eventStart, false /* mouthIsOn */);
-            AddPausePosition(lineOffset + eventStart + 1, HalfStopMillisecondPause);
-
-            if (eventEnd + 1 == (int)parsedString.length())
-            {
-                *pStringToPrependOnNext = "{Mouth:On}";
-            }
-            else
-            {
-                AddMouthChangePosition(lineOffset + eventStart + 1, true /* mouthIsOn */);
-            }
-        }
-        else if (testString == "ellipsis")
-        {
-            replacementText = "...";
-
-            AddMouthChangePosition(lineOffset + eventStart, false /* mouthIsOn */);
-            AddPausePosition(lineOffset + eventStart + 1, EllipsisMillisecondPause);
-            AddPausePosition(lineOffset + eventStart + 2, EllipsisMillisecondPause);
-            AddPausePosition(lineOffset + eventStart + 3, EllipsisMillisecondPause);
-
-            if (eventEnd + 1 == (int)parsedString.length())
-            {
-                *pStringToPrependOnNext = "{Mouth:On}";
-            }
-            else
-            {
-                AddMouthChangePosition(lineOffset + eventStart + 3, true /* mouthIsOn */);
-            }
-        }
-        else if (testString == "aside")
-        {
-            int currentIndex = lineOffset + eventStart;
-            Interval interval = Interval(textColorStack.back(), lastTextColorChangeIndex, currentIndex);
-
-            textIntervalList.push_back(interval);
-            AddMouthChangePosition(currentIndex, false /* mouthIsOn */);
-
-            textColorStack.push_back(TextColorAside);
-            lastTextColorChangeIndex = currentIndex;
-        }
-        else if (testString == "/aside")
-        {
-            if (textColorStack.back() == TextColorAside)
-            {
-                int currentIndex = lineOffset + eventStart;
-                Interval interval = Interval(TextColorAside, lastTextColorChangeIndex, currentIndex);
-
-                if (eventEnd + 1 == (int)parsedString.length())
-                {
-                    *pStringToPrependOnNext = "{Mouth:On}";
-                }
-                else
-                {
-                    AddMouthChangePosition(currentIndex, true /* mouthIsOn */);
-                }
-
-                textIntervalList.push_back(interval);
-                textColorStack.pop_back();
-                lastTextColorChangeIndex = currentIndex;
-            }
-        }
-        else if (testString == "emphasis")
-        {
-            int currentIndex = lineOffset + eventStart;
-            Interval interval = Interval(textColorStack.back(), lastTextColorChangeIndex, currentIndex);
-
-            textIntervalList.push_back(interval);
-
-            textColorStack.push_back(TextColorEmphasis);
-            lastTextColorChangeIndex = currentIndex;
-        }
-        else if (testString == "/emphasis")
-        {
-            if (textColorStack.back() == TextColorEmphasis)
-            {
-                int currentIndex = lineOffset + eventStart;
-                Interval interval = Interval(TextColorEmphasis, lastTextColorChangeIndex, currentIndex);
-
-                textIntervalList.push_back(interval);
-                textColorStack.pop_back();
-
-                lastTextColorChangeIndex = currentIndex;
-            }
-        }
-        else if (testString == "playsound")
-        {
-            string soundId = eventComponents[1];
-            AddPlaySoundPosition(lineOffset + eventStart, soundId);
-        }
-        else if (testString == "shake")
-        {
-            AddShakePosition(lineOffset + eventStart);
-        }
-        else if (testString == "screenshake")
-        {
-            double shakeIntensity = min(max(strtod(eventComponents[1].c_str(), NULL), 0.0), 100.0);
-            AddScreenShakePosition(lineOffset + eventStart, shakeIntensity);
-        }
-        else if (testString == "nextframe")
-        {
-            AddNextFramePosition(lineOffset + eventStart);
-        }
-        else if (testString == "damageplayer")
-        {
-            AddPlayerDamagedPosition(lineOffset + eventStart);
-        }
-        else if (testString == "damageopponent")
-        {
-            AddOpponentDamagedPosition(lineOffset + eventStart);
-        }
-        else if (testString == "playbgm")
-        {
-            string bgmId = eventComponents[1];
-            AddPlayBgmPosition(lineOffset + eventStart, bgmId);
-        }
-        else if (testString == "playbgmpermanently")
-        {
-            string bgmId = eventComponents[1];
-            AddPlayBgmPermanentlyPosition(lineOffset + eventStart, bgmId);
-        }
-        else if (testString == "stopbgm")
-        {
-            AddStopBgmPosition(lineOffset + eventStart);
-        }
-        else if (testString == "stopbgmpermanently")
-        {
-            AddStopBgmPermanentlyPosition(lineOffset + eventStart);
-        }
-        else if (testString == "stopbgminstantly")
-        {
-            AddStopBgmInstantlyPosition(lineOffset + eventStart);
-        }
-        else if (testString == "stopbgminstantlypermanently")
-        {
-            AddStopBgmInstantlyPermanentlyPosition(lineOffset + eventStart);
-        }
-        else if (testString == "zoom")
-        {
-            AddZoomPosition(lineOffset + eventStart);
-        }
-        else if (testString == "endzoom")
-        {
-            AddEndZoomPosition(lineOffset + eventStart);
-        }
-        else if (testString == "beginbreakdown")
-        {
-            AddBeginBreakdownPosition(lineOffset + eventStart);
-        }
-        else if (testString == "endbreakdown")
-        {
-            AddEndBreakdownPosition(lineOffset + eventStart);
-        }
-        else
-        {
-            throw MLIException("Unknown event.");
-        }
-
-        parsedString = parsedString.substr(0, eventStart) + replacementText + parsedString.substr(eventEnd + 1);
-    }
-
-    return parsedString;
 }
 
 void Dialog::PlayBgmEvent::RaiseEvent()

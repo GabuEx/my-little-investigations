@@ -183,55 +183,55 @@ void SelectionScreen::LoadResources()
     pDividerSprite = ResourceLoader::GetInstance()->LoadImage("image/CaseSelectionScreen/RightDivider.png");
 
     delete pStartCaseButton;
-    pStartCaseButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/StartCaseText"), pStartFont);
-    pStartCaseButton->SetX(580);
+    pStartCaseButton = new TextButton("SelectionScreen/StartCaseText", pStartFont);
+    pStartCaseButton->SetX(656, HAlignmentCenter);
     pStartCaseButton->SetY(426);
 
     delete pSelectCaseButton;
-    pSelectCaseButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/SelectCaseText"), pStartFont);
-    pSelectCaseButton->SetX(580);
+    pSelectCaseButton = new TextButton("SelectionScreen/SelectCaseText", pStartFont);
+    pSelectCaseButton->SetX(659, HAlignmentCenter);
     pSelectCaseButton->SetY(426);
     pSelectCaseButton->SetClickSoundEffect("ButtonClick3");
 
     delete pSaveButton;
-    pSaveButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/SaveGameText"), pStartFont);
+    pSaveButton = new TextButton("SelectionScreen/SaveGameText", pStartFont);
     pSaveButton->SetX(587);
     pSaveButton->SetY(426);
 
     delete pLoadButton;
-    pLoadButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/LoadGameText"), pStartFont);
+    pLoadButton = new TextButton("SelectionScreen/LoadGameText", pStartFont);
     pLoadButton->SetX(587);
     pLoadButton->SetY(426);
 
     delete pDeleteButton;
-    pDeleteButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/DeleteGameText"), pStartFont);
+    pDeleteButton = new TextButton("SelectionScreen/DeleteGameText", pStartFont);
     pDeleteButton->SetX(571);
     pDeleteButton->SetY(365);
 
     delete pBackButton;
-    pBackButton = new TextButton(pgLocalizableContent->GetText("SelectionScreen/BackText"), pTitleScreenFont);
-    pBackButton->SetX(840);
+    pBackButton = new TextButton("SelectionScreen/BackText", pTitleScreenFont);
+    pBackButton->SetX(932, HAlignmentRight);
     pBackButton->SetY(488);
     pBackButton->SetClickSoundEffect("ButtonClick4");
 
     delete pDeleteConfirmOverlay;
-    pDeleteConfirmOverlay = new PromptOverlay(pgLocalizableContent->GetText("SelectionScreen/DeleteConfirmationText"), false /* allowsTextEntry */);
-    pDeleteConfirmOverlay->AddButton(pgLocalizableContent->GetText("SelectionScreen/YesText"));
-    pDeleteConfirmOverlay->AddButton(pgLocalizableContent->GetText("SelectionScreen/NoText"));
+    pDeleteConfirmOverlay = new PromptOverlay("SelectionScreen/DeleteConfirmationText", false /* allowsTextEntry */);
+    pDeleteConfirmOverlay->AddButton("SelectionScreen/YesText");
+    pDeleteConfirmOverlay->AddButton("SelectionScreen/NoText");
     pDeleteConfirmOverlay->FinalizeButtons();
 
     delete pEnterSaveNameOverlay;
-    pEnterSaveNameOverlay = new PromptOverlay(pgLocalizableContent->GetText("SelectionScreen/SaveNamePromptText"), true /* allowsTextEntry */);
+    pEnterSaveNameOverlay = new PromptOverlay("SelectionScreen/SaveNamePromptText", true /* allowsTextEntry */);
     pEnterSaveNameOverlay->SetMaxPixelWidth(SelectorWidth, CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("HandwritingLargeFont"));
 
     delete pIncompatibleCaseNotificationOverlay;
-    pIncompatibleCaseNotificationOverlay = new PromptOverlay(pgLocalizableContent->GetText("SelectionScreen/IncompatibleCaseFormatText"), false /* allowsTextEntry */);
-    pIncompatibleCaseNotificationOverlay->AddButton(pgLocalizableContent->GetText("SelectionScreen/OKText"));
+    pIncompatibleCaseNotificationOverlay = new PromptOverlay("SelectionScreen/IncompatibleCaseFormatText", false /* allowsTextEntry */);
+    pIncompatibleCaseNotificationOverlay->AddButton("SelectionScreen/OKText");
     pIncompatibleCaseNotificationOverlay->FinalizeButtons();
 
     delete pDescriptionWidget;
     pDescriptionWidget = new TextWidget("", pSmallFont, Color(1.0, 0.0, 0.0, 0.0), HAlignmentCenter, VAlignmentTop);
-    pDescriptionWidget->SetX(525);
+    pDescriptionWidget->SetX(649);
     pDescriptionWidget->SetY(274);
     pDescriptionWidget->SetWidth(248);
 
@@ -624,7 +624,7 @@ void SelectionScreen::OnSelectorSelectionChanged(Selector *pSender, SelectorItem
 
                 caseTitle = lastCaseTitle;
 
-                pDescriptionWidget->SetText("New save file.");
+                pDescriptionWidget->SetTextId("SelectionScreen/NewSaveFileText");
 
                 string fileName = GetSaveFolderPathForCase(lastCaseUuid);
 
@@ -653,7 +653,7 @@ void SelectionScreen::OnButtonClicked(TextButton *pSender)
         else
         {
             char promptOverlayText[1024];
-            sprintf(promptOverlayText, pgLocalizableContent->GetText("SelectionScreen/IncompatibleCaseText").c_str(), ((string)gVersion).c_str(), ((string)selectionRequiredVersion).c_str());
+            sprintf(promptOverlayText, gpLocalizableContent->GetText("SelectionScreen/IncompatibleCaseText").c_str(), ((string)gVersion).c_str(), ((string)selectionRequiredVersion).c_str());
 
             pIncompatibleCaseNotificationOverlay->SetHeaderText(promptOverlayText);
             pIncompatibleCaseNotificationOverlay->Begin();
@@ -665,7 +665,7 @@ void SelectionScreen::OnButtonClicked(TextButton *pSender)
         vector<string> filePaths = GetSaveFilePathsForCase(lastCaseUuid);
 
         pSelector->Reset();
-        SelectorSection *pSection = new SelectorSection(pgLocalizableContent->GetText("SelectionScreen/SaveFilesText"));
+        SelectorSection *pSection = new SelectorSection("SelectionScreen/SaveFilesText");
 
         if (type == SelectionScreenTypeSaveGame && ResourceLoader::GetInstance()->LoadTemporaryCase(gCaseFilePath))
         {
@@ -810,7 +810,7 @@ void SelectionScreen::OnButtonClicked(TextButton *pSender)
 
 void SelectionScreen::OnPromptOverlayValueReturned(PromptOverlay *pSender, const string &value)
 {
-    if (pSender == pDeleteConfirmOverlay && value == pgLocalizableContent->GetText("SelectionScreen/YesText"))
+    if (pSender == pDeleteConfirmOverlay && value == gpLocalizableContent->GetText("SelectionScreen/YesText"))
     {
         remove(filePath.c_str());
         pSelector->DeleteCurrentItem();

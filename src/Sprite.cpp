@@ -120,6 +120,7 @@ void Sprite::Draw(Vector2 position, Color color, double scale, bool flipHorizont
         flipHorizontally,
         false /* flipVertically */,
         scale,
+        scale,
         color);
 }
 
@@ -176,6 +177,7 @@ void Sprite::DrawClipped(Vector2 position, RectangleWH clipRect, bool flipHorizo
             clipRect.GetHeight()),
         flipHorizontally,
         false /* flipVertically */,
+        1.0,
         1.0,
         color);
 }

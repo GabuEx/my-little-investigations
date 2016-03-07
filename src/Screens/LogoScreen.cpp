@@ -66,12 +66,12 @@ void LogoScreen::LoadResources()
     MLIFont *pFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("DisclaimerFont");
 
     delete pDisclaimerTextWidget;
-    pDisclaimerTextWidget = new TextWidget(pgLocalizableContent->GetText("LogoScreen/DisclaimerText"), pFont, Color::White, HAlignmentCenter, VAlignmentCenter);
-    pDisclaimerTextWidget->SetX(textPadding);
-    pDisclaimerTextWidget->SetY(textPadding);
+    pDisclaimerTextWidget = new TextWidget("LogoScreen/DisclaimerText", pFont, Color::White, HAlignmentCenter, VAlignmentCenter);
+    pDisclaimerTextWidget->SetX(gScreenWidth / 2);
+    pDisclaimerTextWidget->SetY(gScreenHeight / 2);
     pDisclaimerTextWidget->SetWidth(gScreenWidth - textPadding * 2);
     pDisclaimerTextWidget->SetHeight(gScreenHeight - textPadding * 2);
-    pDisclaimerTextWidget->WrapText(pDisclaimerTextWidget->GetWidth());
+    pDisclaimerTextWidget->WrapText(gScreenWidth - textPadding * 2);
 
     delete pLogoVideo;
     pLogoVideo = new Video(false /* shouldLoop */);

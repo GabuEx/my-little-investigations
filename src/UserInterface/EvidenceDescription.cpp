@@ -28,7 +28,7 @@
  */
 
 #include "EvidenceDescription.h"
-#include "../Utils.h"
+#include "../SharedUtils.h"
 #include "../CaseInformation/Case.h"
 
 const int descriptionXOffset = 59;

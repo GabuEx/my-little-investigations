@@ -39,8 +39,8 @@ const string CandleSpriteSheetId = "TitleScreenCandleSpriteSheet";
 const int CandleDimensionsPx = 32;
 const int LongFadeFromBlackDurationMs = 1000;
 const int FadeFromBlackDurationMs = 300;
-const int ButtonAreaStartHeight = 175;
-const int ButtonSpacing = 18;
+const int ButtonAreaStartHeight = 155;
+const int ButtonSpacing = 14;
 
 TitleScreen::TitleScreen()
 {
@@ -60,9 +60,10 @@ TitleScreen::TitleScreen()
     pNewGameButton = NULL;
     pLoadGameButton = NULL;
     pOptionsButton = NULL;
+    pSelectLanguageButton = NULL;
     pExitButton = NULL;
 
-    pNoCasesPrompt = new PromptOverlay(pgLocalizableContent->GetText("TitleScreen/NoCasesText"), false /* allowsTextEntry */);
+    pNoCasesPrompt = new PromptOverlay("TitleScreen/NoCasesText", false /* allowsTextEntry */);
     pNoCasesPrompt->AddButton("OK");
     pNoCasesPrompt->FinalizeButtons();
 
@@ -94,6 +95,8 @@ TitleScreen::~TitleScreen()
     pLoadGameButton = NULL;
     delete pOptionsButton;
     pOptionsButton = NULL;
+    delete pSelectLanguageButton;
+    pSelectLanguageButton = NULL;
     delete pExitButton;
     pExitButton = NULL;
 
@@ -122,36 +125,43 @@ void TitleScreen::LoadResources()
     pFadeInSprite = ResourceLoader::GetInstance()->LoadImage("image/TitleScreen/FadeInBackground.png");
 
     delete pNewGameButton;
-    pNewGameButton = new TextButton(pgLocalizableContent->GetText("TitleScreen/NewGameText"), pTitleScreenFont);
+    pNewGameButton = new TextButton("TitleScreen/NewGameText", pTitleScreenFont);
     delete pLoadGameButton;
-    pLoadGameButton = new TextButton(pgLocalizableContent->GetText("TitleScreen/LoadGameText"), pTitleScreenFont);
+    pLoadGameButton = new TextButton("TitleScreen/LoadGameText", pTitleScreenFont);
     delete pOptionsButton;
-    pOptionsButton = new TextButton(pgLocalizableContent->GetText("TitleScreen/OptionsText"), pTitleScreenFont);
+    pOptionsButton = new TextButton("TitleScreen/OptionsText", pTitleScreenFont);
+    delete pSelectLanguageButton;
+    pSelectLanguageButton = new TextButton("TitleScreen/SelectLanguageText", pTitleScreenFont);
     delete pExitButton;
-    pExitButton = new TextButton(pgLocalizableContent->GetText("TitleScreen/ExitText"), pTitleScreenFont);
+    pExitButton = new TextButton("TitleScreen/ExitText", pTitleScreenFont);
 
     int totalButtonHeight =
         pNewGameButton->GetHeight() +
         pLoadGameButton->GetHeight() +
         pOptionsButton->GetHeight() +
+        pSelectLanguageButton->GetHeight() +
         pExitButton->GetHeight() +
         ButtonSpacing * 2 + 12;
 
     int currentButtonHeight = ButtonAreaStartHeight + (gScreenHeight - ButtonAreaStartHeight - totalButtonHeight) / 2;
 
-    pNewGameButton->SetX((gScreenWidth - pNewGameButton->GetWidth()) / 2);
+    pNewGameButton->SetX(gScreenWidth / 2, HAlignmentCenter);
     pNewGameButton->SetY(currentButtonHeight);
     currentButtonHeight += pNewGameButton->GetHeight() + ButtonSpacing;
 
-    pLoadGameButton->SetX((gScreenWidth - pLoadGameButton->GetWidth()) / 2);
+    pLoadGameButton->SetX(gScreenWidth / 2, HAlignmentCenter);
     pLoadGameButton->SetY(currentButtonHeight);
     currentButtonHeight += pLoadGameButton->GetHeight() + ButtonSpacing;
 
-    pOptionsButton->SetX((gScreenWidth - pOptionsButton->GetWidth()) / 2);
+    pOptionsButton->SetX(gScreenWidth / 2, HAlignmentCenter);
     pOptionsButton->SetY(currentButtonHeight);
     currentButtonHeight += pOptionsButton->GetHeight() + ButtonSpacing;
 
-    pExitButton->SetX((gScreenWidth - pExitButton->GetWidth()) / 2);
+    pSelectLanguageButton->SetX(gScreenWidth / 2, HAlignmentCenter);
+    pSelectLanguageButton->SetY(currentButtonHeight);
+    currentButtonHeight += pSelectLanguageButton->GetHeight() + ButtonSpacing;
+
+    pExitButton->SetX(gScreenWidth / 2, HAlignmentCenter);
     pExitButton->SetY(currentButtonHeight);
     currentButtonHeight += pExitButton->GetHeight() + ButtonSpacing;
 
@@ -205,6 +215,8 @@ void TitleScreen::UnloadResources()
     pLoadGameButton = NULL;
     delete pOptionsButton;
     pOptionsButton = NULL;
+    delete pSelectLanguageButton;
+    pSelectLanguageButton = NULL;
     delete pExitButton;
     pExitButton = NULL;
 
@@ -269,6 +281,7 @@ void TitleScreen::Update(int delta)
         !pNewGameButton->IsReady() ||
         !pLoadGameButton->IsReady() ||
         !pOptionsButton->IsReady() ||
+        !pSelectLanguageButton->IsReady() ||
         !pExitButton->IsReady() ||
         !pSpikeVideo->IsReady() ||
         !pCandleAnimation->IsReady() ||
@@ -314,6 +327,7 @@ void TitleScreen::Update(int delta)
         pNewGameButton->Update(delta);
         pLoadGameButton->Update(delta);
         pOptionsButton->Update(delta);
+        pSelectLanguageButton->Update(delta);
         pExitButton->Update(delta);
     }
 }
@@ -331,6 +345,7 @@ void TitleScreen::Draw()
         !pNewGameButton->IsReady() ||
         !pLoadGameButton->IsReady() ||
         !pOptionsButton->IsReady() ||
+        !pSelectLanguageButton->IsReady() ||
         !pExitButton->IsReady())
     {
         return;
@@ -355,6 +370,7 @@ void TitleScreen::Draw()
     pNewGameButton->Draw();
     pLoadGameButton->Draw();
     pOptionsButton->Draw();
+    pSelectLanguageButton->Draw();
     pExitButton->Draw();
 
     if (pNoCasesPrompt->GetIsShowing())
@@ -387,6 +403,10 @@ void TitleScreen::OnButtonClicked(TextButton *pSender)
     else if (pSender == pOptionsButton)
     {
         nextScreenId = OPTIONS_SCREEN_ID;
+    }
+    else if (pSender == pSelectLanguageButton)
+    {
+        nextScreenId = LANGUAGE_SCREEN_ID;
     }
     else if (pSender == pExitButton)
     {

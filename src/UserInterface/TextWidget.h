@@ -35,24 +35,28 @@
 
 #include "../enums.h"
 #include "../MLIFont.h"
+#include "../LocalizableContent.h"
 #include "../Utils.h"
 
 using namespace std;
-class TextWidget
+
+class TextWidget : public ILocalizableTextOwner
 {
 public:
 
-    TextWidget(const string &text = "", MLIFont *pFont = NULL, Color textColor = Color(1.0, 0.0, 0.0, 0.0),
+    TextWidget(const string &textId = "", MLIFont *pFont = NULL, Color textColor = Color(1.0, 0.0, 0.0, 0.0),
                HAlignment hAlignment = HAlignmentLeft, VAlignment vAlignment = VAlignmentTop);
-    ~TextWidget();
+    virtual ~TextWidget();
 
-    void Draw() const { Draw(x, y); }
-    void Draw(double x, double y) const;
+    void Draw() const;
+    void Draw(double x, double y, HAlignment hAlignment) const;
+    void Draw(double x, double y, HAlignment hAlignment, VAlignment vAlignment) const;
     void Update(int delta) { }
     bool IsReady() const { return true; }
 
     const string & GetText() const { return this->text; }
     void SetText(const string &text);
+    void SetTextId(const string &textId);
 
     MLIFont * GetFont() const { return this->pFont; }
     void SetFont(MLIFont *pFont) { this->pFont = pFont; }
@@ -82,14 +86,17 @@ public:
     void WrapText(double width);
 
     void FitSizeToContent();
+    void ReloadLocalizableText() override;
 
 private:
 
     double GetTextHeight() const;
     double GetTextWidth() const;
-    void SplitText(bool wrap, double maxWidth);
+    void SplitText(double maxWidth);
 
+    string textId;
     string text;
+    double wrapTextWidth;
     MLIFont *pFont;
     Color textColor;
     HAlignment hAlignment;
@@ -100,7 +107,7 @@ private:
     double width;
     double height;
 
-    vector<pair<string::const_iterator, string::const_iterator> > lines;
+    deque<string> lines;
 };
 
 #endif // TEXTWIDGET_H

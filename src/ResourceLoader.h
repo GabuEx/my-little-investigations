@@ -222,7 +222,10 @@ public:
         return pInstance;
     }
 
-    bool Init(const string &commonResourcesFilePath);
+    bool Init(const string &commonResourcesFilePath, const string &commonLocalizedResourcesFilePath);
+    bool LoadNewCommonLocalizedResources(const string &commonLocalizedResourcesFilePath);
+    bool LoadTemporaryCommonLocalizedResources(const string &commonLocalizedResourcesFilePath);
+    void UnloadTemporaryCommonLocalizedResources();
     bool LoadCase(const string &caseFilePath);
     bool LoadTemporaryCase(const string &caseFilePath);
     void UnloadTemporaryCase();
@@ -274,6 +277,8 @@ private:
     static ResourceLoader *pInstance;
 
     ArchiveSource *pCommonResourcesSource;
+    ArchiveSource *pCommonLocalizedResourcesSource;
+    ArchiveSource *pCachedCommonLocalizedResourcesSource;
     ArchiveSource *pCaseResourcesSource;
     ArchiveSource *pCachedCaseResourcesSource;
 

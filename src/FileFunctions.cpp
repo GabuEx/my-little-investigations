@@ -436,6 +436,53 @@ bool CopyCaseFileToCaseFolder(const string &caseFilePath, const string &caseUuid
 
     return success;
 }
+
+vector<string> GetLanguageResourcesFilePaths()
+{
+    vector<string> filePaths;
+
+#ifdef __WINDOWS
+        tstring tstrPath = StringToTString(GetLocalizedCommonResourcesDirectoryPath()) + tstring(TEXT("*.dat"));
+
+        WIN32_FIND_DATA ffd;
+        HANDLE hFind = FindFirstFile(tstrPath.c_str(), &ffd);
+
+        if (INVALID_HANDLE_VALUE != hFind)
+        {
+            do
+            {
+                filePaths.push_back(GetLocalizedCommonResourcesDirectoryPath() + TStringToString(tstring(ffd.cFileName)));
+            }
+            while (FindNextFile(hFind, &ffd) != 0);
+
+            FindClose(hFind);
+        }
+#elif __OSX
+        vector<string> caseFilePaths = GetLocalizedCommonResourcesDirectoryPath();
+
+        for (unsigned int i = 0; i < caseFilePaths.size(); i++)
+        {
+            string caseFilePath = caseFilePaths[i];
+
+            if (caseFilePath.find(".dat") != string::npos)
+            {
+                filePaths.push_back(caseFilePath);
+            }
+        }
+#elif __unix
+        FOR_EACH_FILE(caseFilePath,casesPath)
+        {
+            if (caseFilePath.find(".dat") != string::npos)
+            {
+                filePaths.push_back(caseFilePath);
+            }
+        }
+#else
+#error NOT IMPLEMENTED
+#endif
+
+    return filePaths;
+}
 #endif
 
 string ConvertSeparatorsInPath(string &path)
@@ -456,6 +503,11 @@ string GetFileNameFromFilePath(const string &path)
 string GetCommonResourcesFilePath()
 {
     return commonAppDataPath + "common.dat";
+}
+
+string GetLocalizedCommonResourcesDirectoryPath()
+{
+    return commonAppDataPath + pathSeparator + "Languages" + pathSeparator;
 }
 
 #ifdef __OSX
@@ -611,6 +663,7 @@ void SaveConfigurations()
     configWriter.WriteDoubleElement("BackgroundMusicVolume", gBackgroundMusicVolume);
     configWriter.WriteDoubleElement("SoundEffectsVolume", gSoundEffectsVolume);
     configWriter.WriteDoubleElement("VoiceVolume", gVoiceVolume);
+    configWriter.WriteTextElement("LocalizedResourcesFileName", gLocalizedResourcesFileName);
 
     KeyboardHelper::WriteConfig(configWriter);
 
@@ -633,6 +686,7 @@ void LoadConfigurations()
             double backgroundMusicVolume = gBackgroundMusicVolume;
             double soundEffectsVolume = gSoundEffectsVolume;
             double voiceVolume = gVoiceVolume;
+            string localizedResourcesFileName = gLocalizedResourcesFileName;
 
             XmlReader configReader(GetConfigFilePath().c_str());
 
@@ -682,6 +736,11 @@ void LoadConfigurations()
                     voiceVolume = configReader.ReadDoubleElement("VoiceVolume");
                 }
 
+                if (configReader.ElementExists("LocalizedResourcesFileName"))
+                {
+                    localizedResourcesFileName = configReader.ReadTextElement("LocalizedResourcesFileName");
+                }
+
                 KeyboardHelper::ReadConfig(configReader);
 
                 configReader.EndElement();
@@ -697,6 +756,7 @@ void LoadConfigurations()
             gBackgroundMusicVolume = backgroundMusicVolume;
             gSoundEffectsVolume = soundEffectsVolume;
             gVoiceVolume = voiceVolume;
+            gLocalizedResourcesFileName = localizedResourcesFileName;
         }
         catch (MLIException e)
         {

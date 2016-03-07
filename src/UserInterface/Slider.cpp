@@ -44,16 +44,24 @@ void Slider::Initialize(MLIFont *pHeaderFont, Image *pTrackSprite, Image *pThumb
     Slider::pThumbSprite = pThumbSprite;
 }
 
-Slider::Slider(const string &headerText, int xPosition, int yPosition)
+Slider::Slider(const string &headerTextId, int xPosition, int yPosition)
 {
-    this->headerText = headerText;
+    this->headerTextId = headerTextId;
     this->xPosition = xPosition;
     this->yPosition = yPosition;
 
     this->sliderXPosition = 0;
     this->currentValue = 0;
 
+    ReloadLocalizableText();
     Reset();
+
+    gpLocalizableContent->AddLocalizableTextOwner(this);
+}
+
+Slider::~Slider()
+{
+    gpLocalizableContent->RemoveLocalizableTextOwner(this);
 }
 
 int Slider::GetTrackXPosition()
@@ -118,4 +126,9 @@ void Slider::Draw(double opacity)
 void Slider::Reset()
 {
     isDragging = false;
+}
+
+void Slider::ReloadLocalizableText()
+{
+    headerText = gpLocalizableContent->GetText(headerTextId);
 }

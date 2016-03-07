@@ -332,6 +332,8 @@
 		<Unit filename="src/ResourceLoader.h" />
 		<Unit filename="src/Screens/GameScreen.cpp" />
 		<Unit filename="src/Screens/GameScreen.h" />
+		<Unit filename="src/Screens/LanguageScreen.cpp" />
+		<Unit filename="src/Screens/LanguageScreen.h" />
 		<Unit filename="src/Screens/LogoScreen.cpp" />
 		<Unit filename="src/Screens/LogoScreen.h" />
 		<Unit filename="src/Screens/MLIScreen.h" />
@@ -341,6 +343,8 @@
 		<Unit filename="src/Screens/SelectionScreen.h" />
 		<Unit filename="src/Screens/TitleScreen.cpp" />
 		<Unit filename="src/Screens/TitleScreen.h" />
+		<Unit filename="src/SharedUtils.cpp" />
+		<Unit filename="src/SharedUtils.h" />
 		<Unit filename="src/Sprite.cpp" />
 		<Unit filename="src/Sprite.h" />
 		<Unit filename="src/State.cpp" />

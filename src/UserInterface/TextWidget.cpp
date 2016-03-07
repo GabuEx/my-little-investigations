@@ -29,10 +29,13 @@
  */
 #include "TextWidget.h"
 
-#include "../utf8cpp/utf8.h"
+#include "../SharedUtils.h"
 
-TextWidget::TextWidget(const string &text, MLIFont *pFont, Color textColor, HAlignment hAlignment, VAlignment vAlignment)
-    : text(text),
+#include <limits>
+
+TextWidget::TextWidget(const string &textId, MLIFont *pFont, Color textColor, HAlignment hAlignment, VAlignment vAlignment)
+    : textId(textId),
+      wrapTextWidth(0),
       pFont(pFont),
       textColor(textColor),
       hAlignment(hAlignment),
@@ -42,15 +45,26 @@ TextWidget::TextWidget(const string &text, MLIFont *pFont, Color textColor, HAli
       width(0),
       height(0)
 {
-    SplitText(false, 0);
+    ReloadLocalizableText();
+    gpLocalizableContent->AddLocalizableTextOwner(this);
 }
 
 TextWidget::~TextWidget()
 {
-
+    gpLocalizableContent->RemoveLocalizableTextOwner(this);
 }
 
-void TextWidget::Draw(double x, double y) const
+void TextWidget::Draw() const
+{
+    Draw(x, y, hAlignment, vAlignment);
+}
+
+void TextWidget::Draw(double x, double y, HAlignment hAlignment) const
+{
+    Draw(x, y, hAlignment, vAlignment);
+}
+
+void TextWidget::Draw(double x, double y, HAlignment hAlignment, VAlignment vAlignment) const
 {
     if (pFont == NULL)
     {
@@ -65,50 +79,64 @@ void TextWidget::Draw(double x, double y) const
     }
     else if (vAlignment == VAlignmentCenter)
     {
-        drawingPoint.SetY(y + (height - GetTextHeight()) / 2);
+        drawingPoint.SetY(y - GetTextHeight() / 2);
     }
     else if (vAlignment == VAlignmentBottom)
     {
-        drawingPoint.SetY(y + (height - GetTextHeight()));
+        drawingPoint.SetY(y - GetTextHeight());
     }
 
     double lineHeight = pFont->GetLineHeight();
-    for (vector<pair<string::const_iterator, string::const_iterator> >::const_iterator it = lines.begin(); it != lines.end(); it++)
+    for (string line : lines)
     {
-        // TODO: add to MLIFont functions working with iterators to avoid string copying here
-        string line(it->first, it->second);
         if (hAlignment == HAlignmentLeft)
         {
             drawingPoint.SetX(x);
         }
         else if (hAlignment == HAlignmentCenter)
         {
-            drawingPoint.SetX(x + (width - pFont->GetWidth(line)) / 2);
+            drawingPoint.SetX(x - pFont->GetWidth(line) / 2);
         }
         else if (hAlignment == HAlignmentRight)
         {
-            drawingPoint.SetX(x + (width - pFont->GetWidth(line)));
+            drawingPoint.SetX(x - pFont->GetWidth(line));
         }
         pFont->Draw(line, drawingPoint, textColor);
         drawingPoint.SetY(drawingPoint.GetY() + lineHeight);
     }
 }
 
+void TextWidget::SetTextId(const string &textId)
+{
+    this->textId = textId;
+    ReloadLocalizableText();
+}
+
 void TextWidget::SetText(const string &text)
 {
     this->text = text;
-    SplitText(false, 0);
+    ReloadLocalizableText();
 }
 
 void TextWidget::WrapText(double width)
 {
-    SplitText(true, width);
+    SplitText(width);
 }
 
 void TextWidget::FitSizeToContent()
 {
     width = GetTextWidth();
     height = GetTextHeight();
+}
+
+void TextWidget::ReloadLocalizableText()
+{
+    if (textId.length() > 0)
+    {
+        text = gpLocalizableContent->GetText(textId);
+    }
+
+    SplitText(wrapTextWidth);
 }
 
 double TextWidget::GetTextHeight() const
@@ -124,49 +152,24 @@ double TextWidget::GetTextWidth() const
     }
 
     double w = 0;
-    for (vector<pair<string::const_iterator, string::const_iterator> >::const_iterator it = lines.begin(); it != lines.end(); it++)
+    for (string line : lines)
     {
-        string line(it->first, it->second);
         w = max(w, pFont->GetWidth(line));
     }
 
     return w;
 }
 
-void TextWidget::SplitText(bool wrap, double maxWidth)
+void TextWidget::SplitText(double maxWidth)
 {
-    lines.clear();
+    wrapTextWidth = maxWidth;
 
-    const string &s = GetText();
-
-    string::const_iterator lineStart = s.begin();
-    string::const_iterator lineEnd = s.begin();
-    for (string::const_iterator it = s.begin(); it != s.end();)
+    if (maxWidth > 0)
     {
-        uint32_t c = utf8::next(it, s.end());
-
-        if (c == ' ' || c == '\n') // we got full word
-        {
-            string line(lineStart, it - 1);
-            if (wrap && pFont->GetWidth(line) > maxWidth)
-            {
-                lines.push_back(make_pair(lineStart, lineEnd));
-                lineStart = lineEnd;
-            }
-
-            lineEnd = it;
-            utf8::previous(lineEnd, s.begin()); // skip delimiter
-
-            if (c == '\n') // force newline
-            {
-                lines.push_back(make_pair(lineStart, lineEnd));
-                lineStart = it;
-            }
-        }
-
-        if (it == s.end()) // at least one line exist if we are inside this cycle
-        {
-            lines.push_back(make_pair(lineStart, it));
-        }
+        lines = split(ParseRawDialog(NULL, GetText(), RectangleWH(0, 0, maxWidth, std::numeric_limits<double>::infinity()), 0, pFont), '\n');
+    }
+    else
+    {
+        lines = split(GetText(), '\n');
     }
 }

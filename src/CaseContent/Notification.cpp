@@ -32,7 +32,7 @@
 #include "../mli_audio.h"
 #include "../MouseHelper.h"
 #include "../KeyboardHelper.h"
-#include "../Utils.h"
+#include "../SharedUtils.h"
 
 const int AnimationDuration = 200;
 const int PartnerAnimationDelay = 200;

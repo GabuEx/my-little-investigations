@@ -28,7 +28,7 @@
  */
 
 #include "PartnerInformation.h"
-#include "../Utils.h"
+#include "../SharedUtils.h"
 #include "../CaseInformation/Case.h"
 #include <math.h>
 
@@ -154,6 +154,6 @@ void PartnerInformation::Draw(int animationOffsetPartner, int yOffset)
         currentYOffset += pBodyFont->GetLineHeight() + AbilityDescriptionExtraLineHeight;
     }
 
-    pHeadingFont->Draw(pgLocalizableContent->GetText("PartnerInformation/PassiveAbilityText"), passiveAbilityHeadingPosition + offsetVector);
-    pHeadingFont->Draw(pgLocalizableContent->GetText("PartnerInformation/ActiveAbilityText"), activeAbilityHeadingPosition + offsetVector);
+    pHeadingFont->Draw(gpLocalizableContent->GetText("PartnerInformation/PassiveAbilityText"), passiveAbilityHeadingPosition + offsetVector);
+    pHeadingFont->Draw(gpLocalizableContent->GetText("PartnerInformation/ActiveAbilityText"), activeAbilityHeadingPosition + offsetVector);
 }

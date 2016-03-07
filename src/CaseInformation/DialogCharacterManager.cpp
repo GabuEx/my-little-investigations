@@ -378,7 +378,11 @@ DialogCharacter::DialogCharacter(XmlReader *pReader)
     pReader->StartElement("DialogCharacter");
     name = pReader->ReadTextElement("Name");
     defaultEmotionId = pReader->ReadTextElement("DefaultEmotionId");
-    std::transform(name.begin(), name.end(), name.begin(), ::toupper);
+
+    if (gpLocalizableContent->GetBooleanSetting("ShouldCapitalizeSpeakerNames"))
+    {
+        name = ToUpperUnicode(name);
+    }
 
     pReader->StartElement("CharacterEmotionBaseSpriteIds");
     pReader->StartList("Entry");

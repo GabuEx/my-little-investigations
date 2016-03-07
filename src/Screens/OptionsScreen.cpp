@@ -38,15 +38,13 @@
 const int FadeFromBlackDurationMs = 300;
 const int TransitionDurationMs = 300;
 
-const int GameplayButtonX = 562;
-const int GameplayButtonY = 182;
-const int SelectedGameplayButtonX = 290;
-const int SelectedGameplayButtonY = 182;
+const int UnselectedButtonX = 737;
+const HAlignment UnselectedButtonAlignment = HAlignmentRight;
+const int UnselectedButtonY = 182;
 
-const int AudioButtonX = 607;
-const int AudioButtonY = 182;
-const int SelectedAudioButtonX = 290;
-const int SelectedAudioButtonY = 182;
+const int SelectedButtonX = 290;
+const HAlignment SelectedButtonAlignment = HAlignmentLeft;
+const int SelectedButtonY = 182;
 
 OptionsScreen::OptionsScreen()
 {
@@ -161,34 +159,34 @@ void OptionsScreen::LoadResources()
     pBackgroundVideo->LoadFile();
 
     delete pGameplayButton;
-    pGameplayButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/GameplayText"), pTabFont);
+    pGameplayButton = new TextButton("OptionsScreen/GameplayText", pTabFont);
     pGameplayButton->SetIsEnabled(false);
     pGameplayButton->SetDisabledFont(pSelectedTabFont);
     pGameplayButton->SetDisabledTextColor(Color(1.0, 0.0, 0.0, 0.0));
-    pGameplayButton->SetX(SelectedGameplayButtonX);
-    pGameplayButton->SetY(SelectedGameplayButtonY);
+    pGameplayButton->SetX(SelectedButtonX, SelectedButtonAlignment);
+    pGameplayButton->SetY(SelectedButtonY);
     pGameplayButton->SetClickSoundEffect("ButtonClick3");
 
     delete pAudioButton;
-    pAudioButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/AudioText"), pTabFont);
+    pAudioButton = new TextButton("OptionsScreen/AudioText", pTabFont);
     pAudioButton->SetDisabledFont(pSelectedTabFont);
     pAudioButton->SetDisabledTextColor(Color(1.0, 0.0, 0.0, 0.0));
-    pAudioButton->SetX(AudioButtonX);
-    pAudioButton->SetY(AudioButtonY);
+    pAudioButton->SetX(UnselectedButtonX, UnselectedButtonAlignment);
+    pAudioButton->SetY(UnselectedButtonY);
     pAudioButton->SetClickSoundEffect("ButtonClick3");
 
     delete pDividerSprite;
     pDividerSprite = ResourceLoader::GetInstance()->LoadImage("image/OptionsScreen/Divider.png");
 
     delete pDefaultsButton;
-    pDefaultsButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/DefaultsText"), pTitleScreenFont);
+    pDefaultsButton = new TextButton("OptionsScreen/DefaultsText", pTitleScreenFont);
     pDefaultsButton->SetX(36);
     pDefaultsButton->SetY(488);
     pDefaultsButton->SetClickSoundEffect("ButtonClick2");
 
     delete pBackButton;
-    pBackButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/BackText"), pTitleScreenFont);
-    pBackButton->SetX(821);
+    pBackButton = new TextButton("OptionsScreen/BackText", pTitleScreenFont);
+    pBackButton->SetX(932, HAlignmentRight);
     pBackButton->SetY(488);
     pBackButton->SetClickSoundEffect("ButtonClick4");
 
@@ -197,28 +195,28 @@ void OptionsScreen::LoadResources()
     vector<TextButton *> buttons;
 
     delete pTutorialsButton;
-    pTutorialsButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/EnableTutorialsText"), pOptionFont, true /*checkable*/);
+    pTutorialsButton = new TextButton("OptionsScreen/EnableTutorialsText", pOptionFont, true /*checkable*/);
     pTutorialsButton->SetChecked(gEnableTutorials);
     buttons.push_back(pTutorialsButton);
 
     delete pEnableHintsButton;
-    pEnableHintsButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/EnableHintsText"), pOptionFont, true /*checkable*/);
+    pEnableHintsButton = new TextButton("OptionsScreen/EnableHintsText", pOptionFont, true /*checkable*/);
     pEnableHintsButton->SetChecked(gEnableHints);
     buttons.push_back(pEnableHintsButton);
 
     delete pFullscreenModeButton;
-    pFullscreenModeButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/FullscreenModeText"), pOptionFont, true /*checkable*/);
+    pFullscreenModeButton = new TextButton("OptionsScreen/FullscreenModeText", pOptionFont, true /*checkable*/);
     pFullscreenModeButton->SetChecked(gEnableFullscreen);
     buttons.push_back(pFullscreenModeButton);
 
     delete pEnableSkippingUnseenDialogButton;
-    pEnableSkippingUnseenDialogButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/EnableSkipText"), pOptionFont, true /*checkable*/);
+    pEnableSkippingUnseenDialogButton = new TextButton("OptionsScreen/EnableSkipText", pOptionFont, true /*checkable*/);
     pEnableSkippingUnseenDialogButton->SetChecked(gEnableSkippingUnseenDialog);
     buttons.push_back(pEnableSkippingUnseenDialogButton);
 
 #ifdef ENABLE_DEBUG_MODE
     delete pDebugModeButton;
-    pDebugModeButton = new TextButton(pgLocalizableContent->GetText("OptionsScreen/DebugModeText"), pOptionFont, true /*checkable*/);
+    pDebugModeButton = new TextButton("OptionsScreen/DebugModeText", pOptionFont, true /*checkable*/);
     buttons.push_back(pDebugModeButton);
 #endif
 
@@ -254,11 +252,11 @@ void OptionsScreen::LoadResources()
     // } gameplay page buttons
 
     delete pBackgroundMusicSlider;
-    pBackgroundMusicSlider = new Slider(pgLocalizableContent->GetText("OptionsScreen/BackgroundMusicText"), 317, 259);
+    pBackgroundMusicSlider = new Slider("OptionsScreen/BackgroundMusicText", 317, 259);
     delete pSoundEffectsSlider;
-    pSoundEffectsSlider = new Slider(pgLocalizableContent->GetText("OptionsScreen/SoundEffectsText"), 317, 344);
+    pSoundEffectsSlider = new Slider("OptionsScreen/SoundEffectsText", 317, 344);
     delete pVoiceSlider;
-    pVoiceSlider = new Slider(pgLocalizableContent->GetText("OptionsScreen/VoiceText"), 317, 433);
+    pVoiceSlider = new Slider("OptionsScreen/VoiceText", 317, 433);
 
     finishedLoadingAnimations = true;
 }
@@ -488,10 +486,10 @@ void OptionsScreen::OnButtonClicked(TextButton *pSender)
     if (pSender == pGameplayButton)
     {
         pGameplayButton->SetIsEnabled(false);
-        pGameplayButton->MoveTo(SelectedGameplayButtonX, SelectedGameplayButtonY, TransitionDurationMs);
+        pGameplayButton->MoveTo(SelectedButtonX, SelectedButtonAlignment, SelectedButtonY, TransitionDurationMs);
 
         pAudioButton->SetIsEnabled(true);
-        pAudioButton->Reappear(AudioButtonX, AudioButtonY, TransitionDurationMs);
+        pAudioButton->Reappear(UnselectedButtonX, UnselectedButtonAlignment, UnselectedButtonY, TransitionDurationMs);
 
         selectedPage = SelectedPageGameplay;
 
@@ -501,10 +499,10 @@ void OptionsScreen::OnButtonClicked(TextButton *pSender)
     else if (pSender == pAudioButton)
     {
         pGameplayButton->SetIsEnabled(true);
-        pGameplayButton->Reappear(GameplayButtonX, GameplayButtonY, TransitionDurationMs);
+        pGameplayButton->Reappear(UnselectedButtonX, UnselectedButtonAlignment, UnselectedButtonY, TransitionDurationMs);
 
         pAudioButton->SetIsEnabled(false);
-        pAudioButton->MoveTo(SelectedAudioButtonX, SelectedGameplayButtonY, TransitionDurationMs);
+        pAudioButton->MoveTo(SelectedButtonX, SelectedButtonAlignment, SelectedButtonY, TransitionDurationMs);
 
         selectedPage = SelectedPageAudio;
 

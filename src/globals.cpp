@@ -74,6 +74,7 @@ bool gEnableDebugMode = false;
 double gBackgroundMusicVolume = 0.2;
 double gSoundEffectsVolume = 0.67;
 double gVoiceVolume = 0.5;
+string gLocalizedResourcesFileName = "common_en-US.dat";
 
 bool gEnableTutorialsDefault = gEnableTutorials;
 bool gEnableHintsDefault = gEnableHints;
@@ -104,7 +105,7 @@ string gVersionsXmlFilePath = "";
 #endif
 
 #ifdef GAME_EXECUTABLE
-LocalizableContent *pgLocalizableContent = NULL;
+LocalizableContent *gpLocalizableContent = NULL;
 #endif
 
 void EnsureUIThread()

@@ -76,6 +76,7 @@ protected:
 #define TITLE_SCREEN_ID "TitleScreen"
 #define GAME_SCREEN_ID "GameScreen"
 #define OPTIONS_SCREEN_ID "OptionsScreen"
+#define LANGUAGE_SCREEN_ID "LanguageScreen"
 #define CASE_SELECTION_SCREEN_ID "CaseSelectionScreen"
 #define LOAD_SCREEN_ID "LoadScreen"
 #define SAVE_SCREEN_ID "SaveScreen"

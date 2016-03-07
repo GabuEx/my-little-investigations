@@ -182,12 +182,14 @@ int main(int argc, char * argv[])
 #endif
 
 #ifdef GAME_EXECUTABLE
+    LoadConfigurations();
+
     // Initialize the resource loader.  If this fails, the common resource data file is missing,
     // which is a very bad thing.  Quit if this happens to be the case.
-    if (!ResourceLoader::GetInstance()->Init(GetCommonResourcesFilePath()))
+    if (!ResourceLoader::GetInstance()->Init(GetCommonResourcesFilePath(), GetLocalizedCommonResourcesDirectoryPath() + gLocalizedResourcesFileName))
     {
         char msg[256];
-        sprintf(msg, "Couldn't find common resources data file at %s!", GetCommonResourcesFilePath().c_str());
+        sprintf(msg, "Couldn't find common resources data files at %s and %s!", GetCommonResourcesFilePath().c_str(), (GetLocalizedCommonResourcesDirectoryPath() + gLocalizedResourcesFileName).c_str());
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Couldn't start", msg, NULL);
         return 1;
     }
@@ -225,7 +227,7 @@ int main(int argc, char * argv[])
 
     {
         XmlReader localizableContentReader("XML/LocalizableContent.xml");
-        pgLocalizableContent = new LocalizableContent(&localizableContentReader);
+        gpLocalizableContent = new LocalizableContent(&localizableContentReader);
     }
 #endif
 
@@ -501,11 +503,6 @@ int main(int argc, char * argv[])
     }
 
 #ifdef GAME_EXECUTABLE
-    // Delete this before Game::Finish() is called, since otherwise we'll AV
-    // if we try to delete this object's semaphore after SDL is cleaned up.
-    delete pgLocalizableContent;
-    pgLocalizableContent = NULL;
-
     // The game's done now, so finish it up.
     CommonCaseResources::Close();
 #endif
@@ -514,6 +511,11 @@ int main(int argc, char * argv[])
 
 #ifdef GAME_EXECUTABLE
     ResourceLoader::Close();
+
+    // Delete this at the very last possible moment, because many things
+    // interact with it in their destructors.
+    delete gpLocalizableContent;
+    gpLocalizableContent = NULL;
 #endif
 
 #ifdef UPDATER

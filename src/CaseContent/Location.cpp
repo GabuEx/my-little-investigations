@@ -234,9 +234,9 @@ Location::Location(XmlReader *pReader)
     pPathfindingValuesSemaphore = SDL_CreateSemaphore(1);
     lastPathfindingThreadId = 0;
 
-    pEvidenceTab = new Tab(gScreenWidth - 3 * (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/EvidenceText"), false /* useCancelClickSoundEffect */, TabRowBottom, true /* canPulse */);
+    pEvidenceTab = new Tab(gScreenWidth - 3 * (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/EvidenceText"), false /* useCancelClickSoundEffect */, TabRowBottom, true /* canPulse */);
     pEvidenceSelector = new EvidenceSelector(true /* isCancelable */, true /* isForCombination */);
-    pPartnerTab = new Tab(gScreenWidth - 2 * (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/PartnerText"), false /* useCancelClickSoundEffect */, TabRowBottom);
+    pPartnerTab = new Tab(gScreenWidth - 2 * (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/PartnerText"), false /* useCancelClickSoundEffect */, TabRowBottom);
     pInEasePartner = new LinearEase(gScreenWidth, 0, AnimationDuration);
     pOutEasePartner = new LinearEase(0, -gScreenWidth, AnimationDuration);
     pPartnerAbilityTab = new Tab((gScreenWidth - TabWidth) / 2, true /* isClickable */, "", false /* useCancelClickSoundEffect */, TabRowTop, true /* canPulse */);
@@ -250,15 +250,15 @@ Location::Location(XmlReader *pReader)
     overlayId = "";
     wasInOverlay = false;
 
-    pOkTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/OKText"));
-    pSaveTab = new Tab(gScreenWidth - 5 * (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/SaveText"), false /* useCancelClickSoundEffect */, TabRowBottom);
-    pLoadTab = new Tab(gScreenWidth - 4 * (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/LoadText"), false /* useCancelClickSoundEffect */, TabRowBottom);
-    pOptionsTab = new Tab(7, true /* isClickable */, pgLocalizableContent->GetText("Location/OptionsText"), false /* useCancelClickSoundEffect */, TabRowTop);
-    pQuitTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/QuitText"), false /* useCancelClickSoundEffect */, TabRowTop);
+    pOkTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/OKText"));
+    pSaveTab = new Tab(gScreenWidth - 5 * (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/SaveText"), false /* useCancelClickSoundEffect */, TabRowBottom);
+    pLoadTab = new Tab(gScreenWidth - 4 * (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/LoadText"), false /* useCancelClickSoundEffect */, TabRowBottom);
+    pOptionsTab = new Tab(7, true /* isClickable */, gpLocalizableContent->GetText("Location/OptionsText"), false /* useCancelClickSoundEffect */, TabRowTop);
+    pQuitTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/QuitText"), false /* useCancelClickSoundEffect */, TabRowTop);
 
-    pQuitConfirmOverlay = new PromptOverlay(pgLocalizableContent->GetText("Location/QuitPromptText"), false /* allowsTextEntry */);
-    pQuitConfirmOverlay->AddButton(pgLocalizableContent->GetText("Location/YesText"));
-    pQuitConfirmOverlay->AddButton(pgLocalizableContent->GetText("Location/NoText"));
+    pQuitConfirmOverlay = new PromptOverlay(gpLocalizableContent->GetText("Location/QuitPromptText"), false /* allowsTextEntry */);
+    pQuitConfirmOverlay->AddButton(gpLocalizableContent->GetText("Location/YesText"));
+    pQuitConfirmOverlay->AddButton(gpLocalizableContent->GetText("Location/NoText"));
     pQuitConfirmOverlay->FinalizeButtons();
 
     shouldAutosave = false;
@@ -455,9 +455,9 @@ Location::Location(const Location &other)
     pPathfindingValuesSemaphore = SDL_CreateSemaphore(1);
     lastPathfindingThreadId = 0;
 
-    pEvidenceTab = new Tab(gScreenWidth - 3 * (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/EvidenceText"), false /* useCancelClickSoundEffect */, TabRowBottom, true /* canPulse */);
+    pEvidenceTab = new Tab(gScreenWidth - 3 * (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/EvidenceText"), false /* useCancelClickSoundEffect */, TabRowBottom, true /* canPulse */);
     pEvidenceSelector = new EvidenceSelector(true /* isCancelable */, true /* isForCombination */);
-    pPartnerTab = new Tab(gScreenWidth - 2 * (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/PartnerText"), false /* useCancelClickSoundEffect */, TabRowBottom);
+    pPartnerTab = new Tab(gScreenWidth - 2 * (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/PartnerText"), false /* useCancelClickSoundEffect */, TabRowBottom);
     pInEasePartner = new LinearEase(gScreenWidth, 0, AnimationDuration);
     pOutEasePartner = new LinearEase(0, -gScreenWidth, AnimationDuration);
     pPartnerAbilityTab = new Tab((gScreenWidth - TabWidth) / 2, true /* isClickable */, "", false /* useCancelClickSoundEffect */, TabRowTop, true /* canPulse */);
@@ -471,15 +471,15 @@ Location::Location(const Location &other)
     overlayId = "";
     wasInOverlay = false;
 
-    pOkTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/OKText"));
-    pSaveTab = new Tab(gScreenWidth - 5 * (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/SaveText"), false /* useCancelClickSoundEffect */, TabRowBottom);
-    pLoadTab = new Tab(gScreenWidth - 4 * (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/LoadText"), false /* useCancelClickSoundEffect */, TabRowBottom);
-    pOptionsTab = new Tab(7, true /* isClickable */, pgLocalizableContent->GetText("Location/OptionsText"), false /* useCancelClickSoundEffect */, TabRowTop);
-    pQuitTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, pgLocalizableContent->GetText("Location/QuitText"), false /* useCancelClickSoundEffect */, TabRowTop);
+    pOkTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/OKText"));
+    pSaveTab = new Tab(gScreenWidth - 5 * (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/SaveText"), false /* useCancelClickSoundEffect */, TabRowBottom);
+    pLoadTab = new Tab(gScreenWidth - 4 * (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/LoadText"), false /* useCancelClickSoundEffect */, TabRowBottom);
+    pOptionsTab = new Tab(7, true /* isClickable */, gpLocalizableContent->GetText("Location/OptionsText"), false /* useCancelClickSoundEffect */, TabRowTop);
+    pQuitTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/QuitText"), false /* useCancelClickSoundEffect */, TabRowTop);
 
-    pQuitConfirmOverlay = new PromptOverlay(pgLocalizableContent->GetText("Location/QuitPromptText"), false /* allowsTextEntry */);
-    pQuitConfirmOverlay->AddButton(pgLocalizableContent->GetText("Location/YesText"));
-    pQuitConfirmOverlay->AddButton(pgLocalizableContent->GetText("Location/NoText"));
+    pQuitConfirmOverlay = new PromptOverlay(gpLocalizableContent->GetText("Location/QuitPromptText"), false /* allowsTextEntry */);
+    pQuitConfirmOverlay->AddButton(gpLocalizableContent->GetText("Location/YesText"));
+    pQuitConfirmOverlay->AddButton(gpLocalizableContent->GetText("Location/NoText"));
 
     backgroundSpriteId = other.backgroundSpriteId;
     bgm = other.bgm;
@@ -1703,7 +1703,7 @@ void Location::Update(int delta)
                 MouseHelper::SetCursorType(cursorType);
 
                 char mouseOverText[256];
-                sprintf(mouseOverText, pgLocalizableContent->GetText("Location/LocationTransitionFormatText").c_str(), pTransition->GetTargetLocationName().c_str());
+                sprintf(mouseOverText, gpLocalizableContent->GetText("Location/LocationTransitionFormatText").c_str(), pTransition->GetTargetLocationName().c_str());
 
                 MouseHelper::SetMouseOverText(string(mouseOverText));
                 elementWithMouseOverFound = true;
@@ -3099,7 +3099,7 @@ void Location::BeginCrowdInteraction(Crowd *pCrowd)
 
 void Location::OnPromptOverlayValueReturned(PromptOverlay *pSender, const string &value)
 {
-    if (pSender == pQuitConfirmOverlay && value == pgLocalizableContent->GetText("Location/YesText"))
+    if (pSender == pQuitConfirmOverlay && value == gpLocalizableContent->GetText("Location/YesText"))
     {
         Case::GetInstance()->Autosave();
         SaveDialogsSeenListForCase(Case::GetInstance()->GetUuid());

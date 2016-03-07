@@ -39,7 +39,7 @@ ZoomedView::ZoomedView(XmlReader *pReader)
     pCurrentInteractiveForegroundElement = NULL;
     isFinished = false;
 
-    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, "EXIT", true /* useCancelClickSoundEffect */, TabRowBottom);
+    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, gpLocalizableContent->GetText("ZoomedView/ExitText"), true /* useCancelClickSoundEffect */, TabRowBottom);
 
     pReader->StartElement("ZoomedView");
     id = pReader->ReadTextElement("Id");
@@ -66,7 +66,7 @@ ZoomedView::ZoomedView(const ZoomedView &other)
     pCurrentInteractiveForegroundElement = NULL;
     isFinished = false;
 
-    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, "EXIT", true /* useCancelClickSoundEffect */, TabRowBottom);
+    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, gpLocalizableContent->GetText("ZoomedView/ExitText"), true /* useCancelClickSoundEffect */, TabRowBottom);
 }
 
 ZoomedView::~ZoomedView()

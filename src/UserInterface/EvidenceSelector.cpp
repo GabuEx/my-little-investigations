@@ -738,12 +738,12 @@ EvidenceSelector::EvidenceSelectorItem * EvidenceSelector::GetItemSetAsideForCom
 
 void EvidenceSelector::Init(bool isCancelable, bool isForCombination)
 {
-    this->pPresentTab = new Tab(gScreenWidth - TabWidth - (isCancelable ? TabWidth + 7 : 0), true /* isClickable */, pgLocalizableContent->GetText("EvidenceSelector/PresentText"));
-    this->pCombineWithTab = new Tab(gScreenWidth - TabWidth - (isCancelable ? TabWidth + 7 : 0), true /* isClickable */, pgLocalizableContent->GetText("EvidenceSelector/CombineWithText"));
-    this->pCombineTab = new Tab(gScreenWidth - TabWidth - (isCancelable ? TabWidth + 7 : 0), true /* isClickable */, pgLocalizableContent->GetText("EvidenceSelector/CombineText"));
-    this->pCancelTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, pgLocalizableContent->GetText("EvidenceSelector/CancelText"), true /* isCancel */);
-    this->pProfilesTab = new Tab((gScreenWidth - TabWidth) / 2, true /* isClickable */, pgLocalizableContent->GetText("EvidenceSelector/ToProfilesText"), false /* useCancelClickSoundEffect */, TabRowTop);
-    this->pEvidenceTab = new Tab((gScreenWidth - TabWidth) / 2, true /* isClickable */, pgLocalizableContent->GetText("EvidenceSelector/ToEvidenceText"), false /* useCancelClickSoundEffect */, TabRowTop);
+    this->pPresentTab = new Tab(gScreenWidth - TabWidth - (isCancelable ? TabWidth + 7 : 0), true /* isClickable */, gpLocalizableContent->GetText("EvidenceSelector/PresentText"));
+    this->pCombineWithTab = new Tab(gScreenWidth - TabWidth - (isCancelable ? TabWidth + 7 : 0), true /* isClickable */, gpLocalizableContent->GetText("EvidenceSelector/CombineWithText"));
+    this->pCombineTab = new Tab(gScreenWidth - TabWidth - (isCancelable ? TabWidth + 7 : 0), true /* isClickable */, gpLocalizableContent->GetText("EvidenceSelector/CombineText"));
+    this->pCancelTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, gpLocalizableContent->GetText("EvidenceSelector/CancelText"), true /* isCancel */);
+    this->pProfilesTab = new Tab((gScreenWidth - TabWidth) / 2, true /* isClickable */, gpLocalizableContent->GetText("EvidenceSelector/ToProfilesText"), false /* useCancelClickSoundEffect */, TabRowTop);
+    this->pEvidenceTab = new Tab((gScreenWidth - TabWidth) / 2, true /* isClickable */, gpLocalizableContent->GetText("EvidenceSelector/ToEvidenceText"), false /* useCancelClickSoundEffect */, TabRowTop);
 
     this->pPresentTab->SetIsEnabled(false);
     this->pCombineWithTab->SetIsEnabled(false);

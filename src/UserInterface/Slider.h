@@ -32,13 +32,15 @@
 
 #include "../MLIFont.h"
 #include "../Image.h"
+#include "../LocalizableContent.h"
 
-class Slider
+class Slider : public ILocalizableTextOwner
 {
 public:
     static void Initialize(MLIFont *pHeaderFont, Image *pTrackSprite, Image *pThumbSprite);
 
-    Slider(const string &headerText, int xPosition, int yPosition);
+    Slider(const string &headerTextId, int xPosition, int yPosition);
+    virtual ~Slider();
 
     int GetXPosition() const { return this->xPosition; }
     void SetXPosition(int xPosition) { this->xPosition = xPosition; }
@@ -57,11 +59,14 @@ public:
     void Draw(double opacity);
     void Reset();
 
+    void ReloadLocalizableText() override;
+
 private:
     static MLIFont *pHeaderFont;
     static Image *pTrackSprite;
     static Image *pThumbSprite;
 
+    string headerTextId;
     string headerText;
     int xPosition;
     int yPosition;

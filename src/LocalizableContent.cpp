@@ -29,6 +29,19 @@
 
 #include "LocalizableContent.h"
 
+LocalizableContent::Setting::Setting(string type, string value)
+{
+    if (type == "Boolean")
+    {
+        ValueType = Type::Boolean;
+        BooleanValue = (value == "True");
+    }
+    else
+    {
+        throw new MLIException(string("Unknown setting type: ") + type);
+    }
+}
+
 LocalizableContent::LocalizableContent()
 {
     pAccessSemaphore = SDL_CreateSemaphore(1);
@@ -37,6 +50,73 @@ LocalizableContent::LocalizableContent()
 LocalizableContent::LocalizableContent(XmlReader *pReader)
 {
     pAccessSemaphore = SDL_CreateSemaphore(1);
+    LoadNewLanguage(pReader);
+}
+
+LocalizableContent::~LocalizableContent()
+{
+    SDL_DestroySemaphore(pAccessSemaphore);
+    pAccessSemaphore = NULL;
+}
+
+LocalizableContent::FontInfo LocalizableContent::GetFontInfo(const string &fontId)
+{
+    LocalizableContent::FontInfo returnValue;
+
+    SDL_SemWait(pAccessSemaphore);
+    if (fontIdToFontInfoMap.count(fontId) == 0)
+    {
+        throw MLIException(string("Font ID not found: ") + fontId);
+    }
+
+    returnValue = fontIdToFontInfoMap[fontId];
+    SDL_SemPost(pAccessSemaphore);
+
+    return returnValue;
+}
+
+string LocalizableContent::GetText(const string &textId)
+{
+    string returnValue;
+
+    SDL_SemWait(pAccessSemaphore);
+    if (textIdToTextMap.count(textId) == 0)
+    {
+        throw MLIException(string("Text ID not found: ") + textId);
+    }
+
+    returnValue = textIdToTextMap[textId];
+    SDL_SemPost(pAccessSemaphore);
+
+    return returnValue;
+}
+
+bool LocalizableContent::GetBooleanSetting(const string &settingId)
+{
+    bool returnValue;
+
+    SDL_SemWait(pAccessSemaphore);
+    if (settingIdToSettingMap.count(settingId) == 0)
+    {
+        throw MLIException(string("Setting ID not found: ") + settingId);
+    }
+
+    if (settingIdToSettingMap[settingId].ValueType != LocalizableContent::Setting::Type::Boolean)
+    {
+        throw MLIException(string("Setting ID ") + settingId + string(" is not a Boolean value."));
+    }
+
+    returnValue = settingIdToSettingMap[settingId].BooleanValue;
+    SDL_SemPost(pAccessSemaphore);
+
+    return returnValue;
+}
+
+void LocalizableContent::LoadNewLanguage(XmlReader *pReader)
+{
+    fontIdToFontInfoMap.clear();
+    textIdToTextMap.clear();
+    settingIdToSettingMap.clear();
 
     pReader->StartElement("LocalizableContent");
 
@@ -49,12 +129,12 @@ LocalizableContent::LocalizableContent(XmlReader *pReader)
         string filename = pReader->ReadTextAttribute("Filename");
         int size = pReader->ReadIntAttribute("Size");
 
-        if (fontIdToFontMap.count(id) > 0)
+        if (fontIdToFontInfoMap.count(id) > 0)
         {
             throw MLIException(string("Duplicate font ID found: ") + id);
         }
 
-        fontIdToFontMap[id] = LocalizableContent::Font(filename, size);
+        fontIdToFontInfoMap[id] = LocalizableContent::FontInfo(filename, size);
     }
 
     pReader->EndElement();
@@ -77,43 +157,34 @@ LocalizableContent::LocalizableContent(XmlReader *pReader)
 
     pReader->EndElement();
 
+    pReader->StartElement("Settings");
+    pReader->StartList("Setting");
+
+    while (pReader->MoveToNextListItem())
+    {
+        string id = pReader->ReadTextAttribute("Id");
+        string type = pReader->ReadTextAttribute("Type");
+        string value = pReader->ReadTextAttribute("Value");
+
+        if (settingIdToSettingMap.count(id) > 0)
+        {
+            throw MLIException(string("Duplicate setting ID found: ") + id);
+        }
+
+        settingIdToSettingMap[id] = LocalizableContent::Setting(type, value);
+    }
+
     pReader->EndElement();
-}
 
-LocalizableContent::~LocalizableContent()
-{
-    SDL_DestroySemaphore(pAccessSemaphore);
-    pAccessSemaphore = NULL;
-}
+    pReader->EndElement();
 
-LocalizableContent::Font LocalizableContent::GetFont(const string &fontId)
-{
-    LocalizableContent::Font returnValue;
-
-    SDL_SemWait(pAccessSemaphore);
-    if (fontIdToFontMap.count(fontId) == 0)
+    for (ILocalizableFont *pLocalizableFont : localizableFonts)
     {
-        throw MLIException(string("Font ID not found: ") + fontId);
+        pLocalizableFont->ReloadFontInfo();
     }
 
-    returnValue = fontIdToFontMap[fontId];
-    SDL_SemPost(pAccessSemaphore);
-
-    return returnValue;
-}
-
-string LocalizableContent::GetText(const string &textId)
-{
-    string returnValue;
-
-    SDL_SemWait(pAccessSemaphore);
-    if (textIdToTextMap.count(textId) == 0)
+    for (ILocalizableTextOwner *pLocalizableTextOwner : localizableTextOwners)
     {
-        throw MLIException(string("Text ID not found: ") + textId);
+        pLocalizableTextOwner->ReloadLocalizableText();
     }
-
-    returnValue = textIdToTextMap[textId];
-    SDL_SemPost(pAccessSemaphore);
-
-    return returnValue;
 }

@@ -142,33 +142,33 @@ void Case::LoadFromXml(const string &caseFilePath)
         XmlReader reader("case.xml");
         reader.StartElement("Case");
 
-        pInstance->SetLoadStage(pgLocalizableContent->GetText("Case/AnimationsLoadStageText"));
+        pInstance->SetLoadStage(gpLocalizableContent->GetText("Case/AnimationsLoadStageText"));
         pInstance->pAnimationManager->LoadFromXml(&reader);
 
-        pInstance->SetLoadStage(pgLocalizableContent->GetText("Case/AudioLoadStageText"));
+        pInstance->SetLoadStage(gpLocalizableContent->GetText("Case/AudioLoadStageText"));
         pInstance->pAudioManager->LoadFromXml(&reader);
 
-        pInstance->SetLoadStage(pgLocalizableContent->GetText("Case/CaseInformationLoadStageText"));
+        pInstance->SetLoadStage(gpLocalizableContent->GetText("Case/CaseInformationLoadStageText"));
         pInstance->pContentManager->LoadFromXml(&reader);
 
-        pInstance->SetLoadStage(pgLocalizableContent->GetText("Case/DialogResourcesLoadStageText"));
+        pInstance->SetLoadStage(gpLocalizableContent->GetText("Case/DialogResourcesLoadStageText"));
         pInstance->pDialogCharacterManager->LoadFromXml(&reader);
         pInstance->pDialogCutsceneManager->LoadFromXml(&reader);
 
-        pInstance->SetLoadStage(pgLocalizableContent->GetText("Case/EvidenceLoadStageText"));
+        pInstance->SetLoadStage(gpLocalizableContent->GetText("Case/EvidenceLoadStageText"));
         pInstance->pEvidenceManager->LoadFromXml(&reader);
 
-        pInstance->SetLoadStage(pgLocalizableContent->GetText("Case/FieldResourcesLoadStageText"));
+        pInstance->SetLoadStage(gpLocalizableContent->GetText("Case/FieldResourcesLoadStageText"));
         pInstance->pFieldCharacterManager->LoadFromXml(&reader);
         pInstance->pFieldCutsceneManager->LoadFromXml(&reader);
 
-        pInstance->SetLoadStage(pgLocalizableContent->GetText("Case/FlagsLoadStageText"));
+        pInstance->SetLoadStage(gpLocalizableContent->GetText("Case/FlagsLoadStageText"));
         pInstance->pFlagManager->LoadFromXml(&reader);
 
-        pInstance->SetLoadStage(pgLocalizableContent->GetText("Case/PartnerInformationLoadStageText"));
+        pInstance->SetLoadStage(gpLocalizableContent->GetText("Case/PartnerInformationLoadStageText"));
         pInstance->pPartnerManager->LoadFromXml(&reader);
 
-        pInstance->SetLoadStage(pgLocalizableContent->GetText("Case/SpriteSheetsLoadStageText"));
+        pInstance->SetLoadStage(gpLocalizableContent->GetText("Case/SpriteSheetsLoadStageText"));
         pInstance->pSpriteManager->LoadFromXml(&reader);
 
         reader.StartElement("ParentLocationListsBySpriteSheetId");

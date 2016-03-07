@@ -91,6 +91,7 @@ extern bool gEnableDebugMode;
 extern double gBackgroundMusicVolume;
 extern double gSoundEffectsVolume;
 extern double gVoiceVolume;
+extern string gLocalizedResourcesFileName;
 
 extern bool gEnableTutorialsDefault;
 extern bool gEnableHintsDefault;
@@ -121,7 +122,7 @@ extern string gVersionsXmlFilePath;
 #endif
 
 #ifdef GAME_EXECUTABLE
-extern LocalizableContent *pgLocalizableContent;
+extern LocalizableContent *gpLocalizableContent;
 #endif
 
 void EnsureUIThread();

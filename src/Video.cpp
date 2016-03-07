@@ -194,7 +194,7 @@ void Video::Draw(const Vector2 &position, bool flipHorizontally, const Color &co
         return;
     }
 
-    Image::Draw(pTexture, position, clipRect, flipHorizontally, false /* flipVertically */, 1.0 /* scale */, color);
+    Image::Draw(pTexture, position, clipRect, flipHorizontally, false /* flipVertically */, 1.0 /* scale */, 1.0 /* scale */, color);
 }
 
 void Video::Reset()

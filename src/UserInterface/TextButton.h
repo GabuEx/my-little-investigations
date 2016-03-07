@@ -35,19 +35,20 @@
 
 #include "../MLIFont.h"
 #include "../EasingFunctions.h"
+#include "../LocalizableContent.h"
 #include "../UserInterface/TextWidget.h"
 
 using namespace std;
 
-class TextButton
+class TextButton : public ILocalizableTextOwner
 {
 public:
     static void Initialize(Image *pCheckMarkImage, Image *pBoxImage);
 
-    TextButton(const string &text, MLIFont *pFont, bool checkable = false);
+    TextButton(const string &textId, MLIFont *pFont, bool checkable = false);
     TextButton(const TextButton &rhs);
 
-    ~TextButton();
+    virtual ~TextButton();
 
     void Update(int delta);
     void Draw() const;
@@ -58,7 +59,7 @@ public:
     void SetCheckable(bool checkable) { this->checkable = checkable; }
 
     const string & GetText() const { return this->textWidget.GetText(); }
-    void SetText(const string &text) { this->textWidget.SetText(text); }
+    void SetTextId(const string &textId) { this->textWidget.SetTextId(textId); }
 
     double GetWidth() const { return this->width; }
     void SetWidth(double width) { this->width = width; }
@@ -67,10 +68,12 @@ public:
     void SetHeight(double height) { this->height = height; }
 
     double GetX() const { return this->x; }
-    void SetX(double x) { this->x = x; }
+    double GetLeft() const;
+    void SetX(double x, HAlignment alignment = HAlignmentLeft) { this->x = x; this->hAlignment = alignment; }
 
     double GetY() const { return this->y; }
-    void SetY(double y) { this->y = y; }
+    double GetTop() const { return this->y - GetHeight() / 2; }
+    void SetY(double y) { this->y = y + GetHeight() / 2; }
 
     MLIFont * GetFont() const { return this->pFont; }
     void SetFont(MLIFont *pFont) { this->pFont = pFont; }
@@ -96,10 +99,12 @@ public:
     const string & GetClickSoundEffect() { return this->clickSoundEffect; }
     void SetClickSoundEffect(const string &clickSoundEffect) { this->clickSoundEffect = clickSoundEffect; }
 
-    void MoveTo(double newX, double newY, int timeMS);
-    void Reappear(double newX, double newY, int timeMS);
+    void MoveTo(double newX, HAlignment hAlignment, double newY, int timeMS);
+    void Reappear(double newX, HAlignment hAlignment, double newY, int timeMS);
 
     void SetMaxWidth(double maxWidth);
+
+    void ReloadLocalizableText() override;
 
 private:
     bool IsAnimationPlaying() const;
@@ -113,6 +118,7 @@ private:
     void UpdateSize();
 
     double x;
+    HAlignment hAlignment;
     double y;
     double width;
     double height;
@@ -141,6 +147,7 @@ private:
     string clickSoundEffect;
 
     EasingFunction *pXEase;
+    HAlignment transitionHAlignment;
     EasingFunction *pYEase;
     EasingFunction *pFadeInEase;
     EasingFunction *pFadeOutEase;

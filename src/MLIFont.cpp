@@ -31,9 +31,11 @@
 #include "globals.h"
 #include "ResourceLoader.h"
 #include "AutoSemaphore.h"
+#include "Utils.h"
 #include "utf8cpp/utf8.h"
 
-#include <iostream>
+#include <vector>
+#include <algorithm>
 
 const unsigned int CacheSize = 256;
 
@@ -61,20 +63,25 @@ MLIFont::MLIFont(const string &fontId, int strokeWidth, bool invertedColors)
 {
     EnsureUIThread();
 
-    ttfFilePath = pgLocalizableContent->GetFont(fontId).Filename;
-    fontSize = pgLocalizableContent->GetFont(fontId).Size;
+    this->fontId = fontId;
 
     pTtfFont = NULL;
     pTtfFontMem = NULL;
     pAccessSemaphore = SDL_CreateSemaphore(1);
 
     Reinit();
+
+    gpLocalizableContent->AddLocalizableFont(this);
 }
 #endif
 
 MLIFont::~MLIFont()
 {
     EnsureUIThread();
+
+#ifdef GAME_EXECUTABLE
+    gpLocalizableContent->RemoveLocalizableFont(this);
+#endif
 
     if (pTtfFont != NULL)
     {
@@ -96,23 +103,41 @@ void MLIFont::Reinit()
     // clean up first
 
     if (pTtfFont != NULL)
+    {
         TTF_CloseFont(pTtfFont);
+    }
+
     pTtfFont = NULL;
     free(pTtfFontMem);
     pTtfFontMem = NULL;
     cache.clear();
     kernedWidthCache.clear();
 
+#ifdef GAME_EXECUTABLE
+    if (fontId.length() > 0)
+    {
+        ttfFilePath = gpLocalizableContent->GetFontInfo(fontId).Filename;
+        fontSize = gpLocalizableContent->GetFontInfo(fontId).PointSize;
+    }
+#endif
+
     // setup scale
     scale = (GetIsFullscreen() ? GetScreenScale() : 1.0);
 
     // setup font
-    #ifdef GAME_EXECUTABLE
-        pTtfFont = ResourceLoader::GetInstance()->LoadFont(ttfFilePath, fontSize * scale, &pTtfFontMem);
-    #else
-        pTtfFont = TTF_OpenFont(ttfFilePath.c_str(), fontSize * scale + 0.5);
-    #endif
+#ifdef GAME_EXECUTABLE
+    pTtfFont = ResourceLoader::GetInstance()->LoadFont(ttfFilePath, fontSize * scale, &pTtfFontMem);
+#else
+    pTtfFont = TTF_OpenFont(ttfFilePath.c_str(), fontSize * scale + 0.5);
+#endif
 }
+
+#ifdef GAME_EXECUTABLE
+void MLIFont::ReloadFontInfo()
+{
+    Reinit();
+}
+#endif
 
 Image *MLIFont::RenderGlyph(uint32_t c)
 {
@@ -287,11 +312,7 @@ void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, doubl
     for (string::const_iterator it = s.begin(); it < s.end();)
     {
         uint32_t c = 0;
-        try
-        {
-            c = utf8::next(it, s.end());
-        }
-        catch (utf8::not_enough_room ex)
+        if (!GetNextFromStringIterator(it, s.end(), &c))
         {
             break;
         }
@@ -336,7 +357,7 @@ void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, doubl
             {
                 characterClipRect.SetHeight(characterClipRect.GetHeight() * GetFontScale());
                 characterClipRect.SetWidth(characterClipRect.GetWidth() * GetFontScale());
-                pGlyphImage->Draw(Vector2(x, y), characterClipRect, false, false, scale, color);
+                pGlyphImage->Draw(Vector2(x, y), characterClipRect, false, false, scale, scale, color);
             }
         }
 
@@ -344,13 +365,10 @@ void MLIFont::DrawInternal(const string &s, Vector2 position, Color color, doubl
 
         if (it < s.end())
         {
-            try
+            uint32_t c2 = 0;
+            if (PeekNextFromStringIterator(it, s.end(), &c2))
             {
-                uint32_t c2 = utf8::peek_next(it, s.end());
                 deltaX = GetKernedWidth(c, c2);
-            }
-            catch (utf8::not_enough_room ex)
-            {
             }
         }
 
@@ -367,11 +385,7 @@ double MLIFont::GetWidth(const string &s)
     for (string::const_iterator it = s.begin(); it < s.end();)
     {
         uint32_t c = 0;
-        try
-        {
-            c = utf8::next(it, s.end());
-        }
-        catch (utf8::not_enough_room ex)
+        if (!GetNextFromStringIterator(it, s.end(), &c))
         {
             break;
         }
@@ -386,13 +400,10 @@ double MLIFont::GetWidth(const string &s)
 
         if (it < s.end())
         {
-            try
+            uint32_t c2 = 0;
+            if (PeekNextFromStringIterator(it, s.end(), &c2))
             {
-                uint32_t c2 = utf8::peek_next(it, s.end());
                 deltaX = GetKernedWidth(c, c2);
-            }
-            catch (utf8::not_enough_room ex)
-            {
             }
         }
 

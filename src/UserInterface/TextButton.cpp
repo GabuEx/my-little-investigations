@@ -59,13 +59,14 @@ void TextButton::Initialize(Image *pCheckMarkImage, Image *pBoxImage)
     TextButton::pBoxImage = pBoxImage;
 }
 
-TextButton::TextButton(const string &text, MLIFont *pFont, bool checkable) :
+TextButton::TextButton(const string &textId, MLIFont *pFont, bool checkable) :
     x(0),
+    hAlignment(HAlignmentLeft),
     y(0),
     width(0),
     height(0),
     opacity(1.0),
-    textWidget(text, pFont, DefaultTextColor, HAlignmentLeft, VAlignmentCenter),
+    textWidget(textId, pFont, DefaultTextColor, HAlignmentLeft, VAlignmentCenter),
     pFont(pFont),
     pDisabledFont(NULL),
     textColor(DefaultTextColor),
@@ -82,11 +83,13 @@ TextButton::TextButton(const string &text, MLIFont *pFont, bool checkable) :
     pFadeOutEase(NULL),
     pOldButton(NULL)
 {
-    UpdateSize();
+    ReloadLocalizableText();
+    gpLocalizableContent->AddLocalizableTextOwner(this);
 }
 
 TextButton::TextButton(const TextButton &rhs) :
     x(rhs.x),
+    hAlignment(rhs.hAlignment),
     y(rhs.y),
     width(rhs.width),
     height(rhs.height),
@@ -113,6 +116,8 @@ TextButton::TextButton(const TextButton &rhs) :
 
 TextButton::~TextButton()
 {
+    gpLocalizableContent->RemoveLocalizableTextOwner(this);
+
     delete pXEase;
     pXEase = NULL;
 
@@ -144,7 +149,7 @@ void TextButton::Update(int delta)
 
     if (GetIsEnabled())
     {
-        RectangleWH positionRect = RectangleWH(GetX(), GetY(), GetWidth(), GetHeight());
+        RectangleWH positionRect = RectangleWH(GetLeft(), GetTop(), GetWidth(), GetHeight());
         bool isPressed = MouseHelper::PressedAndHeldAnywhere() || MouseHelper::DoublePressedAndHeldAnywhere();
 
         if (MouseHelper::ClickedOnRect(positionRect))
@@ -174,6 +179,7 @@ void TextButton::Draw() const
     if (GetCheckable())
     {
         Color color = GetIsEnabled() ? Color(GetOpacity(), 1.0, 1.0, 1.0) : Color(GetOpacity(), 0.5, 0.5, 0.5);
+        Vector2 checkBoxDrawingPoint(x, y - GetHeight() / 2);
         Vector2 checkBoxSize(
                     max(TextButton::pCheckMarkImage->width + CheckMarkOffset.GetX(), (double)TextButton::pBoxImage->width),
                     max(TextButton::pCheckMarkImage->height + CheckMarkOffset.GetY(), (double)TextButton::pBoxImage->height)
@@ -184,20 +190,20 @@ void TextButton::Draw() const
                     );
 
         // draw box
-        pBoxImage->Draw(drawingPoint + checkBoxCenter - Vector2(TextButton::pBoxImage->width / 2, TextButton::pBoxImage->height / 2), color);
+        pBoxImage->Draw(checkBoxDrawingPoint + checkBoxCenter - Vector2(TextButton::pBoxImage->width / 2, TextButton::pBoxImage->height / 2), color);
 
         // draw check mark
         if (GetChecked())
         {
             TextButton::pCheckMarkImage->Draw(
-                        drawingPoint + checkBoxCenter + CheckMarkOffset - Vector2(TextButton::pCheckMarkImage->width / 2, TextButton::pCheckMarkImage->height / 2),
+                        checkBoxDrawingPoint + checkBoxCenter + CheckMarkOffset - Vector2(TextButton::pCheckMarkImage->width / 2, TextButton::pCheckMarkImage->height / 2),
                         color);
         }
 
         drawingPoint.SetX(drawingPoint.GetX() + checkBoxSize.GetX() + Padding);
     }
 
-    textWidget.Draw(drawingPoint.GetX(), drawingPoint.GetY());
+    textWidget.Draw(drawingPoint.GetX(), drawingPoint.GetY(), hAlignment);
 
     if (pFadeInEase != NULL && pFadeInEase->IsRunning() && pOldButton != NULL)
     {
@@ -228,9 +234,23 @@ void TextButton::Reset()
     pOldButton = NULL;
 }
 
+double TextButton::GetLeft() const
+{
+    if (hAlignment == HAlignmentRight)
+    {
+        return this->x - GetWidth();
+    }
+    else if (hAlignment == HAlignmentCenter)
+    {
+        return this->x - GetWidth() / 2;
+    }
+    else
+    {
+        return this->x;
+    }
+}
 
-
-void TextButton::MoveTo(double newX, double newY, int timeMS)
+void TextButton::MoveTo(double newX, HAlignment hAlignment, double newY, int timeMS)
 {
     delete pFadeInEase;
     pFadeInEase = NULL;
@@ -242,15 +262,17 @@ void TextButton::MoveTo(double newX, double newY, int timeMS)
     pOldButton = NULL;
 
     delete pXEase;
-    pXEase = new SCurveEase(x, newX, timeMS);
+    pXEase = new SCurveEase(GetLeft(), newX, timeMS);
     pXEase->Begin();
 
+    transitionHAlignment = hAlignment;
+
     delete pYEase;
-    pYEase = new SCurveEase(y, newY, timeMS);
+    pYEase = new SCurveEase(GetTop(), newY, timeMS);
     pYEase->Begin();
 }
 
-void TextButton::Reappear(double newX, double newY, int timeMS)
+void TextButton::Reappear(double newX, HAlignment hAlignment, double newY, int timeMS)
 {
     delete pXEase;
     pXEase = NULL;
@@ -270,7 +292,7 @@ void TextButton::Reappear(double newX, double newY, int timeMS)
     pOldButton = new TextButton(*this);
     pOldButton->SetIsEnabled(false);
 
-    SetX(newX);
+    SetX(newX, hAlignment);
     SetY(newY);
 }
 
@@ -289,6 +311,11 @@ void TextButton::SetMaxWidth(double maxWidth)
     height = max(height, textWidget.GetHeight());
 }
 
+void TextButton::ReloadLocalizableText()
+{
+    UpdateSize();
+}
+
 bool TextButton::IsAnimationPlaying() const
 {
     return (pXEase != NULL && pXEase->IsRunning())
@@ -302,7 +329,7 @@ void TextButton::UpdateAnimation(int delta)
     if (pXEase != NULL && pXEase->IsRunning())
     {
         pXEase->Update(delta);
-        SetX(pXEase->GetCurrentValue());
+        SetX(pXEase->GetCurrentValue(), transitionHAlignment);
     }
 
     if (pYEase != NULL && pYEase->IsRunning())

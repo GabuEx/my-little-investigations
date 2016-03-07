@@ -79,8 +79,8 @@ Encounter::Encounter()
     pEvidenceSelector = new EvidenceSelector(true /* isCancelable */);
 
     pCharacterNameTab = new Tab(0, false /* isClickable */);
-    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, pgLocalizableContent->GetText("Encounter/ExitText"));
-    pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, pgLocalizableContent->GetText("Encounter/PresentEvidenceText"));
+    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, gpLocalizableContent->GetText("Encounter/ExitText"));
+    pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, gpLocalizableContent->GetText("Encounter/PresentEvidenceText"));
 
     ownsOneShotConversation = false;
     isFinished = false;
@@ -120,8 +120,8 @@ Encounter::Encounter(XmlReader *pReader)
     pEvidenceSelector = new EvidenceSelector(true /* isCancelable */);
 
     pCharacterNameTab = new Tab(0, false /* isClickable */);
-    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, pgLocalizableContent->GetText("Encounter/ExitText"));
-    pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, pgLocalizableContent->GetText("Encounter/PresentEvidenceText"));
+    pExitTab = new Tab(gScreenWidth - TabWidth, true /* isClickable */, gpLocalizableContent->GetText("Encounter/ExitText"));
+    pPresentEvidenceTab = new Tab(gScreenWidth - 2 * TabWidth - 7, true /* isClickable */, gpLocalizableContent->GetText("Encounter/PresentEvidenceText"));
 
     ownsOneShotConversation = false;
     isFinished = false;
@@ -821,7 +821,7 @@ void Encounter::RefreshButtonArrayContents()
                 ButtonArrayLoadParameters loadParameters;
 
                 char text[256];
-                sprintf(text, pgLocalizableContent->GetText("Encounter/InterrogationDesignationFormatText").c_str(), pInterrogation->GetName().c_str());
+                sprintf(text, gpLocalizableContent->GetText("Encounter/InterrogationDesignationFormatText").c_str(), pInterrogation->GetName().c_str());
 
                 loadParameters.text = string(text);
                 loadParametersList.push_back(loadParameters);
@@ -840,7 +840,7 @@ void Encounter::RefreshButtonArrayContents()
                 ButtonArrayLoadParameters loadParameters;
 
                 char text[256];
-                sprintf(text, pgLocalizableContent->GetText("Encounter/ConfrontationDesignationFormatText").c_str(), pConfrontation->GetName().c_str());
+                sprintf(text, gpLocalizableContent->GetText("Encounter/ConfrontationDesignationFormatText").c_str(), pConfrontation->GetName().c_str());
 
                 loadParameters.text = string(text);
                 loadParametersList.push_back(loadParameters);

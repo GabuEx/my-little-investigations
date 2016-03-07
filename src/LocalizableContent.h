@@ -35,43 +35,113 @@
 #include <SDL2/SDL.h>
 
 #include <map>
+#include <list>
 #include <string>
+#include <algorithm>
 
 using namespace std;
+
+class ILocalizableFont
+{
+public:
+    virtual void ReloadFontInfo() = 0;
+};
+
+class ILocalizableTextOwner
+{
+public:
+    virtual void ReloadLocalizableText() = 0;
+};
 
 class LocalizableContent
 {
 public:
-    struct Font
+    struct FontInfo
     {
-        Font()
+        FontInfo()
             : Filename("")
-            , Size(0)
+            , PointSize(0)
         {
         }
 
-        Font(string filename, int size)
+        FontInfo(string filename, int pointSize)
             : Filename(filename)
-            , Size(size)
+            , PointSize(pointSize)
         {
         }
 
         string Filename;
-        int Size;
+        int PointSize;
+    };
+
+    struct Setting
+    {
+        Setting()
+            : ValueType(Type::None)
+        {
+        }
+
+        Setting(string type, string value);
+
+        enum class Type
+        {
+            None,
+            Boolean,
+        };
+
+        union
+        {
+            bool BooleanValue;
+        };
+
+        Type ValueType;
     };
 
     LocalizableContent();
     LocalizableContent(XmlReader *pReader);
     ~LocalizableContent();
 
-    LocalizableContent::Font GetFont(const string &fontId);
+    LocalizableContent::FontInfo GetFontInfo(const string &fontId);
     string GetText(const string &textId);
+    bool GetBooleanSetting(const string &settingId);
+
+    void LoadNewLanguage(XmlReader *pReader);
+
+    void AddLocalizableFont(ILocalizableFont *pFont)
+    {
+        if (find(localizableFonts.begin(), localizableFonts.end(), pFont) == localizableFonts.end())
+        {
+            localizableFonts.push_back(pFont);
+        }
+    }
+
+    void RemoveLocalizableFont(ILocalizableFont *pFont)
+    {
+        localizableFonts.remove(pFont);
+    }
+
+    void AddLocalizableTextOwner(ILocalizableTextOwner *pTextOwner)
+    {
+        if (find(localizableTextOwners.begin(), localizableTextOwners.end(), pTextOwner) == localizableTextOwners.end())
+        {
+            localizableTextOwners.push_back(pTextOwner);
+        }
+    }
+
+    void RemoveLocalizableTextOwner(ILocalizableTextOwner *pTextOwner)
+    {
+        localizableTextOwners.remove(pTextOwner);
+    }
 
 private:
     SDL_sem *pAccessSemaphore;
 
-    map<string, LocalizableContent::Font> fontIdToFontMap;
+    map<string, LocalizableContent::FontInfo> fontIdToFontInfoMap;
     map<string, string> textIdToTextMap;
+    map<string, LocalizableContent::Setting> settingIdToSettingMap;
+
+    list<ILocalizableFont *> localizableFonts;
+    list<ILocalizableTextOwner *> localizableTextOwners;
 };
 
 #endif
