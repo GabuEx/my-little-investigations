@@ -234,8 +234,8 @@ public:
     void Finish(bool shouldPlaySfx = true);
     void Reset();
 
-    void OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, const string &evidenceId);
-    void OnEvidenceSelectorClosing(EvidenceSelector *pSender);
+    void OnEvidenceSelectorEvidencePresented(EvidenceSelector *pSender, const string &evidenceId) override;
+    void OnEvidenceSelectorClosing(EvidenceSelector *pSender) override;
 
 private:
     void OnDirectlyNavigated(DirectNavigationDirection direction)

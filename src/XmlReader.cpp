@@ -297,7 +297,7 @@ Image * XmlReader::ReadPng()
     char *pDecodedString = new char[decodedString.length()];
     memcpy(pDecodedString, decodedString.c_str(), decodedString.length());
 
-    SDL_RWops *pRW = SDL_RWFromMem(reinterpret_cast<void *>(pDecodedString), decodedString.length());
+    SDL_RWops *pRW = SDL_RWFromMem(reinterpret_cast<void *>(pDecodedString), static_cast<int>(decodedString.length()));
     Image *pSprite = Image::Load(pRW, true /* loadImmediately */);
 
     delete [] pDecodedString;
