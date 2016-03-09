@@ -29,9 +29,12 @@
 
 #include <iostream>
 #include <string>
+#include <string.h>
 #include <vector>
 
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 using namespace std;

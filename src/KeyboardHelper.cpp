@@ -31,8 +31,6 @@
 
 #include "KeyboardHelper.h"
 
-const Uint32 maxButtonHandleTime = 50;
-
 bool KeyboardHelper::left = false;
 bool KeyboardHelper::right = false;
 bool KeyboardHelper::up = false;

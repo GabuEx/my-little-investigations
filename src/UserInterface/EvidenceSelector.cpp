@@ -42,8 +42,6 @@ const int numItems = numRows * numItemsPerRow;
 
 const int yOffset = 36;
 const int descriptionXOffset = 59;
-const int descriptionWidth = 669;
-const int descriptionLineSeparationHeight = 0;
 const int descriptionYOffset = yOffset + 151;
 
 Image *EvidenceSelector::pContainerImage = NULL;

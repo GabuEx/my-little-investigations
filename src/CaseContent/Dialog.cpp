@@ -187,7 +187,7 @@ Dialog * Dialog::CreateForString(const string &dialogText, const string &filePat
 
     if (delayBeforeContinuing >= 0)
     {
-        pDialog->AddPausePosition(fullString.length(), delayBeforeContinuing);
+        pDialog->AddPausePosition(static_cast<int>(fullString.length()), delayBeforeContinuing);
     }
 
     if (filePath.length() > 0)
@@ -499,7 +499,7 @@ void Dialog::Update(int delta)
 
                 if (AdvanceStringIterator(end, positionsToAdvance, GetText().end()))
                 {
-                    curTextPosition = curTextPosition + distance(begin, end);
+                    curTextPosition = static_cast<int>(curTextPosition + distance(begin, end));
                 }
                 else
                 {
@@ -976,7 +976,7 @@ void Dialog::Finish(bool shouldPlaySfx)
         dialogEventIteratorSet = true;
     }
 
-    curTextPosition = GetText().length();
+    curTextPosition = static_cast<int>(GetText().length());
 
     if (pCurrentDialogEvent != NULL)
     {

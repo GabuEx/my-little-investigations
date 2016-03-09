@@ -135,6 +135,7 @@ string pathSeparator;
 string otherPathSeparator;
 
 string commonAppDataPath;
+string localizedCommonResourcesPath;
 string casesPath;
 string userAppDataPath;
 string dialogSeenListsPath;
@@ -202,6 +203,7 @@ void LoadFilePathsAndCaseUuids(string executableFilePath)
         // stringByAppendingPathComponent has no way of doing this
         // explicitly, though.
         commonAppDataPath = string(pLocalApplicationSupportPath) + "/";
+        localizedCommonResourcesPath = string(pLocalizedCommonResourcesPath) + "/";
         casesPath = string(pCasesPath) + "/";
         userAppDataPath = string(pUserApplicationSupportPath) + "/";
         dialogSeenListsPath = string(pDialogSeenListsPath) + "/";
@@ -458,23 +460,23 @@ vector<string> GetLanguageResourcesFilePaths()
             FindClose(hFind);
         }
 #elif __OSX
-        vector<string> caseFilePaths = GetLocalizedCommonResourcesDirectoryPath();
+        vector<string> localizedCommonResourcesFilePaths = GetLocalizedCommonResourcesFilePathsOSX();
 
-        for (unsigned int i = 0; i < caseFilePaths.size(); i++)
+        for (unsigned int i = 0; i < localizedCommonResourcesFilePaths.size(); i++)
         {
-            string caseFilePath = caseFilePaths[i];
+            string localizedCommonResourcesFilePath = localizedCommonResourcesFilePaths[i];
 
-            if (caseFilePath.find(".dat") != string::npos)
+            if (localizedCommonResourcesFilePath.find(".dat") != string::npos)
             {
-                filePaths.push_back(caseFilePath);
+                filePaths.push_back(localizedCommonResourcesFilePath);
             }
         }
 #elif __unix
-        FOR_EACH_FILE(caseFilePath,casesPath)
+        FOR_EACH_FILE(localizedCommonResourcesFilePath,localizedCommonResourcesFilePaths)
         {
-            if (caseFilePath.find(".dat") != string::npos)
+            if (localizedCommonResourcesFilePath.find(".dat") != string::npos)
             {
-                filePaths.push_back(caseFilePath);
+                filePaths.push_back(localizedCommonResourcesFilePath);
             }
         }
 #else
