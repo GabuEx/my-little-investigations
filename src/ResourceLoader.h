@@ -92,14 +92,14 @@ public:
     {
         RWOpsIOContext* pRWOpsIOContext = static_cast<RWOpsIOContext*>(opaque);
         SDL_RWops *pRW = pRWOpsIOContext->pRW;
-        return SDL_RWread(pRW, buf, 1, buf_size);
+        return static_cast<int>(SDL_RWread(pRW, buf, 1, static_cast<size_t>(buf_size)));
     }
 
     static int Write(void *opaque, unsigned char *buf, int buf_size)
     {
         RWOpsIOContext* pRWOpsIOContext = static_cast<RWOpsIOContext*>(opaque);
         SDL_RWops *pRW = pRWOpsIOContext->pRW;
-        return SDL_RWwrite(pRW, buf, 1, buf_size);
+        return static_cast<int>(SDL_RWwrite(pRW, buf, 1, static_cast<size_t>(buf_size)));
     }
 
     static int64_t Seek(void *opaque, int64_t offset, int whence)

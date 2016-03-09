@@ -12,6 +12,7 @@
 #include <unistd.h>
 
 string pLocalApplicationSupportPath;
+string pLocalizedCommonResourcesPath;
 string pCasesPath;
 string pUserApplicationSupportPath;
 string pDialogSeenListsPath;
@@ -29,12 +30,14 @@ void BeginOSX()
 
     /* Next, create the folders that the executable will need during execution if they don't already exist. */
     NSString *pStrLocalGameApplicationSupportPath = nil;
+    NSString *pStrLocalizedCommonResourcesPath = nil;
     NSString *pStrCasesPath = nil;
     NSString *pStrUserGameApplicationSupportPath = nil;
     NSString *pStrDialogSeenListsPath = nil;
     NSString *pStrSavesPath = nil;
 
     pStrLocalGameApplicationSupportPath = [pStrLocalApplicationSupportPath stringByAppendingPathComponent:@"My Little Investigations"];
+    pStrLocalizedCommonResourcesPath = [pStrLocalGameApplicationSupportPath stringByAppendingPathComponent:@"Languages"];
     pStrCasesPath = [pStrLocalGameApplicationSupportPath stringByAppendingPathComponent:@"Cases"];
     pStrUserGameApplicationSupportPath = [pStrUserApplicationSupportPath stringByAppendingPathComponent:@"My Little Investigations"];
     pStrDialogSeenListsPath = [pStrUserGameApplicationSupportPath stringByAppendingPathComponent:@"DialogSeenLists"];
@@ -55,6 +58,7 @@ void BeginOSX()
 		error:&error];
 
     pLocalApplicationSupportPath = [pStrLocalGameApplicationSupportPath fileSystemRepresentation];
+    pLocalizedCommonResourcesPath = [pStrLocalizedCommonResourcesPath fileSystemRepresentation];
     pCasesPath = [pStrCasesPath fileSystemRepresentation];
     pUserApplicationSupportPath = [pStrUserGameApplicationSupportPath fileSystemRepresentation];
     pDialogSeenListsPath = [pStrDialogSeenListsPath fileSystemRepresentation];
@@ -79,8 +83,10 @@ vector<string> GetCaseFilePathsOSX()
 
     vector<string> ppCaseFileList;
 
-    for (NSString *pStrCaseFileName in pCaseFileList)
+    for (NSUInteger i = 0; i < [pCaseFileList count]; i++)
     {
+        NSString *pStrCaseFileName = [pCaseFileList objectAtIndex:i];
+
        //Ignore UNIX hidden files, like OS X's .DS_Store
         if ([pStrCaseFileName hasPrefix:@"."])
         {
@@ -118,8 +124,10 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
 
     vector<string> ppSaveFilePathList;
 
-    for (NSString *pStrSaveFileName in pSaveFileList)
+    for (NSUInteger i = 0; i < [pSaveFileList count]; i++)
     {
+        NSString *pStrSaveFileName = [pSaveFileList objectAtIndex:i];
+
        //Ignore UNIX hidden files, like OS X's .DS_Store
         if ([pStrSaveFileName hasPrefix:@"."])
         {
@@ -132,6 +140,40 @@ vector<string> GetSaveFilePathsForCaseOSX(string pCaseUuid)
 
     [pool drain];
     return ppSaveFilePathList;
+}
+
+vector<string> GetLocalizedCommonResourcesFilePathsOSX()
+{
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    NSError *error = nil;
+    NSFileManager *defaultManager = [NSFileManager defaultManager];
+
+    //TODO: Save the NSString as, say, a static pointer.
+    NSString *localizedCommonResourcesPath = [defaultManager stringWithFileSystemRepresentation:pLocalizedCommonResourcesPath.c_str() length: pLocalizedCommonResourcesPath.size()];
+
+    NSArray *pLocalizedCommonResourcesFileList =
+        [defaultManager
+            contentsOfDirectoryAtPath: localizedCommonResourcesPath
+            error:&error];
+
+    vector<string> ppLocalizedCommonResourcesFileList;
+
+    for (NSUInteger i = 0; i < [pLocalizedCommonResourcesFileList count]; i++)
+    {
+        NSString *pStrLocalizedCommonResouresFileName = [pLocalizedCommonResourcesFileList objectAtIndex:i];
+
+       //Ignore UNIX hidden files, like OS X's .DS_Store
+        if ([pStrLocalizedCommonResouresFileName hasPrefix:@"."])
+        {
+            continue;
+        }
+
+        NSString *pStrLocalizedCommonResourcesFilePath = [localizedCommonResourcesPath stringByAppendingPathComponent:pStrLocalizedCommonResouresFileName];
+		ppLocalizedCommonResourcesFileList.push_back(string([pStrLocalizedCommonResourcesFilePath fileSystemRepresentation]));
+    }
+
+    [pool drain];
+    return ppLocalizedCommonResourcesFileList;
 }
 
 string GetVersionStringOSX(string PropertyListFilePath)

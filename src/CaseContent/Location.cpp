@@ -51,7 +51,6 @@
 #include <SDL2/SDL_image.h>
 #endif
 
-const int MinDistanceToRevealHiddenElements = 200; // px
 const int MaxDistanceToStartInteractions = 150; // px
 const int FadeAnimationDuration = 500; // ms
 

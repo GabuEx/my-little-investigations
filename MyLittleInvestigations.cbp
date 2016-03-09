@@ -69,8 +69,10 @@
 				<Option output="bin/Debug/osx/MyLittleInvestigations" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/osx/" />
 				<Option type="1" />
-				<Option compiler="gcc" />
+				<Option compiler="clang" />
 				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 					<Add option="-DMACOSX_DEPLOYMENT_TARGET=10.6" />
 					<Add option="-DMLI_DEBUG" />
@@ -98,11 +100,13 @@
 				<Option output="bin/Release/osx/MyLittleInvestigations" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/osx/" />
 				<Option type="0" />
-				<Option compiler="gcc" />
+				<Option compiler="clang" />
 				<Compiler>
+					<Add option="-ftrapv" />
 					<Add option="-fomit-frame-pointer" />
-					<Add option="-fexpensive-optimizations" />
-					<Add option="-O3" />
+					<Add option="-O4" />
+					<Add option="-Wall" />
+					<Add option="-std=c++11" />
 					<Add option="-DMACOSX_DEPLOYMENT_TARGET=10.6" />
 					<Add option="-D__OSX" />
 					<Add directory="osx" />
@@ -119,8 +123,6 @@
 					<Add option="-lavutil" />
 					<Add option="-lswscale" />
 					<Add option="-lcryptopp" />
-					<Add option="-headerpad_max_install_names" />
-					<Add option="-Wl,-rpath,@loader_path/../Frameworks" />
 					<Add directory="osx" />
 				</Linker>
 				<ExtraCommands>
@@ -216,6 +218,8 @@
 			<Option compilerVar="CC" />
 			<Option compile="1" />
 			<Option link="1" />
+			<Option compiler="gcc" use="1" buildCommand="$compiler -Wall -DGAME_EXECUTABLE -D__STDC_CONSTANT_MACROS -g -DMACOSX_DEPLOYMENT_TARGET=10.6 -DMLI_DEBUG -D__OSX $includes -c $file -o $object" />
+			<Option compiler="clang" use="1" buildCommand="$compiler -Wall -DGAME_EXECUTABLE -D__STDC_CONSTANT_MACROS -g -DMACOSX_DEPLOYMENT_TARGET=10.6 -DMLI_DEBUG -D__OSX $includes -c $file -o $object" />
 			<Option target="Debug (OS X)" />
 			<Option target="Release (OS X)" />
 		</Unit>
@@ -223,6 +227,8 @@
 			<Option compilerVar="CC" />
 			<Option compile="1" />
 			<Option link="1" />
+			<Option compiler="gcc" use="1" buildCommand="$compiler -Wall -DGAME_EXECUTABLE -D__STDC_CONSTANT_MACROS -g -DMACOSX_DEPLOYMENT_TARGET=10.6 -DMLI_DEBUG -D__OSX $includes -c $file -o $object" />
+			<Option compiler="clang" use="1" buildCommand="$compiler -Wall -DGAME_EXECUTABLE -D__STDC_CONSTANT_MACROS -g -DMACOSX_DEPLOYMENT_TARGET=10.6 -DMLI_DEBUG -D__OSX $includes -c $file -o $object" />
 			<Option target="Debug (OS X)" />
 			<Option target="Release (OS X)" />
 		</Unit>
@@ -400,6 +406,8 @@
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/miniz.c">
 			<Option compilerVar="CC" />
+			<Option compiler="gcc" use="1" buildCommand="$compiler -Wall $includes -c $file -o $object" />
+			<Option compiler="clang" use="1" buildCommand="$compiler -Wall $includes -c $file -o $object" />
 		</Unit>
 		<Unit filename="src/miniz.h" />
 		<Unit filename="src/mli_audio.cpp" />

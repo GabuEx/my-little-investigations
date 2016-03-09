@@ -68,7 +68,7 @@ double Max(double a, double b)
 int StringIndexOf(const SharedUtilsStringType &s, SharedUtilsCharType c)
 {
 #ifndef CASE_CREATOR
-    return s.find(c);
+    return static_cast<int>(s.find(c));
 #else
     return s.indexOf(c);
 #endif
@@ -77,7 +77,7 @@ int StringIndexOf(const SharedUtilsStringType &s, SharedUtilsCharType c)
 int StringIndexNotFoundValue()
 {
 #ifndef CASE_CREATOR
-    return string::npos;
+    return static_cast<int>(string::npos);
 #else
     return -1;
 #endif
@@ -227,7 +227,7 @@ SharedUtilsStringType ParseRawDialog(IDialogEventsOwner *pDialogEventsOwner, con
             if (curTextWidth + curStringWidth <= allowedWidth)
             {
                 SharedUtilsStringType stringToPrependOnNext;
-                stringToTest = ParseDialogEvents(pDialogEventsOwner, fullString.length() + curstring.length(), stringToTest, &stringToPrependOnNext);
+                stringToTest = ParseDialogEvents(pDialogEventsOwner, static_cast<int>(fullString.length() + curstring.length()), stringToTest, &stringToPrependOnNext);
                 curstring += stringToTest;
                 curTextWidth += curStringWidth;
                 wordList.pop_front();
@@ -419,7 +419,7 @@ SharedUtilsStringType ParseDialogEvents(IDialogEventsOwner *pDialogEventsOwner, 
             else if (testString == "/aside")
             {
                 int currentIndex = lineOffset + eventStart;
-                pDialogEventsOwner->EndAside(currentIndex, eventEnd, parsedString.length(), pStringToPrependOnNext);
+                pDialogEventsOwner->EndAside(currentIndex, eventEnd, static_cast<int>(parsedString.length()), pStringToPrependOnNext);
             }
             else if (testString == "emphasis")
             {
