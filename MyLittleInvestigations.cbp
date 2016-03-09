@@ -69,11 +69,10 @@
 				<Option output="bin/Debug/osx/MyLittleInvestigations" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/osx/" />
 				<Option type="1" />
-				<Option compiler="clang" />
+				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-Wall" />
-					<Add option="-std=c++11" />
 					<Add option="-g" />
+					<Add option="-std=c++11" />
 					<Add option="-DMACOSX_DEPLOYMENT_TARGET=10.6" />
 					<Add option="-DMLI_DEBUG" />
 					<Add option="-D__OSX" />
@@ -100,12 +99,10 @@
 				<Option output="bin/Release/osx/MyLittleInvestigations" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/osx/" />
 				<Option type="0" />
-				<Option compiler="clang" />
+				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-ftrapv" />
 					<Add option="-fomit-frame-pointer" />
-					<Add option="-O4" />
-					<Add option="-Wall" />
+					<Add option="-O3" />
 					<Add option="-std=c++11" />
 					<Add option="-DMACOSX_DEPLOYMENT_TARGET=10.6" />
 					<Add option="-D__OSX" />
