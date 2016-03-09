@@ -225,7 +225,7 @@ public:
     string GetItemDisplayStringAt(unsigned int index) { return this->itemList[index]->GetDisplayString(); }
     bool GetItemShouldDisplayStarAt(unsigned int index) { return this->itemList[index]->GetShouldDisplayStar(); }
     void DeleteItemAt(unsigned int index);
-    unsigned int GetCount() { return this->itemList.size(); }
+    unsigned int GetCount() { return static_cast<unsigned int>(this->itemList.size()); }
 
     void AddItem(SelectorItem *pSelectorItem)
     {
@@ -252,7 +252,7 @@ public:
     static string GetClickSoundEffect() { return "ButtonClick2"; }
 
     SelectorSection * GetSection(int index) { return this->sectionList[index]; }
-    unsigned int GetSectionCount() { return this->sectionList.size(); }
+    unsigned int GetSectionCount() { return static_cast<unsigned int>(this->sectionList.size()); }
 
     void AddSection(SelectorSection *pSection)
     {

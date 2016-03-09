@@ -26,7 +26,7 @@ template <class T>
 XmlListSizeType XmlListCount(XmlList<T> l)
 {
 #ifndef CASE_CREATOR
-    return l.size();
+    return static_cast<int>(l.size());
 #else
     return l.count();
 #endif // CASE_CREATOR

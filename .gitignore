@@ -55,3 +55,6 @@ build-*
 src/CaseCreator/*
 *.0cf0304
 *.save-failed
+osx/AppFileStaging/Contents/Resources/Cases/
+osx/AppFileStaging/Contents/Resources/CelestiaMediumRedux1.5.ttf
+

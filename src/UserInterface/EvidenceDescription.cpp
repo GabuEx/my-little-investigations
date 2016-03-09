@@ -31,7 +31,6 @@
 #include "../SharedUtils.h"
 #include "../CaseInformation/Case.h"
 
-const int descriptionXOffset = 59;
 const int descriptionWidth = 669;
 const int descriptionLineSeparationHeight = 0;
 
