@@ -55,7 +55,7 @@ MLIFont::MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool 
     Reinit();
 }
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 MLIFont::MLIFont(const string &fontId, int strokeWidth, bool invertedColors)
     : strokeWidth(strokeWidth),
       cache(CacheSize, new CacheItemHandler(this)),
@@ -79,7 +79,7 @@ MLIFont::~MLIFont()
 {
     EnsureUIThread();
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     gpLocalizableContent->RemoveLocalizableFont(this);
 #endif
 
@@ -113,7 +113,7 @@ void MLIFont::Reinit()
     cache.clear();
     kernedWidthCache.clear();
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     if (fontId.length() > 0)
     {
         ttfFilePath = gpLocalizableContent->GetFontInfo(fontId).Filename;
@@ -125,14 +125,14 @@ void MLIFont::Reinit()
     scale = (GetIsFullscreen() ? GetScreenScale() : 1.0);
 
     // setup font
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     pTtfFont = ResourceLoader::GetInstance()->LoadFont(ttfFilePath, fontSize * scale, &pTtfFontMem);
 #else
     pTtfFont = TTF_OpenFont(ttfFilePath.c_str(), fontSize * scale + 0.5);
 #endif
 }
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 void MLIFont::ReloadFontInfo()
 {
     Reinit();

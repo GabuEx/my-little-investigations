@@ -195,17 +195,17 @@ void SelectionScreen::LoadResources()
 
     delete pSaveButton;
     pSaveButton = new TextButton("SelectionScreen/SaveGameText", pStartFont);
-    pSaveButton->SetX(587);
+    pSaveButton->SetX(660, HAlignmentCenter);
     pSaveButton->SetY(426);
 
     delete pLoadButton;
     pLoadButton = new TextButton("SelectionScreen/LoadGameText", pStartFont);
-    pLoadButton->SetX(587);
+    pLoadButton->SetX(660, HAlignmentCenter);
     pLoadButton->SetY(426);
 
     delete pDeleteButton;
     pDeleteButton = new TextButton("SelectionScreen/DeleteGameText", pStartFont);
-    pDeleteButton->SetX(571);
+    pDeleteButton->SetX(644, HAlignmentCenter);
     pDeleteButton->SetY(365);
 
     delete pBackButton;
@@ -628,10 +628,10 @@ void SelectionScreen::OnSelectorSelectionChanged(Selector *pSender, SelectorItem
 
                 string fileName = GetSaveFolderPathForCase(lastCaseUuid);
 
-                char buf[16] = { '\0' };
-                sprintf(buf, "%d", pSender->GetSection(0)->GetCount());
+                char buf[256] = { '\0' };
+                snprintf(buf, 256, gpLocalizableContent->GetText("SelectionScreen/DefaultNewSaveNameText").c_str(), pSender->GetSection(0)->GetCount());
 
-                saveName = "Save " + string(buf);
+                saveName = string(buf);
                 filePath = fileName;
                 fileExtension = ".sav";
             }
@@ -653,7 +653,7 @@ void SelectionScreen::OnButtonClicked(TextButton *pSender)
         else
         {
             char promptOverlayText[1024];
-            sprintf(promptOverlayText, gpLocalizableContent->GetText("SelectionScreen/IncompatibleCaseText").c_str(), ((string)gVersion).c_str(), ((string)selectionRequiredVersion).c_str());
+            snprintf(promptOverlayText, 1024, gpLocalizableContent->GetText("SelectionScreen/IncompatibleCaseText").c_str(), ((string)gVersion).c_str(), ((string)selectionRequiredVersion).c_str());
 
             pIncompatibleCaseNotificationOverlay->SetHeaderText(promptOverlayText);
             pIncompatibleCaseNotificationOverlay->Begin();
@@ -716,26 +716,11 @@ void SelectionScreen::OnButtonClicked(TextButton *pSender)
             struct tm * timeinfo;
 
             timeinfo = localtime(&timestamp);
-            char timeBuf[80] = { 0 };
-            strftime(timeBuf, sizeof(timeBuf), "%I:%M %p", timeinfo);
-            char monthDayBuf[80] = { 0 };
-            strftime(monthDayBuf, sizeof(monthDayBuf), "%B %d", timeinfo);
-            char yearBuf[80] = { 0 };
-            strftime(yearBuf, sizeof(yearBuf), "%Y", timeinfo);
 
-            char buf[256] = { 0 };
-            sprintf(buf, "%s, %s, %s.",  timeBuf, monthDayBuf, yearBuf);
+            char buf[256];
+            strftime(buf, sizeof(buf), gpLocalizableContent->GetText("SelectionScreen/SaveFileDateTimeDisplayFormattingText").c_str(), timeinfo);
 
             string description = string(buf);
-
-            // If the hours display contains a leading zero,
-            // we'll remove that.
-            if (description[0] == '0')
-            {
-                description = description.substr(1);
-            }
-
-            description = string("Save made ") + description;
 
             Image *pSprite = reader.ReadPngElement("Screenshot");
 

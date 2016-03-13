@@ -64,7 +64,7 @@ public:
         isDown = false;
     }
 
-    SkipArrow(int xPosition, int yPosition, int bounceDistance, bool isClickable, bool isFFwd);
+    SkipArrow(int xPosition, HAlignment hAlignment, int yPosition, int bounceDistance, bool isClickable, bool isFFwd);
     SkipArrow(const SkipArrow& other);
 
     ~SkipArrow()
@@ -97,6 +97,7 @@ private:
     TextWidget textWidget;
 
     int xPosition;
+    HAlignment hAlignment;
     int yPosition;
     int width;
     int height;

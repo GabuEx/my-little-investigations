@@ -121,7 +121,7 @@ void XmlWriter::VerifyCurrentElement(const XmlString &expectedElementName)
     {
         char buffer[256];
 
-        sprintf(buffer, "XML: Expected element named '%s', instead found '%s'.",
+        snprintf(buffer, 256, "XML: Expected element named '%s', instead found '%s'.",
                 XmlStringToCharArray(expectedElementName),
                 (elementNameStack.empty() ? "NULL" : XmlStringToCharArray(actualCurrentElement)));
 

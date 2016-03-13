@@ -70,16 +70,20 @@ string GetPropertyListPath();
 string GetVersionFilePath();
 Version GetCurrentVersion();
 
-#ifdef UPDATER
-void WriteNewVersion(Version newVersion);
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
+string GetConfigFilePath();
+bool ConfigFileExists();
 #endif
 
 #ifdef GAME_EXECUTABLE
-string GetConfigFilePath();
-bool ConfigFileExists();
 void SaveConfigurations();
-void LoadConfigurations();
+#endif
 
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
+void LoadConfigurations();
+#endif
+
+#ifdef GAME_EXECUTABLE
 string GetCompletedCasesFilePath();
 bool CompletedCasesFileExists();
 void SaveCompletedCase(const string &caseUuid);
@@ -107,8 +111,6 @@ string GetCommonAppDataPath();
 string GetUserAppDataPath();
 string GetTempDirectoryPath();
 
-string GetLauncherFontFilePath();
-
 #ifdef __OSX
 string GetUpdaterHelperFilePath();
 
@@ -116,7 +118,12 @@ bool TryAcquireUpdateAdministratorRightsOSX();
 void FreeAdministratorRights();
 #endif
 
+string GetGameExecutablePath();
+string GetUpdaterExecutableName();
+string GetUpdaterExecutablePath();
+
 bool LaunchExecutable(const char *pExecutablePath, vector<string> commandLineArguments, bool waitForCompletion, bool asAdmin);
+bool LaunchUpdaterScript(const string &scriptFilePath);
 void LaunchGameExecutable();
 #endif
 
@@ -124,6 +131,22 @@ void LaunchGameExecutable();
 bool ApplyDeltaFile(const string &oldFilePath, const string &deltaFilePath, const string &newFilePath);
 bool RemoveFile(const string &filePath);
 bool RenameFile(const string &oldFilePath, const string &newFilePath);
+
+string GetNewlineString();
+string GetNullRedirectionString();
+
+string GetScriptInstructionsHeader();
+string GetWaitForExitScriptInstructions();
+string GetPrintStringScriptInstructions(const string &s);
+string GetPrintEmptyLineScriptInstructions();
+string GetApplyDeltaFileScriptInstructions(const string &oldFilePath, const string &deltaFilePath, const string &newFilePath);
+string GetRemoveFileScriptInstructions(const string &filePath);
+string GetRenameFileScriptInstructions(const string &oldFilePath, const string &newFilePath);
+string GetCheckReturnValueScriptInstructions(unsigned int versionUpdateIndex, unsigned int versionUpdateSubIndex);
+string GetWriteNewVersionScriptInstructions(const string &newVersionString);
+string GetStartGameScriptInstructions();
+
+string CreateUpdateScript(const string &scriptContents);
 #endif
 #ifdef LAUNCHER
 bool LaunchUpdater(const string &versionsXmlFilePath);

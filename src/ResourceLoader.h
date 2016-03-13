@@ -30,7 +30,9 @@
 #ifndef RESOURCELOADER_H
 #define RESOURCELOADER_H
 
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 #include <SDL2/SDL.h>
+
 #ifdef __OSX
 #include <SDL2_ttf/SDL_ttf.h>
 #include <SDL2_image/SDL_image.h>
@@ -39,11 +41,17 @@
 #include <SDL2/SDL_image.h>
 #endif
 
+#endif
+
+#ifdef GAME_EXECUTABLE
 #include "Image.h"
+#endif
+
 #include "miniz.h"
 
 #include "tinyxml2/tinyxml2.h"
 
+#ifdef GAME_EXECUTABLE
 #include <map>
 #include <deque>
 
@@ -53,9 +61,11 @@ extern "C"
 }
 
 typedef unsigned char byte;
+#endif
 
 class ArchiveSource;
 
+#ifdef GAME_EXECUTABLE
 const int IOContextBufferSize = 32768;
 
 class RWOpsIOContext
@@ -118,6 +128,7 @@ private:
     SDL_RWops *pRW;
     AVIOContext *pIOContext;
 };
+#endif
 
 class ResourceLoader
 {
@@ -142,6 +153,7 @@ private:
         mz_zip_archive zip_archive;
     };
 
+#ifdef GAME_EXECUTABLE
     class LoadResourceStep
     {
     public:
@@ -208,6 +220,7 @@ private:
     private:
         Video *pVideo;
     };
+#endif
 
 public:
     static void Close();
@@ -222,10 +235,13 @@ public:
         return pInstance;
     }
 
+#ifdef GAME_EXECUTABLE
     bool Init(const string &commonResourcesFilePath, const string &commonLocalizedResourcesFilePath);
     bool LoadNewCommonLocalizedResources(const string &commonLocalizedResourcesFilePath);
+#endif
     bool LoadTemporaryCommonLocalizedResources(const string &commonLocalizedResourcesFilePath);
     void UnloadTemporaryCommonLocalizedResources();
+#ifdef GAME_EXECUTABLE
     bool LoadCase(const string &caseFilePath);
     bool LoadTemporaryCase(const string &caseFilePath);
     void UnloadTemporaryCase();
@@ -233,9 +249,11 @@ public:
     SDL_Surface * LoadRawSurface(const string &relativeFilePath);
     Image * LoadImage(const string &relativeFilePath);
     void ReloadImage(Image *pSprite, const string &originFilePath);
+#endif
     tinyxml2::XMLDocument * LoadDocument(const string &relativeFilePath);
     TTF_Font * LoadFont(const string &relativeFilePath, int ptSize, void **pMemToFree);
 
+#ifdef GAME_EXECUTABLE
     void LoadVideo(
         const string &relativeFilePath,
         RWOpsIOContext **ppRWOpsIOContext,
@@ -253,6 +271,7 @@ public:
     void UnloadDialog(const string &id);
 
     void * LoadFileToMemory(const string &relativeFilePath, unsigned int *pFileSize);
+
     void HashFile(const string &relativeFilePath, byte hash[]);
 
     void AddImage(Image *pImage);
@@ -269,6 +288,7 @@ public:
     void SnapLoadStepQueue();
     bool HasLoadStep();
     void TryRunOneLoadStep();
+#endif
 
 private:
     ResourceLoader();
@@ -276,12 +296,17 @@ private:
 
     static ResourceLoader *pInstance;
 
+#ifdef GAME_EXECUTABLE
     ArchiveSource *pCommonResourcesSource;
+#endif
     ArchiveSource *pCommonLocalizedResourcesSource;
     ArchiveSource *pCachedCommonLocalizedResourcesSource;
+#ifdef GAME_EXECUTABLE
     ArchiveSource *pCaseResourcesSource;
     ArchiveSource *pCachedCaseResourcesSource;
+#endif
 
+#ifdef GAME_EXECUTABLE
     SDL_sem *pLoadingSemaphore;
 
     map<string, void *> musicIdToMemToFreeMap;
@@ -293,6 +318,7 @@ private:
     deque<LoadResourceStep *> loadResourceStepList;
     deque<LoadResourceStep *> cachedLoadResourceStepList;
     SDL_sem *pLoadQueueSemaphore;
+#endif
 };
 
 #endif

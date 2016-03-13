@@ -30,7 +30,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 #include "LocalizableContent.h"
 #endif
 
@@ -91,8 +91,13 @@ extern bool gEnableDebugMode;
 extern double gBackgroundMusicVolume;
 extern double gSoundEffectsVolume;
 extern double gVoiceVolume;
-extern string gLocalizedResourcesFileName;
+#endif
 
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
+extern string gLocalizedResourcesFileName;
+#endif
+
+#ifdef GAME_EXECUTABLE
 extern bool gEnableTutorialsDefault;
 extern bool gEnableHintsDefault;
 extern bool gEnableFullscreenDefault;
@@ -119,9 +124,16 @@ extern Version gVersion;
 
 #ifdef UPDATER
 extern string gVersionsXmlFilePath;
+extern string gUpdateScriptFilePath;
+
+class MLIFont;
+
+extern MLIFont *gpUpdatingFont;
 #endif
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
+class LocalizableContent;
+
 extern LocalizableContent *gpLocalizableContent;
 #endif
 

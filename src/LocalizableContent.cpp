@@ -66,7 +66,7 @@ LocalizableContent::FontInfo LocalizableContent::GetFontInfo(const string &fontI
     SDL_SemWait(pAccessSemaphore);
     if (fontIdToFontInfoMap.count(fontId) == 0)
     {
-        throw MLIException(string("Font ID not found: ") + fontId);
+        throw MLIException(string("Font info ID not found: ") + fontId);
     }
 
     returnValue = fontIdToFontInfoMap[fontId];

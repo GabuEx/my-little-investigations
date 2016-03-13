@@ -184,7 +184,7 @@ void TitleScreen::LoadResources()
         {
             char spriteId[256] = { '\0' };
 
-            sprintf(&spriteId[0], CandleSpriteIdFormat, i + 1);
+            snprintf(&spriteId[0], 256, CandleSpriteIdFormat, i + 1);
             string spriteIdString = string(spriteId);
 
             int x = (i % 16) * CandleDimensionsPx;
