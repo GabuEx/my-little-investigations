@@ -109,7 +109,6 @@ private:
     string ttfFilePath;
     int fontSize;
     int strokeWidth;
-    bool isBold;
 
     MRUCache<uint32_t, Image *> cache;
     map<pair<uint32_t, uint32_t>, int> kernedWidthCache;

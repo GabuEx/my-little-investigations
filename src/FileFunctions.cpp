@@ -1604,7 +1604,7 @@ string GetRemoveFileScriptInstructions(const string &filePath)
 #ifdef __WINDOWS
     scriptInstructions = string("if exist \"") + filePath + "\" del \"" + filePath + "\"";
 #elif defined(__OSX) || defined(__unix)
-    scriptInstructions = string(if [ -f \"") + filePath + "\" ] then rm \"" + filePath + "\" fi";
+    scriptInstructions = string("if [ -f \"") + filePath + "\" ] then rm \"" + filePath + "\" fi";
 #else
 #error NOT IMPLEMENTED
 #endif
@@ -1619,7 +1619,7 @@ string GetRenameFileScriptInstructions(const string &oldFilePath, const string &
 #ifdef __WINDOWS
     scriptInstructions = string("if exist \"") + oldFilePath + "\" move \"" + oldFilePath + "\" \"" + newFilePath + "\"";
 #elif defined(__OSX) || defined(__unix)
-    scriptInstructions = string(if [ -f \"") + oldFilePath + "\" ] then mv \"" + oldFilePath + "\" \"" + newFilePath + "\" fi";
+    scriptInstructions = string("if [ -f \"") + oldFilePath + "\" ] then mv \"" + oldFilePath + "\" \"" + newFilePath + "\" fi";
 #else
 #error NOT IMPLEMENTED
 #endif
@@ -1645,13 +1645,13 @@ string GetCheckReturnValueScriptInstructions(unsigned int versionUpdateIndex, un
 #elif defined(__OSX) || defined(__unix)
     string errorFunctionNameToCall = "HandleError" + IntegerToString(versionUpdateIndex) + IntegerToString(versionUpdateSubIndex);
 
-    scriptContents += "if [ $? -eq 0 ] then" + GetNewlineString();
-    scriptContents += errorFunctionNameToCall + GetNewlineString();
-    scriptContents += GetPrintStringScriptInstructions("Update failed!  Sorry about that.  Try again later.");
-    scriptContents += "read -p \"Press enter to continue...\"" + GetNewlineString();
-    scriptContents += GetStartGameScriptInstructions();
-    scriptContents += "exit" + GetNewlineString();
-    scriptContents += "fi" + GetNewlineString();
+    scriptInstructions += "if [ $? -eq 0 ] then" + GetNewlineString();
+    scriptInstructions += errorFunctionNameToCall + GetNewlineString();
+    scriptInstructions += GetPrintStringScriptInstructions("Update failed!  Sorry about that.  Try again later.");
+    scriptInstructions += "read -p \"Press enter to continue...\"" + GetNewlineString();
+    scriptInstructions += GetStartGameScriptInstructions();
+    scriptInstructions += "exit" + GetNewlineString();
+    scriptInstructions += "fi" + GetNewlineString();
 #else
 #error NOT IMPLEMENTED
 #endif
@@ -1685,6 +1685,8 @@ string GetWriteNewVersionScriptInstructions(const string &newVersionString)
     scriptInstructions += GetRenameFileScriptInstructions(tempPropertyListPath, GetPropertyListPath());
 
     delete [] pPropertyListXmlData;
+
+    return scriptInstructions;
 #elif __unix
     return "echo \"" + newVersionString + "\" > \"" + commonAppDataPath + string(".version") + "\"" + GetNewlineString();
 #endif
@@ -1697,7 +1699,7 @@ string GetStartGameScriptInstructions()
 #ifdef __WINDOWS
     scriptInstructions = "start \"\" \"" + GetGameExecutablePath() + "\"";
 #elif defined(__OSX) || defined(__unix)
-    scriptInstructions = "\"" + GetGameExecutablePath + "\"";
+    scriptInstructions = "\"" + GetGameExecutablePath() + "\"";
 #else
 #error NOT IMPLEMENTED
 #endif
