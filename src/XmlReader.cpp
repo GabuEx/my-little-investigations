@@ -37,7 +37,7 @@
 #include "CaseCreator/CaseContent/CaseContent.h"
 #endif
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 #include "ResourceLoader.h"
 #endif
 
@@ -72,7 +72,7 @@ void XmlReader::ParseXmlFile(const XmlString &filePath)
     this->filePath = filePath;
 
     delete pDocument;
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     pDocument = ResourceLoader::GetInstance()->LoadDocument(filePath);
 
     if (pDocument == NULL)
@@ -85,7 +85,7 @@ void XmlReader::ParseXmlFile(const XmlString &filePath)
             delete pDocument;
             throw MLIException(string("File not found: ") + string(XmlStringToCharArray(filePath)));
         }
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     }
 #endif
 
@@ -145,7 +145,7 @@ void XmlReader::VerifyCurrentElement(const XmlString &expectedElementName)
     {
         char buffer[256];
 
-        sprintf(buffer, "XML: Expected element named '%s', instead found '%s'.",
+        snprintf(buffer, 256, "XML: Expected element named '%s', instead found '%s'.",
                 XmlStringToCharArray(expectedElementName),
                 (pCurrentElement == NULL ? "NULL" : pCurrentElement->Name()));
 

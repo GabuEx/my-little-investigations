@@ -52,6 +52,13 @@ extern "C"
 string versionCheckUri = "http://www.equestriandreamers.com/updates/my-little-investigations/mli-versions.xml";
 #endif
 
+string IntegerToString(unsigned int i)
+{
+    char buf[16];
+    snprintf(buf, 16, "%d", i);
+    return string(&buf[0]);
+}
+
 // This is a giant map representing every single Unicode character flagged as "lowercase" mapped to
 // their counterpart Unicode character flagged as "uppercase".  This is used to convert from any given
 // lowercase Unicode character to its uppercase counterpart.  I have NO IDEA why this function
@@ -321,6 +328,30 @@ bool SignatureIsValid(const byte *pFileData, unsigned int fileSize, const string
     return verifier.VerifyMessage(fileDataBlock, fileDataBlock.size(), signature, signature.size());
 }
 
+#ifdef MLI_DEBUG
+bool DebugSignatureIsValid(const byte *pFileData, unsigned int fileSize, const string &hexEncodedSignature)
+{
+    Integer modulus("25127550240698433095456861988330612763387201409434421689410230045576627300533253347003299422312409321939063771565520166677266132946889259805475875457912566611783652986808237532553682683789515572694559242247439051695593484936715091742187570641518452133088944600044756293341354836155070690166125642594312595564841652324658495660745417566243132555200969728548505121950277833708148480158904433374343859430094303995119766697126334610873165773273009440153681362153575480639032412566051309955491362037122138751878281498715320431839915865944665823918661112744515392927188947653483025773057100031684779035929432237780622316107");
+    Integer publicExponent("17");
+
+    string signatureString;
+    CryptoPP::StringSource(hexEncodedSignature, true, new CryptoPP::HexDecoder(new CryptoPP::StringSink(signatureString)));
+
+    RSA::PublicKey publicKey;
+    publicKey.Initialize(modulus, publicExponent);
+
+    SecByteBlock fileDataBlock(fileSize);
+    fileDataBlock.Assign(pFileData, fileSize);
+
+    RSASS<PKCS1v15, SHA256>::Verifier verifier(publicKey);
+
+    SecByteBlock signature(signatureString.length());
+    signature.Assign((const byte *)signatureString.c_str(), signatureString.length());
+
+    return verifier.VerifyMessage(fileDataBlock, fileDataBlock.size(), signature, signature.size());
+}
+#endif
+
 #ifndef GAME_EXECUTABLE
 PFNPROGRESSCALLBACK pfnProgressCallbackCurrent = NULL;
 void *pProgressCallbackDataCurrent = NULL;
@@ -461,7 +492,12 @@ bool CheckIfUpdatesExist(string *pVersionsXmlContent)
 
     if (retrievedVersionsXmlContent &&
         retrievedVersionsXmlSignature &&
-        SignatureIsValid((const byte *)versionsXmlContent.c_str(), versionsXmlContent.length(), versionsXmlSignatureHexEncoded))
+#ifdef MLI_DEBUG
+        DebugSignatureIsValid((const byte *)versionsXmlContent.c_str(), versionsXmlContent.length(), versionsXmlSignatureHexEncoded)
+#else
+        SignatureIsValid((const byte *)versionsXmlContent.c_str(), versionsXmlContent.length(), versionsXmlSignatureHexEncoded)
+#endif
+        )
     {
         try
         {
@@ -578,11 +614,47 @@ string FileSizeToString(int fileSize)
 
     if (suffix == "B")
     {
-        sprintf(buf, "%.0f %s", units, suffix.c_str());
+        snprintf(buf, 256, "%.0f %s", units, suffix.c_str());
     }
     else
     {
-        sprintf(buf, "%.2f %s", units, suffix.c_str());
+        snprintf(buf, 256, "%.2f %s", units, suffix.c_str());
+    }
+
+    return string(buf);
+}
+
+string PartialFileSizeToString(int fileSize, int totalFileSize)
+{
+    string suffix = "B";
+    double fileSizeDouble = (double)fileSize;
+    double units = (double)totalFileSize;
+
+    if (units > 1000000000)
+    {
+        fileSizeDouble /= 1000000000;
+        suffix = "GB";
+    }
+    else if (units > 1000000)
+    {
+        fileSizeDouble /= 1000000;
+        suffix = "MB";
+    }
+    else if (units > 1000)
+    {
+        fileSizeDouble /= 1000;
+        suffix = "KB";
+    }
+
+    char buf[256];
+
+    if (suffix == "B")
+    {
+        snprintf(buf, 256, "%.0f", fileSizeDouble);
+    }
+    else
+    {
+        snprintf(buf, 256, "%.2f", fileSizeDouble);
     }
 
     return string(buf);
@@ -604,14 +676,14 @@ bool PromptUserToDownloadUpdates(Version currentVersion, Version newVersion, int
     buttonData[1].flags = SDL_MESSAGEBOX_BUTTON_RETURNKEY_DEFAULT;
 
     char updateMessage[1024];
-    sprintf(
-        updateMessage, "A newer version of My Little Investigations is available for download.\n\nCurrent version: %s\nNewest version: %s\n\nDownload update? (Download size: %s. Requires administrator privileges.)",
+    snprintf(
+        updateMessage, 1024, gpLocalizableContent->GetText("Updater/AskToUpdateMessageBoxBodyText").c_str(),
         ((string)currentVersion).c_str(),
         ((string)newVersion).c_str(),
         totalFileSizeString.c_str());
 
     messageBoxData.flags = SDL_MESSAGEBOX_INFORMATION;
-    messageBoxData.title = "Update available";
+    messageBoxData.title = gpLocalizableContent->GetText("Updater/AskToUpdateMessageBoxTitleText").c_str();
     messageBoxData.message = updateMessage;
     messageBoxData.buttons = buttonData;
     messageBoxData.numbuttons = 2;

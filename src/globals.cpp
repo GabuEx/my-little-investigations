@@ -34,6 +34,10 @@
 #include <SDL2/SDL.h>
 #endif
 
+#ifdef UPDATER
+#include "MLIFont.h"
+#endif
+
 SDL_Window *gpWindow = NULL;
 SDL_Renderer *gpRenderer = NULL;
 Uint16 gScreenWidth = 0;
@@ -74,8 +78,13 @@ bool gEnableDebugMode = false;
 double gBackgroundMusicVolume = 0.2;
 double gSoundEffectsVolume = 0.67;
 double gVoiceVolume = 0.5;
-string gLocalizedResourcesFileName = "common_en-US.dat";
+#endif
 
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
+string gLocalizedResourcesFileName = "common_en-US.dat";
+#endif
+
+#ifdef GAME_EXECUTABLE
 bool gEnableTutorialsDefault = gEnableTutorials;
 bool gEnableHintsDefault = gEnableHints;
 bool gEnableFullscreenDefault = gEnableFullscreen;
@@ -102,9 +111,11 @@ Version gVersion(1, 0, 0);
 
 #ifdef UPDATER
 string gVersionsXmlFilePath = "";
+string gUpdateScriptFilePath = "";
+MLIFont *gpUpdatingFont = NULL;
 #endif
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 LocalizableContent *gpLocalizableContent = NULL;
 #endif
 

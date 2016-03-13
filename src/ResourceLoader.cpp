@@ -36,6 +36,7 @@
 
 ResourceLoader * ResourceLoader::pInstance = NULL;
 
+#ifdef GAME_EXECUTABLE
 void ResourceLoader::LoadImageStep::Execute()
 {
     Case::GetInstance()->GetSpriteManager()->LoadImageFromFilePath(spriteId);
@@ -55,6 +56,7 @@ void ResourceLoader::DeleteVideoStep::Execute()
 {
     pVideo->UnloadFile();
 }
+#endif
 
 void ResourceLoader::Close()
 {
@@ -62,6 +64,7 @@ void ResourceLoader::Close()
     pInstance = NULL;
 }
 
+#ifdef GAME_EXECUTABLE
 bool ResourceLoader::Init(const string &commonResourcesFilePath, const string &commonLocalizedResourcesFilePath)
 {
     ArchiveSource *pCommonResourcesSource = NULL;
@@ -96,11 +99,10 @@ bool ResourceLoader::LoadNewCommonLocalizedResources(const string &commonLocaliz
 
     return retVal;
 }
+#endif
 
 bool ResourceLoader::LoadTemporaryCommonLocalizedResources(const string &commonLocalizedResourcesFilePath)
 {
-    UnloadTemporaryCommonLocalizedResources();
-
     pCachedCommonLocalizedResourcesSource = pCommonLocalizedResourcesSource;
     pCommonLocalizedResourcesSource = NULL;
 
@@ -116,14 +118,12 @@ bool ResourceLoader::LoadTemporaryCommonLocalizedResources(const string &commonL
 
 void ResourceLoader::UnloadTemporaryCommonLocalizedResources()
 {
-    if (pCachedCommonLocalizedResourcesSource != NULL)
-    {
-        delete pCommonLocalizedResourcesSource;
-        pCommonLocalizedResourcesSource = pCachedCommonLocalizedResourcesSource;
-        pCachedCommonLocalizedResourcesSource = NULL;
-    }
+    delete pCommonLocalizedResourcesSource;
+    pCommonLocalizedResourcesSource = pCachedCommonLocalizedResourcesSource;
+    pCachedCommonLocalizedResourcesSource = NULL;
 }
 
+#ifdef GAME_EXECUTABLE
 bool ResourceLoader::LoadCase(const string &caseFilePath)
 {
     bool retVal;
@@ -231,26 +231,31 @@ void ResourceLoader::ReloadImage(Image *pSprite, const string &originFilePath)
 
     free(pMemToFree);
 }
+#endif
 
 tinyxml2::XMLDocument * ResourceLoader::LoadDocument(const string &relativeFilePath)
 {
     void *pMemToFree = NULL;
     SDL_RWops * pRW = NULL;
 
+#ifdef GAME_EXECUTABLE
     if (pLoadingSemaphore != NULL)
     {
         SDL_SemWait(pLoadingSemaphore);
+#endif
         if (pCommonLocalizedResourcesSource != NULL)
         {
             pRW = pCommonLocalizedResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
         }
 
+#ifdef GAME_EXECUTABLE
         if (pRW == NULL && pCaseResourcesSource != NULL)
         {
             pRW = pCaseResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
         }
         SDL_SemPost(pLoadingSemaphore);
     }
+#endif
 
     if (pRW == NULL) return NULL;
     tinyxml2::XMLDocument * pDocument = new tinyxml2::XMLDocument();
@@ -265,19 +270,25 @@ TTF_Font * ResourceLoader::LoadFont(const string &relativeFilePath, int ptSize, 
     *ppMemToFree = NULL;
     SDL_RWops * pRW = NULL;
 
+#ifdef GAME_EXECUTABLE
     SDL_SemWait(pLoadingSemaphore);
+#endif
     pRW = pCommonLocalizedResourcesSource->LoadFile(relativeFilePath, ppMemToFree);
 
+#ifdef GAME_EXECUTABLE
     if (pRW == NULL && pCaseResourcesSource != NULL)
     {
         pRW = pCaseResourcesSource->LoadFile(relativeFilePath, ppMemToFree);
     }
     SDL_SemPost(pLoadingSemaphore);
+#endif
+
     if (pRW == NULL) return NULL;
     TTF_Font *pFont = TTF_OpenFontRW(pRW, 1, ptSize);
     return pFont;
 }
 
+#ifdef GAME_EXECUTABLE
 void ResourceLoader::LoadVideo(
     const string &relativeFilePath,
     RWOpsIOContext **ppRWOpsIOContext,
@@ -711,23 +722,36 @@ void ResourceLoader::TryRunOneLoadStep()
         delete pStep;
     }
 }
+#endif
 
 ResourceLoader::ResourceLoader()
 {
+#ifdef GAME_EXECUTABLE
     pCommonResourcesSource = NULL;
+#endif
     pCommonLocalizedResourcesSource = NULL;
+    pCachedCommonLocalizedResourcesSource = NULL;
+#ifdef GAME_EXECUTABLE
     pCaseResourcesSource = NULL;
     pCachedCaseResourcesSource = NULL;
 
     pLoadingSemaphore = SDL_CreateSemaphore(1);
     pQueueSemaphore = SDL_CreateSemaphore(1);
     pLoadQueueSemaphore = SDL_CreateSemaphore(1);
+#endif
 }
 
 ResourceLoader::~ResourceLoader()
 {
+#ifdef GAME_EXECUTABLE
     delete pCommonResourcesSource;
     pCommonResourcesSource = NULL;
+#endif
+    delete pCommonLocalizedResourcesSource;
+    pCommonLocalizedResourcesSource = NULL;
+    delete pCachedCommonLocalizedResourcesSource;
+    pCachedCommonLocalizedResourcesSource = NULL;
+#ifdef GAME_EXECUTABLE
     delete pCaseResourcesSource;
     pCaseResourcesSource = NULL;
 
@@ -740,6 +764,7 @@ ResourceLoader::~ResourceLoader()
 
     smartSpriteQueue.clear();
     deleteTextureQueue.clear();
+#endif
 }
 
 ResourceLoader::ArchiveSource::~ArchiveSource()

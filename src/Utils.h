@@ -43,6 +43,8 @@ using namespace std;
 typedef int (*PFNPROGRESSCALLBACK)(void *, double, double, double, double);
 #endif
 
+string IntegerToString(unsigned int i);
+
 string ToUpperUnicode(const string& s);
 string ToProperCaseUnicode(const string& s);
 
@@ -58,6 +60,10 @@ int GetPreviousInsertionPosition(const string &s, int currentInsertionPosition);
 
 bool SignatureIsValid(const byte *pFileData, unsigned int fileSize, const string &hexEncodedSignature);
 
+#ifdef MLI_DEBUG
+bool DebugSignatureIsValid(const byte *pFileData, unsigned int fileSize, const string &hexEncodedSignature);
+#endif
+
 string UuidFromSHA256Hash(byte hash[]);
 
 #ifndef GAME_EXECUTABLE
@@ -65,6 +71,7 @@ bool RetrieveDataFromUriHttp(const string &uri, byte **ppByteDataFromUriHttp, si
 bool RetrieveStringFromUriHttp(const string &uri, string *pReturnString, PFNPROGRESSCALLBACK pfnProgressCallback = NULL, void *pProgressCallbackData = NULL);
 bool CheckIfUpdatesExist(string *pVersionsXmlContent);
 string FileSizeToString(int fileSize);
+string PartialFileSizeToString(int fileSize, int totalFileSize);
 bool PromptUserToDownloadUpdates(Version currentVersion, Version newVersion, int updateFileSize);
 #endif
 

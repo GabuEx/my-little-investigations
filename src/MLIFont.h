@@ -46,21 +46,21 @@
 #include "Vector2.h"
 #include "Cache.h"
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 #include "LocalizableContent.h"
 #endif
 
 using namespace std;
 
 class MLIFont
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     : public ILocalizableFont
 #endif
 {
 public:
     MLIFont(const string &ttfFilePath, int fontSize, int strokeWidth, bool invertedColors);
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     MLIFont(const string &fontId, int strokeWidth, bool invertedColors);
 #endif
 
@@ -68,7 +68,7 @@ public:
 
     void Reinit();
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     void ReloadFontInfo() override;
 #endif
 
