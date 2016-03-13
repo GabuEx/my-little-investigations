@@ -30,10 +30,7 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 #include "LocalizableContent.h"
-#endif
-
 #include "Version.h"
 
 #include <SDL2/SDL.h>
@@ -93,9 +90,7 @@ extern double gSoundEffectsVolume;
 extern double gVoiceVolume;
 #endif
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 extern string gLocalizedResourcesFileName;
-#endif
 
 #ifdef GAME_EXECUTABLE
 extern bool gEnableTutorialsDefault;
@@ -131,11 +126,8 @@ class MLIFont;
 extern MLIFont *gpUpdatingFont;
 #endif
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 class LocalizableContent;
-
 extern LocalizableContent *gpLocalizableContent;
-#endif
 
 void EnsureUIThread();
 

@@ -235,6 +235,7 @@ void ResourceLoader::ReloadImage(Image *pSprite, const string &originFilePath)
 
 tinyxml2::XMLDocument * ResourceLoader::LoadDocument(const string &relativeFilePath)
 {
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     void *pMemToFree = NULL;
     SDL_RWops * pRW = NULL;
 
@@ -263,8 +264,23 @@ tinyxml2::XMLDocument * ResourceLoader::LoadDocument(const string &relativeFileP
     SDL_RWclose(pRW);
     free(pMemToFree);
     return pDocument;
+#endif
+#ifdef LAUNCHER
+    stringstream ss;
+
+    if (pCommonLocalizedResourcesSource != NULL)
+    {
+        pCommonLocalizedResourcesSource->LoadFile(relativeFilePath, ss);
+    }
+
+    if (!ss) return NULL;
+    tinyxml2::XMLDocument * pDocument = new tinyxml2::XMLDocument();
+    pDocument->LoadFile(ss);
+    return pDocument;
+#endif
 }
 
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 TTF_Font * ResourceLoader::LoadFont(const string &relativeFilePath, int ptSize, void **ppMemToFree)
 {
     *ppMemToFree = NULL;
@@ -287,6 +303,7 @@ TTF_Font * ResourceLoader::LoadFont(const string &relativeFilePath, int ptSize, 
     TTF_Font *pFont = TTF_OpenFontRW(pRW, 1, ptSize);
     return pFont;
 }
+#endif
 
 #ifdef GAME_EXECUTABLE
 void ResourceLoader::LoadVideo(
@@ -786,6 +803,7 @@ bool ResourceLoader::ArchiveSource::CreateAndInit(const string &archiveFilePath,
     return true;
 }
 
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 SDL_RWops * ResourceLoader::ArchiveSource::LoadFile(const string &relativeFilePath, void **ppMemToFree)
 {
     size_t uncomp_size = 0;
@@ -799,6 +817,25 @@ SDL_RWops * ResourceLoader::ArchiveSource::LoadFile(const string &relativeFilePa
     *ppMemToFree = p;
     return SDL_RWFromMem(p, (unsigned int)uncomp_size);
 }
+#endif
+
+#ifdef LAUNCHER
+void ResourceLoader::ArchiveSource::LoadFile(const string &relativeFilePath, stringstream &ss)
+{
+    size_t uncomp_size = 0;
+    void *p = mz_zip_reader_extract_file_to_heap(&zip_archive, relativeFilePath.c_str(), &uncomp_size, 0);
+
+    if (p == NULL)
+    {
+        return;
+    }
+
+    string s(reinterpret_cast<char *>(p), uncomp_size);
+    free(p);
+
+    ss.str(s);
+}
+#endif
 
 void * ResourceLoader::ArchiveSource::LoadFileToMemory(const string &relativeFilePath, unsigned int *pSize)
 {

@@ -44,9 +44,7 @@
 #include <cryptopp/sha.h>
 #endif
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 #include "ResourceLoader.h"
-#endif
 
 #ifdef LAUNCHER
 #include "XmlReader.h"
@@ -147,6 +145,17 @@ int main(int argc, char * argv[])
         curl_global_init(CURL_GLOBAL_ALL);
         gpCurlHandle = curl_easy_init();
 
+        LoadConfigurations();
+
+        {
+            ResourceLoader::GetInstance()->LoadTemporaryCommonLocalizedResources(GetLocalizedCommonResourcesDirectoryPath() + gLocalizedResourcesFileName);
+
+            XmlReader localizableContentReader("XML/LocalizableContent.xml");
+            gpLocalizableContent = new LocalizableContent(&localizableContentReader);
+
+            ResourceLoader::GetInstance()->UnloadTemporaryCommonLocalizedResources();
+        }
+
         string versionsXmlContent;
 
         // First, we'll get whether or not there are any changes - if not, then no need to bother the user
@@ -180,13 +189,9 @@ int main(int argc, char * argv[])
     return 0;
 #else
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER) || defined(LAUNCHER)
     gTitle = title + string(" v") + (string)gVersion;
-#endif
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     LoadConfigurations();
-#endif
 
 #ifdef GAME_EXECUTABLE
     // Initialize the resource loader.  If this fails, the common resource data file is missing,
@@ -529,8 +534,6 @@ int main(int argc, char * argv[])
 #endif
 
     Game::Finish();
-
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     ResourceLoader::Close();
 
 #ifdef UPDATER
@@ -544,7 +547,6 @@ int main(int argc, char * argv[])
     // interact with it in their destructors.
     delete gpLocalizableContent;
     gpLocalizableContent = NULL;
-#endif
 
 #ifdef UPDATER
     // If we're currently in the updater and everything has gone smoothly,
