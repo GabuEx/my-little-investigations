@@ -49,7 +49,18 @@ public:
     std::string m_details; /**< Exception Details */
 };
 
-void PrintCallstack();
+#if defined(__OSX) || defined(__unix)
+#include <execinfo.h>
+
+#define PrintCallstack() \
+    { \
+        void *array[10]; \
+        size_t size = backtrace(array, 10); \
+        backtrace_symbols_fd(array, size, STDERR_FILENO); \
+    }
+#else
+#define PrintCallstack()
+#endif
 
 #ifdef MLI_DEBUG
 #define ThrowException(message) \

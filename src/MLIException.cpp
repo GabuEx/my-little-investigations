@@ -43,16 +43,3 @@ const char* MLIException::what() const throw()
 {
     return m_details.c_str();
 }
-
-void PrintCallstack()
-{
-#if defined(__OSX) || defined(__unix)
-  void *array[10];
-  size_t size;
-
-  // get void*'s for all entries on the stack
-  size = backtrace(array, 10);
-
-  backtrace_symbols_fd(array, size, STDERR_FILENO);
-#endif
-}
