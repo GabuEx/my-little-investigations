@@ -121,7 +121,7 @@ bool Version::operator>=(const Version &other) const
 Version::operator string()
 {
     char buf[16];
-    sprintf(buf, "%d.%d.%d", major, minor, revision);
+    snprintf(buf, 16, "%d.%d.%d", major, minor, revision);
     return string(buf);
 }
 

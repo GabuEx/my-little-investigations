@@ -40,9 +40,12 @@
 #endif
 
 #ifdef GAME_EXECUTABLE
-#include "ResourceLoader.h"
 #include "TextInputHelper.h"
 #include <cryptopp/sha.h>
+#endif
+
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
+#include "ResourceLoader.h"
 #endif
 
 #ifdef LAUNCHER
@@ -181,15 +184,17 @@ int main(int argc, char * argv[])
     gTitle = title + string(" v") + (string)gVersion;
 #endif
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     LoadConfigurations();
+#endif
 
+#ifdef GAME_EXECUTABLE
     // Initialize the resource loader.  If this fails, the common resource data file is missing,
     // which is a very bad thing.  Quit if this happens to be the case.
     if (!ResourceLoader::GetInstance()->Init(GetCommonResourcesFilePath(), GetLocalizedCommonResourcesDirectoryPath() + gLocalizedResourcesFileName))
     {
         char msg[256];
-        sprintf(msg, "Couldn't find common resources data files at %s and %s!", GetCommonResourcesFilePath().c_str(), (GetLocalizedCommonResourcesDirectoryPath() + gLocalizedResourcesFileName).c_str());
+        snprintf(msg, 256, "Couldn't find common resources data files at %s and %s!", GetCommonResourcesFilePath().c_str(), (GetLocalizedCommonResourcesDirectoryPath() + gLocalizedResourcesFileName).c_str());
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Couldn't start", msg, NULL);
         return 1;
     }
@@ -224,10 +229,26 @@ int main(int argc, char * argv[])
     {
         return 0;
     }
+#endif
 
+#ifdef GAME_EXECUTABLE
     {
         XmlReader localizableContentReader("XML/LocalizableContent.xml");
         gpLocalizableContent = new LocalizableContent(&localizableContentReader);
+    }
+#endif
+#ifdef UPDATER
+    {
+        TTF_Init();
+
+        ResourceLoader::GetInstance()->LoadTemporaryCommonLocalizedResources(GetLocalizedCommonResourcesDirectoryPath() + gLocalizedResourcesFileName);
+
+        XmlReader localizableContentReader("XML/LocalizableContent.xml");
+        gpLocalizableContent = new LocalizableContent(&localizableContentReader);
+
+        gpUpdatingFont = new MLIFont("UpdatingFont", 0, false);
+
+        ResourceLoader::GetInstance()->UnloadTemporaryCommonLocalizedResources();
     }
 #endif
 
@@ -235,7 +256,7 @@ int main(int argc, char * argv[])
     if (!Game::CreateAndInit())
     {
         char msg[256];
-        sprintf(msg, "Error initializing game: %s", SDL_GetError());
+        snprintf(msg, 256, "Error initializing game: %s", SDL_GetError());
         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Couldn't start", msg, NULL);
         return 1;
     }
@@ -509,8 +530,15 @@ int main(int argc, char * argv[])
 
     Game::Finish();
 
-#ifdef GAME_EXECUTABLE
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     ResourceLoader::Close();
+
+#ifdef UPDATER
+    delete gpUpdatingFont;
+    gpUpdatingFont = NULL;
+
+    TTF_Quit();
+#endif
 
     // Delete this at the very last possible moment, because many things
     // interact with it in their destructors.
@@ -520,12 +548,16 @@ int main(int argc, char * argv[])
 
 #ifdef UPDATER
     // If we're currently in the updater and everything has gone smoothly,
-    // then we want to launch the game executable now.
+    // then we want to run the updater script.
+    // If we fail to do so, we'll just launch the game executable.
 #ifdef __unix
     // If we're running under Unix, we need to drop our root privileges now.
     setuid(uid);
 #endif
-    LaunchGameExecutable();
+    if (gUpdateScriptFilePath.length() == 0 || !LaunchUpdaterScript(gUpdateScriptFilePath))
+    {
+        LaunchGameExecutable();
+    }
 #endif
 #endif
 

@@ -252,7 +252,7 @@ void Conversation::Begin(State *pState)
 
     if (pSkipArrow == NULL)
     {
-        pSkipArrow = new SkipArrow(789, 8 + TabHeight, 10, false /* isClickable */, true /* isFFwd */);
+        pSkipArrow = new SkipArrow(951, HAlignmentRight, 8 + TabHeight, 10, false /* isClickable */, true /* isFFwd */);
     }
 
     this->Reset();
@@ -3257,8 +3257,8 @@ void Confrontation::Draw(double xOffset, double yOffset)
         char playerHealthCStr[16] = { '\0' };
         char opponentHealthCStr[16] = { '\0' };
 
-        sprintf(&playerHealthCStr[0], "%d", GetPlayerHealth());
-        sprintf(&opponentHealthCStr[0], "%d", GetOpponentHealth());
+        snprintf(&playerHealthCStr[0], 16, "%d", GetPlayerHealth());
+        snprintf(&opponentHealthCStr[0], 16, "%d", GetOpponentHealth());
 
         string playerHealthString = playerHealthCStr;
         string opponentHealthString = opponentHealthCStr;

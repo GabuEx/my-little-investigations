@@ -255,9 +255,9 @@ Location::Location(XmlReader *pReader)
     pOptionsTab = new Tab(7, true /* isClickable */, gpLocalizableContent->GetText("Location/OptionsText"), false /* useCancelClickSoundEffect */, TabRowTop);
     pQuitTab = new Tab(gScreenWidth - (TabWidth + 7), true /* isClickable */, gpLocalizableContent->GetText("Location/QuitText"), false /* useCancelClickSoundEffect */, TabRowTop);
 
-    pQuitConfirmOverlay = new PromptOverlay(gpLocalizableContent->GetText("Location/QuitPromptText"), false /* allowsTextEntry */);
-    pQuitConfirmOverlay->AddButton(gpLocalizableContent->GetText("Location/YesText"));
-    pQuitConfirmOverlay->AddButton(gpLocalizableContent->GetText("Location/NoText"));
+    pQuitConfirmOverlay = new PromptOverlay("Location/QuitPromptText", false /* allowsTextEntry */);
+    pQuitConfirmOverlay->AddButton("Location/YesText");
+    pQuitConfirmOverlay->AddButton("Location/NoText");
     pQuitConfirmOverlay->FinalizeButtons();
 
     shouldAutosave = false;
@@ -1702,7 +1702,7 @@ void Location::Update(int delta)
                 MouseHelper::SetCursorType(cursorType);
 
                 char mouseOverText[256];
-                sprintf(mouseOverText, gpLocalizableContent->GetText("Location/LocationTransitionFormatText").c_str(), pTransition->GetTargetLocationName().c_str());
+                snprintf(mouseOverText, 256, gpLocalizableContent->GetText("Location/LocationTransitionFormatText").c_str(), pTransition->GetTargetLocationName().c_str());
 
                 MouseHelper::SetMouseOverText(string(mouseOverText));
                 elementWithMouseOverFound = true;

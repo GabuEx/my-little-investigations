@@ -78,7 +78,12 @@ CheckForUpdatesScreen::ScheduledAction * CheckForUpdatesScreen::PendingUpdate::P
         bool retrievedUpdateContent = RetrieveDataFromUriHttp(deltaLocation, &pDeltaContent, &deltaContentSize, CheckForUpdatesScreen::DownloadUpdatesProgressCallback, static_cast<CheckForUpdatesScreen *>(pOwningScreen));
 
         if (retrievedUpdateContent &&
-            SignatureIsValid((const byte *)pDeltaContent, deltaContentSize, signature))
+#ifdef MLI_DEBUG
+            DebugSignatureIsValid((const byte *)pDeltaContent, deltaContentSize, signature)
+#else
+            SignatureIsValid((const byte *)pDeltaContent, deltaContentSize, signature)
+#endif
+            )
         {
             string localDeltaFilePath = GetTempDirectoryPath() + GetFileNameFromUri(deltaLocation);
 
@@ -103,9 +108,30 @@ CheckForUpdatesScreen::ScheduledAction * CheckForUpdatesScreen::PendingUpdate::P
         bool retrievedFileContent = RetrieveDataFromUriHttp(deltaLocation, &pFileContent, &fileContentSize, CheckForUpdatesScreen::DownloadUpdatesProgressCallback, static_cast<CheckForUpdatesScreen *>(pOwningScreen));
 
         if (retrievedFileContent &&
-            SignatureIsValid((const byte *)pFileContent, fileContentSize, signature))
+#ifdef MLI_DEBUG
+            DebugSignatureIsValid((const byte *)pFileContent, fileContentSize, signature)
+#else
+            SignatureIsValid((const byte *)pFileContent, fileContentSize, signature)
+#endif
+            )
         {
             string stagingFilePath = GetTempDirectoryPath() + GetFileNameFromFilePath(GetFilePath()) + ".toadd";
+            ofstream fileStream(stagingFilePath.c_str(), ios_base::out | ios_base::trunc | ios_base::binary);
+
+            if (fileStream)
+            {
+                fileStream.write((const char *)pFileContent, fileContentSize);
+                fileStream.close();
+
+                delete [] pFileContent;
+            }
+            else
+            {
+                delete [] pFileContent;
+
+                return NULL;
+            }
+
             pScheduledAction = new CheckForUpdatesScreen::ScheduledAdd(stagingFilePath, GetFilePath(), pFileContent, fileContentSize);
         }
     }
@@ -118,74 +144,241 @@ CheckForUpdatesScreen::ScheduledAction * CheckForUpdatesScreen::PendingUpdate::P
     return pScheduledAction;
 }
 
-bool CheckForUpdatesScreen::ScheduledUpdate::PerformUpdate()
+string CheckForUpdatesScreen::ScheduledUpdate::GetApplyScriptFileInstrunctions(unsigned int versionUpdateIndex, unsigned int versionUpdateSubIndex)
 {
-    if (!RenameFile(newFilePath, oldFilePath))
-    {
-        return false;
-    }
+    char buf[256];
+    snprintf(buf, 256, gpLocalizableContent->GetText("Updater/PatchingText").c_str(), newFilePath.c_str());
 
-    bool success = ApplyDeltaFile(oldFilePath, deltaFilePath, newFilePath);
-    RemoveFile(deltaFilePath);
-    return success;
+    string scriptFileInstructions = GetPrintStringScriptInstructions(buf);
+    scriptFileInstructions += GetRenameFileScriptInstructions(newFilePath, oldFilePath);
+    scriptFileInstructions += GetCheckReturnValueScriptInstructions(versionUpdateIndex, versionUpdateSubIndex);
+    scriptFileInstructions += GetApplyDeltaFileScriptInstructions(oldFilePath, deltaFilePath, newFilePath);
+    scriptFileInstructions += GetCheckReturnValueScriptInstructions(versionUpdateIndex, versionUpdateSubIndex);
+    scriptFileInstructions += GetRemoveFileScriptInstructions(deltaFilePath);
+    return scriptFileInstructions;
+
 }
 
-void CheckForUpdatesScreen::ScheduledUpdate::RollBack()
+string CheckForUpdatesScreen::ScheduledUpdate::GetRollBackScriptFileInstrunctions()
 {
-    RemoveFile(newFilePath);
-    RenameFile(oldFilePath, newFilePath);
+    char buf[256];
+    snprintf(buf, 256, gpLocalizableContent->GetText("Updater/UndoingPatchText").c_str(), newFilePath.c_str());
+
+    string scriptFileInstructions = GetPrintStringScriptInstructions(buf);
+    scriptFileInstructions += GetRemoveFileScriptInstructions(newFilePath);
+    scriptFileInstructions += GetRenameFileScriptInstructions(oldFilePath, newFilePath);
+    return scriptFileInstructions;
 }
 
-void CheckForUpdatesScreen::ScheduledUpdate::Complete()
+string CheckForUpdatesScreen::ScheduledUpdate::GetCompletedScriptFileInstrunctions()
 {
-    RemoveFile(oldFilePath);
+    char buf[256];
+    snprintf(buf, 256, gpLocalizableContent->GetText("Updater/RemovingTemporaryFileText").c_str(), oldFilePath.c_str());
+
+    string scriptFileInstructions = GetPrintStringScriptInstructions(buf);
+    scriptFileInstructions += GetRemoveFileScriptInstructions(oldFilePath);
+    return scriptFileInstructions;
 }
 
-bool CheckForUpdatesScreen::ScheduledAdd::PerformUpdate()
+string CheckForUpdatesScreen::ScheduledAdd::GetApplyScriptFileInstrunctions(unsigned int versionUpdateIndex, unsigned int versionUpdateSubIndex)
 {
-    ofstream fileStream(stagingFilePath.c_str(), ios_base::out | ios_base::trunc | ios_base::binary);
+    char buf[256];
+    snprintf(buf, 256, gpLocalizableContent->GetText("Updater/AddingText").c_str(), newFilePath.c_str());
 
-    if (fileStream)
-    {
-        fileStream.write((const char *)pFileContent, fileContentSize);
-        fileStream.close();
-
-        delete [] pFileContent;
-
-        RemoveFile(newFilePath);
-        return RenameFile(stagingFilePath, newFilePath);
-    }
-    else
-    {
-        delete [] pFileContent;
-
-        return false;
-    }
+    string scriptFileInstructions = GetPrintStringScriptInstructions(buf);
+    scriptFileInstructions += GetRenameFileScriptInstructions(stagingFilePath, newFilePath);
+    scriptFileInstructions += GetCheckReturnValueScriptInstructions(versionUpdateIndex, versionUpdateSubIndex);
+    return scriptFileInstructions;
 }
 
-void CheckForUpdatesScreen::ScheduledAdd::RollBack()
+string CheckForUpdatesScreen::ScheduledAdd::GetRollBackScriptFileInstrunctions()
 {
-    RemoveFile(newFilePath);
+    char buf[256];
+    snprintf(buf, 256, gpLocalizableContent->GetText("Updater/UndoingAddText").c_str(), newFilePath.c_str());
+
+    string scriptFileInstructions = GetPrintStringScriptInstructions(buf);
+    scriptFileInstructions += GetRemoveFileScriptInstructions(newFilePath);
+    return scriptFileInstructions;
 }
 
-void CheckForUpdatesScreen::ScheduledAdd::Complete()
+string CheckForUpdatesScreen::ScheduledAdd::GetCompletedScriptFileInstrunctions()
 {
     // Nothing to do - the file already exists.
+    return "";
 }
 
-bool CheckForUpdatesScreen::ScheduledRemove::PerformUpdate()
+string CheckForUpdatesScreen::ScheduledRemove::GetApplyScriptFileInstrunctions(unsigned int versionUpdateIndex, unsigned int versionUpdateSubIndex)
 {
-    return RenameFile(oldFilePath, stagingFilePath);
+    char buf[256];
+    snprintf(buf, 256, gpLocalizableContent->GetText("Updater/RemovingText").c_str(), oldFilePath.c_str());
+
+    string scriptFileInstructions = GetPrintStringScriptInstructions(buf);
+    scriptFileInstructions += GetRenameFileScriptInstructions(oldFilePath, stagingFilePath);
+    scriptFileInstructions += GetCheckReturnValueScriptInstructions(versionUpdateIndex, versionUpdateSubIndex);
+    return scriptFileInstructions;
 }
 
-void CheckForUpdatesScreen::ScheduledRemove::RollBack()
+string CheckForUpdatesScreen::ScheduledRemove::GetRollBackScriptFileInstrunctions()
 {
-    RenameFile(stagingFilePath, oldFilePath);
+    char buf[256];
+    snprintf(buf, 256, gpLocalizableContent->GetText("Updater/UndoingRemoveText").c_str(), oldFilePath.c_str());
+
+    string scriptFileInstructions = GetPrintStringScriptInstructions(buf);
+    scriptFileInstructions += GetRenameFileScriptInstructions(stagingFilePath, oldFilePath);
+    return scriptFileInstructions;
 }
 
-void CheckForUpdatesScreen::ScheduledRemove::Complete()
+string CheckForUpdatesScreen::ScheduledRemove::GetCompletedScriptFileInstrunctions()
 {
-    RemoveFile(stagingFilePath);
+    char buf[256];
+    snprintf(buf, 256, gpLocalizableContent->GetText("Updater/RemovingTemporaryFileText").c_str(), stagingFilePath.c_str());
+
+    string scriptFileInstructions = GetPrintStringScriptInstructions(buf);
+    scriptFileInstructions += GetRemoveFileScriptInstructions(stagingFilePath);
+    return scriptFileInstructions;
+}
+
+CheckForUpdatesScreen::VersionIncrementScriptContents::VersionIncrementScriptContents()
+    : VersionIncrementScriptContents(0, "", "")
+{
+}
+
+CheckForUpdatesScreen::VersionIncrementScriptContents::VersionIncrementScriptContents(unsigned int index, const string &oldVersionString, const string &newVersionString)
+{
+    this->index = index;
+    this->oldVersionString = oldVersionString;
+    this->newVersionString = newVersionString;
+
+    applicationInstructionsList.clear();
+    rollBackInstructionsList.clear();
+    completionInstructionsList.clear();
+}
+
+CheckForUpdatesScreen::VersionIncrementScriptContents::VersionIncrementScriptContents(const VersionIncrementScriptContents &rhs)
+{
+    index = rhs.index;
+    oldVersionString = rhs.oldVersionString;
+    newVersionString = rhs.newVersionString;
+
+    applicationInstructionsList = rhs.applicationInstructionsList;
+    rollBackInstructionsList = rhs.rollBackInstructionsList;
+    completionInstructionsList = rhs.completionInstructionsList;
+}
+
+void CheckForUpdatesScreen::VersionIncrementScriptContents::AddInstructionSet(
+    const string &applicationInstructions,
+    const string &rollBackInstructions,
+    const string &completionInstructions)
+{
+    applicationInstructionsList.push_back(applicationInstructions);
+    rollBackInstructionsList.push_back(rollBackInstructions);
+    completionInstructionsList.push_back(completionInstructions);
+}
+
+string CheckForUpdatesScreen::VersionIncrementScriptContents::GenerateScriptContents()
+{
+    string scriptContents;
+
+    char buf[256];
+    snprintf(buf, 256, gpLocalizableContent->GetText("Updater/UpdatingToVersionText").c_str(), oldVersionString.c_str(), newVersionString.c_str());
+
+    scriptContents += GetPrintStringScriptInstructions(buf);
+    scriptContents += GetPrintEmptyLineScriptInstructions();
+
+#ifdef __WINDOWS
+    string errorLabelNamePrefix = ":HandleError" + IntegerToString(index);
+    string completionLabelName = ":PerformCompletion" + IntegerToString(index);
+
+    scriptContents += "goto :ExecuteVersionUpdate" + GetNewlineString() + GetNewlineString();
+    unsigned int subIndex = 1;
+
+    for (const string &rollBackInstructions : rollBackInstructionsList)
+    {
+        string errorLabelName = errorLabelNamePrefix + IntegerToString(subIndex);
+
+        scriptContents += errorLabelName + GetNewlineString();
+        scriptContents += rollBackInstructions;
+        scriptContents += "goto :eof" + GetNewlineString() + GetNewlineString();
+
+        subIndex++;
+    }
+
+    scriptContents += completionLabelName + GetNewlineString();
+
+    for (const string &completionInstructions : completionInstructionsList)
+    {
+        scriptContents += completionInstructions;
+    }
+
+    scriptContents += GetNewlineString();
+    scriptContents += GetWriteNewVersionScriptInstructions(newVersionString);
+    scriptContents += GetNewlineString();
+
+    scriptContents += "goto :eof" + GetNewlineString() + GetNewlineString();
+    scriptContents += ":ExecuteVersionUpdate" + GetNewlineString() + GetNewlineString();
+
+    for (const string &applicationInstructions : applicationInstructionsList)
+    {
+        scriptContents += applicationInstructions;
+    }
+
+    scriptContents += GetNewlineString();
+    scriptContents += "call " + completionLabelName + GetNewlineString();
+    scriptContents += GetPrintEmptyLineScriptInstructions();
+#elif defined(__OSX) || defined(__unix)
+    string errorFunctionNamePrefix = "HandleError" + IntegerToString(index);
+    string completionFunctionName = "PerformCompletion" + IntegerToString(index);
+    unsigned int subIndex = 1;
+
+    for (const string &rollBackInstructions : rollBackInstructionsList)
+    {
+        string errorFunctionName = errorFunctionNamePrefix + IntegerToString(subIndex);
+
+        scriptContents += errorFunctionName + " ()" + GetNewlineString();
+        scriptContents += "{" + GetNewlineString();
+        scriptContents += rollBackInstructions;
+        scriptContents += "}" + GetNewlineString() + GetNewlineString();
+
+        subIndex++;
+    }
+
+    scriptContents += completionFunctionName + " ()" + GetNewlineString();
+    scriptContents += "{" + GetNewlineString();
+
+    for (const string &completionInstructions : completionInstructionsList)
+    {
+        scriptContents += completionInstructions;
+    }
+
+    scriptContents += "}" + GetNewlineString() + GetNewlineString();
+
+    for (const string &applicationInstructions : applicationInstructionsList)
+    {
+        scriptContents += applicationInstructions;
+    }
+#else
+#error NOT IMPLEMENTED
+#endif
+
+    return scriptContents;
+}
+
+CheckForUpdatesScreen::VersionIncrementScriptContents & CheckForUpdatesScreen::VersionIncrementScriptContents::operator=(const VersionIncrementScriptContents &rhs)
+{
+    if (this == &rhs)
+    {
+        return *this;
+    }
+
+    index = rhs.index;
+    oldVersionString = rhs.oldVersionString;
+    newVersionString = rhs.newVersionString;
+
+    applicationInstructionsList = rhs.applicationInstructionsList;
+    rollBackInstructionsList = rhs.rollBackInstructionsList;
+    completionInstructionsList = rhs.completionInstructionsList;
+
+    return *this;
 }
 
 CheckForUpdatesScreen::CheckForUpdatesScreen(MLIFont *pTextDisplayFont)
@@ -198,9 +391,6 @@ CheckForUpdatesScreen::CheckForUpdatesScreen(MLIFont *pTextDisplayFont)
 CheckForUpdatesScreen::~CheckForUpdatesScreen()
 {
     UnloadResources();
-
-    delete pTextDisplayFont;
-    pTextDisplayFont = NULL;
 
     SDL_DestroySemaphore(pInteropSemaphore);
     pInteropSemaphore = NULL;
@@ -235,11 +425,6 @@ void CheckForUpdatesScreen::Init()
     wasErrorInDownload = false;
     problemUpdateFileForDownload = "";
     totalUpdateCount = 0;
-
-    applicationComplete = false;
-    wasErrorInApplication = false;
-    problemUpdateFileForApplication = "";
-    currentUpdateIndex = 0;
 
     SDL_CreateThread(CheckForUpdatesScreen::CheckForUpdatesStatic, "CheckForUpdatesThread", this);
 }
@@ -291,7 +476,7 @@ void CheckForUpdatesScreen::CheckForUpdates()
 
                 if (gVersion < newVersion)
                 {
-                    pendingUpdate = PendingUpdate();
+                    pendingUpdate = PendingUpdate(newVersion);
 
                     if (newVersion > newestVersionLocal)
                     {
@@ -454,17 +639,24 @@ int CheckForUpdatesScreen::DownloadUpdatesStatic(void *pData)
 
 void CheckForUpdatesScreen::DownloadUpdates()
 {
+    vector<VersionIncrementScriptContents> versionIncrementScriptContentsList;
+    string oldVersionString = ((string)gVersion);
+
+    unsigned int versionUpdateIndex = 1;
+
     while (!pendingUpdateStack.empty())
     {
         PendingUpdate pendingUpdate = pendingUpdateStack.top();
         pendingUpdateStack.pop();
 
-        string deltaLocationUri;
-        string deltaContentSignature;
-        string filePathToApplyTo;
-        string newVersionString;
+        string newVersionString = pendingUpdate.GetNewVersionString();
+
+        VersionIncrementScriptContents versionIncrementScriptContents(versionUpdateIndex, oldVersionString, newVersionString);
 
         pendingUpdate.BeginFileUpdateIteration();
+        string undoScriptInstructions;
+
+        unsigned int versionUpdateSubIndex = 1;
 
         while (pendingUpdate.MoveToNextFileUpdate())
         {
@@ -472,7 +664,12 @@ void CheckForUpdatesScreen::DownloadUpdates()
 
             if (pScheduledAction != NULL)
             {
-                scheduledActionQueue.push(pScheduledAction);
+                undoScriptInstructions = pScheduledAction->GetRollBackScriptFileInstrunctions() + undoScriptInstructions;
+
+                versionIncrementScriptContents.AddInstructionSet(
+                    pScheduledAction->GetApplyScriptFileInstrunctions(versionUpdateIndex, versionUpdateSubIndex),
+                    undoScriptInstructions,
+                    pScheduledAction->GetCompletedScriptFileInstrunctions());
 
                 SDL_SemWait(pInteropSemaphore);
                 totalUpdateCount++;
@@ -488,13 +685,37 @@ void CheckForUpdatesScreen::DownloadUpdates()
 
                 return;
             }
+
+            versionUpdateSubIndex++;
         }
+
+        versionIncrementScriptContentsList.push_back(versionIncrementScriptContents);
+
+        oldVersionString = newVersionString;
+        versionUpdateIndex++;
     }
+
+    string scriptFileContents = GetScriptInstructionsHeader();
+    scriptFileContents += GetPrintStringScriptInstructions(gpLocalizableContent->GetText("Updater/UpdateWarningText"));
+    scriptFileContents += GetPrintEmptyLineScriptInstructions();
+    scriptFileContents += GetWaitForExitScriptInstructions();
+    scriptFileContents += GetPrintEmptyLineScriptInstructions();
+
+    for (VersionIncrementScriptContents versionIncrementScriptContents : versionIncrementScriptContentsList)
+    {
+        scriptFileContents += versionIncrementScriptContents.GenerateScriptContents();
+    }
+
+    scriptFileContents += GetPrintStringScriptInstructions(gpLocalizableContent->GetText("Updater/UpdateCompleteText"));
+    scriptFileContents += GetPrintEmptyLineScriptInstructions();
+    scriptFileContents += GetPrintStringScriptInstructions(gpLocalizableContent->GetText("Updater/StartingExecutableText"));
+    scriptFileContents += GetStartGameScriptInstructions();
+
+    gUpdateScriptFilePath = CreateUpdateScript(scriptFileContents);
 
     SDL_SemWait(pInteropSemaphore);
     downloadComplete = true;
     wasErrorInDownload = false;
-    currentUpdateIndex = 1;
     SDL_SemPost(pInteropSemaphore);
 }
 
@@ -514,81 +735,6 @@ void CheckForUpdatesScreen::UpdateDownloadProgress(double newBytesDownloaded)
 {
     SDL_SemWait(pInteropSemaphore);
     totalBytesDownloaded += newBytesDownloaded;
-    SDL_SemPost(pInteropSemaphore);
-}
-
-int CheckForUpdatesScreen::ApplyUpdatesStatic(void *pData)
-{
-    CheckForUpdatesScreen *pScreen = reinterpret_cast<CheckForUpdatesScreen *>(pData);
-    pScreen->ApplyUpdates();
-    return 0;
-}
-
-void CheckForUpdatesScreen::ApplyUpdates()
-{
-    while (!scheduledActionQueue.empty())
-    {
-        CheckForUpdatesScreen::ScheduledAction *pScheduledAction = scheduledActionQueue.front();
-        scheduledActionQueue.pop();
-
-        bool updateWasPerformed = pScheduledAction->PerformUpdate();
-
-        SDL_SemWait(pInteropSemaphore);
-        bool updatesCanceledLocal = updatesCanceled;
-        SDL_SemPost(pInteropSemaphore);
-
-        if (!updateWasPerformed || updatesCanceledLocal)
-        {
-            // If we failed to perform an update or if the update was canceled,
-            // then we're in a bad state - we should roll back all applied updates
-            // to ensure we end up back in a good state.
-            pScheduledAction->RollBack();
-
-            while (!completedActionStack.empty())
-            {
-                CheckForUpdatesScreen::ScheduledAction *pCompletedAction = completedActionStack.top();
-                completedActionStack.pop();
-
-                pCompletedAction->RollBack();
-                delete pCompletedAction;
-            }
-
-            SDL_SemWait(pInteropSemaphore);
-            applicationComplete = true;
-            wasErrorInApplication = true;
-            problemUpdateFileForApplication = pScheduledAction->GetUpdatedFileFilePath();
-            SDL_SemPost(pInteropSemaphore);
-
-            delete pScheduledAction;
-            return;
-        }
-        else
-        {
-            SDL_SemWait(pInteropSemaphore);
-            if (!scheduledActionQueue.empty())
-            {
-                currentUpdateIndex++;
-            }
-            SDL_SemPost(pInteropSemaphore);
-
-            completedActionStack.push(pScheduledAction);
-        }
-    }
-
-    // If all scheduled updates were completed successfully,
-    // then we don't need the old files anymore, so we can delete them.
-    while (!completedActionStack.empty())
-    {
-        CheckForUpdatesScreen::ScheduledAction *pCompletedAction = completedActionStack.top();
-        completedActionStack.pop();
-
-        pCompletedAction->Complete();
-        delete pCompletedAction;
-    }
-
-    SDL_SemWait(pInteropSemaphore);
-    applicationComplete = true;
-    wasErrorInApplication = false;
     SDL_SemPost(pInteropSemaphore);
 }
 
@@ -612,10 +758,6 @@ void CheckForUpdatesScreen::Update(int delta)
 
     case StateDownloadingUpdates:
         UpdateDownloadingUpdates(delta);
-        break;
-
-    case StateApplyingUpdates:
-        UpdateApplyingUpdates(delta);
         break;
     }
 }
@@ -706,74 +848,21 @@ void CheckForUpdatesScreen::UpdateDownloadingUpdates(int delta)
     {
         if (!wasErrorInDownloadLocal)
         {
-            numDots = 1;
-            timeSinceLastDotsUpdate = 0;
-
-            currentState = StateApplyingUpdates;
-            SDL_CreateThread(CheckForUpdatesScreen::ApplyUpdatesStatic, "ApplyUpdatesThread", this);
+            Finish();
         }
         else
         {
             if (!updatesCanceled)
             {
                 char error[1024];
-                sprintf(error, "An error was encountered while downloading updates. The update for %s was corrupt.\n\nSorry about that. Try again later.", GetFileNameFromFilePath(ConvertSeparatorsInPath(problemUpdateFileForDownloadLocal)).c_str());
-                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error applying updates", error, gpWindow);
+                sprintf(error, gpLocalizableContent->GetText("Updater/ErrorEncounteredMessageBoxBodyText").c_str(), GetFileNameFromFilePath(ConvertSeparatorsInPath(problemUpdateFileForDownloadLocal)).c_str());
+                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, gpLocalizableContent->GetText("Updater/ErrorEncounteredMessageBoxTitleText").c_str(), error, gpWindow);
             }
 
             Finish();
         }
     }
     else if (updatesCanceled)
-    {
-        timeSinceLastDotsUpdate += delta;
-
-        while (timeSinceLastDotsUpdate > DotsUpdateDelayMs)
-        {
-            timeSinceLastDotsUpdate -= DotsUpdateDelayMs;
-            numDots++;
-
-            if (numDots > 3)
-            {
-                numDots = 1;
-            }
-        }
-    }
-}
-
-void CheckForUpdatesScreen::UpdateApplyingUpdates(int delta)
-{
-    SDL_SemWait(pInteropSemaphore);
-    if (gIsQuitting)
-    {
-        updatesCanceled = true;
-        gIsQuitting = false;
-    }
-
-    bool applicationCompleteLocal = applicationComplete;
-    bool wasErrorInApplicationLocal = wasErrorInApplication;
-    string problemUpdateFileForApplicationLocal = problemUpdateFileForApplication;
-    SDL_SemPost(pInteropSemaphore);
-
-    if (applicationCompleteLocal)
-    {
-        if (wasErrorInApplicationLocal)
-        {
-            if (!updatesCanceled)
-            {
-                char error[1024];
-                sprintf(error, "An error was encountered while applying updates. Failed updating %s.\n\nSorry about that. Try again later.", GetFileNameFromFilePath(ConvertSeparatorsInPath(problemUpdateFileForApplicationLocal)).c_str());
-                SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error applying updates", error, gpWindow);
-            }
-        }
-        else
-        {
-            WriteNewVersion(newestVersion);
-        }
-
-        Finish();
-    }
-    else
     {
         timeSinceLastDotsUpdate += delta;
 
@@ -814,12 +903,24 @@ string CheckForUpdatesScreen::GetStatusString(string *pStringForWidth)
 
     if (updatesCanceledLocal)
     {
-        statusString = "Canceling updates";
-        *pStringForWidth = statusString;
+        *pStringForWidth = gpLocalizableContent->GetText("Updater/CancelingUpdatesTextForWidth");
 
-        for (int i = 0; i < numDots; i++)
+        switch (numDots)
         {
-            statusString += ".";
+        case 1:
+            statusString = gpLocalizableContent->GetText("Updater/CancelingUpdatesText0");
+            break;
+
+        case 2:
+            statusString = gpLocalizableContent->GetText("Updater/CancelingUpdatesText1");
+            break;
+
+        case 3:
+            statusString = gpLocalizableContent->GetText("Updater/CancelingUpdatesText2");
+            break;
+
+        default:
+            throw new MLIException("We should never have less than one or greater than three dots.");
         }
     }
     else
@@ -833,10 +934,6 @@ string CheckForUpdatesScreen::GetStatusString(string *pStringForWidth)
         case StateDownloadingUpdates:
             statusString = GetDownloadingUpdatesString(pStringForWidth);
             break;
-
-        case StateApplyingUpdates:
-            statusString = GetApplyingUpdatesString(pStringForWidth);
-            break;
         }
     }
 
@@ -845,15 +942,25 @@ string CheckForUpdatesScreen::GetStatusString(string *pStringForWidth)
 
 string CheckForUpdatesScreen::GetCheckingForUpdatesString(string *pStringForWidth)
 {
-    string statusString = "Checking for updates";
-    *pStringForWidth = statusString;
+    *pStringForWidth = gpLocalizableContent->GetText("Updater/CheckingForUpdatesTextForWidth");
 
-    for (int i = 0; i < numDots; i++)
+    switch (numDots)
     {
-        statusString += ".";
-    }
+    case 1:
+        return gpLocalizableContent->GetText("Updater/CheckingForUpdatesText0");
+        break;
 
-    return statusString;
+    case 2:
+        return gpLocalizableContent->GetText("Updater/CheckingForUpdatesText1");
+        break;
+
+    case 3:
+        return gpLocalizableContent->GetText("Updater/CheckingForUpdatesText2");
+        break;
+
+    default:
+        throw new MLIException("We should never have less than one or greater than three dots.");
+    }
 }
 
 string CheckForUpdatesScreen::GetDownloadingUpdatesString(string *pStringForWidth)
@@ -863,36 +970,12 @@ string CheckForUpdatesScreen::GetDownloadingUpdatesString(string *pStringForWidt
     SDL_SemPost(pInteropSemaphore);
 
     char statusString[256];
-    sprintf(statusString, "Downloading updates (%d%% of %s)", (int)(100 * totalBytesDownloadedLocal / totalFileSize + 0.5), totalFileSizeString.c_str());
+    sprintf(statusString, gpLocalizableContent->GetText("Updater/DownloadingUpdatesText").c_str(), PartialFileSizeToString(totalBytesDownloadedLocal, totalFileSize).c_str(), totalFileSizeString.c_str());
     char statusStringForWidth[256];
-    sprintf(statusStringForWidth, "Downloading updates (100%% of %s)", totalFileSizeString.c_str());
+    sprintf(statusStringForWidth, gpLocalizableContent->GetText("Updater/DownloadingUpdatesText").c_str(), totalFileSizeString.c_str(), totalFileSizeString.c_str());
 
     *pStringForWidth = string(statusStringForWidth);
     return string(statusString);
-}
-
-string CheckForUpdatesScreen::GetApplyingUpdatesString(string *pStringForWidth)
-{
-    SDL_SemWait(pInteropSemaphore);
-    int totalUpdateCountLocal = totalUpdateCount;
-    int currentUpdateIndexLocal = currentUpdateIndex;
-    SDL_SemPost(pInteropSemaphore);
-
-    char updateString[256];
-    sprintf(updateString, "Applying updates (%d of %d)", currentUpdateIndexLocal, totalUpdateCountLocal);
-
-    char updateStringForWidth[256];
-    sprintf(updateStringForWidth, "Applying updates (%d of %d)", totalUpdateCountLocal, totalUpdateCountLocal);
-
-    string statusString = string(updateString);
-    *pStringForWidth = string(updateStringForWidth);
-
-    for (int i = 0; i < numDots; i++)
-    {
-        statusString += ".";
-    }
-
-    return statusString;
 }
 
 void CheckForUpdatesScreen::Finish()

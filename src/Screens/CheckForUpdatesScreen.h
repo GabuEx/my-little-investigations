@@ -52,7 +52,6 @@ private:
     {
         StateCheckingForUpdates,
         StateDownloadingUpdates,
-        StateApplyingUpdates,
     };
 
     class ScheduledAction;
@@ -144,6 +143,17 @@ private:
             pendingFileUpdates.clear();
         }
 
+        PendingUpdate(string newVersionString)
+            : PendingUpdate()
+        {
+            this->newVersionString = newVersionString;
+        }
+
+        string GetNewVersionString()
+        {
+            return newVersionString;
+        }
+
         void AddFileUpdate(string fileName, string newVersionString, string fileLocation, string action, int deltaSize, string deltaLocation, string signature, CheckForUpdatesScreen *pOwningScreen)
         {
             pendingFileUpdates.push_back(PendingFileUpdate(fileName, newVersionString, fileLocation, action, deltaSize, deltaLocation, signature, pOwningScreen));
@@ -181,6 +191,7 @@ private:
         vector<PendingFileUpdate>::iterator pendingFileUpdatesIterator;
 
         PendingFileUpdate *pCurrentFileUpdate;
+        string newVersionString;
     };
 
     class ScheduledAction
@@ -195,9 +206,9 @@ private:
 
         string GetUpdatedFileFilePath() { return updatedFileFilePath; }
 
-        virtual bool PerformUpdate() = 0;
-        virtual void RollBack() = 0;
-        virtual void Complete() = 0;
+        virtual string GetApplyScriptFileInstrunctions(unsigned int versionUpdateIndex, unsigned int versionUpdateSubIndex) = 0;
+        virtual string GetRollBackScriptFileInstrunctions() = 0;
+        virtual string GetCompletedScriptFileInstrunctions() = 0;
 
     private:
         string updatedFileFilePath;
@@ -214,9 +225,9 @@ private:
             this->newFilePath = newFilePath;
         }
 
-        virtual bool PerformUpdate();
-        virtual void RollBack();
-        virtual void Complete();
+        virtual string GetApplyScriptFileInstrunctions(unsigned int versionUpdateIndex, unsigned int versionUpdateSubIndex);
+        virtual string GetRollBackScriptFileInstrunctions();
+        virtual string GetCompletedScriptFileInstrunctions();
 
     private:
         string oldFilePath;
@@ -236,9 +247,9 @@ private:
             this->fileContentSize = fileContentSize;
         }
 
-        virtual bool PerformUpdate();
-        virtual void RollBack();
-        virtual void Complete();
+        virtual string GetApplyScriptFileInstrunctions(unsigned int versionUpdateIndex, unsigned int versionUpdateSubIndex);
+        virtual string GetRollBackScriptFileInstrunctions();
+        virtual string GetCompletedScriptFileInstrunctions();
 
     private:
         string stagingFilePath;
@@ -257,13 +268,39 @@ private:
             this->oldFilePath = oldFilePath;
         }
 
-        virtual bool PerformUpdate();
-        virtual void RollBack();
-        virtual void Complete();
+        virtual string GetApplyScriptFileInstrunctions(unsigned int versionUpdateIndex, unsigned int versionUpdateSubIndex);
+        virtual string GetRollBackScriptFileInstrunctions();
+        virtual string GetCompletedScriptFileInstrunctions();
 
     private:
         string stagingFilePath;
         string oldFilePath;
+    };
+
+    class VersionIncrementScriptContents
+    {
+    public:
+        VersionIncrementScriptContents();
+        VersionIncrementScriptContents(unsigned int index, const string &oldVersionString, const string &newVersionString);
+        VersionIncrementScriptContents(const VersionIncrementScriptContents &rhs);
+
+        void AddInstructionSet(
+            const string &applicationInstructions,
+            const string &rollBackInstructions,
+            const string &completionInstructions);
+
+        string GenerateScriptContents();
+
+        VersionIncrementScriptContents & operator=(const VersionIncrementScriptContents &rhs);
+
+    private:
+        unsigned int index;
+        string oldVersionString;
+        string newVersionString;
+
+        vector<string> applicationInstructionsList;
+        vector<string> rollBackInstructionsList;
+        vector<string> completionInstructionsList;
     };
 
 public:
@@ -283,21 +320,16 @@ public:
     static int DownloadUpdatesProgressCallback(void *pScreen, double downloadTotal, double downloadNow, double uploadTotal, double uploadNow);
     void UpdateDownloadProgress(double newBytesDownloaded);
 
-    static int ApplyUpdatesStatic(void *pData);
-    void ApplyUpdates();
-
     void Update(int delta);
 
     void UpdateCheckingForUpdates(int delta);
     void UpdateDownloadingUpdates(int delta);
-    void UpdateApplyingUpdates(int delta);
 
     void Draw();
 
     string GetStatusString(string *pStringForWidth);
     string GetCheckingForUpdatesString(string *pStringForWidth);
     string GetDownloadingUpdatesString(string *pStringForWidth);
-    string GetApplyingUpdatesString(string *pStringForWidth);
 
     void Finish();
 
@@ -328,13 +360,6 @@ private:
     bool downloadComplete;
     bool wasErrorInDownload;
     string problemUpdateFileForDownload;
-
-    // Applying updates fields
-    bool applicationComplete;
-    bool wasErrorInApplication;
-    string problemUpdateFileForApplication;
-    stack<ScheduledAction *> completedActionStack;
-    int currentUpdateIndex;
 };
 
 #endif

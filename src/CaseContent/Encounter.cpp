@@ -821,7 +821,7 @@ void Encounter::RefreshButtonArrayContents()
                 ButtonArrayLoadParameters loadParameters;
 
                 char text[256];
-                sprintf(text, gpLocalizableContent->GetText("Encounter/InterrogationDesignationFormatText").c_str(), pInterrogation->GetName().c_str());
+                snprintf(text, 256, gpLocalizableContent->GetText("Encounter/InterrogationDesignationFormatText").c_str(), pInterrogation->GetName().c_str());
 
                 loadParameters.text = string(text);
                 loadParametersList.push_back(loadParameters);
@@ -840,7 +840,7 @@ void Encounter::RefreshButtonArrayContents()
                 ButtonArrayLoadParameters loadParameters;
 
                 char text[256];
-                sprintf(text, gpLocalizableContent->GetText("Encounter/ConfrontationDesignationFormatText").c_str(), pConfrontation->GetName().c_str());
+                snprintf(text, 256, gpLocalizableContent->GetText("Encounter/ConfrontationDesignationFormatText").c_str(), pConfrontation->GetName().c_str());
 
                 loadParameters.text = string(text);
                 loadParametersList.push_back(loadParameters);

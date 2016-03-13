@@ -274,11 +274,9 @@ bool Game::CreateAndInit()
     {
         ResourceLoader::GetInstance()->PreloadSound(sfxIdList[i], "SFX/" + sfxIdList[i]);
     }
-#endif
 
     TTF_Init();
 
-#ifdef GAME_EXECUTABLE
     MouseHelper::Init();
     KeyboardHelper::Init();
     TextInputHelper::Init();
@@ -441,10 +439,10 @@ void Game::Finish()
     delete pInstance;
     pInstance = NULL;
 
+#ifdef GAME_EXECUTABLE
     // Close all open fonts and shut down the font thread.
     TTF_Quit();
 
-#ifdef GAME_EXECUTABLE
     EventProviders::Close();
 #endif
 
@@ -626,7 +624,7 @@ void Game::Init()
     screenFromIdMap[SAVE_SCREEN_ID] = new SelectionScreen(SelectionScreenTypeSaveGame);
 #endif
 #ifdef UPDATER
-    screenFromIdMap[CHECK_FOR_UPDATES_SCREEN_ID] = new CheckForUpdatesScreen(new MLIFont(GetLauncherFontFilePath(), 30, 1, false));
+    screenFromIdMap[CHECK_FOR_UPDATES_SCREEN_ID] = new CheckForUpdatesScreen(gpUpdatingFont);
 #endif
 
 #ifdef GAME_EXECUTABLE
