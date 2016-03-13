@@ -38,7 +38,7 @@ LocalizableContent::Setting::Setting(string type, string value)
     }
     else
     {
-        throw new MLIException(string("Unknown setting type: ") + type);
+        ThrowException(string("Unknown setting type: ") + type);
     }
 }
 
@@ -66,7 +66,7 @@ LocalizableContent::FontInfo LocalizableContent::GetFontInfo(const string &fontI
     SDL_SemWait(pAccessSemaphore);
     if (fontIdToFontInfoMap.count(fontId) == 0)
     {
-        throw MLIException(string("Font info ID not found: ") + fontId);
+        ThrowException(string("Font info ID not found: ") + fontId);
     }
 
     returnValue = fontIdToFontInfoMap[fontId];
@@ -82,7 +82,7 @@ string LocalizableContent::GetText(const string &textId)
     SDL_SemWait(pAccessSemaphore);
     if (textIdToTextMap.count(textId) == 0)
     {
-        throw MLIException(string("Text ID not found: ") + textId);
+        ThrowException(string("Text ID not found: ") + textId);
     }
 
     returnValue = textIdToTextMap[textId];
@@ -98,12 +98,12 @@ bool LocalizableContent::GetBooleanSetting(const string &settingId)
     SDL_SemWait(pAccessSemaphore);
     if (settingIdToSettingMap.count(settingId) == 0)
     {
-        throw MLIException(string("Setting ID not found: ") + settingId);
+        ThrowException(string("Setting ID not found: ") + settingId);
     }
 
     if (settingIdToSettingMap[settingId].ValueType != LocalizableContent::Setting::Type::Boolean)
     {
-        throw MLIException(string("Setting ID ") + settingId + string(" is not a Boolean value."));
+        ThrowException(string("Setting ID ") + settingId + string(" is not a Boolean value."));
     }
 
     returnValue = settingIdToSettingMap[settingId].BooleanValue;
@@ -131,7 +131,7 @@ void LocalizableContent::LoadNewLanguage(XmlReader *pReader)
 
         if (fontIdToFontInfoMap.count(id) > 0)
         {
-            throw MLIException(string("Duplicate font ID found: ") + id);
+            ThrowException(string("Duplicate font ID found: ") + id);
         }
 
         fontIdToFontInfoMap[id] = LocalizableContent::FontInfo(filename, size);
@@ -149,7 +149,7 @@ void LocalizableContent::LoadNewLanguage(XmlReader *pReader)
 
         if (textIdToTextMap.count(id) > 0)
         {
-            throw MLIException(string("Duplicate text ID found: ") + id);
+            ThrowException(string("Duplicate text ID found: ") + id);
         }
 
         textIdToTextMap[id] = text;
@@ -168,7 +168,7 @@ void LocalizableContent::LoadNewLanguage(XmlReader *pReader)
 
         if (settingIdToSettingMap.count(id) > 0)
         {
-            throw MLIException(string("Duplicate setting ID found: ") + id);
+            ThrowException(string("Duplicate setting ID found: ") + id);
         }
 
         settingIdToSettingMap[id] = LocalizableContent::Setting(type, value);

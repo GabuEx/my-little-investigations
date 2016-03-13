@@ -501,7 +501,7 @@ SharedUtilsStringType ParseDialogEvents(IDialogEventsOwner *pDialogEventsOwner, 
             }
             else
             {
-                throw new MLIException("Unknown event.");
+                ThrowException("Unknown event.");
             }
         }
         else

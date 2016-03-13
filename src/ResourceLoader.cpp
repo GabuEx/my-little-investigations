@@ -356,12 +356,12 @@ void ResourceLoader::LoadVideo(
 
     if (avformat_open_input(&pFormatContext, NULL, NULL, NULL) < 0)
     {
-        throw MLIException("Couldn't open video file!");
+        ThrowException("Couldn't open video file!");
     }
 
     if (avformat_find_stream_info(pFormatContext, NULL) < 0)
     {
-        throw MLIException("Couldn't find video stream info!");
+        ThrowException("Couldn't find video stream info!");
     }
 
     int videoStream = -1;
@@ -380,7 +380,7 @@ void ResourceLoader::LoadVideo(
 
     if (avcodec_open2(pCodecContext, pCodec, NULL) < 0)
     {
-        throw MLIException("Couldn't open codec!");
+        ThrowException("Couldn't open codec!");
     }
 
     *ppRWOpsIOContext = pRWOpsIOContext;

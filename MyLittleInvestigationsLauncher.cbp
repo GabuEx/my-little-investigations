@@ -194,6 +194,8 @@
 		<Unit filename="src/MLIException.h" />
 		<Unit filename="src/ResourceLoader.cpp" />
 		<Unit filename="src/ResourceLoader.h" />
+		<Unit filename="src/SharedUtils.cpp" />
+		<Unit filename="src/SharedUtils.h" />
 		<Unit filename="src/Utils.cpp" />
 		<Unit filename="src/Utils.h" />
 		<Unit filename="src/Version.cpp" />

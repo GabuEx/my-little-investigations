@@ -122,7 +122,7 @@ void EnsureUIThread()
 
     if (currentThreadId != gUiThreadId)
     {
-        throw new MLIException("This method can only be called on the UI thread.");
+        ThrowException("This method can only be called on the UI thread.");
     }
 #endif
 }

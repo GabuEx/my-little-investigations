@@ -32,6 +32,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <iostream>
 
 class MLIException : public std::exception
 {
@@ -47,5 +48,17 @@ public:
 
     std::string m_details; /**< Exception Details */
 };
+
+void PrintCallstack();
+
+#ifdef MLI_DEBUG
+#define ThrowException(message) \
+    std::cerr << "Fatal error in " << __FILE__ << "(" << __LINE__ << "): " << message << std::endl; \
+    PrintCallstack(); \
+    throw MLIException(message);
+#else
+#define ThrowException(message) \
+    throw MLIException(message);
+#endif
 
 #endif // MLIEXCEPTION_H

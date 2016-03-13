@@ -107,7 +107,7 @@ Condition::ConditionCriterion * Condition::ConditionCriterion::LoadFromXml(XmlRe
     }
     else
     {
-        throw MLIException("Invalid criterion type.");
+        ThrowException("Invalid criterion type.");
     }
 }
 

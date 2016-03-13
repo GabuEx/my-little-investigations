@@ -125,7 +125,7 @@ void XmlWriter::VerifyCurrentElement(const XmlString &expectedElementName)
                 XmlStringToCharArray(expectedElementName),
                 (elementNameStack.empty() ? "NULL" : XmlStringToCharArray(actualCurrentElement)));
 
-        throw new MLIException(buffer);
+        ThrowException(buffer);
     }
 #endif
 }

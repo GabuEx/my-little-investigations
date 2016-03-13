@@ -245,7 +245,7 @@ void GameScreen::Draw()
             break;
 
         default:
-            throw MLIException("We should never enter loading text stage 3 or higher.");
+            ThrowException("We should never enter loading text stage 3 or higher.");
         }
 
         pFont->Draw(string(loadingString), (Vector2(gScreenWidth, gScreenHeight) * 0.5) - (Vector2(stringWidth, pFont->GetLineHeight()) * 0.5));

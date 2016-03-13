@@ -79,7 +79,7 @@ void XmlReader::ParseXmlFile(const XmlString &filePath)
         if (pDocument->LoadFile(XmlStringToCharArray(filePath)) != XML_NO_ERROR)
         {
             delete pDocument;
-            throw MLIException(string("File not found: ") + string(XmlStringToCharArray(filePath)));
+            ThrowException(string("File not found: ") + string(XmlStringToCharArray(filePath)));
         }
     }
 
@@ -94,7 +94,7 @@ void XmlReader::ParseXmlContent(const XmlString &xmlContent)
     if (error != XML_NO_ERROR)
     {
         delete pDocument;
-        throw MLIException("XML: Error while parsing file.");
+        ThrowException("XML: Error while parsing file.");
     }
 
     Init(pDocument);
@@ -117,7 +117,7 @@ void XmlReader::StartElement(const XmlString &elementName)
     if (pElement == NULL)
     {
         // We didn't find the element - we should throw.
-        throw MLIException("XML: Element not found.");
+        ThrowException("XML: Element not found.");
     }
 
     pCurrentNode = dynamic_cast<XMLNode *>(pElement);
@@ -143,7 +143,7 @@ void XmlReader::VerifyCurrentElement(const XmlString &expectedElementName)
                 XmlStringToCharArray(expectedElementName),
                 (pCurrentElement == NULL ? "NULL" : pCurrentElement->Name()));
 
-        throw new MLIException(buffer);
+        ThrowException(buffer);
     }
 #endif
 }
@@ -246,7 +246,7 @@ int XmlReader::ReadInt()
     int value;
     XMLError error = pCurrentNode->ToElement()->QueryIntText(&value);
     if (error != XML_NO_ERROR)
-        throw MLIException("XML error: expected int.");
+        ThrowException("XML error: expected int.");
     return value;
 }
 
@@ -255,7 +255,7 @@ double XmlReader::ReadDouble()
     double value;
     XMLError error = pCurrentNode->ToElement()->QueryDoubleText(&value);
     if (error != XML_NO_ERROR)
-        throw MLIException("XML error: expected double.");
+        ThrowException("XML error: expected double.");
     return value;
 }
 
@@ -264,7 +264,7 @@ bool XmlReader::ReadBoolean()
     bool value;
     XMLError error = pCurrentNode->ToElement()->QueryBoolText(&value);
     if (error != XML_NO_ERROR)
-        throw MLIException("XML error: expected Boolean.");
+        ThrowException("XML error: expected Boolean.");
     return value;
 }
 
@@ -328,7 +328,7 @@ int XmlReader::ReadIntAttribute(const XmlString &attributeName)
     int value;
     XMLError error = pCurrentNode->ToElement()->QueryIntAttribute(XmlStringToCharArray(attributeName), &value);
     if (error != XML_NO_ERROR)
-        throw MLIException("XML error: expected int.");
+        ThrowException("XML error: expected int.");
     return value;
 }
 
@@ -337,7 +337,7 @@ double XmlReader::ReadDoubleAttribute(const XmlString &attributeName)
     double value;
     XMLError error = pCurrentNode->ToElement()->QueryDoubleAttribute(XmlStringToCharArray(attributeName), &value);
     if (error != XML_NO_ERROR)
-        throw MLIException("XML error: expected double.");
+        ThrowException("XML error: expected double.");
     return value;
 }
 
@@ -346,7 +346,7 @@ bool XmlReader::ReadBooleanAttribute(const XmlString &attributeName)
     bool value;
     XMLError error = pCurrentNode->ToElement()->QueryBoolAttribute(XmlStringToCharArray(attributeName), &value);
     if (error != XML_NO_ERROR)
-        throw MLIException("XML error: expected Boolean.");
+        ThrowException("XML error: expected Boolean.");
     return value;
 }
 

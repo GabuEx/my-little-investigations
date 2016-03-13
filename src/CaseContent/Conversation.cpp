@@ -70,7 +70,7 @@ Conversation::UnlockCondition * Conversation::UnlockCondition::LoadFromXml(XmlRe
     }
     else
     {
-        throw MLIException("Unknown unlock condition type.");
+        ThrowException("Unknown unlock condition type.");
     }
 }
 
@@ -510,7 +510,7 @@ Conversation * Conversation::LoadFromXml(XmlReader *pReader)
     }
     else
     {
-        throw MLIException("Invalid conversation type.");
+        ThrowException("Invalid conversation type.");
     }
 }
 
@@ -755,7 +755,7 @@ Conversation::Action * Conversation::GetActionForNextElement(XmlReader *pReader)
     }
     else
     {
-        throw MLIException("Unknown action type.");
+        ThrowException("Unknown action type.");
     }
 }
 
@@ -2340,7 +2340,7 @@ Conversation::BeginMultipleChoiceAction::BeginMultipleChoiceAction(XmlReader *pR
 
     if (optionTexts.size() != optionIndexes.size())
     {
-        throw MLIException("optionTexts and optionIndexes must be the same size.");
+        ThrowException("optionTexts and optionIndexes must be the same size.");
     }
 
     pButtonArray = new ButtonArray((int)optionTexts.size(), 0, 0, 960, 360, 30);
@@ -2633,7 +2633,7 @@ void Interrogation::ShowInterrogationAction::Update(int delta)
         }
         else
         {
-            throw MLIException("At least one of NextInterrogationIndex and InterrogationFinishIndex must be set.");
+            ThrowException("At least one of NextInterrogationIndex and InterrogationFinishIndex must be set.");
         }
 
         // If we're done and the next index hasn't been set yet,
@@ -2668,7 +2668,7 @@ void Interrogation::ShowInterrogationAction::OnDialogDirectlyNavigated(Dialog *p
     {
         if (GetPreviousInterrogationIndex() < 0)
         {
-            throw MLIException("Cannot navigate back when there is nowhere to navigate back to.");
+            ThrowException("Cannot navigate back when there is nowhere to navigate back to.");
         }
 
         pState->SetActionIndex(GetPreviousInterrogationIndex());

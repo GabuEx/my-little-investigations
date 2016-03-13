@@ -140,7 +140,7 @@ void Video::AddSound(unsigned int frameIndex, const string &sfxId)
 {
     if (frameIndex >= frameList.size())
     {
-        throw MLIException("Invalid frame index!");
+        ThrowException("Invalid frame index!");
     }
 
     frameList[frameIndex]->pSound = new SpecifiedSound(sfxId);

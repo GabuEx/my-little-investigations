@@ -73,7 +73,7 @@ void Color::LoadElementsFromXml(XmlReader *pReader)
         break;
 
     default:
-        throw new MLIException("Unknown XML formatting version.");
+        ThrowException("Unknown XML formatting version.");
     }
 }
 

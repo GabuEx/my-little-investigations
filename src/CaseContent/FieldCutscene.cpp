@@ -426,7 +426,7 @@ FieldCutscene::FieldCutscenePhase * FieldCutscene::GetPhaseForNextElement(XmlRea
     }
     else
     {
-        throw MLIException("Unknown phase type.");
+        ThrowException("Unknown phase type.");
     }
 }
 
@@ -560,7 +560,7 @@ FieldCutscene::FieldCutscenePhase * FieldCutscene::FieldCutsceneConcurrentMoveme
     }
     else
     {
-        throw MLIException("Unknown phase type.");
+        ThrowException("Unknown phase type.");
     }
 }
 

@@ -920,7 +920,7 @@ string CheckForUpdatesScreen::GetStatusString(string *pStringForWidth)
             break;
 
         default:
-            throw new MLIException("We should never have less than one or greater than three dots.");
+            ThrowException("We should never have less than one or greater than three dots.");
         }
     }
     else
@@ -959,7 +959,7 @@ string CheckForUpdatesScreen::GetCheckingForUpdatesString(string *pStringForWidt
         break;
 
     default:
-        throw new MLIException("We should never have less than one or greater than three dots.");
+        ThrowException("We should never have less than one or greater than three dots.");
     }
 }
 

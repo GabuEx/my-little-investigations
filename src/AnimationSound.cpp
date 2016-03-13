@@ -43,7 +43,7 @@ AnimationSound * AnimationSound::LoadSoundFromXml(XmlReader *pReader)
     }
     else
     {
-        throw MLIException("Invalid sound type.");
+        ThrowException("Invalid sound type.");
     }
 }
 

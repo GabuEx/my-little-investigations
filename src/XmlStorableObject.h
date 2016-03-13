@@ -3,6 +3,7 @@
 
 #include "XmlReader.h"
 #include "XmlWriter.h"
+#include "MLIException.h"
 
 #include <list>
 
@@ -166,7 +167,7 @@ private:
 
                 case XmlStorageType::Enum:
                 case XmlStorageType::CustomObject:
-                    throw new MLIException("Unexpected XML storage type.");
+                    ThrowException("Unexpected XML storage type.");
 
                 case XmlStorageType::List:
                     {
@@ -197,7 +198,7 @@ private:
                     }
 
                 default:
-                    throw new MLIException("Unknown XML storage type.");
+                    ThrowException("Unknown XML storage type.");
                 }
             }
 
@@ -329,7 +330,7 @@ private:
 #endif
 
                 case XmlStorageType::CustomObject:
-                    throw new MLIException("Unexpected XML storage type.");
+                    ThrowException("Unexpected XML storage type.");
 
                 case XmlStorageType::List:
                     {
@@ -376,7 +377,7 @@ private:
                     }
 
                 default:
-                    throw new MLIException("Unknown XML storage type.");
+                    ThrowException("Unknown XML storage type.");
                 }
             }
 
@@ -404,7 +405,7 @@ private:
             {
                 if (type != XmlStorageType::CustomObject)
                 {
-                    throw new MLIException("Unexpected XML storage type.");
+                    ThrowException("Unexpected XML storage type.");
                 }
 
                 T *pObject = reinterpret_cast<T *>(pData);
@@ -421,7 +422,7 @@ private:
             {
                 if (type != XmlStorageType::CustomObject)
                 {
-                    throw new MLIException("Unexpected XML storage type.");
+                    ThrowException("Unexpected XML storage type.");
                 }
 
                 T *pObject = reinterpret_cast<T *>(pData);
@@ -475,7 +476,7 @@ private:
             {
                 if (type != XmlStorageType::Enum)
                 {
-                    throw new MLIException("Unexpected XML storage type.");
+                    ThrowException("Unexpected XML storage type.");
                 }
 
                 TEnum *pEnum = reinterpret_cast<TEnum *>(pData);
@@ -487,7 +488,7 @@ private:
             {
                 if (type != XmlStorageType::Enum)
                 {
-                    throw new MLIException("Unexpected XML storage type.");
+                    ThrowException("Unexpected XML storage type.");
                 }
 
                 TEnum *pEnum = reinterpret_cast<TEnum *>(pData);
