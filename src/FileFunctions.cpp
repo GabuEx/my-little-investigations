@@ -586,7 +586,6 @@ Version GetCurrentVersion()
     }
 }
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 string GetConfigFilePath()
 {
     return userAppDataPath + "Config.xml";
@@ -598,7 +597,6 @@ bool ConfigFileExists()
 
     return configFileStream.is_open();
 }
-#endif
 
 #ifdef GAME_EXECUTABLE
 void SaveConfigurations()
@@ -625,7 +623,6 @@ void SaveConfigurations()
 
 #endif
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 void LoadConfigurations()
 {
     if (ConfigFileExists())
@@ -728,7 +725,6 @@ void LoadConfigurations()
         }
     }
 }
-#endif
 
 #ifdef GAME_EXECUTABLE
 string GetCompletedCasesFilePath()

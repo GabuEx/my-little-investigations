@@ -80,9 +80,7 @@ double gSoundEffectsVolume = 0.67;
 double gVoiceVolume = 0.5;
 #endif
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 string gLocalizedResourcesFileName = "common_en-US.dat";
-#endif
 
 #ifdef GAME_EXECUTABLE
 bool gEnableTutorialsDefault = gEnableTutorials;
@@ -115,9 +113,7 @@ string gUpdateScriptFilePath = "";
 MLIFont *gpUpdatingFont = NULL;
 #endif
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 LocalizableContent *gpLocalizableContent = NULL;
-#endif
 
 void EnsureUIThread()
 {

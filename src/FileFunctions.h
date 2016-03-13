@@ -70,18 +70,14 @@ string GetPropertyListPath();
 string GetVersionFilePath();
 Version GetCurrentVersion();
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 string GetConfigFilePath();
 bool ConfigFileExists();
-#endif
 
 #ifdef GAME_EXECUTABLE
 void SaveConfigurations();
 #endif
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 void LoadConfigurations();
-#endif
 
 #ifdef GAME_EXECUTABLE
 string GetCompletedCasesFilePath();

@@ -37,9 +37,7 @@
 #include "CaseCreator/CaseContent/CaseContent.h"
 #endif
 
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
 #include "ResourceLoader.h"
-#endif
 
 using namespace tinyxml2;
 
@@ -72,12 +70,10 @@ void XmlReader::ParseXmlFile(const XmlString &filePath)
     this->filePath = filePath;
 
     delete pDocument;
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     pDocument = ResourceLoader::GetInstance()->LoadDocument(filePath);
 
     if (pDocument == NULL)
     {
-#endif
         pDocument = new XMLDocument();
 
         if (pDocument->LoadFile(XmlStringToCharArray(filePath)) != XML_NO_ERROR)
@@ -85,9 +81,7 @@ void XmlReader::ParseXmlFile(const XmlString &filePath)
             delete pDocument;
             throw MLIException(string("File not found: ") + string(XmlStringToCharArray(filePath)));
         }
-#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     }
-#endif
 
     Init(pDocument);
 }

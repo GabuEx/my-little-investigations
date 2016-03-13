@@ -63,6 +63,10 @@ extern "C"
 typedef unsigned char byte;
 #endif
 
+#ifdef LAUNCHER
+#include <sstream>
+#endif
+
 class ArchiveSource;
 
 #ifdef GAME_EXECUTABLE
@@ -144,7 +148,12 @@ private:
         ~ArchiveSource();
 
         static bool CreateAndInit(const string &archiveFilePath, ArchiveSource **ppSource);
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
         SDL_RWops * LoadFile(const string &relativeFilePath, void **ppMemToFree);
+#endif
+#ifdef LAUNCHER
+        void LoadFile(const string &relativeFilePath, stringstream &ss);
+#endif
         void * LoadFileToMemory(const string &relativeFilePath, unsigned int *pSize);
 
     private:
@@ -251,7 +260,9 @@ public:
     void ReloadImage(Image *pSprite, const string &originFilePath);
 #endif
     tinyxml2::XMLDocument * LoadDocument(const string &relativeFilePath);
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
     TTF_Font * LoadFont(const string &relativeFilePath, int ptSize, void **pMemToFree);
+#endif
 
 #ifdef GAME_EXECUTABLE
     void LoadVideo(
