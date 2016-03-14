@@ -39,6 +39,27 @@
 
 #include "ResourceLoader.h"
 
+#ifdef MLI_DEBUG
+#define ThrowXmlException(message) \
+    {   \
+        XmlString __message = message; \
+        XmlString __stackString = "XML stack: "; \
+         \
+        for (XmlString elementName : elementNameList) \
+        { \
+            if (__stackString.length() > 0) \
+            { \
+                __stackString += "/"; \
+            } \
+             \
+            __stackString += elementName; \
+        } \
+         \
+        __message += __stackString; \
+        ThrowException(__message); \
+    }
+#endif
+
 using namespace tinyxml2;
 
 XmlReader::XmlReader()
@@ -79,7 +100,7 @@ void XmlReader::ParseXmlFile(const XmlString &filePath)
         if (pDocument->LoadFile(XmlStringToCharArray(filePath)) != XML_NO_ERROR)
         {
             delete pDocument;
-            ThrowException(string("File not found: ") + string(XmlStringToCharArray(filePath)));
+            ThrowXmlException(string("File not found: ") + string(XmlStringToCharArray(filePath)));
         }
     }
 
@@ -94,7 +115,7 @@ void XmlReader::ParseXmlContent(const XmlString &xmlContent)
     if (error != XML_NO_ERROR)
     {
         delete pDocument;
-        ThrowException("XML: Error while parsing file.");
+        ThrowXmlException("XML: Error while parsing file.");
     }
 
     Init(pDocument);
@@ -117,9 +138,12 @@ void XmlReader::StartElement(const XmlString &elementName)
     if (pElement == NULL)
     {
         // We didn't find the element - we should throw.
-        ThrowException("XML: Element not found.");
+        ThrowXmlException("XML: Element not found.");
     }
 
+#ifdef MLI_DEBUG
+    elementNameList.push_back(elementName);
+#endif
     pCurrentNode = dynamic_cast<XMLNode *>(pElement);
 }
 
@@ -143,13 +167,16 @@ void XmlReader::VerifyCurrentElement(const XmlString &expectedElementName)
                 XmlStringToCharArray(expectedElementName),
                 (pCurrentElement == NULL ? "NULL" : pCurrentElement->Name()));
 
-        ThrowException(buffer);
+        ThrowXmlException(buffer);
     }
 #endif
 }
 
 void XmlReader::EndElement()
 {
+#ifdef MLI_DEBUG
+    elementNameList.pop_back();
+#endif
     pCurrentNode = pCurrentNode->Parent();
 }
 
@@ -246,7 +273,7 @@ int XmlReader::ReadInt()
     int value;
     XMLError error = pCurrentNode->ToElement()->QueryIntText(&value);
     if (error != XML_NO_ERROR)
-        ThrowException("XML error: expected int.");
+        ThrowXmlException("XML error: expected int.");
     return value;
 }
 
@@ -255,7 +282,7 @@ double XmlReader::ReadDouble()
     double value;
     XMLError error = pCurrentNode->ToElement()->QueryDoubleText(&value);
     if (error != XML_NO_ERROR)
-        ThrowException("XML error: expected double.");
+        ThrowXmlException("XML error: expected double.");
     return value;
 }
 
@@ -264,7 +291,7 @@ bool XmlReader::ReadBoolean()
     bool value;
     XMLError error = pCurrentNode->ToElement()->QueryBoolText(&value);
     if (error != XML_NO_ERROR)
-        ThrowException("XML error: expected Boolean.");
+        ThrowXmlException("XML error: expected Boolean.");
     return value;
 }
 
@@ -328,7 +355,7 @@ int XmlReader::ReadIntAttribute(const XmlString &attributeName)
     int value;
     XMLError error = pCurrentNode->ToElement()->QueryIntAttribute(XmlStringToCharArray(attributeName), &value);
     if (error != XML_NO_ERROR)
-        ThrowException("XML error: expected int.");
+        ThrowXmlException("XML error: expected int.");
     return value;
 }
 
@@ -337,7 +364,7 @@ double XmlReader::ReadDoubleAttribute(const XmlString &attributeName)
     double value;
     XMLError error = pCurrentNode->ToElement()->QueryDoubleAttribute(XmlStringToCharArray(attributeName), &value);
     if (error != XML_NO_ERROR)
-        ThrowException("XML error: expected double.");
+        ThrowXmlException("XML error: expected double.");
     return value;
 }
 
@@ -346,7 +373,7 @@ bool XmlReader::ReadBooleanAttribute(const XmlString &attributeName)
     bool value;
     XMLError error = pCurrentNode->ToElement()->QueryBoolAttribute(XmlStringToCharArray(attributeName), &value);
     if (error != XML_NO_ERROR)
-        ThrowException("XML error: expected Boolean.");
+        ThrowXmlException("XML error: expected Boolean.");
     return value;
 }
 

@@ -36,6 +36,10 @@
 #include "tinyxml2/tinyxml2.h"
 #include "MLIException.h"
 
+#ifdef MLI_DEBUG
+#include <list>
+#endif
+
 class XmlReader
 {
 public:
@@ -114,6 +118,10 @@ private:
     };
 
     stack<XMLList> listStack;
+
+#ifdef MLI_DEBUG
+    list<XmlString> elementNameList;
+#endif
 
     int formattingVersion;
 };
