@@ -31,12 +31,14 @@
 
 #include "MLIException.h"
 
+#ifndef LAUNCHER
 RectangleWH dialogTextArea = RectangleWH(3, 370, 954, 167);
 double dialogPadding = 30;
 
 const double FullStopMillisecondPause = 500;
 const double HalfStopMillisecondPause = 250;
 const double EllipsisMillisecondPause = 150;
+#endif
 
 #ifndef CASE_CREATOR
 #include <algorithm>
@@ -103,6 +105,7 @@ SharedUtilsStringType GetSubstring(const SharedUtilsStringType &s, int startPosi
 #endif
 }
 
+#ifndef LAUNCHER
 double GetStringWidth(const SharedUtilsStringType &s, SharedUtilsFontType font)
 {
 #ifndef CASE_CREATOR
@@ -111,6 +114,7 @@ double GetStringWidth(const SharedUtilsStringType &s, SharedUtilsFontType font)
     return QFontMetrics(font).width(s);
 #endif
 }
+#endif
 
 SharedUtilsStringType StringToLower(const SharedUtilsStringType &s)
 {
@@ -159,6 +163,7 @@ SharedUtilsStringListType split(const SharedUtilsStringType &s, SharedUtilsCharT
 #endif
 }
 
+#ifndef LAUNCHER
 SharedUtilsStringType ParseRawDialog(IDialogEventsOwner *pDialogEventsOwner, const SharedUtilsStringType &rawDialog, RectangleWH textAreaRect, double desiredPadding, SharedUtilsFontType dialogFont)
 {
     double allowedWidth = textAreaRect.GetWidth() - desiredPadding * 2;
@@ -561,3 +566,4 @@ SharedUtilsStringType ParseDialogEvents(IDialogEventsOwner *pDialogEventsOwner, 
 
     return parsedString;
 }
+#endif

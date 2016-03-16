@@ -30,6 +30,10 @@
 #ifndef RESOURCELOADER_H
 #define RESOURCELOADER_H
 
+#include <string>
+
+using namespace std;
+
 #if defined(GAME_EXECUTABLE) || defined(UPDATER)
 #include <SDL2/SDL.h>
 

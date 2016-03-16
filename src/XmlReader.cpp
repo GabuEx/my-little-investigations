@@ -58,6 +58,8 @@
         __message += __stackString; \
         ThrowException(__message); \
     }
+#else
+#define ThrowXmlException(message)
 #endif
 
 using namespace tinyxml2;

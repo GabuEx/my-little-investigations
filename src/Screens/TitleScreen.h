@@ -72,8 +72,6 @@ private:
     TextButton *pSelectLanguageButton;
     TextButton *pExitButton;
 
-    TextButton *pTestButton;
-
     PromptOverlay *pNoCasesPrompt;
 
     bool finishedLoadingAnimations;

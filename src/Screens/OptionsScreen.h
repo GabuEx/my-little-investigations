@@ -91,8 +91,6 @@ private:
 
     SelectedPage selectedPage;
 
-    EasingFunction *pGameplayPositionInEase;
-    EasingFunction *pAudioPositionInEase;
     EasingFunction *pOpacityInEase;
     EasingFunction *pOpacityOutEase;
 

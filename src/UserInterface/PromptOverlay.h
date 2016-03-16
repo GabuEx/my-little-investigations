@@ -140,7 +140,6 @@ private:
 
     double fadeOpacity;
     bool isShowing;
-    bool stayOnScreen;
 
     int maxPixelWidth;
     MLIFont *pFontToCheckAgainst;

@@ -89,18 +89,6 @@ int main(int argc, char * argv[])
     LoadFilePathsAndCaseUuids(argc > 0 ? string(argv[0]) : "");
 
 #ifdef UPDATER
-#ifdef __OSX
-    // We'll need to acquire update administrator rights in OS X.
-    // If we can't, then we'll just bail and carry on to the game executable.
-    if (!TryAcquireUpdateAdministratorRightsOSX())
-    {
-        LaunchGameExecutable();
-        return 0;
-    }
-#endif
-#endif
-
-#ifdef UPDATER
     // If we're currently in the updater, we should have received
     // as a command line argument the path to the versions XML file.
     // If we haven't, however, then we'll get it later.
@@ -556,17 +544,15 @@ int main(int argc, char * argv[])
     // If we're running under Unix, we need to drop our root privileges now.
     setuid(uid);
 #endif
+
+#ifdef MLI_DEBUG
+    cout << "Wrote updater script to " << gUpdateScriptFilePath << "." << endl;
+#endif
+
     if (gUpdateScriptFilePath.length() == 0 || !LaunchUpdaterScript(gUpdateScriptFilePath))
     {
         LaunchGameExecutable();
     }
-#endif
-#endif
-
-#ifdef UPDATER
-#ifdef __OSX
-    // We should destroy our administrator rights now, since we're done updating.
-    FreeAdministratorRights();
 #endif
 #endif
 

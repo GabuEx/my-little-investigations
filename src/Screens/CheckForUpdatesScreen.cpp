@@ -154,6 +154,7 @@ string CheckForUpdatesScreen::ScheduledUpdate::GetApplyScriptFileInstrunctions(u
     scriptFileInstructions += GetCheckReturnValueScriptInstructions(versionUpdateIndex, versionUpdateSubIndex);
     scriptFileInstructions += GetApplyDeltaFileScriptInstructions(oldFilePath, deltaFilePath, newFilePath);
     scriptFileInstructions += GetCheckReturnValueScriptInstructions(versionUpdateIndex, versionUpdateSubIndex);
+    scriptFileInstructions += GetMakeExecutableScriptInstructions(newFilePath);
     scriptFileInstructions += GetRemoveFileScriptInstructions(deltaFilePath);
     return scriptFileInstructions;
 
@@ -334,7 +335,7 @@ string CheckForUpdatesScreen::VersionIncrementScriptContents::GenerateScriptCont
     {
         string errorFunctionName = errorFunctionNamePrefix + IntegerToString(subIndex);
 
-        scriptContents += errorFunctionName + " ()" + GetNewlineString();
+        scriptContents += "function " + errorFunctionName + GetNewlineString();
         scriptContents += "{" + GetNewlineString();
         scriptContents += rollBackInstructions;
         scriptContents += "}" + GetNewlineString() + GetNewlineString();
@@ -342,7 +343,7 @@ string CheckForUpdatesScreen::VersionIncrementScriptContents::GenerateScriptCont
         subIndex++;
     }
 
-    scriptContents += completionFunctionName + " ()" + GetNewlineString();
+    scriptContents += "function " + completionFunctionName + GetNewlineString();
     scriptContents += "{" + GetNewlineString();
 
     for (const string &completionInstructions : completionInstructionsList)
@@ -350,12 +351,20 @@ string CheckForUpdatesScreen::VersionIncrementScriptContents::GenerateScriptCont
         scriptContents += completionInstructions;
     }
 
+    scriptContents += GetNewlineString();
+    scriptContents += GetWriteNewVersionScriptInstructions(newVersionString);
+    scriptContents += GetNewlineString();
+
     scriptContents += "}" + GetNewlineString() + GetNewlineString();
 
     for (const string &applicationInstructions : applicationInstructionsList)
     {
         scriptContents += applicationInstructions;
     }
+
+    scriptContents += GetNewlineString();
+    scriptContents += completionFunctionName + GetNewlineString();
+    scriptContents += GetPrintEmptyLineScriptInstructions();
 #else
 #error NOT IMPLEMENTED
 #endif
@@ -619,7 +628,7 @@ void CheckForUpdatesScreen::CheckForUpdates()
 
     if (gVersionsXmlFilePath.length() > 0)
     {
-        RemoveFile(gVersionsXmlFilePath);
+        remove(gVersionsXmlFilePath.c_str());
     }
 
     SDL_SemWait(pInteropSemaphore);
@@ -707,8 +716,6 @@ void CheckForUpdatesScreen::DownloadUpdates()
     }
 
     scriptFileContents += GetPrintStringScriptInstructions(gpLocalizableContent->GetText("Updater/UpdateCompleteText"));
-    scriptFileContents += GetPrintEmptyLineScriptInstructions();
-    scriptFileContents += GetPrintStringScriptInstructions(gpLocalizableContent->GetText("Updater/StartingExecutableText"));
     scriptFileContents += GetStartGameScriptInstructions();
 
     gUpdateScriptFilePath = CreateUpdateScript(scriptFileContents);

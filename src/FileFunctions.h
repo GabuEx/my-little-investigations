@@ -107,13 +107,6 @@ string GetCommonAppDataPath();
 string GetUserAppDataPath();
 string GetTempDirectoryPath();
 
-#ifdef __OSX
-string GetUpdaterHelperFilePath();
-
-bool TryAcquireUpdateAdministratorRightsOSX();
-void FreeAdministratorRights();
-#endif
-
 string GetGameExecutablePath();
 string GetUpdaterExecutableName();
 string GetUpdaterExecutablePath();
@@ -124,10 +117,6 @@ void LaunchGameExecutable();
 #endif
 
 #ifdef UPDATER
-bool ApplyDeltaFile(const string &oldFilePath, const string &deltaFilePath, const string &newFilePath);
-bool RemoveFile(const string &filePath);
-bool RenameFile(const string &oldFilePath, const string &newFilePath);
-
 string GetNewlineString();
 string GetNullRedirectionString();
 
@@ -135,6 +124,7 @@ string GetScriptInstructionsHeader();
 string GetWaitForExitScriptInstructions();
 string GetPrintStringScriptInstructions(const string &s);
 string GetPrintEmptyLineScriptInstructions();
+string GetMakeExecutableScriptInstructions(const string &filePath);
 string GetApplyDeltaFileScriptInstructions(const string &oldFilePath, const string &deltaFilePath, const string &newFilePath);
 string GetRemoveFileScriptInstructions(const string &filePath);
 string GetRenameFileScriptInstructions(const string &oldFilePath, const string &newFilePath);

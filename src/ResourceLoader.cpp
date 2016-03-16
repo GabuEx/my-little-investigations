@@ -27,12 +27,16 @@
  * SOFTWARE.
  */
 
+#include "ResourceLoader.h"
+
 #include "XmlReader.h"
 #include "MLIException.h"
-#include "ResourceLoader.h"
+#include <cryptopp/sha.h>
+
+#ifdef GAME_EXECUTABLE
 #include "mli_audio.h"
 #include "CaseInformation/Case.h"
-#include <cryptopp/sha.h>
+#endif
 
 ResourceLoader * ResourceLoader::pInstance = NULL;
 

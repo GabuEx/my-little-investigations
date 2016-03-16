@@ -33,7 +33,10 @@
 #ifndef CASE_CREATOR
 #include <string>
 #include <deque>
+
+#ifndef LAUNCHER
 #include "MLIFont.h"
+#endif
 
 using namespace std;
 
@@ -55,6 +58,7 @@ using namespace std;
 #define SharedUtilsFontType QFont
 #endif
 
+#ifndef LAUNCHER
 #include "Rectangle.h"
 
 class IDialogEventsOwner
@@ -90,12 +94,16 @@ public:
 
 extern RectangleWH dialogTextArea;
 extern double dialogPadding;
+#endif
 
 double Min(double a, double b);
 double Max(double a, double b);
 SharedUtilsStringListType split(const SharedUtilsStringType &s, SharedUtilsCharType delim);
+
+#ifndef LAUNCHER
 SharedUtilsStringType ParseRawDialog(IDialogEventsOwner *pDialogEventsOwner, const SharedUtilsStringType &rawDialog, RectangleWH textAreaRect, double desiredPadding, SharedUtilsFontType dialogFont);
 SharedUtilsStringType StripDialogEvents(const SharedUtilsStringType &s);
 SharedUtilsStringType ParseDialogEvents(IDialogEventsOwner *pDialogEventsOwner, int lineOffset, const SharedUtilsStringType &stringToParse, SharedUtilsStringType *pStringToPrependOnNext);
+#endif
 
 #endif
