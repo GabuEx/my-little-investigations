@@ -1295,6 +1295,7 @@ void LaunchGameExecutable()
 }
 #endif
 
+#ifdef UPDATER
 string GetNewlineString()
 {
     return "\n";
@@ -1545,6 +1546,7 @@ string CreateUpdateScript(const string &scriptContents)
 
     return updateScriptFilePath;
 }
+#endif
 
 #ifdef LAUNCHER
 bool LaunchUpdater(const string &versionsXmlFilePath)

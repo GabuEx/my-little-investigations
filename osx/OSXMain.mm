@@ -19,13 +19,12 @@ string pDialogSeenListsPath;
 string pSavesPath;
 
 /* Main entry point to executable - should *not* be SDL_main! */
-void BeginOSX()
+void BeginOSX(string executionPath)
 {
     NSAutoreleasePool *pPool = [[NSAutoreleasePool alloc] init];
     NSFileManager *defaultManager = [NSFileManager defaultManager];
 
     /* Create our Application Support folders if they don't exist yet and store the paths */
-    NSString *pStrLocalApplicationSupportPath = [defaultManager localApplicationSupportDirectory];
     NSString *pStrUserApplicationSupportPath = [defaultManager userApplicationSupportDirectory];
 
     /* Next, create the folders that the executable will need during execution if they don't already exist. */
@@ -36,7 +35,15 @@ void BeginOSX()
     NSString *pStrDialogSeenListsPath = nil;
     NSString *pStrSavesPath = nil;
 
-    pStrLocalGameApplicationSupportPath = [pStrLocalApplicationSupportPath stringByAppendingPathComponent:@"My Little Investigations"];
+#ifdef MLI_DEBUG
+    executionPath = "/Applications/My Little Investigations.app/Contents/MacOS";
+#else
+    executionPath = executionPath.substr(0, executionPath.find_last_of("/"));
+#endif
+
+    NSString *pStrExecutionPath = [defaultManager stringWithFileSystemRepresentation:executionPath.c_str() length: executionPath.size()];
+
+    pStrLocalGameApplicationSupportPath = [pStrExecutionPath stringByAppendingPathComponent:@"../Resources"];
     pStrLocalizedCommonResourcesPath = [pStrLocalGameApplicationSupportPath stringByAppendingPathComponent:@"Languages"];
     pStrCasesPath = [pStrLocalGameApplicationSupportPath stringByAppendingPathComponent:@"Cases"];
     pStrUserGameApplicationSupportPath = [pStrUserApplicationSupportPath stringByAppendingPathComponent:@"My Little Investigations"];
@@ -203,7 +210,7 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
     *pVersionStringLength = 0;
 
     NSFileManager *defaultManager = [NSFileManager defaultManager];
-    NSString *pErrorDesc = nil;
+    NSError *pError = nil;
     //TODO: Save the NSString as, say, a static pointer.
     NSString *pProperyListPath = [defaultManager stringWithFileSystemRepresentation:pPropertyListFilePath.c_str() length: pPropertyListFilePath.size()];
 
@@ -223,9 +230,10 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
     [pPropertyListDictionaryMutable setObject:[NSString stringWithUTF8String:pVersionString.c_str()] forKey:@"VersionString"];
 
     NSData *pData = [NSPropertyListSerialization
-        dataFromPropertyList:pPropertyListDictionaryMutable
+        dataWithPropertyList:pPropertyListDictionaryMutable
         format:NSPropertyListXMLFormat_v1_0
-        errorDescription:&pErrorDesc];
+        options:0
+        error:&pError];
 
     if (pData == NULL)
     {

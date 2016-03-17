@@ -43,7 +43,7 @@
 #define ThrowXmlException(message) \
     {   \
         XmlString __message = message; \
-        XmlString __stackString = "XML stack: "; \
+        XmlString __stackString = "\n\nXML stack: \n"; \
          \
         for (XmlString elementName : elementNameList) \
         { \

@@ -83,7 +83,7 @@ bool ValidateCaseFile(const string &caseFileName, string *pCaseUuid);
 int main(int argc, char * argv[])
 {
 #ifdef __OSX
-    BeginOSX();
+    BeginOSX(argc > 0 ? string(argv[0]) : "");
 #endif
 
     LoadFilePathsAndCaseUuids(argc > 0 ? string(argv[0]) : "");
@@ -546,7 +546,10 @@ int main(int argc, char * argv[])
 #endif
 
 #ifdef MLI_DEBUG
-    cout << "Wrote updater script to " << gUpdateScriptFilePath << "." << endl;
+    if (gUpdateScriptFilePath.length() > 0)
+    {
+        cout << "Wrote updater script to " << gUpdateScriptFilePath << "." << endl;
+    }
 #endif
 
     if (gUpdateScriptFilePath.length() == 0 || !LaunchUpdaterScript(gUpdateScriptFilePath))
