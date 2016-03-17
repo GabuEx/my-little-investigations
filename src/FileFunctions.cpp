@@ -1436,8 +1436,8 @@ string GetCheckReturnValueScriptInstructions(unsigned int versionUpdateIndex, un
 
     scriptInstructions += "if %ERRORLEVEL% neq 0 (" + GetNewlineString();
     scriptInstructions += "call " + errorLabelNameToCall + GetNewlineString();
-    scriptInstructions += GetPrintStringScriptInstructions("Update failed! Sorry about that. Try again later.");
-    scriptInstructions += GetPrintStringScriptInstructions("Press enter to continue...");
+    scriptInstructions += GetPrintStringScriptInstructions(gpLocalizableContent->GetText("Updater/UpdateFailedText"));
+    scriptInstructions += GetPrintStringScriptInstructions(gpLocalizableContent->GetText("Updater/PressEnterToContinueText"));
     scriptInstructions += "pause" + GetNullRedirectionString() + GetNewlineString();
     scriptInstructions += GetStartGameScriptInstructions();
     scriptInstructions += "goto :eof" + GetNewlineString();
@@ -1448,8 +1448,8 @@ string GetCheckReturnValueScriptInstructions(unsigned int versionUpdateIndex, un
     scriptInstructions += "if [ $? -ne 0 ]" + GetNewlineString();
     scriptInstructions += "then" + GetNewlineString();
     scriptInstructions += errorFunctionNameToCall + GetNewlineString();
-    scriptInstructions += GetPrintStringScriptInstructions("Update failed!  Sorry about that.  Try again later.");
-    scriptInstructions += "read -p \"Press enter to continue...\"" + GetNewlineString();
+    scriptInstructions += GetPrintStringScriptInstructions(gpLocalizableContent->GetText("Updater/UpdateFailedText"));
+    scriptInstructions += "read -p \"" + gpLocalizableContent->GetText("Updater/PressEnterToContinueText") + "\"" + GetNewlineString();
     scriptInstructions += GetStartGameScriptInstructions();
     scriptInstructions += "exit" + GetNewlineString();
     scriptInstructions += "fi" + GetNewlineString();
