@@ -51,6 +51,7 @@ public:
 
 #if defined(__OSX) || defined(__unix)
 #include <execinfo.h>
+#include <unistd.h>
 
 #define PrintCallstack() \
     { \

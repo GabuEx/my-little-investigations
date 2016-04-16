@@ -499,9 +499,9 @@ string GetLocalizedCommonResourcesDirectoryPath()
 string GetPropertyListPath()
 {
 #if defined(MLI_DEBUG)
-    return "/Applications/My Little Investigations.app/Contents/Resources/MyLittleInvestigations.plist";
+    return "/Applications/My Little Investigations.app/Contents/Info.plist";
 #endif
-    return executionPath + ".." + pathSeparator + "Resources" + pathSeparator + "MyLittleInvestigations.plist";
+    return executionPath + ".." + pathSeparator + "Info.plist";
 }
 #endif
 

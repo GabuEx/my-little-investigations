@@ -1,5 +1,5 @@
 /**
- * Classes and functions having to do with collision detection.
+ * Classes and functions having to do with loading resources.
  *
  * @author GabuEx, dawnmew
  * @since 1.0

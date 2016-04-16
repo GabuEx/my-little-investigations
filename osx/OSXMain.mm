@@ -186,22 +186,22 @@ vector<string> GetLocalizedCommonResourcesFilePathsOSX()
 string GetVersionStringOSX(string PropertyListFilePath)
 {
     NSFileManager *defaultManager = [NSFileManager defaultManager];
-    NSString *pProperyListPath = [defaultManager stringWithFileSystemRepresentation:PropertyListFilePath.c_str() length: PropertyListFilePath.size()];
+    NSString *pPropertyListPath = [defaultManager stringWithFileSystemRepresentation:PropertyListFilePath.c_str() length: PropertyListFilePath.size()];
 
-    if (![defaultManager fileExistsAtPath:pProperyListPath])
+    if (![defaultManager fileExistsAtPath:pPropertyListPath])
     {
         return string();
     }
 
     NSDictionary *pPropertyListDictionary =
-        [NSDictionary dictionaryWithContentsOfFile:pProperyListPath];
+        [NSDictionary dictionaryWithContentsOfFile:pPropertyListPath];
 
     if (pPropertyListDictionary == NULL)
     {
         return string();
     }
 
-    NSString *pVersionString = [pPropertyListDictionary objectForKey:@"VersionString"];
+    NSString *pVersionString = [pPropertyListDictionary objectForKey:@"CFBundleVersion"];
     return [pVersionString UTF8String];
 }
 
@@ -212,22 +212,23 @@ char * GetPropertyListXMLForVersionStringOSX(string pPropertyListFilePath, strin
     NSFileManager *defaultManager = [NSFileManager defaultManager];
     NSError *pError = nil;
     //TODO: Save the NSString as, say, a static pointer.
-    NSString *pProperyListPath = [defaultManager stringWithFileSystemRepresentation:pPropertyListFilePath.c_str() length: pPropertyListFilePath.size()];
+    NSString *pPropertyListPath = [defaultManager stringWithFileSystemRepresentation:pPropertyListFilePath.c_str() length: pPropertyListFilePath.size()];
 
-    if (![defaultManager fileExistsAtPath:pProperyListPath])
+    if (![defaultManager fileExistsAtPath:pPropertyListPath])
     {
         return NULL;
     }
 
     NSMutableDictionary *pPropertyListDictionaryMutable =
-        [NSMutableDictionary dictionaryWithContentsOfFile:pProperyListPath];
+        [NSMutableDictionary dictionaryWithContentsOfFile:pPropertyListPath];
 
     if (pPropertyListDictionaryMutable == NULL)
     {
         return NULL;
     }
 
-    [pPropertyListDictionaryMutable setObject:[NSString stringWithUTF8String:pVersionString.c_str()] forKey:@"VersionString"];
+    [pPropertyListDictionaryMutable setObject:[NSString stringWithUTF8String:pVersionString.c_str()] forKey:@"CFBundleVersion"];
+    [pPropertyListDictionaryMutable setObject:[NSString stringWithUTF8String:pVersionString.c_str()] forKey:@"CFBundleShortVersionString"];
 
     NSData *pData = [NSPropertyListSerialization
         dataWithPropertyList:pPropertyListDictionaryMutable
