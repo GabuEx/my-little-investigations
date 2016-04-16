@@ -130,7 +130,6 @@
 					<Add after="cp bin/Release/osx/MyLittleInvestigations osx/AppFileStaging/Contents/MacOS/MyLittleInvestigations" />
 					<Add after="cp bin/Release/osx/MyLittleInvestigationsLauncher osx/AppFileStaging/Contents/MacOS/MyLittleInvestigationsLauncher" />
 					<Add after="cp bin/Release/osx/MyLittleInvestigationsUpdater osx/AppFileStaging/Contents/MacOS/MyLittleInvestigationsUpdater" />
-					<Add after="cp bin/Release/osx/UpdaterHelper osx/AppFileStaging/Contents/MacOS/UpdaterHelper" />
 					<Add after='rm -rf &quot;osx/Packaging/Files/Applications/My Little Investigations.app&quot;' />
 					<Add after='mkdir &quot;osx/Packaging/Files/Applications/My Little Investigations.app&quot;' />
 					<Add after='cp -R osx/AppFileStaging/* &quot;osx/Packaging/Files/Applications/My Little Investigations.app/&quot;' />
