@@ -72,8 +72,10 @@ SelectionScreen::SelectionScreen(SelectionScreenType type)
     lastCaseTitle = "";
     lastCaseUuid = "";
 
-    selectionIsCompatible = true;
+    selectionVersionIsCompatible = true;
     selectionRequiredVersion = Version(0, 0, 0);
+    selectionLanguageIsCompatible = true;
+    selectionSupportedLanguages = list<string>();
 
     caseTitle = "";
     pDividerSprite = NULL;
@@ -225,7 +227,7 @@ void SelectionScreen::LoadResources()
     pEnterSaveNameOverlay->SetMaxPixelWidth(SelectorWidth, CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("HandwritingLargeFont"));
 
     delete pIncompatibleCaseNotificationOverlay;
-    pIncompatibleCaseNotificationOverlay = new PromptOverlay("SelectionScreen/IncompatibleCaseFormatText", false /* allowsTextEntry */);
+    pIncompatibleCaseNotificationOverlay = new PromptOverlay("", false /* allowsTextEntry */);
     pIncompatibleCaseNotificationOverlay->AddButton("SelectionScreen/OKText");
     pIncompatibleCaseNotificationOverlay->FinalizeButtons();
 
@@ -298,7 +300,10 @@ void SelectionScreen::Init()
     {
         lastCaseUuid = Case::GetInstance()->GetUuid();
         gCaseFilePath = Case::GetInstance()->GetFilePath();
-        selectionIsCompatible = true;
+        selectionVersionIsCompatible = true;
+        selectionRequiredVersion = Version(0, 0, 0);
+        selectionLanguageIsCompatible = true;
+        selectionSupportedLanguages = list<string>();
         OnButtonClicked(pSelectCaseButton);
     }
     else
@@ -546,7 +551,10 @@ void SelectionScreen::Draw()
 void SelectionScreen::OnSelectorSelectionChanged(Selector *pSender, SelectorItem *pSelectedItem)
 {
     canDelete = false;
-    selectionIsCompatible = true;
+    selectionVersionIsCompatible = true;
+    selectionRequiredVersion = Version(0, 0, 0);
+    selectionLanguageIsCompatible = true;
+    selectionSupportedLanguages = list<string>();
 
     if (pSender == pSelector)
     {
@@ -574,8 +582,10 @@ void SelectionScreen::OnSelectorSelectionChanged(Selector *pSender, SelectorItem
                 lastCaseTitle = pCaseSelectorItem->GetCaseTitle();
                 lastCaseUuid = pCaseSelectorItem->GetCaseUuid();
 
-                selectionIsCompatible = pCaseSelectorItem->GetIsCompatible();
+                selectionVersionIsCompatible = pCaseSelectorItem->GetIsVersionCompatible();
                 selectionRequiredVersion = pCaseSelectorItem->GetRequiredVersion();
+                selectionLanguageIsCompatible = pCaseSelectorItem->GetIsLanguageCompatible();
+                selectionSupportedLanguages = pCaseSelectorItem->GetSupportedLanguages();
             }
             else if (pSaveLoadSelectorItem != NULL)
             {
@@ -643,7 +653,7 @@ void SelectionScreen::OnButtonClicked(TextButton *pSender)
 {
     if (pSender == pStartCaseButton)
     {
-        if (selectionIsCompatible)
+        if (SelectedCaseIsCompatible())
         {
             gCaseFilePath = filePath;
             nextScreenId = GAME_SCREEN_ID;
@@ -652,98 +662,103 @@ void SelectionScreen::OnButtonClicked(TextButton *pSender)
         }
         else
         {
-            char promptOverlayText[1024];
-            snprintf(promptOverlayText, 1024, gpLocalizableContent->GetText("SelectionScreen/IncompatibleCaseText").c_str(), ((string)gVersion).c_str(), ((string)selectionRequiredVersion).c_str());
-
-            pIncompatibleCaseNotificationOverlay->SetHeaderText(promptOverlayText);
-            pIncompatibleCaseNotificationOverlay->Begin();
+            DisplayIncompatibilityMessage();
         }
     }
     else if (pSender == pSelectCaseButton)
     {
-        caseSelected = true;
-        vector<string> filePaths = GetSaveFilePathsForCase(lastCaseUuid);
-
-        pSelector->Reset();
-        SelectorSection *pSection = new SelectorSection("SelectionScreen/SaveFilesText");
-
-        if (type == SelectionScreenTypeSaveGame && ResourceLoader::GetInstance()->LoadTemporaryCase(gCaseFilePath))
+        if (SelectedCaseIsCompatible())
         {
-            Image *pImageSprite = NULL;
-            Image *pImageFullSizeSprite = NULL;
+            caseSelected = true;
+            vector<string> filePaths = GetSaveFilePathsForCase(lastCaseUuid);
 
-            XmlReader reader("caseMetadata.xml");
+            pSelector->Reset();
+            SelectorSection *pSection = new SelectorSection("SelectionScreen/SaveFilesText");
 
-            reader.StartElement("CaseMetadata");
-            lastCaseTitle = reader.ReadTextElement("Title");
-            pImageSprite = IsCaseCompleted(lastCaseUuid) ? reader.ReadPngElement("ImageAfterCompletion") : reader.ReadPngElement("ImageBeforeCompletion");
-
-            if (!IsCaseCompleted(lastCaseUuid) && reader.ElementExists("ImageBeforeCompletionFullSize"))
+            if (type == SelectionScreenTypeSaveGame && ResourceLoader::GetInstance()->LoadTemporaryCase(gCaseFilePath))
             {
-                pImageFullSizeSprite = reader.ReadPngElement("ImageBeforeCompletionFullSize");
-            }
-            else if (IsCaseCompleted(lastCaseUuid) && reader.ElementExists("ImageAfterCompletionFullSize"))
-            {
-                pImageFullSizeSprite = reader.ReadPngElement("ImageAfterCompletionFullSize");
-            }
+                Image *pImageSprite = NULL;
+                Image *pImageFullSizeSprite = NULL;
 
-            reader.EndElement();
+                XmlReader reader("caseMetadata.xml");
 
-            ResourceLoader::GetInstance()->UnloadTemporaryCase();
+                reader.StartElement("CaseMetadata");
+                lastCaseTitle = reader.ReadTextElement("Title");
+                pImageSprite = IsCaseCompleted(lastCaseUuid) ? reader.ReadPngElement("ImageAfterCompletion") : reader.ReadPngElement("ImageBeforeCompletion");
 
-            pSection->AddItem(new NewSaveSelectorItem(pImageSprite, pImageFullSizeSprite));
-        }
+                if (!IsCaseCompleted(lastCaseUuid) && reader.ElementExists("ImageBeforeCompletionFullSize"))
+                {
+                    pImageFullSizeSprite = reader.ReadPngElement("ImageBeforeCompletionFullSize");
+                }
+                else if (IsCaseCompleted(lastCaseUuid) && reader.ElementExists("ImageAfterCompletionFullSize"))
+                {
+                    pImageFullSizeSprite = reader.ReadPngElement("ImageAfterCompletionFullSize");
+                }
 
-        vector<SaveLoadSelectorItem *> selectorItemList;
+                reader.EndElement();
 
-        for (unsigned int i = 0; i < filePaths.size(); i++)
-        {
-            string filePath = filePaths[i];
+                ResourceLoader::GetInstance()->UnloadTemporaryCase();
 
-            // If we're saving, then we should not allow the player to save to the autosave slot.
-            if (type == SelectionScreenTypeSaveGame && IsAutosave(filePath))
-            {
-                continue;
+                pSection->AddItem(new NewSaveSelectorItem(pImageSprite, pImageFullSizeSprite));
             }
 
-            XmlReader reader(filePath.c_str());
+            vector<SaveLoadSelectorItem *> selectorItemList;
 
-            reader.StartElement("CaseMetadata");
+            for (unsigned int i = 0; i < filePaths.size(); i++)
+            {
+                string filePath = filePaths[i];
 
-            string saveName = reader.ReadTextElement("SaveName");
+                // If we're saving, then we should not allow the player to save to the autosave slot.
+                if (type == SelectionScreenTypeSaveGame && IsAutosave(filePath))
+                {
+                    continue;
+                }
 
-            time_t timestamp = (time_t)reader.ReadIntElement("Timestamp");
-            struct tm * timeinfo;
+                XmlReader reader(filePath.c_str());
 
-            timeinfo = localtime(&timestamp);
+                reader.StartElement("CaseMetadata");
 
-            char buf[256];
-            strftime(buf, sizeof(buf), gpLocalizableContent->GetText("SelectionScreen/SaveFileDateTimeDisplayFormattingText").c_str(), timeinfo);
+                // If this is the autosave file, then we'll return the localized version of "Autosave" as its name
+                // instead of the save name in the file.
+                string saveName = IsAutosave(filePath) ? gpLocalizableContent->GetText("SelectionScreen/AutosaveText") : reader.ReadTextElement("SaveName");
 
-            string description = string(buf);
+                time_t timestamp = (time_t)reader.ReadIntElement("Timestamp");
+                struct tm * timeinfo;
 
-            Image *pSprite = reader.ReadPngElement("Screenshot");
+                timeinfo = localtime(&timestamp);
 
-            reader.EndElement();
+                char buf[256];
+                strftime(buf, sizeof(buf), gpLocalizableContent->GetText("SelectionScreen/SaveFileDateTimeDisplayFormattingText").c_str(), timeinfo);
 
-            selectorItemList.push_back(
-                new SaveLoadSelectorItem(
-                    saveName,
-                    pSprite,
-                    timestamp,
-                    description,
-                    filePath));
+                string description = string(buf);
+
+                Image *pSprite = reader.ReadPngElement("Screenshot");
+
+                reader.EndElement();
+
+                selectorItemList.push_back(
+                    new SaveLoadSelectorItem(
+                        saveName,
+                        pSprite,
+                        timestamp,
+                        description,
+                        filePath));
+            }
+
+            sort(selectorItemList.begin(), selectorItemList.end(), SaveLoadSelectorItem::CompareByTimestampDescending);
+
+            for (unsigned int i = 0; i < selectorItemList.size(); i++)
+            {
+                pSection->AddItem(selectorItemList[i]);
+            }
+
+            pSelector->AddSection(pSection);
+            pSelector->Init();
         }
-
-        sort(selectorItemList.begin(), selectorItemList.end(), SaveLoadSelectorItem::CompareByTimestampDescending);
-
-        for (unsigned int i = 0; i < selectorItemList.size(); i++)
+        else
         {
-            pSection->AddItem(selectorItemList[i]);
+            DisplayIncompatibilityMessage();
         }
-
-        pSelector->AddSection(pSection);
-        pSelector->Init();
     }
     else if (pSender == pSaveButton)
     {
@@ -831,5 +846,44 @@ void SelectionScreen::EnsureFonts()
     if (pSmallFont == NULL)
     {
         pSmallFont = CommonCaseResources::GetInstance()->GetFontManager()->GetFontFromId("HandwritingSmallFont");
+    }
+}
+
+bool SelectionScreen::SelectedCaseIsCompatible()
+{
+    return selectionVersionIsCompatible && selectionLanguageIsCompatible;
+}
+
+void SelectionScreen::DisplayIncompatibilityMessage()
+{
+    if (!selectionVersionIsCompatible)
+    {
+        char promptOverlayText[1024];
+        snprintf(promptOverlayText, 1024, gpLocalizableContent->GetText("SelectionScreen/CaseVersionIncompatibleText").c_str(), ((string)gVersion).c_str(), ((string)selectionRequiredVersion).c_str());
+
+        pIncompatibleCaseNotificationOverlay->SetHeaderText(promptOverlayText);
+        pIncompatibleCaseNotificationOverlay->Begin();
+    }
+    else if (!selectionLanguageIsCompatible)
+    {
+        string supportedLanguages;
+
+        for (string languageId : selectionSupportedLanguages)
+        {
+            supportedLanguages += languageId + " ";
+        }
+
+        // Remove the last space.
+        supportedLanguages = supportedLanguages.substr(0, supportedLanguages.length() - 1);
+
+        char promptOverlayText[1024];
+        snprintf(promptOverlayText, 1024, gpLocalizableContent->GetText("SelectionScreen/CaseLanguageIncompatibleText").c_str(), ResourceLoader::GetInstance()->GetSelectedLanguage().c_str(), supportedLanguages.c_str());
+
+        pIncompatibleCaseNotificationOverlay->SetHeaderText(promptOverlayText);
+        pIncompatibleCaseNotificationOverlay->Begin();
+    }
+    else
+    {
+        ThrowException("Unknown reason for the case not being compatible.");
     }
 }

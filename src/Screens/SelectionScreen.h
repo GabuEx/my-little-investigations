@@ -42,6 +42,8 @@
 #include "../UserInterface/Selector.h"
 #include "../UserInterface/TextWidget.h"
 
+#include <list>
+
 class SelectionScreen : public MLIScreen, public TextButtonEventListener, public PromptOverlayEventListener, public SelectorEventListener
 {
 public:
@@ -62,6 +64,8 @@ private:
     static void EnsureFonts();
 
     void DeleteSelectorItems();
+    bool SelectedCaseIsCompatible();
+    void DisplayIncompatibilityMessage();
 
     static MLIFont *pLargeFont;
     static MLIFont *pMediumFont;
@@ -88,8 +92,10 @@ private:
     string lastCaseTitle;
     string lastCaseUuid;
 
-    bool selectionIsCompatible;
+    bool selectionVersionIsCompatible;
     Version selectionRequiredVersion;
+    bool selectionLanguageIsCompatible;
+    list<string> selectionSupportedLanguages;
 
     string caseTitle;
     Image *pDividerSprite;

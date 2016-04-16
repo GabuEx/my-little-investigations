@@ -173,7 +173,7 @@ void SkipArrow::Draw()
         color = NormalColor;
     }
 
-    Vector2 position = Vector2(xPosition, yPosition);
+    Vector2 position = Vector2(textWidget.GetX(), textWidget.GetY());
 
     textWidget.Draw();
     Image *pArrowSprite = isDown ? pArrowImageInverted : pArrowImage;

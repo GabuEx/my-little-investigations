@@ -52,7 +52,7 @@ const int DividerPadding = 3; // px
 const int TextPadding = 8; // px
 const int HighlightCornerSize = 25; // px
 
-CaseSelectorItem::CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotFullSizeSprite, const string &caseUuid, const string &caseTitle, const string &caseDescription, const string &caseFilePath, bool isCompatible, Version requiredVersion)
+CaseSelectorItem::CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotFullSizeSprite, const string &caseUuid, const string &caseTitle, const string &caseDescription, const string &caseFilePath, bool isVersionCompatible, Version requiredVersion, bool isLanguageCompatible, const list<string> &supportedLanguages)
 {
     this->shouldDisplayStar = IsCaseCompleted(caseUuid);
     this->pScreenshotSprite = pScreenshotSprite;
@@ -61,8 +61,10 @@ CaseSelectorItem::CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotF
     this->caseTitle = caseTitle;
     this->caseDescription = caseDescription;
     this->caseFilePath = caseFilePath;
-    this->isCompatible = isCompatible;
+    this->isVersionCompatible = isVersionCompatible;
     this->requiredVersion = requiredVersion;
+    this->isLanguageCompatible = isLanguageCompatible;
+    this->supportedLanguages = supportedLanguages;
 }
 
 string NewSaveSelectorItem::GetDisplayString() const
@@ -486,9 +488,14 @@ void Selector::PopulateWithCases(bool requireSaveFilesExist)
         caseDescription = reader.ReadTextElement("Description");
         reader.EndElement();
 
+        list<string> supportedLanguages = ResourceLoader::GetInstance()->GetSupportedLanguages();
+
         ResourceLoader::GetInstance()->UnloadTemporaryCase();
 
-        if (requiredVersion > gVersion)
+        bool isVersionCompatible = gVersion >= requiredVersion;
+        bool isLanguageCompatible = std::find(supportedLanguages.begin(), supportedLanguages.end(), ResourceLoader::GetInstance()->GetSelectedLanguage()) != supportedLanguages.end();
+
+        if (!isVersionCompatible)
         {
             incompatibleCaseList.push_back(
                 new CaseSelectorItem(
@@ -498,8 +505,25 @@ void Selector::PopulateWithCases(bool requireSaveFilesExist)
                     caseTitle,
                     caseDescription,
                     caseFilePath,
-                    false /* isCompatible */,
-                    requiredVersion));
+                    isVersionCompatible,
+                    requiredVersion,
+                    isLanguageCompatible,
+                    supportedLanguages));
+        }
+        else if (!isLanguageCompatible)
+        {
+            incompatibleCaseList.push_back(
+                new CaseSelectorItem(
+                    pImageSprite,
+                    pImageFullSizeSprite,
+                    caseUuid,
+                    caseTitle,
+                    caseDescription,
+                    caseFilePath,
+                    isVersionCompatible,
+                    requiredVersion,
+                    isLanguageCompatible,
+                    supportedLanguages));
         }
         else if (isCorrectlySigned)
         {
@@ -511,8 +535,10 @@ void Selector::PopulateWithCases(bool requireSaveFilesExist)
                     caseTitle,
                     caseDescription,
                     caseFilePath,
-                    true /* isCompatible */,
-                    requiredVersion));
+                    true /* isVersionCompatible */,
+                    requiredVersion,
+                    true /* isLanguageCompatible */,
+                    supportedLanguages));
         }
         else
         {
@@ -524,8 +550,10 @@ void Selector::PopulateWithCases(bool requireSaveFilesExist)
                     caseTitle,
                     caseDescription,
                     caseFilePath,
-                    true /* isCompatible */,
-                    requiredVersion));
+                    true /* isVersionCompatible */,
+                    requiredVersion,
+                    true /* isLanguageCompatible */,
+                    supportedLanguages));
         }
     }
 

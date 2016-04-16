@@ -38,6 +38,7 @@
 #include "../LocalizableContent.h"
 
 #include <string>
+#include <list>
 #include <vector>
 
 using namespace std;
@@ -54,7 +55,7 @@ public:
 class CaseSelectorItem : public SelectorItem
 {
 public:
-    CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotFullSizeSprite, const string &caseUuid, const string &caseTitle, const string &caseDescription, const string &caseFilePath, bool isCompatible, Version requiredVersion);
+    CaseSelectorItem(Image *pScreenshotSprite, Image *pScreenshotFullSizeSprite, const string &caseUuid, const string &caseTitle, const string &caseDescription, const string &caseFilePath, bool isVersionCompatible, Version requiredVersion, bool isLanguageCompatible, const list<string> &supportedLanguages);
 
     virtual ~CaseSelectorItem()
     {
@@ -92,8 +93,10 @@ public:
     string GetCaseTitle() const { return caseTitle; }
     string GetCaseDescription() const { return caseDescription; }
     string GetCaseFilePath() const { return caseFilePath; }
-    bool GetIsCompatible() const { return isCompatible; }
+    bool GetIsVersionCompatible() const { return isVersionCompatible; }
     Version GetRequiredVersion() const { return requiredVersion; }
+    bool GetIsLanguageCompatible() const { return isLanguageCompatible; }
+    const list<string> & GetSupportedLanguages() const { return supportedLanguages; }
 
 private:
     bool shouldDisplayStar;
@@ -103,8 +106,10 @@ private:
     string caseTitle;
     string caseDescription;
     string caseFilePath;
-    bool isCompatible;
+    bool isVersionCompatible;
     Version requiredVersion;
+    bool isLanguageCompatible;
+    list<string> supportedLanguages;
 };
 
 class SaveLoadSelectorItem : public SelectorItem

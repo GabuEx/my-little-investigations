@@ -341,42 +341,7 @@ bool IsCaseCorrectlySigned(const string &caseFilePath, bool useLookupTable)
         return gCaseIsSignedByFilePathMap[caseFilePath];
     }
 
-    bool isCaseCorrectlySigned = false;
-    ResourceLoader::GetInstance()->LoadTemporaryCase(caseFilePath);
-
-    try
-    {
-        XmlReader caseMetadataReader("caseMetadata.xml");
-        caseMetadataReader.StartElement("CaseMetadata");
-
-        if (caseMetadataReader.ElementExists("Signatures"))
-        {
-            caseMetadataReader.StartElement("Signatures");
-
-            string caseSignature = caseMetadataReader.ReadTextElement("CaseFile");
-
-            caseMetadataReader.EndElement();
-
-            caseMetadataReader.EndElement();
-
-            if (caseSignature.length() > 0)
-            {
-                unsigned int fileSize = 0;
-                void *pFileData = ResourceLoader::GetInstance()->LoadFileToMemory("case.xml", &fileSize);
-                isCaseCorrectlySigned = SignatureIsValid((const byte *)pFileData, fileSize, caseSignature);
-                free(pFileData);
-            }
-        }
-    }
-    catch (MLIException e)
-    {
-        // Nothing to do if we catch an exception - that just means
-        // that the case was not correctly signed.
-        isCaseCorrectlySigned = false;
-    }
-
-    ResourceLoader::GetInstance()->UnloadTemporaryCase();
-
+    bool isCaseCorrectlySigned = ResourceLoader::GetInstance()->IsCaseCorrectlySigned(caseFilePath);
     gCaseIsSignedByFilePathMap[caseFilePath] = isCaseCorrectlySigned;
     return isCaseCorrectlySigned;
 }
@@ -502,6 +467,8 @@ vector<string> GetLanguageResourcesFilePaths()
     return filePaths;
 }
 #endif
+
+const string & GetPathSeparator() { return pathSeparator; }
 
 string ConvertSeparatorsInPath(string &path)
 {

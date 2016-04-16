@@ -43,7 +43,7 @@
 #define ThrowXmlException(message) \
     {   \
         XmlString __message = message; \
-        XmlString __stackString = "\n\nXML stack: \n"; \
+        XmlString __stackString = "\n\nXML stack: "; \
          \
         for (XmlString elementName : elementNameList) \
         { \
@@ -55,11 +55,12 @@
             __stackString += elementName; \
         } \
          \
-        __message += __stackString; \
+        __message += __stackString + "\n"; \
         ThrowException(__message); \
     }
 #else
-#define ThrowXmlException(message)
+#define ThrowXmlException(message) \
+    ThrowException(message);
 #endif
 
 using namespace tinyxml2;
@@ -93,18 +94,24 @@ void XmlReader::ParseXmlFile(const XmlString &filePath)
     this->filePath = filePath;
 
     delete pDocument;
+#ifndef CASE_CREATOR
     pDocument = ResourceLoader::GetInstance()->LoadDocument(filePath);
 
     if (pDocument == NULL)
     {
+#endif
         pDocument = new XMLDocument();
 
         if (pDocument->LoadFile(XmlStringToCharArray(filePath)) != XML_NO_ERROR)
         {
             delete pDocument;
+            //pDocument = NULL;
+
             ThrowXmlException(string("File not found: ") + string(XmlStringToCharArray(filePath)));
         }
+#ifndef CASE_CREATOR
     }
+#endif
 
     Init(pDocument);
 }

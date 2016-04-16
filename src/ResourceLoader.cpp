@@ -38,6 +38,8 @@
 #include "CaseInformation/Case.h"
 #endif
 
+#include "FileFunctions.h"
+
 ResourceLoader * ResourceLoader::pInstance = NULL;
 
 #ifdef GAME_EXECUTABLE
@@ -71,22 +73,16 @@ void ResourceLoader::Close()
 #ifdef GAME_EXECUTABLE
 bool ResourceLoader::Init(const string &commonResourcesFilePath, const string &commonLocalizedResourcesFilePath)
 {
-    ArchiveSource *pCommonResourcesSource = NULL;
-    ArchiveSource *pCommonLocalizedResourcesSource = NULL;
-
     if (!ArchiveSource::CreateAndInit(commonResourcesFilePath, &pCommonResourcesSource))
     {
         return false;
     }
 
-    if (!ArchiveSource::CreateAndInit(commonLocalizedResourcesFilePath, &pCommonLocalizedResourcesSource))
+    if (!LoadNewCommonLocalizedResources(commonLocalizedResourcesFilePath))
     {
         return false;
     }
 
-    this->pCommonResourcesSource = pCommonResourcesSource;
-    this->pCommonLocalizedResourcesSource = pCommonLocalizedResourcesSource;
-    this->pCachedCommonLocalizedResourcesSource = NULL;
     this->pCaseResourcesSource = NULL;
     this->pCachedCaseResourcesSource = NULL;
     return true;
@@ -101,6 +97,14 @@ bool ResourceLoader::LoadNewCommonLocalizedResources(const string &commonLocaliz
     retVal = ArchiveSource::CreateAndInit(commonLocalizedResourcesFilePath, &pCommonLocalizedResourcesSource);
     SDL_SemPost(pLoadingSemaphore);
 
+    if (retVal)
+    {
+        XmlReader localizableContentReader("XML/LocalizableContent.xml");
+        LocalizableContent localizableContent(&localizableContentReader);
+
+        selectedLanguageId = localizableContent.GetText("LanguageId");
+    }
+
     return retVal;
 }
 #endif
@@ -108,9 +112,22 @@ bool ResourceLoader::LoadNewCommonLocalizedResources(const string &commonLocaliz
 bool ResourceLoader::LoadTemporaryCommonLocalizedResources(const string &commonLocalizedResourcesFilePath)
 {
     pCachedCommonLocalizedResourcesSource = pCommonLocalizedResourcesSource;
+    cachedSelectedLanguageId = selectedLanguageId;
     pCommonLocalizedResourcesSource = NULL;
 
+#ifdef GAME_EXECUTABLE
+    bool retVal = LoadNewCommonLocalizedResources(commonLocalizedResourcesFilePath);
+
+    if (retVal)
+    {
+        XmlReader localizableContentReader("XML/LocalizableContent.xml");
+        LocalizableContent localizableContent(&localizableContentReader);
+
+        selectedLanguageId = localizableContent.GetText("LanguageId");
+    }
+#else
     bool retVal = ArchiveSource::CreateAndInit(commonLocalizedResourcesFilePath, &pCommonLocalizedResourcesSource);
+#endif
 
     if (!retVal)
     {
@@ -124,6 +141,7 @@ void ResourceLoader::UnloadTemporaryCommonLocalizedResources()
 {
     delete pCommonLocalizedResourcesSource;
     pCommonLocalizedResourcesSource = pCachedCommonLocalizedResourcesSource;
+    selectedLanguageId = cachedSelectedLanguageId;
     pCachedCommonLocalizedResourcesSource = NULL;
 }
 
@@ -134,8 +152,31 @@ bool ResourceLoader::LoadCase(const string &caseFilePath)
 
     SDL_SemWait(pLoadingSemaphore);
     delete pCaseResourcesSource;
-    retVal = ArchiveSource::CreateAndInit(caseFilePath, &pCaseResourcesSource);
+    retVal = LocalizedArchiveSource::CreateAndInit(caseFilePath, &pCaseResourcesSource);
     SDL_SemPost(pLoadingSemaphore);
+
+    try
+    {
+        XmlReader languagesReader("languages.xml");
+        languagesReader.StartElement("Languages");
+        languagesReader.StartList("Language");
+
+        while (languagesReader.MoveToNextListItem())
+        {
+            string languageId = languagesReader.ReadText();
+            pCaseResourcesSource->supportedLanguages.push_back(languageId);
+
+            if (languagesReader.AttributeExists("IsBase") && languagesReader.ReadBooleanAttribute("IsBase") == true)
+            {
+                pCaseResourcesSource->baseLanguageId = languageId;
+            }
+        }
+    }
+    catch (MLIException e)
+    {
+        // If languages.xml didn't exist, then we have an un-localized file.
+        pCaseResourcesSource->baseLanguageId = "";
+    }
 
     return retVal;
 }
@@ -170,13 +211,92 @@ void ResourceLoader::UnloadCase()
     SDL_SemPost(pLoadingSemaphore);
 }
 
+bool ResourceLoader::IsCaseCorrectlySigned(const string &caseFilePath)
+{
+    // In order to load all of the case signatures, we'll need to fake
+    // the currently selected language ID to load from different folders,
+    // so we'll save the actual selected language ID now.
+    string tempSelectedLanguageId = selectedLanguageId;
+
+    ResourceLoader::GetInstance()->LoadTemporaryCase(caseFilePath);
+    list<string> supportedLanguages = GetSupportedLanguages();
+
+    bool currentCaseCorrectlySigned = false;
+
+    // For a case to be correctly signed, all of its languages must be correctly signed.
+    // We'll read the signatures from the case metadata for all of the languages
+    // and verify the signatures for each.
+    for (string languageId : supportedLanguages)
+    {
+        selectedLanguageId = languageId;
+
+        try
+        {
+            XmlReader caseMetadataReader("caseMetadata.xml");
+            caseMetadataReader.StartElement("CaseMetadata");
+
+            if (caseMetadataReader.ElementExists("Signatures"))
+            {
+                caseMetadataReader.StartElement("Signatures");
+
+                string caseSignature = caseMetadataReader.ReadTextElement("CaseFile");
+
+                caseMetadataReader.EndElement();
+
+                caseMetadataReader.EndElement();
+
+                if (caseSignature.length() > 0)
+                {
+                    unsigned int fileSize = 0;
+                    void *pFileData = ResourceLoader::GetInstance()->LoadFileToMemory("case.xml", &fileSize);
+
+                    currentCaseCorrectlySigned = SignatureIsValid((const byte *)pFileData, fileSize, caseSignature);
+                    free(pFileData);
+                }
+            }
+
+            // If we've found at least one case that is not correctly signed, we can stop.
+            if (!currentCaseCorrectlySigned)
+            {
+                break;
+            }
+        }
+        catch (MLIException e)
+        {
+            // Nothing to do if we catch an exception - that just means
+            // that the case was not correctly signed.
+            currentCaseCorrectlySigned = false;
+            break;
+        }
+    }
+
+    ResourceLoader::GetInstance()->UnloadTemporaryCase();
+
+    // Set back the actual selected language ID now that we're done.
+    selectedLanguageId = tempSelectedLanguageId;
+
+    // We'll only return true if the for loop ended with currentCaseCorrectlySigned being true.
+    // If we ever found a value of false, we would have immediately stopped and returned that value.
+    return currentCaseCorrectlySigned;
+}
+
+const list<string> & ResourceLoader::GetSupportedLanguages()
+{
+    if (pCaseResourcesSource == NULL)
+    {
+        ThrowException("GetSupportedLanguages() should only ever be called when we have a case loaded.");
+    }
+
+    return pCaseResourcesSource->GetSupportedLanguages();
+}
+
 SDL_Surface * ResourceLoader::LoadRawSurface(const string &relativeFilePath)
 {
     void *pMemToFree = NULL;
     SDL_RWops * pRW = NULL;
 
     SDL_SemWait(pLoadingSemaphore);
-    pRW = pCommonResourcesSource->LoadFile(relativeFilePath,&pMemToFree);
+    pRW = pCommonResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
     SDL_SemPost(pLoadingSemaphore);
 
     if(pRW==NULL) return NULL;
@@ -195,7 +315,7 @@ Image * ResourceLoader::LoadImage(const string &relativeFilePath)
 
     if (pRW == NULL && pCaseResourcesSource != NULL)
     {
-        pRW = pCaseResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
+        pRW = pCaseResourcesSource->LoadFile(relativeFilePath, selectedLanguageId, &pMemToFree);
     }
     SDL_SemPost(pLoadingSemaphore);
 
@@ -220,7 +340,7 @@ void ResourceLoader::ReloadImage(Image *pSprite, const string &originFilePath)
 
     if (pRW == NULL && pCaseResourcesSource != NULL)
     {
-        pRW = pCaseResourcesSource->LoadFile(originFilePath, &pMemToFree);
+        pRW = pCaseResourcesSource->LoadFile(originFilePath, selectedLanguageId, &pMemToFree);
     }
     SDL_SemPost(pLoadingSemaphore);
 
@@ -256,7 +376,7 @@ tinyxml2::XMLDocument * ResourceLoader::LoadDocument(const string &relativeFileP
 #ifdef GAME_EXECUTABLE
         if (pRW == NULL && pCaseResourcesSource != NULL)
         {
-            pRW = pCaseResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
+            pRW = pCaseResourcesSource->LoadFile(relativeFilePath, selectedLanguageId, &pMemToFree);
         }
         SDL_SemPost(pLoadingSemaphore);
     }
@@ -298,7 +418,7 @@ TTF_Font * ResourceLoader::LoadFont(const string &relativeFilePath, int ptSize, 
 #ifdef GAME_EXECUTABLE
     if (pRW == NULL && pCaseResourcesSource != NULL)
     {
-        pRW = pCaseResourcesSource->LoadFile(relativeFilePath, ppMemToFree);
+        pRW = pCaseResourcesSource->LoadFile(relativeFilePath, selectedLanguageId, ppMemToFree);
     }
     SDL_SemPost(pLoadingSemaphore);
 #endif
@@ -334,7 +454,7 @@ void ResourceLoader::LoadVideo(
 
     if (pRW == NULL && pCaseResourcesSource != NULL)
     {
-        pRW = pCaseResourcesSource->LoadFile(relativeFilePath, &pMemToFree);
+        pRW = pCaseResourcesSource->LoadFile(relativeFilePath, selectedLanguageId, &pMemToFree);
     }
     SDL_SemPost(pLoadingSemaphore);
 
@@ -407,8 +527,8 @@ void ResourceLoader::PreloadMusic(const string &id, const string &relativeFilePa
 
     if (pRWA == NULL && pCaseResourcesSource != NULL)
     {
-        pRWA = pCaseResourcesSource->LoadFile(relativeFilePath + "A.ogg", &pMemToFreeA);
-        pRWB = pCaseResourcesSource->LoadFile(relativeFilePath + "B.ogg", &pMemToFreeB);
+        pRWA = pCaseResourcesSource->LoadFile(relativeFilePath + "A.ogg", selectedLanguageId, &pMemToFreeA);
+        pRWB = pCaseResourcesSource->LoadFile(relativeFilePath + "B.ogg", selectedLanguageId, &pMemToFreeB);
     }
     else
     {
@@ -448,7 +568,7 @@ void ResourceLoader::PreloadSound(const string &id, const string &relativeFilePa
 
     if (pRW == NULL && pCaseResourcesSource != NULL)
     {
-        pRW = pCaseResourcesSource->LoadFile(relativeFilePath + ".ogg", &pMemToFree);
+        pRW = pCaseResourcesSource->LoadFile(relativeFilePath + ".ogg", selectedLanguageId, &pMemToFree);
     }
     SDL_SemPost(pLoadingSemaphore);
 
@@ -476,7 +596,7 @@ void ResourceLoader::PreloadDialog(const string &id, const string &relativeFileP
 
     if (pRW == NULL && pCaseResourcesSource != NULL)
     {
-        pRW = pCaseResourcesSource->LoadFile(relativeFilePath + ".ogg", &pMemToFree);
+        pRW = pCaseResourcesSource->LoadFile(relativeFilePath + ".ogg", selectedLanguageId, &pMemToFree);
     }
     SDL_SemPost(pLoadingSemaphore);
 
@@ -509,7 +629,7 @@ void * ResourceLoader::LoadFileToMemory(const string &relativeFilePath, unsigned
 
     if (p == NULL && pCaseResourcesSource != NULL)
     {
-        p = pCaseResourcesSource->LoadFileToMemory(relativeFilePath, &fileSize);
+        p = pCaseResourcesSource->LoadFileToMemory(relativeFilePath, selectedLanguageId, &fileSize);
     }
     SDL_SemPost(pLoadingSemaphore);
 
@@ -532,7 +652,7 @@ void ResourceLoader::HashFile(const string &relativeFilePath, byte hash[CryptoPP
 
     if (p == NULL && pCaseResourcesSource != NULL)
     {
-        p = pCaseResourcesSource->LoadFileToMemory(relativeFilePath, &fileSize);
+        p = pCaseResourcesSource->LoadFileToMemory(relativeFilePath, selectedLanguageId, &fileSize);
     }
     SDL_SemPost(pLoadingSemaphore);
 
@@ -810,8 +930,27 @@ bool ResourceLoader::ArchiveSource::CreateAndInit(const string &archiveFilePath,
 #if defined(GAME_EXECUTABLE) || defined(UPDATER)
 SDL_RWops * ResourceLoader::ArchiveSource::LoadFile(const string &relativeFilePath, void **ppMemToFree)
 {
+    return LoadFileInternal(relativeFilePath, "", ppMemToFree);
+}
+#endif
+
+#ifdef LAUNCHER
+void ResourceLoader::ArchiveSource::LoadFile(const string &relativeFilePath, stringstream &ss)
+{
+    LoadFileInternal(relativeFilePath, "", ss);
+}
+#endif
+
+void * ResourceLoader::ArchiveSource::LoadFileToMemory(const string &relativeFilePath, unsigned int *pSize)
+{
+    return LoadFileToMemoryInternal(relativeFilePath, "", pSize);
+}
+
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
+SDL_RWops * ResourceLoader::ArchiveSource::LoadFileInternal(const string &relativeFilePath, const string &languageId, void **ppMemToFree)
+{
     size_t uncomp_size = 0;
-    void *p = mz_zip_reader_extract_file_to_heap(&zip_archive, relativeFilePath.c_str(), &uncomp_size, 0);
+    void *p = ExtractToHeap(relativeFilePath, languageId, &uncomp_size);
 
     if (p == NULL)
     {
@@ -824,10 +963,10 @@ SDL_RWops * ResourceLoader::ArchiveSource::LoadFile(const string &relativeFilePa
 #endif
 
 #ifdef LAUNCHER
-void ResourceLoader::ArchiveSource::LoadFile(const string &relativeFilePath, stringstream &ss)
+void ResourceLoader::ArchiveSource::LoadFileInternal(const string &relativeFilePath, const string &languageId, stringstream &ss)
 {
     size_t uncomp_size = 0;
-    void *p = mz_zip_reader_extract_file_to_heap(&zip_archive, relativeFilePath.c_str(), &uncomp_size, 0);
+    void *p = ExtractToHeap(relativeFilePath, languageId, &uncomp_size);
 
     if (p == NULL)
     {
@@ -841,10 +980,10 @@ void ResourceLoader::ArchiveSource::LoadFile(const string &relativeFilePath, str
 }
 #endif
 
-void * ResourceLoader::ArchiveSource::LoadFileToMemory(const string &relativeFilePath, unsigned int *pSize)
+void * ResourceLoader::ArchiveSource::LoadFileToMemoryInternal(const string &relativeFilePath, const string &languageId, unsigned int *pSize)
 {
     size_t uncomp_size = 0;
-    void *p = mz_zip_reader_extract_file_to_heap(&zip_archive, relativeFilePath.c_str(), &uncomp_size, 0);
+    void *p = ExtractToHeap(relativeFilePath, languageId, &uncomp_size);
 
     if (p == NULL)
     {
@@ -859,3 +998,78 @@ bool ResourceLoader::ArchiveSource::Init(const string &archiveFilePath)
 {
     return mz_zip_reader_init_file(&zip_archive, archiveFilePath.c_str(), 0) > 0;
 }
+
+void * ResourceLoader::ArchiveSource::ExtractToHeap(const string &relativeFilePath, const string &/*languageId*/, size_t *pSize)
+{
+    void *p = NULL;
+    size_t uncomp_size;
+
+    *pSize = 0;
+
+    p = mz_zip_reader_extract_file_to_heap(&zip_archive, relativeFilePath.c_str(), &uncomp_size, 0);
+
+    if (p == NULL)
+    {
+        return NULL;
+    }
+
+    *pSize = uncomp_size;
+    return p;
+}
+
+#ifdef GAME_EXECUTABLE
+bool ResourceLoader::LocalizedArchiveSource::CreateAndInit(const string &archiveFilePath, LocalizedArchiveSource **ppSource)
+{
+    LocalizedArchiveSource *pSource = new LocalizedArchiveSource();
+
+    if (!pSource->Init(archiveFilePath))
+    {
+        delete pSource;
+        return false;
+    }
+
+    *ppSource = pSource;
+    return true;
+}
+
+SDL_RWops * ResourceLoader::LocalizedArchiveSource::LoadFile(const string &relativeFilePath, const string &languageId, void **ppMemToFree)
+{
+    return LoadFileInternal(relativeFilePath, languageId, ppMemToFree);
+}
+
+void * ResourceLoader::LocalizedArchiveSource::LoadFileToMemory(const string &relativeFilePath, const string &languageId, unsigned int *pSize)
+{
+    return LoadFileToMemoryInternal(relativeFilePath, languageId, pSize);
+}
+
+void * ResourceLoader::LocalizedArchiveSource::ExtractToHeap(const string &relativeFilePath, const string &languageId, size_t *pSize)
+{
+    void *p = NULL;
+    size_t uncomp_size;
+
+    *pSize = 0;
+
+    if (languageId.length() > 0)
+    {
+        p = mz_zip_reader_extract_file_to_heap(&zip_archive, (languageId + "/" + relativeFilePath).c_str(), &uncomp_size, 0);
+    }
+
+    if (p == NULL && baseLanguageId.length() > 0)
+    {
+        p = mz_zip_reader_extract_file_to_heap(&zip_archive, (baseLanguageId + "/" + relativeFilePath).c_str(), &uncomp_size, 0);
+    }
+
+    if (p == NULL)
+    {
+        p = mz_zip_reader_extract_file_to_heap(&zip_archive, relativeFilePath.c_str(), &uncomp_size, 0);
+    }
+
+    if (p == NULL)
+    {
+        return NULL;
+    }
+
+    *pSize = uncomp_size;
+    return p;
+}
+#endif

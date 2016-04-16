@@ -394,7 +394,7 @@ void Case::SaveToSaveFile(const string &filePath, const string &fileExtension, c
 
 void Case::Autosave()
 {
-    SaveToSaveFile(GetSaveFolderPathForCase(uuid) + "00000000-0000-0000-0000-000000000000.sav", "", "Autosave");
+    SaveToSaveFile(GetSaveFolderPathForCase(uuid) + "00000000-0000-0000-0000-000000000000.sav", "", gpLocalizableContent->GetText("SelectionScreen/AutosaveText"));
 }
 
 void Case::GetFieldScreenshot(void **ppPngMemory, size_t *pPngSize)

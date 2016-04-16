@@ -143,15 +143,18 @@ class ResourceLoader
 private:
     class ArchiveSource
     {
+        friend class ResourceLoader;
+
     public:
         ArchiveSource()
             : zip_archive(mz_zip_archive())
         {
         }
 
-        ~ArchiveSource();
+        virtual ~ArchiveSource();
 
         static bool CreateAndInit(const string &archiveFilePath, ArchiveSource **ppSource);
+
 #if defined(GAME_EXECUTABLE) || defined(UPDATER)
         SDL_RWops * LoadFile(const string &relativeFilePath, void **ppMemToFree);
 #endif
@@ -160,11 +163,50 @@ private:
 #endif
         void * LoadFileToMemory(const string &relativeFilePath, unsigned int *pSize);
 
-    private:
+    protected:
         bool Init(const string &archiveFilePath);
+
+#if defined(GAME_EXECUTABLE) || defined(UPDATER)
+        SDL_RWops * LoadFileInternal(const string &relativeFilePath, const string &languageId, void **ppMemToFree);
+#endif
+#ifdef LAUNCHER
+        void LoadFileInternal(const string &relativeFilePath, const string &languageId, stringstream &ss);
+#endif
+        void * LoadFileToMemoryInternal(const string &relativeFilePath, const string &languageId, unsigned int *pSize);
+
+        virtual void * ExtractToHeap(const string &relativeFilePath, const string &languageId, size_t *pSize);
 
         mz_zip_archive zip_archive;
     };
+
+#ifdef GAME_EXECUTABLE
+    class LocalizedArchiveSource : public ArchiveSource
+    {
+        friend class ResourceLoader;
+
+    public:
+        LocalizedArchiveSource()
+            : ArchiveSource()
+        {
+        }
+
+        static bool CreateAndInit(const string &archiveFilePath, LocalizedArchiveSource **ppSource);
+
+        SDL_RWops * LoadFile(const string &relativeFilePath, const string &languageId, void **ppMemToFree);
+        void * LoadFileToMemory(const string &relativeFilePath, const string &languageId, unsigned int *pSize);
+
+        const list<string> & GetSupportedLanguages()
+        {
+            return supportedLanguages;
+        }
+
+    private:
+        void * ExtractToHeap(const string &relativeFilePath, const string &languageId, size_t *pSize) override;
+
+        string baseLanguageId;
+        list<string> supportedLanguages;
+    };
+#endif
 
 #ifdef GAME_EXECUTABLE
     class LoadResourceStep
@@ -259,6 +301,12 @@ public:
     bool LoadTemporaryCase(const string &caseFilePath);
     void UnloadTemporaryCase();
     void UnloadCase();
+
+    bool IsCaseCorrectlySigned(const string &caseFilePath);
+
+    const string & GetSelectedLanguage() { return selectedLanguageId; }
+    const list<string> & GetSupportedLanguages();
+
     SDL_Surface * LoadRawSurface(const string &relativeFilePath);
     Image * LoadImage(const string &relativeFilePath);
     void ReloadImage(Image *pSprite, const string &originFilePath);
@@ -315,10 +363,12 @@ private:
     ArchiveSource *pCommonResourcesSource;
 #endif
     ArchiveSource *pCommonLocalizedResourcesSource;
+    string selectedLanguageId;
     ArchiveSource *pCachedCommonLocalizedResourcesSource;
+    string cachedSelectedLanguageId;
 #ifdef GAME_EXECUTABLE
-    ArchiveSource *pCaseResourcesSource;
-    ArchiveSource *pCachedCaseResourcesSource;
+    LocalizedArchiveSource *pCaseResourcesSource;
+    LocalizedArchiveSource *pCachedCaseResourcesSource;
 #endif
 
 #ifdef GAME_EXECUTABLE

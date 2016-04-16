@@ -52,6 +52,8 @@ bool CopyCaseFileToCaseFolder(const string &caseFilePath, const string &caseUuid
 vector<string> GetLanguageResourcesFilePaths();
 #endif
 
+const string & GetPathSeparator();
+
 string ConvertSeparatorsInPath(string &path);
 inline string ConvertSeparatorsInPath(const string &path)
 {

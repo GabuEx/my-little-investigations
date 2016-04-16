@@ -134,7 +134,6 @@ PromptOverlay::PromptOverlay(const string &headerTextId, bool allowsTextEntry)
     yOffset = 0;
 
     this->headerTextId = headerTextId;
-    this->headerText = gpLocalizableContent->GetText(headerTextId);
     this->allowsTextEntry = allowsTextEntry;
 
     if (allowsTextEntry)
@@ -397,6 +396,14 @@ void PromptOverlay::ReloadLocalizableText()
         headerText = gpLocalizableContent->GetText(headerTextId);
     }
 
-    headerTextLines = split(headerText, '\n');
-    yOffset = (pTextFont->GetLineHeight() * (this->headerTextLines.size() - 1)) / 2;
+    if (headerText.length() > 0)
+    {
+        headerTextLines = split(headerText, '\n');
+        yOffset = (pTextFont->GetLineHeight() * (this->headerTextLines.size() - 1)) / 2;
+    }
+    else
+    {
+        headerTextLines = deque<string>();
+        yOffset = -pTextFont->GetLineHeight() / 2;
+    }
 }
