@@ -42,11 +42,13 @@ osx/AppFileStaging/Contents/MacOS/MyLittleInvestigationsUpdater
 osx/AppFileStaging/Contents/MacOS/UpdaterHelper
 MLI.app/*
 osx/Packaging/*
+osx/DiskImageFolder/*
 osx/AppFileStaging/Contents/Frameworks/*
 MLI.dmg
 MyLittleInvestigations.mpkg/*
 *.sh
 My Little Investigations.dmg
+MyLittleInvestigations1.1.0.dmg
 mli-versions.xml
 *.cscope_file_list
 *.pro
