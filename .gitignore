@@ -48,7 +48,7 @@ MLI.dmg
 MyLittleInvestigations.mpkg/*
 *.sh
 My Little Investigations.dmg
-MyLittleInvestigations1.1.0.dmg
+MyLittleInvestigations*.dmg
 mli-versions.xml
 *.cscope_file_list
 *.pro
