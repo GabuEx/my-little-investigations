@@ -105,7 +105,7 @@ void XmlReader::ParseXmlFile(const XmlString &filePath)
         if (pDocument->LoadFile(XmlStringToCharArray(filePath)) != XML_NO_ERROR)
         {
             delete pDocument;
-            //pDocument = NULL;
+            pDocument = NULL;
 
             ThrowXmlException(string("File not found: ") + string(XmlStringToCharArray(filePath)));
         }
