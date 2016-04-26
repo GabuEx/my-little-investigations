@@ -15,7 +15,7 @@
 <RawDialog>{Emotion:Happy}Oh, Apple Bloom, {Pause:249}where's your sense of wonder and intrigue?</RawDialog>
 <RawDialog>{Emotion:Happy}Oh, Apple Bloom, {Pause:249}où est ton sens de l'émerveillement et de la curiosité ?</RawDialog>
 <RawDialog>Right next to my common sense.</RawDialog>
-<RawDialog>Juste à côté de mon sens commun.</RawDialog>
+<RawDialog>Juste à côté de mon bon sens.</RawDialog>
 <RawDialog>{Emotion:Annoyed}{PlaySound:Horse_Snort}Touche.</RawDialog>
 <RawDialog>{Emotion:Annoyed}{PlaySound:Horse_Snort}Touché.</RawDialog>
 <Name>Piece of cloth</Name>
@@ -33,7 +33,7 @@
 <RawDialog>{Emotion:Annoyed}*sigh*{Pause:1219} What {Pause:355}is it?</RawDialog>
 <RawDialog>{Emotion:Annoyed}*soupir*{Pause:1219} Qu'est ce que {Pause:355}c'est ?</RawDialog>
 <RawDialog>{OtherEmotion:Neutral}{Emotion:Happy3}Well,{Pause:882} if you get a piece of {Pause:354}evidence that someone might know about,{Pause:687} {Emotion:Happy2}then {Pause:75}after you start talking to them, {Pause:558}you can click on "Present {Pause:312}Evidence", {Pause:467}and they'll let you know what they know about it.{Pause:300} {Emotion:Happy3}Pretty neat,{Pause:411} huh?</RawDialog>
-<RawDialog>{OtherEmotion:Neutral}{Emotion:Happy3}Well,{Pause:882} if you get a piece of {Pause:354}evidence that someone might know about,{Pause:687} {Emotion:Happy2}then {Pause:75}after you start talking to them, {Pause:558}you can click on "Present {Pause:312}Evidence", {Pause:467}and they'll let you know what they know about it.{Pause:300} {Emotion:Happy3}Pretty neat,{Pause:411} huh?</RawDialog>
+<RawDialog>{OtherEmotion:Neutral}{Emotion:Happy3}Et bien,{Pause:882} si tu obtiens un morceau{Pause:354}de preuve dont quelqu'un peut savoir ce que c'est,{Pause:687} {Emotion:Happy2}dans ce cas {Pause:75}après avoir commncé à leur parler, {Pause:558}tu peux cliquer sur "Présenter {Pause:312}une preuve", {Pause:467}et ils te diront ce qu'ils savent dessus.{Pause:300} {Emotion:Happy3}Génial,{Pause:411} non ?</RawDialog>
 <RawDialog>Uh...{Pause:642} {Emotion:Peeved}I'm supposed to do what to what now?</RawDialog>
 <RawDialog>Uh...{Pause:642} {Emotion:Peeved}I'm supposed to do what to what now?</RawDialog>
 <RawDialog>{Emotion:Confused}{PlaySound:Horse_Snort}Ugh, {Pause:765}Twilight, {Pause:680}honestly, {Pause:750}what am I gonna {Pause:182}do with you? {Pause:771}*sigh* {Pause:729}{Emotion:WallBreakStare}Well, {Pause:702}YOU know what I meant, {Pause:831}right? {Pause:989}{Emotion:Happy2}So it'll {Pause:53}all work out peachy keen in the end, {Pause:469}I just {Pause:409}know it!</RawDialog>
