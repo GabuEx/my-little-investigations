@@ -33,27 +33,27 @@
 <RawDialog>{Emotion:Annoyed}*sigh*{Pause:1219} What {Pause:355}is it?</RawDialog>
 <RawDialog>{Emotion:Annoyed}*soupir*{Pause:1219} Qu'est ce que {Pause:355}c'est ?</RawDialog>
 <RawDialog>{OtherEmotion:Neutral}{Emotion:Happy3}Well,{Pause:882} if you get a piece of {Pause:354}evidence that someone might know about,{Pause:687} {Emotion:Happy2}then {Pause:75}after you start talking to them, {Pause:558}you can click on "Present {Pause:312}Evidence", {Pause:467}and they'll let you know what they know about it.{Pause:300} {Emotion:Happy3}Pretty neat,{Pause:411} huh?</RawDialog>
-<RawDialog>{OtherEmotion:Neutral}{Emotion:Happy3}Et bien,{Pause:882} si tu obtiens un morceau{Pause:354}de preuve dont quelqu'un peut savoir ce que c'est,{Pause:687} {Emotion:Happy2}dans ce cas {Pause:75}après avoir commncé à leur parler, {Pause:558}tu peux cliquer sur "Présenter {Pause:312}une preuve", {Pause:467}et ils te diront ce qu'ils savent dessus.{Pause:300} {Emotion:Happy3}Génial,{Pause:411} non ?</RawDialog>
+<RawDialog>{OtherEmotion:Neutral}{Emotion:Happy3}Et bien,{Pause:882} si tu obtiens un morceau{Pause:354}de preuve dont quelqu'un peut savoir ce que c'est,{Pause:687} {Emotion:Happy2}dans ce cas {Pause:75}après avoir commencé à leur parler, {Pause:558}tu peux cliquer sur "Présenter {Pause:312}une preuve", {Pause:467}et ils te diront ce qu'ils savent dessus.{Pause:300} {Emotion:Happy3}Génial,{Pause:411} non ?</RawDialog>
 <RawDialog>Uh...{Pause:642} {Emotion:Peeved}I'm supposed to do what to what now?</RawDialog>
-<RawDialog>Uh...{Pause:642} {Emotion:Peeved}I'm supposed to do what to what now?</RawDialog>
+<RawDialog>Uh...{Pause:642} {Emotion:Peeved}Je suis censée faire quoi là ?</RawDialog>
 <RawDialog>{Emotion:Confused}{PlaySound:Horse_Snort}Ugh, {Pause:765}Twilight, {Pause:680}honestly, {Pause:750}what am I gonna {Pause:182}do with you? {Pause:771}*sigh* {Pause:729}{Emotion:WallBreakStare}Well, {Pause:702}YOU know what I meant, {Pause:831}right? {Pause:989}{Emotion:Happy2}So it'll {Pause:53}all work out peachy keen in the end, {Pause:469}I just {Pause:409}know it!</RawDialog>
-<RawDialog>{Emotion:Confused}{PlaySound:Horse_Snort}Ugh, {Pause:765}Twilight, {Pause:680}honestly, {Pause:750}what am I gonna {Pause:182}do with you? {Pause:771}*sigh* {Pause:729}{Emotion:WallBreakStare}Well, {Pause:702}YOU know what I meant, {Pause:831}right? {Pause:989}{Emotion:Happy2}So it'll {Pause:53}all work out peachy keen in the end, {Pause:469}I just {Pause:409}know it!</RawDialog>
+<RawDialog>{Emotion:Confused}{PlaySound:Horse_Snort}Erf, {Pause:765}Twilight, {Pause:680}honnetement, {Pause:750}qu'est ce que je vais faire {Pause:182}de toi ? {Pause:771}*sigh* {Pause:729}{Emotion:WallBreakStare}Bon, {Pause:702}TOI, tu sais ce que je veux dire, {Pause:831}pas vrai? {Pause:989}{Emotion:Happy2}Donc cela {Pause:53}devrait fonctionner,au final, sans probleme, {Pause:469}Je le {Pause:409}sait !</RawDialog>
 <RawDialog>Way to fill me with confidence,{Pause:665} Pinkie.</RawDialog>
-<RawDialog>Way to fill me with confidence,{Pause:665} Pinkie.</RawDialog>
+<RawDialog>C'est parfait pour booster ma confiance en moi,{Pause:665} Pinkie.</RawDialog>
 <RawDialog>Well,{Pause:492} that's all I got!{Pause:656} {Emotion:Happy3}See you 'round, Twilight!{Pause:599} {Emotion:WallBreakWave}'Till next time!</RawDialog>
-<RawDialog>Well,{Pause:492} that's all I got!{Pause:656} {Emotion:Happy3}See you 'round, Twilight!{Pause:599} {Emotion:WallBreakWave}'Till next time!</RawDialog>
+<RawDialog>Et bien,{Pause:492} c'est tout ce que je peux faire !{Pause:656} {Emotion:Happy3}A un de ces quatres, Twilight!{Pause:599} {Emotion:WallBreakWave}'prochaine fois !</RawDialog>
 <Name>Flower bush</Name>
-<Name>Flower bush</Name>
+<Name>Buisson</Name>
 <RawDialog>Just a flower bush. {Pause:1190}Nothing special, {Pause:1039}really.</RawDialog>
-<RawDialog>Just a flower bush. {Pause:1190}Nothing special, {Pause:1039}really.</RawDialog>
+<RawDialog>C'est juste un buisson. {Pause:1190}Rien de particulier, {Pause:1039}vraiment.</RawDialog>
 <RawDialog>Although, {Pause:690}now that I take a closer look... {Pause:1391}there's a ball here. {Pause:1357}With a... note? {Pause:782}Hmmm.</RawDialog>
-<RawDialog>Although, {Pause:690}now that I take a closer look... {Pause:1391}there's a ball here. {Pause:1357}With a... note? {Pause:782}Hmmm.</RawDialog>
+<RawDialog>Quoique, {Pause:690}maintenant que je le regarde plus près... {Pause:1391}il y a un ballon. {Pause:1357}Avec... une note? {Pause:782}Hmmm.</RawDialog>
 <RawDialog>"Sometimes a pony just has a plain ol' ball emergency, {Pause:1895}and that's why I've set {Pause:588}THESE up! {Pause:1170}Play around with it as much as you like!"</RawDialog>
-<RawDialog>"Sometimes a pony just has a plain ol' ball emergency, {Pause:1895}and that's why I've set {Pause:588}THESE up! {Pause:1170}Play around with it as much as you like!"</RawDialog>
+<RawDialog>"Parfois un poney à besoin d'urgence d'une bonne vieille balle, {Pause:1895}et c'est pourquoi j'ai placé {Pause:588}CELLES-LA ici! {Pause:1170}Joue avec autant que tu veux avec !"</RawDialog>
 <RawDialog>"Just make suuuuure you return it here when you're done with it! {Pause:2245}Wouldn't want somepony to have a ball emergency and not be able to solve it. {Pause:1149}Okey dokey lokey?"</RawDialog>
-<RawDialog>"Just make suuuuure you return it here when you're done with it! {Pause:2245}Wouldn't want somepony to have a ball emergency and not be able to solve it. {Pause:1149}Okey dokey lokey?"</RawDialog>
+<RawDialog>"Assure toi juuuussstttee de la remettre en place quand tu as fini avec ! {Pause:2245}Tu ne voudrais pas qu'un poney ai besoin d'une balle en urgence et ne puisse pas en trouver ?{Pause:1149}Okey dokey lokey?"</RawDialog>
 <RawDialog>...Somehow {Pause:867}{PlaySound:Realization}I get a sense for who put this here.</RawDialog>
-<RawDialog>...Somehow {Pause:867}{PlaySound:Realization}I get a sense for who put this here.</RawDialog>
+<RawDialog>...D'une certaine manière {Pause:867}{PlaySound:Realization}J'ai une idée de qui a mis ça là.</RawDialog>a
 <RawDialog>{OtherEmotion:NeutralDown}Saaaay, {Pause:726}I could use a ball! {Pause:830}{Emotion:Annoyed}Y'know, {Pause:366}ever since you broke ours, Twi.</RawDialog>
 <RawDialog>{OtherEmotion:NeutralDown}Saaaay, {Pause:726}I could use a ball! {Pause:830}{Emotion:Annoyed}Y'know, {Pause:366}ever since you broke ours, Twi.</RawDialog>
 <RawDialog>{Emotion:Peeved}{PlaySound:Horse_Snort}Please don't remind me of that day, {Pause:188}Apple Bloom...</RawDialog>
