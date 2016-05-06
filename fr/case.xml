@@ -62,8 +62,8 @@
 <TargetLocationName>Carousel Boutique (extérieur)</TargetLocationName>
 <TargetLocationName>town square</TargetLocationName>
 <TargetLocationName>centre ville</TargetLocationName>
-<!-- TODO --><RawDialog>I'm not {Pause:566}done investigating the crime scene yet. {Pause:1210}I should look around more.</RawDialog>
-<!-- TODO --><RawDialog>I'm not {Pause:566}done investigating the crime scene yet. {Pause:1210}I should look around more.</RawDialog>
+<RawDialog>I'm not {Pause:566}done investigating the crime scene yet. {Pause:1210}I should look around more.</RawDialog>
+<RawDialog>Je n'ai pas {Pause:566}encore fini d'examiner la scène de crime. {Pause:1210}Je devrais continuer de chercher.</RawDialog>
 <Name>Town Hall</Name>
 <Name>Mairie</Name>
 <!-- TODO --><RawDialog>Ahhh, {Pause:542}Town Hall, {Pause:887}where everypony that's anypony has business, {Pause:1225}where the greatest among us tackle tough challenges and lead the path to the future, {Pause:1725}where our political heroes put aside their differences and make tough compromises for a better tomorrow.</RawDialog>
@@ -6357,7 +6357,7 @@
 <RawDialog>No means no, Twi. {Pause:976}{Emotion:NeutralUp}I can't jeopardize the integrity of our outfit, {Pause:1116}not even for a friend. {Pause:571}{Emotion:Sad}I'm sorry, Twi...</RawDialog>
 <RawDialog>Non veut dire non, Twi. {Pause:976}{Emotion:NeutralUp}Je ne peux pas risquer l'intégrité de nos uniformes, {Pause:1116}même pour une amie. {Pause:571}{Emotion:Sad}Je suis désolé, Twi ...</RawDialog>
 <RawDialog>{Emotion:Annoyed}{Aside}(*sigh* {Pause:530}Sheesh, {Pause:982}so serious all of a sudden!) {Pause:1613}{/Aside}{Emotion:NeutralDown}All right, {Pause:477}all right, {Pause:487}let's just get to the clubhouse.</RawDialog>
-<RawDialog>{Emotion:Annoyed}{Aside}(*soupir* {Pause:530}Sheesh, {Pause:982}si sérieuse d'un coup !) {Pause:1613}{/Aside}{Emotion:NeutralDown}Très bien, {Pause:477}très bien, {Pause:487}allons juste à votre cabane.</RawDialog>
+<RawDialog>{Emotion:Annoyed}{Aside}(*soupir* {Pause:530}Sheesh, {Pause:982}si sérieuse d'un coup !) {Pause:1613}{/Aside}{Emotion:NeutralDown}Très bien, {Pause:477}très bien, {Pause:487}allons juste à votre clubhouse.</RawDialog>
 <RawDialog>{Emotion:HappyUp}All right, {Pause:397}Twi.</RawDialog>
 <RawDialog>{Emotion:HappyUp}Ok, {Pause:397}Twi.</RawDialog>
 <Name>Twilight Sparkle</Name>
