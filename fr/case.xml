@@ -21,7 +21,7 @@
 <Name>Piece of cloth</Name>
 <Name>Morceau de tissu</Name>
 <RawDialog>A piece of cloth - {Pause:953}red on one side, {Pause:709}gold on the other... {Pause:650}{Emotion:Annoyed}I think I know what THIS is from.</RawDialog>
-<RawDialog>Un morceau de tissu - {Pause:953}rouge d'un côté, {Pause:709}doré de l'autre ... {Pause:650}{Emotion:Annoyed}Je pense savoir d'où ça vient.</RawDialog>
+<RawDialog>Un morceau de tissu - {Pause:953}rouge d'un côté, {Pause:709}doré de l'autre ... {Pause:650}{Emotion:Annoyed}Je pense savoir d'où ÇA vient.</RawDialog>
 <RawNotificationText>"CMC Cape Shred" added to evidence.</RawNotificationText>
 <RawNotificationText>"Morceau de cape des CMC" ajouté aux indices.</RawNotificationText>
 <RawDialog>Hi!</RawDialog>
@@ -37,11 +37,11 @@
 <RawDialog>Uh...{Pause:642} {Emotion:Peeved}I'm supposed to do what to what now?</RawDialog>
 <RawDialog>Uh...{Pause:642} {Emotion:Peeved}Je suis censée faire quoi là ?</RawDialog>
 <RawDialog>{Emotion:Confused}{PlaySound:Horse_Snort}Ugh, {Pause:765}Twilight, {Pause:680}honestly, {Pause:750}what am I gonna {Pause:182}do with you? {Pause:771}*sigh* {Pause:729}{Emotion:WallBreakStare}Well, {Pause:702}YOU know what I meant, {Pause:831}right? {Pause:989}{Emotion:Happy2}So it'll {Pause:53}all work out peachy keen in the end, {Pause:469}I just {Pause:409}know it!</RawDialog>
-<RawDialog>{Emotion:Confused}{PlaySound:Horse_Snort}Erf, {Pause:765}Twilight, {Pause:680}honnetement, {Pause:750}qu'est ce que je vais faire {Pause:182}de toi ? {Pause:771}*sigh* {Pause:729}{Emotion:WallBreakStare}Bon, {Pause:702}TOI, tu sais ce que je veux dire, {Pause:831}pas vrai? {Pause:989}{Emotion:Happy2}Donc cela {Pause:53}devrait fonctionner,au final, sans probleme, {Pause:469}Je le {Pause:409}sait !</RawDialog>
+<RawDialog>{Emotion:Confused}{PlaySound:Horse_Snort}Erf, {Pause:765}Twilight, {Pause:680}honnetement, {Pause:750}qu'est ce que je vais faire {Pause:182}de toi ? {Pause:771}*sigh* {Pause:729}{Emotion:WallBreakStare}Bon, {Pause:702}TOI, tu sais ce que je veux dire, {Pause:831}pas vrai? {Pause:989}{Emotion:Happy2}Donc cela {Pause:53}devrait fonctionner, au final, sans probleme, {Pause:469}Je le {Pause:409}sait !</RawDialog>
 <RawDialog>Way to fill me with confidence,{Pause:665} Pinkie.</RawDialog>
 <RawDialog>C'est parfait pour booster ma confiance en moi,{Pause:665} Pinkie.</RawDialog>
 <RawDialog>Well,{Pause:492} that's all I got!{Pause:656} {Emotion:Happy3}See you 'round, Twilight!{Pause:599} {Emotion:WallBreakWave}'Till next time!</RawDialog>
-<RawDialog>Et bien,{Pause:492} c'est tout ce que je peux faire !{Pause:656} {Emotion:Happy3}A un de ces quatres, Twilight!{Pause:599} {Emotion:WallBreakWave}'prochaine fois !</RawDialog>
+<RawDialog>Et bien,{Pause:492} c'est tout ce que je peux faire !{Pause:656} {Emotion:Happy3}A un de ces quatres, Twilight!{Pause:599} {Emotion:WallBreakWave}À la prochaine fois !</RawDialog>
 <Name>Flower bush</Name>
 <Name>Buisson</Name>
 <RawDialog>Just a flower bush. {Pause:1190}Nothing special, {Pause:1039}really.</RawDialog>
@@ -54,18 +54,18 @@
 <RawDialog>"Assure toi juuuussstttee de la remettre en place quand tu as fini avec ! {Pause:2245}Tu ne voudrais pas qu'un poney ai besoin d'une balle en urgence et ne puisse pas en trouver ?{Pause:1149}Okey dokey lokey?"</RawDialog>
 <RawDialog>...Somehow {Pause:867}{PlaySound:Realization}I get a sense for who put this here.</RawDialog>
 <RawDialog>...D'une certaine manière {Pause:867}{PlaySound:Realization}J'ai une idée de qui a mis ça là.</RawDialog>a
-<!-- TODO --><RawDialog>{OtherEmotion:NeutralDown}Saaaay, {Pause:726}I could use a ball! {Pause:830}{Emotion:Annoyed}Y'know, {Pause:366}ever since you broke ours, Twi.</RawDialog>
-<!-- TODO --><RawDialog>{OtherEmotion:NeutralDown}Saaaay, {Pause:726}I could use a ball! {Pause:830}{Emotion:Annoyed}Y'know, {Pause:366}ever since you broke ours, Twi.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Peeved}{PlaySound:Horse_Snort}Please don't remind me of that day, {Pause:188}Apple Bloom...</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Peeved}{PlaySound:Horse_Snort}Please don't remind me of that day, {Pause:188}Apple Bloom...</RawDialog>
-<!-- TODO --><TargetLocationName>Carousel Boutique (exterior)</TargetLocationName>
-<!-- TODO --><TargetLocationName>Carousel Boutique (exterior)</TargetLocationName>
-<!-- TODO --><TargetLocationName>town square</TargetLocationName>
-<!-- TODO --><TargetLocationName>town square</TargetLocationName>
+<RawDialog>{OtherEmotion:NeutralDown}Saaaay, {Pause:726}I could use a ball! {Pause:830}{Emotion:Annoyed}Y'know, {Pause:366}ever since you broke ours, Twi.</RawDialog>
+<RawDialog>{OtherEmotion:NeutralDown}Diiiit, {Pause:726}Je pourrais utiliser un ballon ! {Pause:830}{Emotion:Annoyed}Tu sais, {Pause:366}depuis le jour où tu as cassé le notre, Twi.</RawDialog>
+<RawDialog>{Emotion:Peeved}{PlaySound:Horse_Snort}Please don't remind me of that day, {Pause:188}Apple Bloom...</RawDialog>
+<RawDialog>{Emotion:Peeved}{PlaySound:Horse_Snort}S'il te plais ne me rappel pas ce joura, {Pause:188}Apple Bloom...</RawDialog>
+<TargetLocationName>Carousel Boutique (exterior)</TargetLocationName>
+<TargetLocationName>Carousel Boutique (extérieur)</TargetLocationName>
+<TargetLocationName>town square</TargetLocationName>
+<TargetLocationName>centre ville</TargetLocationName>
 <!-- TODO --><RawDialog>I'm not {Pause:566}done investigating the crime scene yet. {Pause:1210}I should look around more.</RawDialog>
 <!-- TODO --><RawDialog>I'm not {Pause:566}done investigating the crime scene yet. {Pause:1210}I should look around more.</RawDialog>
-<!-- TODO --><Name>Town Hall</Name>
-<!-- TODO --><Name>Town Hall</Name>
+<Name>Town Hall</Name>
+<Name>Mairie</Name>
 <!-- TODO --><RawDialog>Ahhh, {Pause:542}Town Hall, {Pause:887}where everypony that's anypony has business, {Pause:1225}where the greatest among us tackle tough challenges and lead the path to the future, {Pause:1725}where our political heroes put aside their differences and make tough compromises for a better tomorrow.</RawDialog>
 <!-- TODO --><RawDialog>Ahhh, {Pause:542}Town Hall, {Pause:887}where everypony that's anypony has business, {Pause:1225}where the greatest among us tackle tough challenges and lead the path to the future, {Pause:1725}where our political heroes put aside their differences and make tough compromises for a better tomorrow.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}...Or, {Pause:279}perhaps, the place where the Mayor plays Solitaire while pretending to be interested in what you're saying. {Pause:1786}Either works.</RawDialog>
