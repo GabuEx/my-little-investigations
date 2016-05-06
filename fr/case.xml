@@ -78,20 +78,20 @@
 <!-- TODO --><RawDialog>"Erected in honor of the {Pause:725}{Emotion:Annoyed}bravest, most {Pause:868}upright public servant Ponyville has ever known!"</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}I'm {Pause:478}getting the sense that this is talking about the Mayor. {Pause:1572}{PlaySound:Horse_Snort}...And was {Pause:637}written by the Mayor.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}I'm {Pause:478}getting the sense that this is talking about the Mayor. {Pause:1572}{PlaySound:Horse_Snort}...And was {Pause:637}written by the Mayor.</RawDialog>
-<!-- TODO --><Name>Eclair</Name>
-<!-- TODO --><Name>Eclair</Name>
-<!-- TODO --><Name>Abby Sprocket</Name>
-<!-- TODO --><Name>Abby Sprocket</Name>
-<!-- TODO --><Name>Hoover Sweeps</Name>
-<!-- TODO --><Name>Hoover Sweeps</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Crowd</Name>
-<!-- TODO --><Name>Crowd</Name>
+<Name>Eclair</Name>
+<Name>Eclair</Name>
+<Name>Abby Sprocket</Name>
+<Name>Abby Sprocket</Name>
+<Name>Hoover Sweeps</Name>
+<Name>Hoover Sweeps</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
+<Name>Rainbow Dash</Name>
+<Name>Rainbow Dash</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
+<Name>Crowd</Name>
+<Name>Foule</Name>
 <!-- TODO --><RawDialog>What's this {Pause:724}crowd all about? {Pause:1099}I didn't know there was an event today.</RawDialog>
 <!-- TODO --><RawDialog>What's this {Pause:724}crowd all about? {Pause:1099}I didn't know there was an event today.</RawDialog>
 <!-- TODO --><RawDialog>They're having an apple-eating contest!</RawDialog>
@@ -662,16 +662,12 @@
 <!-- TODO --><RawDialog>{Emotion:DeepThought}{Aside}(Ordinarily, {Pause:371}that wouldn't be remarkable, {Pause:1123}considering that thieves naturally would trample the grass as they left, {Pause:1151}but... {Pause:729}{Emotion:Neutral}there's something that strikes me as odd about this.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:DeepThought}{Aside}(The {Pause:253}thing that's odd about this trampled grass {Pause:843}is...){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:DeepThought}{Aside}(The {Pause:253}thing that's odd about this trampled grass {Pause:843}is...){/Aside}</RawDialog>
-<!-- TODO --><OptionTexts>
-<!-- TODO --><OptionTexts>
 <!-- TODO --><Text>The direction of the trampled grass is wrong.</Text>
 <!-- TODO --><Text>The direction of the trampled grass is wrong.</Text>
 <!-- TODO --><Text>There should be tire marks here.</Text>
 <!-- TODO --><Text>There should be tire marks here.</Text>
 <!-- TODO --><Text>Rarity hasn't fixed the trampled grass yet.</Text>
 <!-- TODO --><Text>Rarity hasn't fixed the trampled grass yet.</Text>
-<!-- TODO --></OptionTexts>
-<!-- TODO --></OptionTexts>
 <!-- TODO --><RawDialog>{Emotion:DeepThought}{Aside}(If Scootaloo {Pause:308}did steal the True Blue, {Pause:1025}then it seems like there should be tire marks here as she made her getaway.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:DeepThought}{Aside}(If Scootaloo {Pause:308}did steal the True Blue, {Pause:1025}then it seems like there should be tire marks here as she made her getaway.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(After all, {Pause:644}if she left tire marks coming to a sudden halt, {Pause:1276}then logically speaking {Pause:798}she'd also leave tire marks accelerating away, too.){/Aside}</RawDialog>
@@ -1026,12 +1022,12 @@
 <!-- TODO --><RawDialog>We tried our luck with some cows and chickens on the farm, {Pause:703}but {Pause:298}{Emotion:Sad}Applejack got pretty angry at us the next morning since Aunt and Uncle Orange came to visit. {Pause:1721}{Emotion:HappyUp}Still, {Pause:469}the looks on the Orange's faces were too funny.</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(That {Pause:422}creates... {Pause:657}{Emotion:Peeved}so many questions in my mind that I really think it would be best to leave it there and not ask any of them.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(That {Pause:422}creates... {Pause:657}{Emotion:Peeved}so many questions in my mind that I really think it would be best to leave it there and not ask any of them.){/Aside}</RawDialog>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Scootaloo</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
+<Name>Scootaloo</Name>
+<Name>Scootaloo</Name>
+<Name>Scootaloo</Name>
+<Name>Scootaloo</Name>
 <!-- TODO --><TargetLocationName>clubhouse (exterior)</TargetLocationName>
 <!-- TODO --><TargetLocationName>clubhouse (exterior)</TargetLocationName>
 <!-- TODO --><Name>Equestrian flag</Name>
@@ -1086,8 +1082,8 @@
 <!-- TODO --><RawDialog>{Emotion:Annoyed}"Tale of a Mayor: {Pause:746}Chapter 1..."</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Peeved}...Yeah, {Pause:398}I guess I should've seen that one coming.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Peeved}...Yeah, {Pause:398}I guess I should've seen that one coming.</RawDialog>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Mayor</Name>
+<Name>Mayor</Name>
+<Name>Maire</Name>
 <!-- TODO --><TargetLocationName>town square</TargetLocationName>
 <!-- TODO --><TargetLocationName>town square</TargetLocationName>
 <!-- TODO --><TargetLocationName>town square</TargetLocationName>
@@ -1136,14 +1132,14 @@
 <!-- TODO --><RawDialog>{PlaySound:Explosion}I'M STANDING RIGHT HERE, {Pause:835}YOU KNOW!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Nervous}{PlaySound:Squeak}{Aside}(Ah... {Pause:449}heh heh, {Pause:513}whoops!){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Nervous}{PlaySound:Squeak}{Aside}(Ah... {Pause:449}heh heh, {Pause:513}whoops!){/Aside}</RawDialog>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
+<Name>Spot</Name>
+<Name>Spot</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
+<Name>Fido</Name>
+<Name>Fido</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
 <!-- TODO --><TargetLocationName>cave entrance</TargetLocationName>
 <!-- TODO --><TargetLocationName>cave entrance</TargetLocationName>
 <!-- TODO --><TargetLocationName>room</TargetLocationName>
@@ -1168,16 +1164,16 @@
 <!-- TODO --><RawDialog>This hair definitely isn't that {Pause:1194}dog's. {Pause:1619}{Emotion:DeepThought}I feel like I've seen it before...</RawDialog>
 <!-- TODO --><RawNotificationText>"White Hair (#2)" added to evidence.</RawNotificationText>
 <!-- TODO --><RawNotificationText>"White Hair (#2)" added to evidence.</RawNotificationText>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Guard</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
+<Name>Guard</Name>
+<Name>Guard</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
+<Name>Guard</Name>
+<Name>Garde</Name>
+<Name>Guard</Name>
+<Name>Garde</Name>
 <!-- TODO --><TargetLocationName>Rambling Rock Ridge</TargetLocationName>
 <!-- TODO --><TargetLocationName>Rambling Rock Ridge</TargetLocationName>
 <!-- TODO --><TargetLocationName>cave foyer</TargetLocationName>
@@ -2754,16 +2750,12 @@
 <!-- TODO --><RawDialog>Really?{Pause:948} {Emotion:Confused}But, then,{Pause:573} that makes things all the more peculiar...{Pause:982} because it is still the fact that she must have stolen True Blue,{Pause:795} no?</RawDialog>
 <!-- TODO --><RawDialog>...Let me ask a{Pause:733} very important question{Pause:1043} before answering that.</RawDialog>
 <!-- TODO --><RawDialog>...Let me ask a{Pause:733} very important question{Pause:1043} before answering that.</RawDialog>
-<!-- TODO --><OptionTexts>
-<!-- TODO --><OptionTexts>
 <!-- TODO --><Text>Is there another way in or out of the boutique?</Text>
 <!-- TODO --><Text>Is there another way in or out of the boutique?</Text>
 <!-- TODO --><Text>Do you lock your door each night?</Text>
 <!-- TODO --><Text>Do you lock your door each night?</Text>
 <!-- TODO --><Text>Do you think that Opal might've stolen the True Blue?</Text>
 <!-- TODO --><Text>Do you think that Opal might've stolen the True Blue?</Text>
-<!-- TODO --></OptionTexts>
-<!-- TODO --></OptionTexts>
 <!-- TODO --><RawDialog>{Emotion:Neutral}Is there, {Pause:30}by any chance, {Pause:545}another way in or out of the boutique? {Pause:1303}Any way that some thief might've left {Pause:946}other than the front door?</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}Is there, {Pause:30}by any chance, {Pause:545}another way in or out of the boutique? {Pause:1303}Any way that some thief might've left {Pause:946}other than the front door?</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}Um... {Pause:822}no, {Pause:638}I'm afraid not. {Pause:972}The front door is the only way somepony could leave... {Pause:965}and since I already saw Scootaloo using the front door, {Pause:1302}I'm not sure where you're going with this.</RawDialog>
@@ -3846,14 +3838,10 @@
 <!-- TODO --><RawDialog>{Aside}(I can't believe this. {Pause:791}My first big test as an investigator, and I completely blew it. {Pause:1628}{PlaySound:Stab2}Now I'll NEVER get to the bottom of this.){Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:DeepThought}{Aside}(Unless...){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:DeepThought}{Aside}(Unless...){/Aside}</RawDialog>
-<!-- TODO --><OptionTexts>
-<!-- TODO --><OptionTexts>
 <!-- TODO --><Text>Try again - Restart confrontation</Text>
 <!-- TODO --><Text>Try again - Restart confrontation</Text>
 <!-- TODO --><Text>Give up - Back to title screen</Text>
 <!-- TODO --><Text>Give up - Back to title screen</Text>
-<!-- TODO --></OptionTexts>
-<!-- TODO --></OptionTexts>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{Aside}(*sigh* {Pause:376}No, {Pause:758}it doesn't work that way. {Pause:932}You can't just redo something you messed up as if it never happened.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{Aside}(*sigh* {Pause:376}No, {Pause:758}it doesn't work that way. {Pause:932}You can't just redo something you messed up as if it never happened.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Sad}{Aside}(Scootaloo... {Pause:1158}I'm so sorry.){/Aside}</RawDialog>
@@ -3872,14 +3860,10 @@
 <!-- TODO --><RawDialog>Twilight can help ya, Scootaloo. {Pause:1191}{Emotion:Sad}I... {Pause:575}I can just feel it.</RawDialog>
 <!-- TODO --><RawDialog>*sigh* {Pause:682}All right. All right. {Pause:921}No more running, hiding, or dodging. {Pause:1109}I'll just give it to you straight. {Pause:775}Not much else to do now, {Pause:245}right?</RawDialog>
 <!-- TODO --><RawDialog>*sigh* {Pause:682}All right. All right. {Pause:921}No more running, hiding, or dodging. {Pause:1109}I'll just give it to you straight. {Pause:775}Not much else to do now, {Pause:245}right?</RawDialog>
-<!-- TODO --><ConfrontationTopicNamesById>
-<!-- TODO --><ConfrontationTopicNamesById>
 <!-- TODO --><ConfrontationTopicName>The Break-In</ConfrontationTopicName>
 <!-- TODO --><ConfrontationTopicName>The Break-In</ConfrontationTopicName>
 <!-- TODO --><ConfrontationTopicName>Your Motive</ConfrontationTopicName>
 <!-- TODO --><ConfrontationTopicName>Your Motive</ConfrontationTopicName>
-<!-- TODO --></ConfrontationTopicNamesById>
-<!-- TODO --></ConfrontationTopicNamesById>
 <!-- TODO --><Name>Sculpture</Name>
 <!-- TODO --><Name>Sculpture</Name>
 <!-- TODO --><RawDialog>Oh, hi! {Pause:966}I don't think I've seen you around before. {Pause:991}Are you new here?</RawDialog>
@@ -4036,42 +4020,42 @@
 <!-- TODO --><RawNotificationText>"Last Night" added to Interrogations.</RawNotificationText>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{Aside}(All right,{Pause:614} time to get to the bottom of this...){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{Aside}(All right,{Pause:614} time to get to the bottom of this...){/Aside}</RawDialog>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Eclair</Name>
-<!-- TODO --><Name>Eclair</Name>
-<!-- TODO --><Name>Abby Sprocket</Name>
-<!-- TODO --><Name>Abby Sprocket</Name>
-<!-- TODO --><Name>Hoover Sweeps</Name>
-<!-- TODO --><Name>Hoover Sweeps</Name>
-<!-- TODO --><Name>CMC</Name>
-<!-- TODO --><Name>CMC</Name>
-<!-- TODO --><Name>Opal and True Blue</Name>
-<!-- TODO --><Name>Opal and True Blue</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Pinkie Pie</Name>
-<!-- TODO --><Name>Pinkie Pie</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
+<Name>Sweetie Belle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Fido</Name>
+<Name>Fido</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
+<Name>Mayor</Name>
+<Name>Maire</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Rainbow Dash</Name>
+<Name>Rainbow Dash</Name>
+<Name>Scootaloo</Name>
+<Name>Scootaloo</Name>
+<Name>Eclair</Name>
+<Name>Eclair</Name>
+<Name>Abby Sprocket</Name>
+<Name>Abby Sprocket</Name>
+<Name>Hoover Sweeps</Name>
+<Name>Hoover Sweeps</Name>
+<Name>CMC</Name>
+<Name>CMC</Name>
+<Name>Opal and True Blue</Name>
+<Name>Opal et True Blue</Name>
+<Name>Guard</Name>
+<Name>Garde</Name>
+<Name>Pinkie Pie</Name>
+<Name>Pinkie Pie</Name>
+<Name>Spot</Name>
+<Name>Spot</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
 <!-- TODO --><Description>Rarity, Ponyville's resident fashionista. The victim in this case - both True Blue and Opal were stolen from her last night. Seems to still cause the Diamond Dogs as much consternation as ever.</Description>
 <!-- TODO --><Description>Rarity, Ponyville's resident fashionista. The victim in this case - both True Blue and Opal were stolen from her last night. Seems to still cause the Diamond Dogs as much consternation as ever.</Description>
 <!-- TODO --><Name>Twilight Sparkle</Name>
@@ -4308,40 +4292,40 @@
 <!-- TODO --><RawNotificationText>"White Hair" updated in evidence.</RawNotificationText>
 <!-- TODO --><RawDialog>Argh!{Pause:207} I can't seem to find a logical connection here...</RawDialog>
 <!-- TODO --><RawDialog>Argh!{Pause:207} I can't seem to find a logical connection here...</RawDialog>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Eclair</Name>
-<!-- TODO --><Name>Eclair</Name>
-<!-- TODO --><Name>Abby Sprocket</Name>
-<!-- TODO --><Name>Abby Sprocket</Name>
-<!-- TODO --><Name>Hoover Sweeps</Name>
-<!-- TODO --><Name>Hoover Sweeps</Name>
-<!-- TODO --><Name>CMC</Name>
-<!-- TODO --><Name>CMC</Name>
-<!-- TODO --><Name>Opal and True Blue</Name>
-<!-- TODO --><Name>Opal and True Blue</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Pinkie Pie</Name>
-<!-- TODO --><Name>Pinkie Pie</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
+<Name>Sweetie Belle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Fido</Name>
+<Name>Fido</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
+<Name>Mayor</Name>
+<Name>Maire</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Rainbow Dash</Name>
+<Name>Rainbow Dash</Name>
+<Name>Scootaloo</Name>
+<Name>Scootaloo</Name>
+<Name>Eclair</Name>
+<Name>Eclair</Name>
+<Name>Abby Sprocket</Name>
+<Name>Abby Sprocket</Name>
+<Name>Hoover Sweeps</Name>
+<Name>Hoover Sweeps</Name>
+<Name>CMC</Name>
+<Name>CMC</Name>
+<Name>Opal and True Blue</Name>
+<Name>Opal et True Blue</Name>
+<Name>Guard</Name>
+<Name>Garde</Name>
+<Name>Pinkie Pie</Name>
+<Name>Pinkie Pie</Name>
+<Name>Spot</Name>
+<Name>Spot</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
 <!-- TODO --><RawDialog>Wuh... {Pause:859}buh... {Pause:669}Rarity, {Pause:656}d-{Pause:474}{PlaySound:Explosion}{Emotion:Surprised}did you CLEAN UP THE BOUTIQUE!?</RawDialog>
 <!-- TODO --><RawDialog>Wuh... {Pause:859}buh... {Pause:669}Rarity, {Pause:656}d-{Pause:474}{PlaySound:Explosion}{Emotion:Surprised}did you CLEAN UP THE BOUTIQUE!?</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Lightbulb}Why, {Pause:525}yes, darling! {Pause:518}It was a dreadful, {Pause:443}awful mess. {Pause:934}Just a few more bits and pieces to put in order {Pause:586}and it'll be good as new!</RawDialog>
@@ -4412,10 +4396,10 @@
 <!-- TODO --><RawDialog>...An... {Pause:893}accurate, {Pause:600}albeit perhaps overenthusiastic description.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}Well, {Pause:562}let's get to it; {Pause:699}there must be SOMETHING around here, {Pause:699}right?</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}Well, {Pause:562}let's get to it; {Pause:699}there must be SOMETHING around here, {Pause:699}right?</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
 <!-- TODO --><RawDialog>{Emotion:Confused}If I may ask, Twilight, {Pause:868}where ARE we going? {Pause:830}{Emotion:Neutral}As much as I like {Pause:826}{Emotion:Happy}{PlaySound:Sparkle}beautiful, {Pause:587}{PlaySound:Sparkle}sparkling, {Pause:307}{Emotion:Surprised}{PlaySound:Explosion}BEDAZZLING gems... {Pause:1773}{Emotion:Neutral}er, {Pause:788}this does not seem like the appropriate time to be searching for them.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Confused}If I may ask, Twilight, {Pause:868}where ARE we going? {Pause:830}{Emotion:Neutral}As much as I like {Pause:826}{Emotion:Happy}{PlaySound:Sparkle}beautiful, {Pause:587}{PlaySound:Sparkle}sparkling, {Pause:307}{Emotion:Surprised}{PlaySound:Explosion}BEDAZZLING gems... {Pause:1773}{Emotion:Neutral}er, {Pause:788}this does not seem like the appropriate time to be searching for them.</RawDialog>
 <!-- TODO --><RawDialog>We're not here for the gems, {Pause:430}Rarity. {Pause:629}That's not all that's in this area.</RawDialog>
@@ -4426,10 +4410,10 @@
 <!-- TODO --><RawDialog>I'm afraid so. {Pause:1655}We need to head east at this fork.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Sad}*sigh* {Pause:1139}If we must...</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Sad}*sigh* {Pause:1139}If we must...</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
 <!-- TODO --><RawDialog>{Emotion:Nervous}{PlaySound:Damage}WAH! {Pause:755}{Emotion:Mad}{PlaySound:Smack2}Apple Bloom! {Pause:821}I {Pause:184}thought I told you not to let any non-Crusaders in here!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Nervous}{PlaySound:Damage}WAH! {Pause:755}{Emotion:Mad}{PlaySound:Smack2}Apple Bloom! {Pause:821}I {Pause:184}thought I told you not to let any non-Crusaders in here!</RawDialog>
 <!-- TODO --><RawDialog>Oh, {Pause:498}don't you worry 'bout that, {Pause:126}Scootaloo! {Pause:457}I made Twi here an {Pause:483}honorary Crusader for today!</RawDialog>
@@ -4452,12 +4436,12 @@
 <!-- TODO --><RawDialog>{Emotion:Confident}You want this ribbon back, {Pause:1369}riiiight?</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Smack2}Fine, {Pause:392}fine. {Pause:572}Make it quick.</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Smack2}Fine, {Pause:392}fine. {Pause:572}Make it quick.</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Scootaloo</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
+<Name>Scootaloo</Name>
+<Name>Scootaloo</Name>
 <!-- TODO --><RawDialog>Well, {Pause:612}you all, {Pause:603}{PlaySound:Lightbulb}I must say that that makes for QUITE the interesting story! {Pause:1570}Who would have guessed that the Diamond Dogs would've been the culprit?</RawDialog>
 <!-- TODO --><RawDialog>Well, {Pause:612}you all, {Pause:603}{PlaySound:Lightbulb}I must say that that makes for QUITE the interesting story! {Pause:1570}Who would have guessed that the Diamond Dogs would've been the culprit?</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Annoyed}{Aside}(Yes, {Pause:812}who would've guessed that a group known in the past to be gem thieves would've stolen a large {Pause:1328}gem?){/Aside}</RawDialog>
@@ -4558,18 +4542,18 @@
 <!-- TODO --><RawDialog>All right. {Pause:497}{Emotion:Happy}{PlaySound:Lightbulb}Thank you {Pause:100}EVER so much for all that you've done for me today, Twilight. {Pause:624}It is MOST appreciated, {Pause:848}I assure you. {Pause:698}Take care!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Happy}See you around, {Pause:130}Rarity.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Happy}See you around, {Pause:130}Rarity.</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Scootaloo</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
+<Name>Mayor</Name>
+<Name>Maire</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
+<Name>Scootaloo</Name>
+<Name>Scootaloo</Name>
 <!-- TODO --><RawDialog>{PlaySound:Realization}Huh...? {Pause:936}this room's completely empty, {Pause:1060}aside from some patches where it looks like furniture used to be. {Pause:1252}What's this about?</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Realization}Huh...? {Pause:936}this room's completely empty, {Pause:1060}aside from some patches where it looks like furniture used to be. {Pause:1252}What's this about?</RawDialog>
 <!-- TODO --><RawDialog>Did someone {Pause:369}{Emphasis}live here{/Emphasis}? {Pause:1672}Strange.</RawDialog>
@@ -4590,10 +4574,10 @@
 <!-- TODO --><RawDialog>Well, {Pause:602}{Emotion:Happy}all right... {Pause:271}let's go, then!</RawDialog>
 <!-- TODO --><RawNotificationText>You can now go to the dig site!</RawNotificationText>
 <!-- TODO --><RawNotificationText>You can now go to the dig site!</RawNotificationText>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
 <!-- TODO --><RawDialog>Yeah. {Pause:1082}Yeah, {Pause:222}I gave her that ribbon. {Pause:788}It was about, {Pause:288}I don't know, a week or so ago.</RawDialog>
 <!-- TODO --><RawDialog>Yeah. {Pause:1082}Yeah, {Pause:222}I gave her that ribbon. {Pause:788}It was about, {Pause:288}I don't know, a week or so ago.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}I was near the field by the school on weather duty, {Pause:744}and Scootaloo was there too. {Pause:873}I didn't think much of it, {Pause:279}since she was there a lot.</RawDialog>
@@ -4730,12 +4714,12 @@
 <!-- TODO --><RawDialog>Thank you, {Pause:877}Professor {Pause:280}Pinkie Pie.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Happy2}Noooo problem! {Pause:1325}{Emotion:Happy3}Awww, {Pause:472}you two look so cute together already. {Pause:943}{Emotion:Neutral}Have fun, {Pause:410}Twilight!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Happy2}Noooo problem! {Pause:1325}{Emotion:Happy3}Awww, {Pause:472}you two look so cute together already. {Pause:943}{Emotion:Neutral}Have fun, {Pause:410}Twilight!</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
+<Name>Rainbow Dash</Name>
+<Name>Rainbow Dash</Name>
 <!-- TODO --><RawDialog>{Aside}(...The mayor looks like she's in the middle of some important work. {Pause:1183}I'll wait until she's done.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(...The mayor looks like she's in the middle of some important work. {Pause:1183}I'll wait until she's done.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Paper-shuffling}Hmm... {Pause:969}{Emotion:Happy}yes, {Pause:705}I {Pause:354}think our budget can manage if we're more efficient in this area, {Pause:902}allowing us to free up enough bits from those savings...</RawDialog>
@@ -4750,12 +4734,12 @@
 <!-- TODO --><RawDialog>{Aside}{PlaySound:Horse_Snort}(Silly me, {Pause:737}I was thinking of a different mayor... {Pause:333}who actually takes responsibility seriously.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Lightbulb}Oh, {Pause:298}Twilight Sparkle! {Pause:586}I didn't hear you come in. {Pause:509}Can I help you with anything?</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Lightbulb}Oh, {Pause:298}Twilight Sparkle! {Pause:586}I didn't hear you come in. {Pause:509}Can I help you with anything?</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Mayor</Name>
+<Name>Maire</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
 <!-- TODO --><RawDialog>All right, {Pause:247}dog. {Pause:675}{PlaySound:Snap}I'm back!</RawDialog>
 <!-- TODO --><RawDialog>All right, {Pause:247}dog. {Pause:675}{PlaySound:Snap}I'm back!</RawDialog>
 <!-- TODO --><RawDialog>I see that. {Pause:1214}Go away again.</RawDialog>
@@ -4768,26 +4752,26 @@
 <!-- TODO --><RawDialog>{Emotion:Happy}{PlaySound:Lightbulb}I most certainly am! {Pause:1207}{Emotion:Confident}Move aside, {Pause:654}I'm coming in!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Frustrated}*sigh* {Pause:669}Fine. {Pause:692}Fine. {Pause:1012}{Emotion:Neutral}You will search what you must for... {Pause:829}cat-napping... {Pause:635}and then you will leave. {Pause:585}{PlaySound:Pose-strike}Quickly.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Frustrated}*sigh* {Pause:669}Fine. {Pause:692}Fine. {Pause:1012}{Emotion:Neutral}You will search what you must for... {Pause:829}cat-napping... {Pause:635}and then you will leave. {Pause:585}{PlaySound:Pose-strike}Quickly.</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
+<Name>Guard</Name>
+<Name>Garde</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
 <!-- TODO --><RawDialog>...Can y'do that for me, Sweetie Belle?{Pause:897} At least until this all blows over?</RawDialog>
 <!-- TODO --><RawDialog>...Can y'do that for me, Sweetie Belle?{Pause:897} At least until this all blows over?</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Happy}Of {Pause:521}course! {Pause:676}Leave it to me, Apple {Pause:374}Bloom! {Pause:509}See ya!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Happy}Of {Pause:521}course! {Pause:676}Leave it to me, Apple {Pause:374}Bloom! {Pause:509}See ya!</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(Hmm... {Pause:636}I wonder what those two are talking about. {Pause:1394}{Emotion:DeepThought}Official Cutie Mark Crusader business, {Pause:972}maybe? {Pause:804}{Emotion:Neutral}Might as well have a chat with Apple Bloom while she's here.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(Hmm... {Pause:636}I wonder what those two are talking about. {Pause:1394}{Emotion:DeepThought}Official Cutie Mark Crusader business, {Pause:972}maybe? {Pause:804}{Emotion:Neutral}Might as well have a chat with Apple Bloom while she's here.){/Aside}</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
 <!-- TODO --><RawDialog>{PlaySound:Squeak}OPAL! {Pause:942}{Emotion:Melodramatic}Oh, {Pause:328}Opal! {Pause:872}Mama was so worried!</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Squeak}OPAL! {Pause:942}{Emotion:Melodramatic}Oh, {Pause:328}Opal! {Pause:872}Mama was so worried!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Terrified}Take your cat! {Pause:795}{PlaySound:Stab}PLEASE! {Pause:846}We didn't cat-nap it; it was attached to the jewel and {Pause:1115}wouldn't leave it alone!</RawDialog>
@@ -4830,18 +4814,18 @@
 <!-- TODO --><RawDialog>Well, {Pause:110}Twilight, {Pause:412}job well done! {Pause:1335}Shall we get going back to Ponyville?</RawDialog>
 <!-- TODO --><RawDialog>Um... {Pause:752}{Emotion:Happy}yes! {Pause:845}Let's go.</RawDialog>
 <!-- TODO --><RawDialog>Um... {Pause:752}{Emotion:Happy}yes! {Pause:845}Let's go.</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Opal and True Blue</Name>
-<!-- TODO --><Name>Opal and True Blue</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Fido</Name>
+<Name>Fido</Name>
+<Name>Opal and True Blue</Name>
+<Name>Opal et True Blue</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
+<Name>Spot</Name>
+<Name>Spot</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
 <!-- TODO --><RawDialog>So... {Pause:1112}about the noise in the clubhouse. {Pause:1188}{Emotion:HappyDown}I don't suppose I could go in and have a look?</RawDialog>
 <!-- TODO --><RawDialog>So... {Pause:1112}about the noise in the clubhouse. {Pause:1188}{Emotion:HappyDown}I don't suppose I could go in and have a look?</RawDialog>
 <!-- TODO --><RawDialog>Uh-uh. {Pause:689}{Emotion:Sad}Sorry, Twilight, {Pause:499}{Emotion:Neutral}but the clubhouse is for {Pause:585}{PlaySound:Stab}OFFICIAL {Pause:423}CRUSADER {Pause:233}BUSINESS {Pause:383}ONLY! {Pause:752}No adult {Pause:453}ponies allowed. {Pause:722}{Emotion:Happy}Except Applejack, {Pause:726}sometimes, {Pause:447}since she owns the farm and everything.</RawDialog>
@@ -4858,12 +4842,12 @@
 <!-- TODO --><RawDialog>{Emotion:Happy}{PlaySound:Lightbulb}Oh! {Pause:788}Okay, then! {Pause:484}{Emotion:Excited}Welcome to our clubhouse, honorary Cutie Mark Crusader!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:HappyDown}*giggle* {Pause:1223}Thanks, Sweetie Belle.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:HappyDown}*giggle* {Pause:1223}Thanks, Sweetie Belle.</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
 <!-- TODO --><RawDialog>You already know most of it, {Pause:593}so, {Pause:328}well, {Pause:222}I won't bore you with THOSE details.</RawDialog>
 <!-- TODO --><RawDialog>You already know most of it, {Pause:593}so, {Pause:328}well, {Pause:222}I won't bore you with THOSE details.</RawDialog>
 <!-- TODO --><RawDialog>Yeah, I was practicing that trick, {Pause:875}Opal got in front of me, {Pause:505}I tried to avoid her, and... {Pause:723}{PlaySound:Snap}{Emotion:Mad}WHAM. {Pause:682}{Emotion:Sad}Before I knew it, {Pause:96}I was flying through that window.</RawDialog>
@@ -5334,14 +5318,10 @@
 <!-- TODO --><RawDialog>{PlaySound:Pose-strike}No! {Pause:488}The pony has had ENOUGH questions! {Pause:305}{PlaySound:Explosion}Get back to the cat, or get OUT!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{Aside}(Ugh! {Pause:752}{Emotion:Sad}Now I'll never get to the bottom of what happened! {Pause:1257}What should I do...?){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{Aside}(Ugh! {Pause:752}{Emotion:Sad}Now I'll never get to the bottom of what happened! {Pause:1257}What should I do...?){/Aside}</RawDialog>
-<!-- TODO --><OptionTexts>
-<!-- TODO --><OptionTexts>
 <!-- TODO --><Text>Try again - Restart confrontation</Text>
 <!-- TODO --><Text>Try again - Restart confrontation</Text>
 <!-- TODO --><Text>Give up - Back to title screen</Text>
 <!-- TODO --><Text>Give up - Back to title screen</Text>
-<!-- TODO --></OptionTexts>
-<!-- TODO --></OptionTexts>
 <!-- TODO --><RawDialog>{Emotion:Sad}{Aside}(*sigh* {Pause:866}There's nothing I can do now, {Pause:1570}I guess... {Pause:660}I couldn't get a search warrant for the gem, {Pause:1322}and now I'll never figure things out. {Pause:1036}Scootaloo... {Pause:1111}Rarity... {Pause:1010}I'm sorry...){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Sad}{Aside}(*sigh* {Pause:866}There's nothing I can do now, {Pause:1570}I guess... {Pause:660}I couldn't get a search warrant for the gem, {Pause:1322}and now I'll never figure things out. {Pause:1036}Scootaloo... {Pause:1111}Rarity... {Pause:1010}I'm sorry...){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{Aside}(I can't let everypony down... {Pause:1027}I have to try harder. {Pause:784}{Emotion:DeepThought}Rethink everything. {Pause:690}{Emotion:Confident}I can get to the bottom of this, I know it!){/Aside}</RawDialog>
@@ -5452,16 +5432,12 @@
 <!-- TODO --><RawDialog>{Emotion:DeepThought}{Aside}(I don't yet know how this ties in to RARITY having the True Blue yet, {Pause:1917}but...){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>The {Pause:288}only explanation for why the safe is empty {Pause:1251}is...</RawDialog>
 <!-- TODO --><RawDialog>The {Pause:288}only explanation for why the safe is empty {Pause:1251}is...</RawDialog>
-<!-- TODO --><OptionTexts>
-<!-- TODO --><OptionTexts>
 <!-- TODO --><Text>Its contents were confiscated!</Text>
 <!-- TODO --><Text>Its contents were confiscated!</Text>
 <!-- TODO --><Text>It's for decoration!</Text>
 <!-- TODO --><Text>It's for decoration!</Text>
 <!-- TODO --><Text>You were stolen from!</Text>
 <!-- TODO --><Text>You were stolen from!</Text>
-<!-- TODO --></OptionTexts>
-<!-- TODO --></OptionTexts>
 <!-- TODO --><RawDialog>{Emotion:Objection}{PlaySound:Interjection}Clearly, {Pause:643}whatever was in that safe was confiscated! {Pause:1301}It must have been filled with illicit goods!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Objection}{PlaySound:Interjection}Clearly, {Pause:643}whatever was in that safe was confiscated! {Pause:1301}It must have been filled with illicit goods!</RawDialog>
 <!-- TODO --><RawDialog>{Mouth:Off}...</RawDialog>
@@ -5516,14 +5492,10 @@
 <!-- TODO --><RawDialog>Heh heh, {Pause:732}yes! {Pause:591}{PlaySound:Smack2}Brand new! {Pause:617}{PlaySound:Smack2}Never been used! {Pause:629}{Emotion:Neutral}We, um, {Pause:1262}we had a gem that we were going to put in it, {Pause:1150}but {Pause:421}we haven't yet!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:DeepThought}{Aside}(Is that {Pause:673}actually plausible...? {Pause:1451}Could it be brand new?){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:DeepThought}{Aside}(Is that {Pause:673}actually plausible...? {Pause:1451}Could it be brand new?){/Aside}</RawDialog>
-<!-- TODO --><OptionTexts>
-<!-- TODO --><OptionTexts>
 <!-- TODO --><Text>Yes, it could be new.</Text>
 <!-- TODO --><Text>Yes, it could be new.</Text>
 <!-- TODO --><Text>No, that's impossible.</Text>
 <!-- TODO --><Text>No, that's impossible.</Text>
-<!-- TODO --></OptionTexts>
-<!-- TODO --></OptionTexts>
 <!-- TODO --><RawDialog>Hmmm... {Pause:1056}{Emotion:Neutral}well, {Pause:542}I suppose it might {Pause:800}be new.</RawDialog>
 <!-- TODO --><RawDialog>Hmmm... {Pause:1056}{Emotion:Neutral}well, {Pause:542}I suppose it might {Pause:800}be new.</RawDialog>
 <!-- TODO --><RawDialog>Um... {Pause:522}not to intrude, Twilight, {Pause:652}but... {Pause:499}doesn't your {Pause:471}agreement here {Pause:415}endanger this entire line of questioning?</RawDialog>
@@ -5794,8 +5766,6 @@
 <!-- TODO --><RawDialog>{Emotion:Objection}{PlaySound:Interjection}Admit it, {Pause:490}dogs! {Pause:612}{Zoom}{PlaySound:DramaPound}YOU {Pause:578}stole the True Blue!</RawDialog>
 <!-- TODO --><RawDialog>We, {Pause:1458}err...</RawDialog>
 <!-- TODO --><RawDialog>We, {Pause:1458}err...</RawDialog>
-<!-- TODO --><RawDialog/>
-<!-- TODO --><RawDialog/>
 <!-- TODO --><RawDialog>{OtherEmotion:Confident}{Speed:59}AIIIIIIIIIIIEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!</RawDialog>
 <!-- TODO --><RawDialog>{OtherEmotion:Confident}{Speed:59}AIIIIIIIIIIIEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Laughing}{PlaySound:Explosion}Hah! {Pause:645}{Emotion:Smug}I think that's just about enough out of you, {Pause:1205}pony. {Pause:722}It's obvious that you have no idea what you're talking about.</RawDialog>
@@ -5816,14 +5786,10 @@
 <!-- TODO --><RawDialog>{Emotion:Frustrated}{PlaySound:Explosion}Get back to your cat {Pause:637}or get out! {Pause:1364}You've wasted enough of our time, {Pause:648}pony.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{Aside}(Now what!? {Pause:894}I was so close... {Pause:1616}but is this as far as I can take this?){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{Aside}(Now what!? {Pause:894}I was so close... {Pause:1616}but is this as far as I can take this?){/Aside}</RawDialog>
-<!-- TODO --><OptionTexts>
-<!-- TODO --><OptionTexts>
 <!-- TODO --><Text>Try again - Restart confrontation</Text>
 <!-- TODO --><Text>Try again - Restart confrontation</Text>
 <!-- TODO --><Text>Give up - Back to title screen</Text>
 <!-- TODO --><Text>Give up - Back to title screen</Text>
-<!-- TODO --></OptionTexts>
-<!-- TODO --></OptionTexts>
 <!-- TODO --><RawDialog>{Emotion:Sad}{Aside}(There's {Pause:553}nothing I can do now, I guess... {Pause:1141}Scootaloo, {Pause:1057}Rarity, {Pause:1096}I'm sorry... {Pause:1041}I couldn't do this for you.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Sad}{Aside}(There's {Pause:553}nothing I can do now, I guess... {Pause:1141}Scootaloo, {Pause:1057}Rarity, {Pause:1096}I'm sorry... {Pause:1041}I couldn't do this for you.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(I guess I'm no good as an investigator after all...){/Aside}</RawDialog>
@@ -5848,26 +5814,22 @@
 <!-- TODO --><RawDialog>{Emotion:DeepThought}So, {Pause:848}um... {Pause:962}where {Pause:382}is the True Blue?</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{PlaySound:Smack2}Ugh! {Pause:935}Follow me, {Pause:377}I'll {Pause:275}take you to it.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Neutral}{PlaySound:Smack2}Ugh! {Pause:935}Follow me, {Pause:377}I'll {Pause:275}take you to it.</RawDialog>
-<!-- TODO --><ConfrontationTopicNamesById>
-<!-- TODO --><ConfrontationTopicNamesById>
 <!-- TODO --><ConfrontationTopicName>The Stolen Gem</ConfrontationTopicName>
 <!-- TODO --><ConfrontationTopicName>The Stolen Gem</ConfrontationTopicName>
 <!-- TODO --><ConfrontationTopicName>The First Suspect</ConfrontationTopicName>
 <!-- TODO --><ConfrontationTopicName>The First Suspect</ConfrontationTopicName>
 <!-- TODO --><ConfrontationTopicName>Another Suspect</ConfrontationTopicName>
 <!-- TODO --><ConfrontationTopicName>Another Suspect</ConfrontationTopicName>
-<!-- TODO --></ConfrontationTopicNamesById>
-<!-- TODO --></ConfrontationTopicNamesById>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Fido</Name>
+<Name>Fido</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
+<Name>Spot</Name>
+<Name>Spot</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
 <!-- TODO --><RawDialog>{PlaySound:Lightbulb}{Emotion:Happy}Hello! {Pause:669}My name is Twilight Sparkle. {Pause:1143}{Emotion:Neutral}We are investigating a crime, {Pause:523}and we would like to ask permission to enter your {Pause:287}caverns to search.</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Lightbulb}{Emotion:Happy}Hello! {Pause:669}My name is Twilight Sparkle. {Pause:1143}{Emotion:Neutral}We are investigating a crime, {Pause:523}and we would like to ask permission to enter your {Pause:287}caverns to search.</RawDialog>
 <!-- TODO --><RawDialog>{Mouth:Off}...</RawDialog>
@@ -5976,14 +5938,14 @@
 <!-- TODO --><RawDialog>{Emotion:Neutral}{Aside}(All right, {Pause:574}well, {Pause:462}the Mayor's going to be working at Town Hall this time of day, {Pause:941}so... {Pause:862}back to Town Square. {Pause:1147}Nowhere else to go right now.){/Aside}</RawDialog>
 <!-- TODO --><RawNotificationText>You can now go to Town Hall!</RawNotificationText>
 <!-- TODO --><RawNotificationText>You can now go to Town Hall!</RawNotificationText>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
+<Name>Guard</Name>
+<Name>Garde</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
 <!-- TODO --><RawDialog>{PlaySound:Smack2}Opal! {Pause:892}Opaaaaal! {Pause:880}{Emotion:Melodramatic}Mama's here to rescue you! {Pause:829}Where are you?</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Smack2}Opal! {Pause:892}Opaaaaal! {Pause:880}{Emotion:Melodramatic}Mama's here to rescue you! {Pause:829}Where are you?</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Peeved}Rarity, {Pause:1066}I don't think she's just going to {Pause:274}come when you call.</RawDialog>
@@ -5992,12 +5954,12 @@
 <!-- TODO --><RawDialog>{Emotion:Sad}But these caverns are so expansive, {Pause:1782}and it's all dank in here! {Pause:506}{Emotion:Melodramatic}{PlaySound:Explosion}It's going to RUIN my mane!</RawDialog>
 <!-- TODO --><RawDialog>{OtherEmotion:Neutral}{PlaySound:Teapot-boiling}{Mouth:Off}RrrrrrrrRRRRRR, {Pause:620}{Mouth:On}just get this search over with and leave! {Pause:1106}{PlaySound:Smack}Sheesh!</RawDialog>
 <!-- TODO --><RawDialog>{OtherEmotion:Neutral}{PlaySound:Teapot-boiling}{Mouth:Off}RrrrrrrrRRRRRR, {Pause:620}{Mouth:On}just get this search over with and leave! {Pause:1106}{PlaySound:Smack}Sheesh!</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
 <!-- TODO --><RawDialog>{Aside}(Great, {Pause:286}it looks like at least {Pause:81}one crusader is here... {Pause:1258}I don't know where Apple Bloom or our little suspect are at the moment, {Pause:1134}but {Pause:408}maybe I can get some information from Sweetie Belle all the same.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(Great, {Pause:286}it looks like at least {Pause:81}one crusader is here... {Pause:1258}I don't know where Apple Bloom or our little suspect are at the moment, {Pause:1134}but {Pause:408}maybe I can get some information from Sweetie Belle all the same.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>Hey, Sweetie Belle!</RawDialog>
@@ -6022,10 +5984,10 @@
 <!-- TODO --><RawDialog>{Emotion:Nervous}Oh, {Pause:648}that's just {Pause:414}Apple Bloom. {Pause:791}{Emotion:Neutral}Doing... {Pause:393}something. {Pause:847}Something that... {Pause:846}{Emotion:Nervous}does not involve Scootaloo.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Annoyed}Right. {Pause:1199}Of {Pause:201}course.{Pause:1399} *sigh* {Pause:592}{Emotion:NeutralDown}All right, {Pause:587}well, {Pause:572}I just have {Pause:134}a few questions.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Annoyed}Right. {Pause:1199}Of {Pause:201}course.{Pause:1399} *sigh* {Pause:592}{Emotion:NeutralDown}All right, {Pause:587}well, {Pause:572}I just have {Pause:134}a few questions.</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Sweetie Belle</Name>
 <!-- TODO --><RawDialog>{Aside}(Dear{Pause:233} Princess Celestia...){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(Dear{Pause:233} Princess Celestia...){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{OtherEmotion:Happy}{PlaySound:Confetti}PARTYYYYYY!!!</RawDialog>
@@ -6118,18 +6080,18 @@
 <!-- TODO --><RawDialog>{Emotion:Neutral}I have a lot to learn as an investigator... {Pause:1062}{Emotion:Happy}{PlaySound:Interjection}but I'll do my best in whatever case comes next!</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:OrchestralCue}WATCH {Pause:733}IN {Pause:248}{PlaySound:Scene14Panic}AWE!</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:OrchestralCue}WATCH {Pause:733}IN {Pause:248}{PlaySound:Scene14Panic}AWE!</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Scootaloo</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
+<Name>Rainbow Dash</Name>
+<Name>Rainbow Dash</Name>
+<Name>Scootaloo</Name>
+<Name>Scootaloo</Name>
 <!-- TODO --><RawDialog>{PlaySound:Scene1Searching}Find it!{Pause:830} Find it!{Pause:376} It's here somewhere!</RawDialog>
 <!-- TODO --><RawDialog>{PlaySound:Scene1Searching}Find it!{Pause:830} Find it!{Pause:376} It's here somewhere!</RawDialog>
 <!-- TODO --><RawDialog>{NextFrame}Urgh...{Pause:596} I'm looking!{Pause:489} Give me a break!</RawDialog>
@@ -6296,18 +6258,18 @@
 <!-- TODO --><RawDialog>{Emotion:Happy}But {Pause:498}{PlaySound:Realization}useful, wouldn't you say? {Pause:1102}{Emotion:Sad}...Though, {Pause:287}I must {Pause:849}confess {Pause:406}I still do not {Pause:495}believe that this is a {Pause:1101}good {Pause:495}idea.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Happy}Don't worry, Rarity. {Pause:737}I'll get to the bottom of this {Pause:107}before that investigation team {Pause:294}even gets here!</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:Happy}Don't worry, Rarity. {Pause:737}I'll get to the bottom of this {Pause:107}before that investigation team {Pause:294}even gets here!</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Sweetie Belle</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Fido</Name>
-<!-- TODO --><Name>Rarity</Name>
-<!-- TODO --><Name>Rarity</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
+<Name>Mayor</Name>
+<Name>Maire</Name>
+<Name>Sweetie Belle</Name>
+<Name>Sweetie Belle</Name>
+<Name>Fido</Name>
+<Name>Fido</Name>
+<Name>Rarity</Name>
+<Name>Rarity</Name>
 <!-- TODO --><PassiveAbilityDescription>Rarity has long had a way with sweet-talking ponies into getting her way, and she's always happy to lend her talents to help out a friend. Call on Rarity if a male pony or a pony with an ego is giving you the cold shoulder.</PassiveAbilityDescription>
 <!-- TODO --><PassiveAbilityDescription>Rarity has long had a way with sweet-talking ponies into getting her way, and she's always happy to lend her talents to help out a friend. Call on Rarity if a male pony or a pony with an ego is giving you the cold shoulder.</PassiveAbilityDescription>
 <!-- TODO --><ActiveAbilityDescription>Rarity has refined her gem-finding skill to the point that it can find anything small that might have otherwise been overlooked. If you feel like you're looking for a needle in a haystack, using Rarity's skill in the field might help.</ActiveAbilityDescription>
@@ -6378,10 +6340,10 @@
 <!-- TODO --><RawDialog>{Emotion:Confused}What? {Pause:852}{Emotion:Happy}It is!</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(I swear... {Pause:1124}one day, I will understand her.){/Aside}</RawDialog>
 <!-- TODO --><RawDialog>{Aside}(I swear... {Pause:1124}one day, I will understand her.){/Aside}</RawDialog>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Mayor</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
-<!-- TODO --><Name>Apple Bloom</Name>
+<Name>Mayor</Name>
+<Name>Maire</Name>
+<Name>Apple Bloom</Name>
+<Name>Apple Bloom</Name>
 <!-- TODO --><PassiveAbilityDescription>The CMC are a tight-knit group, and trust each other completely. If any CMC member doesn't want to talk about something, Apple Bloom might be able to change her mind.</PassiveAbilityDescription>
 <!-- TODO --><PassiveAbilityDescription>The CMC are a tight-knit group, and trust each other completely. If any CMC member doesn't want to talk about something, Apple Bloom might be able to change her mind.</PassiveAbilityDescription>
 <!-- TODO --><ActiveAbilityDescription>(none)</ActiveAbilityDescription>
@@ -6398,27 +6360,27 @@
 <!-- TODO --><RawDialog>{Emotion:Annoyed}{Aside}(*sigh* {Pause:530}Sheesh, {Pause:982}so serious all of a sudden!) {Pause:1613}{/Aside}{Emotion:NeutralDown}All right, {Pause:477}all right, {Pause:487}let's just get to the clubhouse.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:HappyUp}All right, {Pause:397}Twi.</RawDialog>
 <!-- TODO --><RawDialog>{Emotion:HappyUp}All right, {Pause:397}Twi.</RawDialog>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Twilight Sparkle</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Rainbow Dash</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Scootaloo</Name>
-<!-- TODO --><Name>Eclair</Name>
-<!-- TODO --><Name>Eclair</Name>
-<!-- TODO --><Name>Abby Sprocket</Name>
-<!-- TODO --><Name>Abby Sprocket</Name>
-<!-- TODO --><Name>Hoover Sweeps</Name>
-<!-- TODO --><Name>Hoover Sweeps</Name>
-<!-- TODO --><Name>CMC</Name>
-<!-- TODO --><Name>CMC</Name>
-<!-- TODO --><Name>Opal and True Blue</Name>
-<!-- TODO --><Name>Opal and True Blue</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Guard</Name>
-<!-- TODO --><Name>Pinkie Pie</Name>
-<!-- TODO --><Name>Pinkie Pie</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Spot</Name>
-<!-- TODO --><Name>Rover</Name>
-<!-- TODO --><Name>Rover</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Twilight Sparkle</Name>
+<Name>Rainbow Dash</Name>
+<Name>Rainbow Dash</Name>
+<Name>Scootaloo</Name>
+<Name>Scootaloo</Name>
+<Name>Eclair</Name>
+<Name>Eclair</Name>
+<Name>Abby Sprocket</Name>
+<Name>Abby Sprocket</Name>
+<Name>Hoover Sweeps</Name>
+<Name>Hoover Sweeps</Name>
+<Name>CMC</Name>
+<Name>CMC</Name>
+<Name>Opal and True Blue</Name>
+<Name>Opal et True Blue</Name>
+<Name>Guard</Name>
+<Name>Garde</Name>
+<Name>Pinkie Pie</Name>
+<Name>Pinkie Pie</Name>
+<Name>Spot</Name>
+<Name>Spot</Name>
+<Name>Rover</Name>
+<Name>Rover</Name>
