@@ -6334,32 +6334,32 @@
 <!-- TODO --><RawDialog>{Emotion:Neutral}No, no, {Pause:436}I mean, {Pause:236}{Emotion:Confused}are you ABSOLUTELY sure?</RawDialog>
 <!-- TODO --><RawDialog>Well, {Pause:322}DUH! {Pause:555}{Emotion:Happy3}She wouldn't be able to initiate it if she wasn't! {Pause:1607}{Emotion:Happy2}That's how the game WORKS!</RawDialog>
 <!-- TODO --><RawDialog>Well, {Pause:322}DUH! {Pause:555}{Emotion:Happy3}She wouldn't be able to initiate it if she wasn't! {Pause:1607}{Emotion:Happy2}That's how the game WORKS!</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Peeved}{Mouth:Off}...</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Peeved}{Mouth:Off}...</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Confused}What? {Pause:852}{Emotion:Happy}It is!</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Confused}What? {Pause:852}{Emotion:Happy}It is!</RawDialog>
-<!-- TODO --><RawDialog>{Aside}(I swear... {Pause:1124}one day, I will understand her.){/Aside}</RawDialog>
-<!-- TODO --><RawDialog>{Aside}(I swear... {Pause:1124}one day, I will understand her.){/Aside}</RawDialog>
+<RawDialog>{Emotion:Peeved}{Mouth:Off}...</RawDialog>
+<RawDialog>{Emotion:Peeved}{Mouth:Off}...</RawDialog>
+<RawDialog>{Emotion:Confused}What? {Pause:852}{Emotion:Happy}It is!</RawDialog>
+<RawDialog>{Emotion:Confused}Quoi ? {Pause:852}{Emotion:Happy}C'est vrai !</RawDialog>
+<RawDialog>{Aside}(I swear... {Pause:1124}one day, I will understand her.){/Aside}</RawDialog>
+<RawDialog>{Aside}(Je jurre ... {Pause:1124}un jour, j'arriverai à la comprendre.){/Aside}</RawDialog>
 <Name>Mayor</Name>
 <Name>Maire</Name>
 <Name>Apple Bloom</Name>
 <Name>Apple Bloom</Name>
-<!-- TODO --><PassiveAbilityDescription>The CMC are a tight-knit group, and trust each other completely. If any CMC member doesn't want to talk about something, Apple Bloom might be able to change her mind.</PassiveAbilityDescription>
-<!-- TODO --><PassiveAbilityDescription>The CMC are a tight-knit group, and trust each other completely. If any CMC member doesn't want to talk about something, Apple Bloom might be able to change her mind.</PassiveAbilityDescription>
-<!-- TODO --><ActiveAbilityDescription>(none)</ActiveAbilityDescription>
-<!-- TODO --><ActiveAbilityDescription>(none)</ActiveAbilityDescription>
-<!-- TODO --><RawDialog>So, {Pause:558}about that {Pause:657}honorary Cutie Mark Crusadership...</RawDialog>
-<!-- TODO --><RawDialog>So, {Pause:558}about that {Pause:657}honorary Cutie Mark Crusadership...</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Annoyed}No.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Annoyed}No.</RawDialog>
-<!-- TODO --><RawDialog>You're {Pause:569}suuuure? {Pause:1303}I'd love to study what goes into Cutie Mark Crusading. {Pause:617}{PlaySound:Lightbulb}For science!</RawDialog>
-<!-- TODO --><RawDialog>You're {Pause:569}suuuure? {Pause:1303}I'd love to study what goes into Cutie Mark Crusading. {Pause:617}{PlaySound:Lightbulb}For science!</RawDialog>
-<!-- TODO --><RawDialog>No means no, Twi. {Pause:976}{Emotion:NeutralUp}I can't jeopardize the integrity of our outfit, {Pause:1116}not even for a friend. {Pause:571}{Emotion:Sad}I'm sorry, Twi...</RawDialog>
-<!-- TODO --><RawDialog>No means no, Twi. {Pause:976}{Emotion:NeutralUp}I can't jeopardize the integrity of our outfit, {Pause:1116}not even for a friend. {Pause:571}{Emotion:Sad}I'm sorry, Twi...</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Annoyed}{Aside}(*sigh* {Pause:530}Sheesh, {Pause:982}so serious all of a sudden!) {Pause:1613}{/Aside}{Emotion:NeutralDown}All right, {Pause:477}all right, {Pause:487}let's just get to the clubhouse.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Annoyed}{Aside}(*sigh* {Pause:530}Sheesh, {Pause:982}so serious all of a sudden!) {Pause:1613}{/Aside}{Emotion:NeutralDown}All right, {Pause:477}all right, {Pause:487}let's just get to the clubhouse.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:HappyUp}All right, {Pause:397}Twi.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:HappyUp}All right, {Pause:397}Twi.</RawDialog>
+<PassiveAbilityDescription>The CMC are a tight-knit group, and trust each other completely. If any CMC member doesn't want to talk about something, Apple Bloom might be able to change her mind.</PassiveAbilityDescription>
+<PassiveAbilityDescription>Les CMC sont un groupe très soudé, et ont une confiance totale entre elles. Si une CMC ne veut pas parler d'un sujet, Apple Bloom pourra peut être la faire changer d'avis.</PassiveAbilityDescription>
+<ActiveAbilityDescription>(none)</ActiveAbilityDescription>
+<ActiveAbilityDescription>(aucune)</ActiveAbilityDescription>
+<RawDialog>So, {Pause:558}about that {Pause:657}honorary Cutie Mark Crusadership...</RawDialog>
+<RawDialog>Du coup, {Pause:558}à propos {Pause:657}de mon adhésion honoraire au sein des Cutie Mark Crusader ...</RawDialog>
+<RawDialog>{Emotion:Annoyed}No.</RawDialog>
+<RawDialog>{Emotion:Annoyed}Non.</RawDialog>
+<RawDialog>You're {Pause:569}suuuure? {Pause:1303}I'd love to study what goes into Cutie Mark Crusading. {Pause:617}{PlaySound:Lightbulb}For science!</RawDialog>
+<RawDialog>Tu es {Pause:569}sûûûûre? {Pause:1303}J'adorerais étudier ce que vous faites en tant que Cutie Mark Crusader. {Pause:617}{PlaySound:Lightbulb}Pour la science !</RawDialog>
+<RawDialog>No means no, Twi. {Pause:976}{Emotion:NeutralUp}I can't jeopardize the integrity of our outfit, {Pause:1116}not even for a friend. {Pause:571}{Emotion:Sad}I'm sorry, Twi...</RawDialog>
+<RawDialog>Non veut dire non, Twi. {Pause:976}{Emotion:NeutralUp}Je ne peux pas risquer l'intégrité de nos uniformes, {Pause:1116}même pour une amie. {Pause:571}{Emotion:Sad}Je suis désolé, Twi ...</RawDialog>
+<RawDialog>{Emotion:Annoyed}{Aside}(*sigh* {Pause:530}Sheesh, {Pause:982}so serious all of a sudden!) {Pause:1613}{/Aside}{Emotion:NeutralDown}All right, {Pause:477}all right, {Pause:487}let's just get to the clubhouse.</RawDialog>
+<RawDialog>{Emotion:Annoyed}{Aside}(*soupir* {Pause:530}Sheesh, {Pause:982}si sérieuse d'un coup !) {Pause:1613}{/Aside}{Emotion:NeutralDown}Très bien, {Pause:477}très bien, {Pause:487}allons juste à votre cabane.</RawDialog>
+<RawDialog>{Emotion:HappyUp}All right, {Pause:397}Twi.</RawDialog>
+<RawDialog>{Emotion:HappyUp}Ok, {Pause:397}Twi.</RawDialog>
 <Name>Twilight Sparkle</Name>
 <Name>Twilight Sparkle</Name>
 <Name>Rainbow Dash</Name>
