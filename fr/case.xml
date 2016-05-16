@@ -66,18 +66,18 @@
 <RawDialog>Je n'ai pas {Pause:566}encore fini d'examiner la scène de crime. {Pause:1210}Je devrais continuer de chercher.</RawDialog>
 <Name>Town Hall</Name>
 <Name>Mairie</Name>
-<!-- TODO --><RawDialog>Ahhh, {Pause:542}Town Hall, {Pause:887}where everypony that's anypony has business, {Pause:1225}where the greatest among us tackle tough challenges and lead the path to the future, {Pause:1725}where our political heroes put aside their differences and make tough compromises for a better tomorrow.</RawDialog>
-<!-- TODO --><RawDialog>Ahhh, {Pause:542}Town Hall, {Pause:887}where everypony that's anypony has business, {Pause:1225}where the greatest among us tackle tough challenges and lead the path to the future, {Pause:1725}where our political heroes put aside their differences and make tough compromises for a better tomorrow.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}...Or, {Pause:279}perhaps, the place where the Mayor plays Solitaire while pretending to be interested in what you're saying. {Pause:1786}Either works.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}...Or, {Pause:279}perhaps, the place where the Mayor plays Solitaire while pretending to be interested in what you're saying. {Pause:1786}Either works.</RawDialog>
-<!-- TODO --><Name>Statue</Name>
-<!-- TODO --><Name>Statue</Name>
-<!-- TODO --><RawDialog>{PlaySound:Lightbulb}This is one beautifully {Pause:608}carved statue! {Pause:1435}{Emotion:Neutral}I wonder what it's for... {Pause:1212}oh, {Pause:528}hey, {Pause:605}there's a dedication here.</RawDialog>
-<!-- TODO --><RawDialog>{PlaySound:Lightbulb}This is one beautifully {Pause:608}carved statue! {Pause:1435}{Emotion:Neutral}I wonder what it's for... {Pause:1212}oh, {Pause:528}hey, {Pause:605}there's a dedication here.</RawDialog>
-<!-- TODO --><RawDialog>"Erected in honor of the {Pause:725}{Emotion:Annoyed}bravest, most {Pause:868}upright public servant Ponyville has ever known!"</RawDialog>
-<!-- TODO --><RawDialog>"Erected in honor of the {Pause:725}{Emotion:Annoyed}bravest, most {Pause:868}upright public servant Ponyville has ever known!"</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}I'm {Pause:478}getting the sense that this is talking about the Mayor. {Pause:1572}{PlaySound:Horse_Snort}...And was {Pause:637}written by the Mayor.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}I'm {Pause:478}getting the sense that this is talking about the Mayor. {Pause:1572}{PlaySound:Horse_Snort}...And was {Pause:637}written by the Mayor.</RawDialog>
+<RawDialog>Ahhh, {Pause:542}Town Hall, {Pause:887}where everypony that's anypony has business, {Pause:1225}where the greatest among us tackle tough challenges and lead the path to the future, {Pause:1725}where our political heroes put aside their differences and make tough compromises for a better tomorrow.</RawDialog>
+<RawDialog>Ahhh, {Pause:542}la Mairie, {Pause:887}le lieu où les gens important ont affaire, {Pause:1225}où les meilleurs d'entre nous s'attaque aux plus grandes des difficultés et nous dirigent sur le chemin du futur, {Pause:1725}où nos héros politiques mettent de côté leurs différences et acceptent de faire des compromis difficiles pour assurer un lendemain meilleur.</RawDialog>
+<RawDialog>{Emotion:Neutral}...Or, {Pause:279}perhaps, the place where the Mayor plays Solitaire while pretending to be interested in what you're saying. {Pause:1786}Either works.</RawDialog>
+<RawDialog>{Emotion:Neutral}...Ou, {Pause:279}plutôt, l'endroit ou la Maire joue au solitaire tout en prétendant être intéressé dans ce que vousdites. {Pause:1786}Les deux marchent.</RawDialog>
+<Name>Statue</Name>
+<Name>Statue</Name>
+<RawDialog>{PlaySound:Lightbulb}This is one beautifully {Pause:608}carved statue! {Pause:1435}{Emotion:Neutral}I wonder what it's for... {Pause:1212}oh, {Pause:528}hey, {Pause:605}there's a dedication here.</RawDialog>
+<RawDialog>{PlaySound:Lightbulb}Cette statue {Pause:608}est admirablement bien scultée ! {Pause:1435}{Emotion:Neutral}Je me demande pourquoi c'est... {Pause:1212}oh, {Pause:528}hey, {Pause:605}il y à une explication ici.</RawDialog>
+<RawDialog>"Erected in honor of the {Pause:725}{Emotion:Annoyed}bravest, most {Pause:868}upright public servant Ponyville has ever known!"</RawDialog>
+<RawDialog>"Erigé en l'honneur de la {Pause:725}{Emotion:Annoyed}plus brave, la plus intègre {Pause:868}des fonctionnaires que Ponyville ait connue !"</RawDialog>
+<RawDialog>{Emotion:Neutral}I'm {Pause:478}getting the sense that this is talking about the Mayor. {Pause:1572}{PlaySound:Horse_Snort}...And was {Pause:637}written by the Mayor.</RawDialog>
+<RawDialog>{Emotion:Neutral}J'ai {Pause:478}l'impression que cela parle du Maire. {Pause:1572}{PlaySound:Horse_Snort}...Et que cela {Pause:637}a été écrit par la Maire.</RawDialog>
 <Name>Eclair</Name>
 <Name>Eclair</Name>
 <Name>Abby Sprocket</Name>
@@ -92,92 +92,92 @@
 <Name>Apple Bloom</Name>
 <Name>Crowd</Name>
 <Name>Foule</Name>
-<!-- TODO --><RawDialog>What's this {Pause:724}crowd all about? {Pause:1099}I didn't know there was an event today.</RawDialog>
-<!-- TODO --><RawDialog>What's this {Pause:724}crowd all about? {Pause:1099}I didn't know there was an event today.</RawDialog>
-<!-- TODO --><RawDialog>They're having an apple-eating contest!</RawDialog>
-<!-- TODO --><RawDialog>They're having an apple-eating contest!</RawDialog>
-<!-- TODO --><RawDialog>Yeah, {Pause:1802}and Applejack's way in the lead!</RawDialog>
-<!-- TODO --><RawDialog>Yeah, {Pause:1802}and Applejack's way in the lead!</RawDialog>
-<!-- TODO --><RawDialog>APPLEJACK! {Pause:637}APPLEJACK! {Pause:1637}APPLEJACK!</RawDialog>
-<!-- TODO --><RawDialog>APPLEJACK! {Pause:637}APPLEJACK! {Pause:1637}APPLEJACK!</RawDialog>
-<!-- TODO --><RawDialog>...Whoa, {Pause:503}if she eats all those apples, {Pause:1380}{Emotion:Sad}she might get a wicked bad tummy ache.</RawDialog>
-<!-- TODO --><RawDialog>...Whoa, {Pause:503}if she eats all those apples, {Pause:1380}{Emotion:Sad}she might get a wicked bad tummy ache.</RawDialog>
-<!-- TODO --><RawDialog>{OtherEmotion:NeutralDown}Applejack! {Pause:887}Applejack!</RawDialog>
-<!-- TODO --><RawDialog>{OtherEmotion:NeutralDown}Applejack! {Pause:887}Applejack!</RawDialog>
-<!-- TODO --><RawDialog>Is... {Pause:722}it healthy for her to be eating that many apples?</RawDialog>
-<!-- TODO --><RawDialog>Is... {Pause:722}it healthy for her to be eating that many apples?</RawDialog>
-<!-- TODO --><RawDialog>{PlaySound:Lightbulb}'Course it is, Twi! {Pause:920}{Emotion:NeutralUp}Why, {Pause:425}it's an Apple family tradition to be the best at apple eatin'! {Pause:1001}{Emotion:HappyUp}We've been doin' this for generations!</RawDialog>
-<!-- TODO --><RawDialog>{PlaySound:Lightbulb}'Course it is, Twi! {Pause:920}{Emotion:NeutralUp}Why, {Pause:425}it's an Apple family tradition to be the best at apple eatin'! {Pause:1001}{Emotion:HappyUp}We've been doin' this for generations!</RawDialog>
-<!-- TODO --><RawDialog>That's an... {Pause:661}{Emotion:Peeved}oddly specific tradition.</RawDialog>
-<!-- TODO --><RawDialog>That's an... {Pause:661}{Emotion:Peeved}oddly specific tradition.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:NeutralUp}C'mon, Twi, {Pause:864}where's your sense of competition? {Pause:625}Ain'tcha enthused at ALL by this?</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:NeutralUp}C'mon, Twi, {Pause:864}where's your sense of competition? {Pause:625}Ain'tcha enthused at ALL by this?</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:NeutralDown}Well, {Pause:262}sure, {Pause:662}{Emotion:HappyDown}I like a healthy competition, just, {Pause:972}{Emotion:NeutralDown}you know... {Pause:284}{Emotion:HappyDown}more mental. {Pause:551}Like, say, chess, {Pause:556}or trivia!</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:NeutralDown}Well, {Pause:262}sure, {Pause:662}{Emotion:HappyDown}I like a healthy competition, just, {Pause:972}{Emotion:NeutralDown}you know... {Pause:284}{Emotion:HappyDown}more mental. {Pause:551}Like, say, chess, {Pause:556}or trivia!</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Annoyed}...Y'really are as boring as they say, {Pause:803}Twi.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Annoyed}...Y'really are as boring as they say, {Pause:803}Twi.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Annoyed}{Aside}(Thanks, {Pause:603}Apple Bloom.){/Aside}</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Annoyed}{Aside}(Thanks, {Pause:603}Apple Bloom.){/Aside}</RawDialog>
-<!-- TODO --><TargetLocationName>boutique bridge</TargetLocationName>
-<!-- TODO --><TargetLocationName>boutique bridge</TargetLocationName>
-<!-- TODO --><TargetLocationName>Town Hall</TargetLocationName>
-<!-- TODO --><TargetLocationName>Town Hall</TargetLocationName>
-<!-- TODO --><RawDialog>I don't have any business at town hall. {Pause:1270}The mayor's probably busy; {Pause:909}I wouldn't want to bother her without cause.</RawDialog>
-<!-- TODO --><RawDialog>I don't have any business at town hall. {Pause:1270}The mayor's probably busy; {Pause:909}I wouldn't want to bother her without cause.</RawDialog>
-<!-- TODO --><TargetLocationName>Sweet Apple Acres</TargetLocationName>
-<!-- TODO --><TargetLocationName>Sweet Apple Acres</TargetLocationName>
-<!-- TODO --><RawDialog>This road leads to Sweet Apple Acres. {Pause:1396}I don't have any business there. {Pause:551}Focus, Twilight.</RawDialog>
-<!-- TODO --><RawDialog>This road leads to Sweet Apple Acres. {Pause:1396}I don't have any business there. {Pause:551}Focus, Twilight.</RawDialog>
+<RawDialog>What's this {Pause:724}crowd all about? {Pause:1099}I didn't know there was an event today.</RawDialog>
+<RawDialog>Pourquoi il y a{Pause:724}autant de monde ici ? {Pause:1099}Je ne savais pas qu'il y avait un événement aujourd'hui.</RawDialog>
+<RawDialog>They're having an apple-eating contest!</RawDialog>
+<RawDialog>Ils font un concours de qui mange le plus de pomme !</RawDialog>
+<RawDialog>Yeah, {Pause:1802}and Applejack's way in the lead!</RawDialog>
+<RawDialog>Yeah, {Pause:1802}et Applejack est de loin en tête !</RawDialog>
+<RawDialog>APPLEJACK! {Pause:637}APPLEJACK! {Pause:1637}APPLEJACK!</RawDialog>
+<RawDialog>APPLEJACK! {Pause:637}APPLEJACK! {Pause:1637}APPLEJACK!</RawDialog>
+<RawDialog>...Whoa, {Pause:503}if she eats all those apples, {Pause:1380}{Emotion:Sad}she might get a wicked bad tummy ache.</RawDialog>
+<RawDialog>...Wow, {Pause:503}si elle mange toutes ces pommes, {Pause:1380}{Emotion:Sad}elle risque d'avoir des maux de ventres plutot violent.</RawDialog>
+<RawDialog>{OtherEmotion:NeutralDown}Applejack! {Pause:887}Applejack!</RawDialog>
+<RawDialog>{OtherEmotion:NeutralDown}Applejack! {Pause:887}Applejack!</RawDialog>
+<RawDialog>Is... {Pause:722}it healthy for her to be eating that many apples?</RawDialog>
+<RawDialog>Est ce c'est... {Pause:722}sain pour elle de manger autant de pommes ?</RawDialog>
+<RawDialog>{PlaySound:Lightbulb}'Course it is, Twi! {Pause:920}{Emotion:NeutralUp}Why, {Pause:425}it's an Apple family tradition to be the best at apple eatin'! {Pause:1001}{Emotion:HappyUp}We've been doin' this for generations!</RawDialog>
+<RawDialog>{PlaySound:Lightbulb}'Sur que ça l'est, Twi ! {Pause:920}{Emotion:NeutralUp}Simplement, {Pause:425}c'est une tradition familiale des APpe d'etre les meilleurs dans ce concours là ! {Pause:1001}{Emotion:HappyUp}Nous le faisons depuis des générations !</RawDialog>
+<RawDialog>That's an... {Pause:661}{Emotion:Peeved}oddly specific tradition.</RawDialog>
+<RawDialog>C'est vraiment... {Pause:661}{Emotion:Peeved}une tradition étrangement précise.</RawDialog>
+<RawDialog>{Emotion:NeutralUp}C'mon, Twi, {Pause:864}where's your sense of competition? {Pause:625}Ain'tcha enthused at ALL by this?</RawDialog>
+<RawDialog>{Emotion:NeutralUp}Allez, Twi, {Pause:864}ou est passé ton sens de la compétition ? {Pause:625} tout ceci ne te rend pas enthousiaste ?</RawDialog>
+<RawDialog>{Emotion:NeutralDown}Well, {Pause:262}sure, {Pause:662}{Emotion:HappyDown}I like a healthy competition, just, {Pause:972}{Emotion:NeutralDown}you know... {Pause:284}{Emotion:HappyDown}more mental. {Pause:551}Like, say, chess, {Pause:556}or trivia!</RawDialog>
+<RawDialog>{Emotion:NeutralDown}Et bien, {Pause:262}très certainement, {Pause:662}{Emotion:HappyDown}J'apprécie une bonne compétition, c'est juste que, {Pause:972}{Emotion:NeutralDown}tu sais... {Pause:284}{Emotion:HappyDown}plus intellectuel. {Pause:551}Comme par exemple, les échecs, {Pause:556}ou les quizz !</RawDialog>
+<RawDialog>{Emotion:Annoyed}...Y'really are as boring as they say, {Pause:803}Twi.</RawDialog>
+<RawDialog>{Emotion:Annoyed}...T'es vraiment aussi rasante qu'ils le disent, {Pause:803}Twi.</RawDialog>
+<RawDialog>{Emotion:Annoyed}{Aside}(Thanks, {Pause:603}Apple Bloom.){/Aside}</RawDialog>
+<RawDialog>{Emotion:Annoyed}{Aside}(Merci, {Pause:603}Apple Bloom.){/Aside}</RawDialog>
+<TargetLocationName>boutique bridge</TargetLocationName>
+<TargetLocationName>pont de la boutique</TargetLocationName>
+<TargetLocationName>Town Hall</TargetLocationName>
+<TargetLocationName>Mairie</TargetLocationName>
+<RawDialog>I don't have any business at town hall. {Pause:1270}The mayor's probably busy; {Pause:909}I wouldn't want to bother her without cause.</RawDialog>
+<RawDialog>Je n'ai rien à faire à la Mairie. {Pause:1270}La maire est probablement occupée; {Pause:909}Je ne voudrais pas la déranger sans raisons.</RawDialog>
+<TargetLocationName>Sweet Apple Acres</TargetLocationName>
+<TargetLocationName>Ferme de la Douce Pomme</TargetLocationName>
+<RawDialog>This road leads to Sweet Apple Acres. {Pause:1396}I don't have any business there. {Pause:551}Focus, Twilight.</RawDialog>
+<RawDialog>Ce chemin mène vers la Ferme de la Douce Pomme. {Pause:1396}Je n'ai rien à y faire. {Pause:551}Concentre toi, Twilight.</RawDialog>
 <!-- TODO --><TargetLocationName>Rambling Rock Ridge</TargetLocationName>
 <!-- TODO --><TargetLocationName>Rambling Rock Ridge</TargetLocationName>
-<!-- TODO --><RawDialog>...Where am I going? {Pause:1127}That leads away from Ponyville. {Pause:1654}No reason to go in that direction.</RawDialog>
-<!-- TODO --><RawDialog>...Where am I going? {Pause:1127}That leads away from Ponyville. {Pause:1654}No reason to go in that direction.</RawDialog>
-<!-- TODO --><Name>Bed</Name>
-<!-- TODO --><Name>Bed</Name>
-<!-- TODO --><RawDialog>Huh... {Pause:909}this furniture looks like it's been carved right out of gems. {Pause:1974}I {Pause:414}guess that makes sense - {Pause:755}if that's what's available, {Pause:336}that's what you use.</RawDialog>
-<!-- TODO --><RawDialog>Huh... {Pause:909}this furniture looks like it's been carved right out of gems. {Pause:1974}I {Pause:414}guess that makes sense - {Pause:755}if that's what's available, {Pause:336}that's what you use.</RawDialog>
-<!-- TODO --><RawDialog>NOT {Pause:418}that I want to give the Diamond Dogs any credit for anything, {Pause:1704}but... {Pause:799}{Emotion:Happy}this is quite fascinating! {Pause:919}I've never seen anything like it.</RawDialog>
-<!-- TODO --><RawDialog>NOT {Pause:418}that I want to give the Diamond Dogs any credit for anything, {Pause:1704}but... {Pause:799}{Emotion:Happy}this is quite fascinating! {Pause:919}I've never seen anything like it.</RawDialog>
-<!-- TODO --><RawNotificationText>"Gem-Carved Furniture" added to evidence.</RawNotificationText>
-<!-- TODO --><RawNotificationText>"Gem-Carved Furniture" added to evidence.</RawNotificationText>
-<!-- TODO --><RawDialog>That's... {Pause:750}it? {Pause:928}{Emotion:DeepThought}I {Pause:484}feel like I've found all that I'm going to in these caverns, {Pause:1054}{Emotion:Sad}but this still isn't enough...</RawDialog>
-<!-- TODO --><RawDialog>That's... {Pause:750}it? {Pause:928}{Emotion:DeepThought}I {Pause:484}feel like I've found all that I'm going to in these caverns, {Pause:1054}{Emotion:Sad}but this still isn't enough...</RawDialog>
-<!-- TODO --><RawDialog>Well... {Pause:696}there {Pause:382}{PlaySound:Lightbulb}IS {Pause:571}one other possible place to search, {Pause:612}darling.</RawDialog>
-<!-- TODO --><RawDialog>Well... {Pause:696}there {Pause:382}{PlaySound:Lightbulb}IS {Pause:571}one other possible place to search, {Pause:612}darling.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}Really? {Pause:603}Where? {Pause:559}Where!?</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}Really? {Pause:603}Where? {Pause:559}Where!?</RawDialog>
-<!-- TODO --><RawDialog>You could always have a look around the place where I initially found True Blue. {Pause:1067}{Emotion:Sad}I haven't the slightest idea if you'll find much, but... {Pause:1189}{Emotion:Happy}it might be worth a look, {Pause:612}no?</RawDialog>
-<!-- TODO --><RawDialog>You could always have a look around the place where I initially found True Blue. {Pause:1067}{Emotion:Sad}I haven't the slightest idea if you'll find much, but... {Pause:1189}{Emotion:Happy}it might be worth a look, {Pause:612}no?</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}It's just down the road from the fork we took to get to these caverns.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}It's just down the road from the fork we took to get to these caverns.</RawDialog>
-<!-- TODO --><RawDialog>Well, {Pause:602}{Emotion:Happy}all right... {Pause:271}let's go, then!</RawDialog>
-<!-- TODO --><RawDialog>Well, {Pause:602}{Emotion:Happy}all right... {Pause:271}let's go, then!</RawDialog>
-<!-- TODO --><RawNotificationText>You can now go to the dig site!</RawNotificationText>
-<!-- TODO --><RawNotificationText>You can now go to the dig site!</RawNotificationText>
-<!-- TODO --><Name>Chair</Name>
-<!-- TODO --><Name>Chair</Name>
-<!-- TODO --><RawDialog>Huh... {Pause:909}this furniture looks like it's been carved right out of gems. {Pause:1974}I {Pause:414}guess that makes sense - {Pause:755}if that's what's available, {Pause:336}that's what you use.</RawDialog>
-<!-- TODO --><RawDialog>Huh... {Pause:909}this furniture looks like it's been carved right out of gems. {Pause:1974}I {Pause:414}guess that makes sense - {Pause:755}if that's what's available, {Pause:336}that's what you use.</RawDialog>
-<!-- TODO --><RawDialog>NOT {Pause:418}that I want to give the Diamond Dogs any credit for anything, {Pause:1704}but... {Pause:799}{Emotion:Happy}this is quite fascinating! {Pause:919}I've never seen anything like it.</RawDialog>
-<!-- TODO --><RawDialog>NOT {Pause:418}that I want to give the Diamond Dogs any credit for anything, {Pause:1704}but... {Pause:799}{Emotion:Happy}this is quite fascinating! {Pause:919}I've never seen anything like it.</RawDialog>
-<!-- TODO --><RawNotificationText>"Gem-Carved Furniture" added to evidence.</RawNotificationText>
-<!-- TODO --><RawNotificationText>"Gem-Carved Furniture" added to evidence.</RawNotificationText>
-<!-- TODO --><RawDialog>That's... {Pause:750}it? {Pause:928}{Emotion:DeepThought}I {Pause:484}feel like I've found all that I'm going to in these caverns, {Pause:1054}{Emotion:Sad}but this still isn't enough...</RawDialog>
-<!-- TODO --><RawDialog>That's... {Pause:750}it? {Pause:928}{Emotion:DeepThought}I {Pause:484}feel like I've found all that I'm going to in these caverns, {Pause:1054}{Emotion:Sad}but this still isn't enough...</RawDialog>
-<!-- TODO --><RawDialog>Well... {Pause:696}there {Pause:382}{PlaySound:Lightbulb}IS {Pause:571}one other possible place to search, {Pause:612}darling.</RawDialog>
-<!-- TODO --><RawDialog>Well... {Pause:696}there {Pause:382}{PlaySound:Lightbulb}IS {Pause:571}one other possible place to search, {Pause:612}darling.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}Really? {Pause:603}Where? {Pause:559}Where!?</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}Really? {Pause:603}Where? {Pause:559}Where!?</RawDialog>
-<!-- TODO --><RawDialog>You could always have a look around the place where I initially found True Blue. {Pause:1067}{Emotion:Sad}I haven't the slightest idea if you'll find much, but... {Pause:1189}{Emotion:Happy}it might be worth a look, {Pause:612}no?</RawDialog>
-<!-- TODO --><RawDialog>You could always have a look around the place where I initially found True Blue. {Pause:1067}{Emotion:Sad}I haven't the slightest idea if you'll find much, but... {Pause:1189}{Emotion:Happy}it might be worth a look, {Pause:612}no?</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}It's just down the road from the fork we took to get to these caverns.</RawDialog>
-<!-- TODO --><RawDialog>{Emotion:Neutral}It's just down the road from the fork we took to get to these caverns.</RawDialog>
-<!-- TODO --><RawDialog>Well, {Pause:602}{Emotion:Happy}all right... {Pause:271}let's go, then!</RawDialog>
-<!-- TODO --><RawDialog>Well, {Pause:602}{Emotion:Happy}all right... {Pause:271}let's go, then!</RawDialog>
-<!-- TODO --><RawNotificationText>You can now go to the dig site!</RawNotificationText>
-<!-- TODO --><RawNotificationText>You can now go to the dig site!</RawNotificationText>
-<!-- TODO --><Name>Mining tools</Name>
-<!-- TODO --><Name>Mining tools</Name>
+<RawDialog>...Where am I going? {Pause:1127}That leads away from Ponyville. {Pause:1654}No reason to go in that direction.</RawDialog>
+<RawDialog>...Mais où je vais ? {Pause:1127}Cela nous éloigne de Poneyville. {Pause:1654}Aucuneraisons d'aller par là.</RawDialog>
+<Name>Bed</Name>
+<Name>Lit</Name>
+<RawDialog>Huh... {Pause:909}this furniture looks like it's been carved right out of gems. {Pause:1974}I {Pause:414}guess that makes sense - {Pause:755}if that's what's available, {Pause:336}that's what you use.</RawDialog>
+<RawDialog>Euh... {Pause:909}ce mobilier à l'air d'avoir été sculté directement à partir de pierres précieuses. {Pause:1974}J' {Pause:414}imagine que ça à du sens - {Pause:755}si c'est ce qui est disponible, {Pause:336}c'est ce que tu utilises.</RawDialog>
+<RawDialog>NOT {Pause:418}that I want to give the Diamond Dogs any credit for anything, {Pause:1704}but... {Pause:799}{Emotion:Happy}this is quite fascinating! {Pause:919}I've never seen anything like it.</RawDialog>
+<RawDialog>Non pas {Pause:418}pas que je veuille donner aux Chiens à Diamant le moindre crédit, {Pause:1704}mais... {Pause:799}{Emotion:Happy}C'est est vraiment fascinant ! {Pause:919}Je n'ai jamais rien vu de pareil.</RawDialog>
+<RawNotificationText>"Gem-Carved Furniture" added to evidence.</RawNotificationText>
+<RawNotificationText>"Meubles scultés dans des pierres précieuses" ajouté aux preuves.</RawNotificationText>
+<RawDialog>That's... {Pause:750}it? {Pause:928}{Emotion:DeepThought}I {Pause:484}feel like I've found all that I'm going to in these caverns, {Pause:1054}{Emotion:Sad}but this still isn't enough...</RawDialog>
+<RawDialog>C'est... {Pause:750}tout ? {Pause:928}{Emotion:DeepThought}Je {Pause:484}sens que j'ai trouvé tout ce qu'il y avait dans ces cavernes, {Pause:1054}{Emotion:Sad}mais ce n'est toujours pas assez...</RawDialog>
+<RawDialog>Well... {Pause:696}there {Pause:382}{PlaySound:Lightbulb}IS {Pause:571}one other possible place to search, {Pause:612}darling.</RawDialog>
+<RawDialog>Bon... {Pause:696}Il y {Pause:382}{PlaySound:Lightbulb}A {Pause:571} un autre endroit où chercher, {Pause:612}ma chérie.</RawDialog>
+<RawDialog>{Emotion:Neutral}Really? {Pause:603}Where? {Pause:559}Where!?</RawDialog>
+<RawDialog>{Emotion:Neutral}Vraiment ? {Pause:603}Où ? {Pause:559}Où !?</RawDialog>
+<RawDialog>You could always have a look around the place where I initially found True Blue. {Pause:1067}{Emotion:Sad}I haven't the slightest idea if you'll find much, but... {Pause:1189}{Emotion:Happy}it might be worth a look, {Pause:612}no?</RawDialog>
+<RawDialog>Tu pourrais toujours aller faire un tour à l'endroit ou j'ai trouvé True Blue initialement. {Pause:1067}{Emotion:Sad}Je n'ai pas la moindre idée de ce que tu y trouveras, mais, but... {Pause:1189}{Emotion:Happy}cela peut valoir le coup d'y jeter un oeil, {Pause:612}non ?</RawDialog>
+<RawDialog>{Emotion:Neutral}It's just down the road from the fork we took to get to these caverns.</RawDialog>
+<RawDialog>{Emotion:Neutral}C'est juste en bas de la route en partant de la fourche que nous avons pris pour  venir dans ces cavernes.</RawDialog>
+<RawDialog>Well, {Pause:602}{Emotion:Happy}all right... {Pause:271}let's go, then!</RawDialog>
+<RawDialog>Bon, {Pause:602}{Emotion:Happy}dans ce cas... {Pause:271}allons y alors!</RawDialog>
+<RawNotificationText>You can now go to the dig site!</RawNotificationText>
+<RawNotificationText>Tu peux maintenant aller vers le site des fouilles !</RawNotificationText>
+<Name>Chair</Name>
+<Name>Chaise</Name>
+<RawDialog>Huh... {Pause:909}this furniture looks like it's been carved right out of gems. {Pause:1974}I {Pause:414}guess that makes sense - {Pause:755}if that's what's available, {Pause:336}that's what you use.</RawDialog>
+<RawDialog>Euh... {Pause:909}ce mobilier à l'air d'avoir été sculté directement à partir de pierres précieuses. {Pause:1974}J' {Pause:414}imagine que ça à du sens - {Pause:755}si c'est ce qui est disponible, {Pause:336}c'est ce que tu utilises.</RawDialog>
+<RawDialog>NOT {Pause:418}that I want to give the Diamond Dogs any credit for anything, {Pause:1704}but... {Pause:799}{Emotion:Happy}this is quite fascinating! {Pause:919}I've never seen anything like it.</RawDialog>
+<RawDialog>Non pas {Pause:418}pas que je veuille donner aux Chiens à Diamant le moindre crédit, {Pause:1704}mais... {Pause:799}{Emotion:Happy}C'est est vraiment fascinant ! {Pause:919}Je n'ai jamais rien vu de pareil.</RawDialog>
+<RawNotificationText>"Gem-Carved Furniture" added to evidence.</RawNotificationText>
+<RawNotificationText>"Meubles scultés dans des pierres précieuses" ajouté aux preuves.</RawNotificationText>
+<RawDialog>That's... {Pause:750}it? {Pause:928}{Emotion:DeepThought}I {Pause:484}feel like I've found all that I'm going to in these caverns, {Pause:1054}{Emotion:Sad}but this still isn't enough...</RawDialog>
+<RawDialog>C'est... {Pause:750}tout ? {Pause:928}{Emotion:DeepThought}Je {Pause:484}sens que j'ai trouvé tout ce qu'il y avait dans ces cavernes, {Pause:1054}{Emotion:Sad}mais ce n'est toujours pas assez...</RawDialog>
+<RawDialog>Well... {Pause:696}there {Pause:382}{PlaySound:Lightbulb}IS {Pause:571}one other possible place to search, {Pause:612}darling.</RawDialog>
+<RawDialog>Bon... {Pause:696}Il y {Pause:382}{PlaySound:Lightbulb}A {Pause:571} un autre endroit où chercher, {Pause:612}ma chérie.</RawDialog>
+<RawDialog>{Emotion:Neutral}Really? {Pause:603}Where? {Pause:559}Where!?</RawDialog>
+<RawDialog>{Emotion:Neutral}Vraiment ? {Pause:603}Où ? {Pause:559}Où !?</RawDialog>
+<RawDialog>You could always have a look around the place where I initially found True Blue. {Pause:1067}{Emotion:Sad}I haven't the slightest idea if you'll find much, but... {Pause:1189}{Emotion:Happy}it might be worth a look, {Pause:612}no?</RawDialog>
+<RawDialog>Tu pourrais toujours aller faire un tour à l'endroit ou j'ai trouvé True Blue initialement. {Pause:1067}{Emotion:Sad}Je n'ai pas la moindre idée de ce que tu y trouveras, mais, but... {Pause:1189}{Emotion:Happy}cela peut valoir le coup d'y jeter un oeil, {Pause:612}non ?</RawDialog>
+<RawDialog>{Emotion:Neutral}It's just down the road from the fork we took to get to these caverns.</RawDialog>
+<RawDialog>{Emotion:Neutral}C'est juste en bas de la route en partant de la fourche que nous avons pris pour  venir dans ces cavernes.</RawDialog>
+<RawDialog>Well, {Pause:602}{Emotion:Happy}all right... {Pause:271}let's go, then!</RawDialog>
+<RawDialog>Bon, {Pause:602}{Emotion:Happy}dans ce cas... {Pause:271}allons y alors!</RawDialog>
+<RawNotificationText>You can now go to the dig site!</RawNotificationText>
+<RawNotificationText>Tu peux maintenant aller vers le site des fouilles !</RawNotificationText>
+<Name>Mining tools</Name>
+<Name>Outils miniers</Name>
 <!-- TODO --><RawDialog>Now, this is peculiar. {Pause:911}Last I was here, the dogs dug just using their claws. {Pause:1308}I wonder what these are for.</RawDialog>
 <!-- TODO --><RawDialog>Now, this is peculiar. {Pause:911}Last I was here, the dogs dug just using their claws. {Pause:1308}I wonder what these are for.</RawDialog>
 <!-- TODO --><RawDialog>Maybe they got {Pause:515}tired of that?</RawDialog>
