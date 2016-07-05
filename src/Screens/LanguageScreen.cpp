@@ -173,6 +173,8 @@ void LanguageScreen::Init()
             LocalizableContent temporaryLocalizableContent(&localizableContentReader);
 
             languageName = temporaryLocalizableContent.GetText("LanguageName");
+
+            ResourceLoader::GetInstance()->UnloadTemporaryCommonLocalizedResources();
         }
         else
         {
