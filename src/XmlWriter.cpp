@@ -39,6 +39,10 @@
 #include "CaseCreator/CaseContent/CaseContent.h"
 #endif
 
+#if defined(MLI_DEBUG) || defined(QT_DEBUG)
+#include "MLIException.h"
+#endif
+
 XmlWriter::XmlWriter(const char *pFilePath, const char *pFilePathExtension, bool makeHumanReadable, int formattingVersion)
 {
     filePath = string(pFilePath);
@@ -112,9 +116,13 @@ void XmlWriter::StartElement(const XmlString &elementName, bool addCarriageRetur
     shouldUnindentStack.push(addCarriageReturn);
 }
 
+#if defined(MLI_DEBUG) || defined(QT_DEBUG)
 void XmlWriter::VerifyCurrentElement(const XmlString &expectedElementName)
+#else
+void XmlWriter::VerifyCurrentElement(const XmlString &)
+#endif
 {
-#ifdef QT_DEBUG
+#if defined(MLI_DEBUG) || defined(QT_DEBUG)
     XmlString actualCurrentElement;
 
     if (elementNameStack.empty() || expectedElementName != (actualCurrentElement = XmlStringToCharArray(elementNameStack.top())))

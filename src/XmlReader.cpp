@@ -163,9 +163,13 @@ bool XmlReader::ElementExists(const XmlString &elementName)
     return pElement != NULL;
 }
 
+#if defined(MLI_DEBUG) || defined(QT_DEBUG)
 void XmlReader::VerifyCurrentElement(const XmlString &expectedElementName)
+#else
+void XmlReader::VerifyCurrentElement(const XmlString &)
+#endif
 {
-#ifdef QT_DEBUG
+#if defined(MLI_DEBUG) || defined(QT_DEBUG)
     XMLElement *pCurrentElement = dynamic_cast<XMLElement *>(pCurrentNode);
 
     if (pCurrentElement == NULL || expectedElementName != XmlString(pCurrentElement->Name()))
