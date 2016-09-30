@@ -185,6 +185,26 @@ FieldCharacterState StringToFieldCharacterState(const StringType &s)
     }
 }
 
+StringType FieldCharacterStateToString(FieldCharacterState s)
+{
+    if (s == FieldCharacterStateStanding)
+    {
+        return "Standing";
+    }
+    else if (s == FieldCharacterStateWalking)
+    {
+        return "Walking";
+    }
+    else if (s == FieldCharacterStateRunning)
+    {
+        return "Running";
+    }
+    else
+    {
+        return "None";
+    }
+}
+
 FieldCustomCursorState StringToFieldCustomCursorState(const StringType &s)
 {
     if (s == "None")

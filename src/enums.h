@@ -181,6 +181,7 @@ StringType CharacterPositionToString(const CharacterPosition p);
 FieldCharacterDirection StringToFieldCharacterDirection(const StringType &s);
 StringType FieldCharacterDirectionToString(FieldCharacterDirection d);
 FieldCharacterState StringToFieldCharacterState(const StringType &s);
+StringType FieldCharacterStateToString(FieldCharacterState s);
 FieldCustomCursorState StringToFieldCustomCursorState(const StringType &s);
 TransitionDirection StringToTransitionDirection(const StringType &s);
 

@@ -59,6 +59,13 @@ Vector2::Vector2(const QPointF &qPointF)
     this->x = qPointF.x();
     this->y = qPointF.y();
 }
+
+Vector2::Vector2(const QSizeF &qSizeF)
+{
+    this->x = qSizeF.width();
+    this->y = qSizeF.height();
+}
+
 #endif
 
 Vector2 & Vector2::operator=(const Vector2 &rhs)

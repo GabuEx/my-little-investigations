@@ -31,7 +31,10 @@
 
 #include "MLIException.h"
 
+const double PI = 3.141592653589793238463;
+
 #ifndef LAUNCHER
+Vector2 gameWindowSize = Vector2(960, 540);
 RectangleWH dialogTextArea = RectangleWH(3, 370, 954, 167);
 double dialogPadding = 30;
 
@@ -164,6 +167,65 @@ SharedUtilsStringListType split(const SharedUtilsStringType &s, SharedUtilsCharT
 }
 
 #ifndef LAUNCHER
+void GetCharacterDirectionFromDirectionVector(Vector2 directionVector, CharacterDirection *pDirection, FieldCharacterDirection *pSpriteDirection)
+{
+    directionVector = directionVector.Normalize();
+
+    // We'll snap the player's direction vector according to
+    // the nearest direction for which we have an animation.
+    double angleToHorizontal = acos(directionVector.GetX());
+
+    // acos() only returns values from 0 to pi,
+    // so to get the full circle we need to check
+    // whether we're in the bottom two quandrants,
+    // and change the angle to account for this if so.
+    if (directionVector.GetY() > 0)
+    {
+        angleToHorizontal = 2 * PI - angleToHorizontal;
+    }
+
+    if (angleToHorizontal <= PI / 8 || angleToHorizontal > PI * 15 / 8)
+    {
+        *pDirection = CharacterDirectionRight;
+        *pSpriteDirection = FieldCharacterDirectionSide;
+    }
+    else if (angleToHorizontal > PI / 8 && angleToHorizontal <= PI * 3 / 8)
+    {
+        *pDirection = CharacterDirectionRight;
+        *pSpriteDirection = FieldCharacterDirectionDiagonalUp;
+    }
+    else if (angleToHorizontal > 3 * PI / 8 && angleToHorizontal <= PI * 5 / 8)
+    {
+        *pDirection = CharacterDirectionLeft;
+        *pSpriteDirection = FieldCharacterDirectionUp;
+    }
+    else if (angleToHorizontal > 5 * PI / 8 && angleToHorizontal <= PI * 7 / 8)
+    {
+        *pDirection = CharacterDirectionLeft;
+        *pSpriteDirection = FieldCharacterDirectionDiagonalUp;
+    }
+    else if (angleToHorizontal > 7 * PI / 8 && angleToHorizontal <= PI * 9 / 8)
+    {
+        *pDirection = CharacterDirectionLeft;
+        *pSpriteDirection = FieldCharacterDirectionSide;
+    }
+    else if (angleToHorizontal > 9 * PI / 8 && angleToHorizontal <= PI * 11 / 8)
+    {
+        *pDirection = CharacterDirectionLeft;
+        *pSpriteDirection = FieldCharacterDirectionDiagonalDown;
+    }
+    else if (angleToHorizontal > 11 * PI / 8 && angleToHorizontal <= PI * 13 / 8)
+    {
+        *pDirection = CharacterDirectionLeft;
+        *pSpriteDirection = FieldCharacterDirectionDown;
+    }
+    else if (angleToHorizontal > 13 * PI / 8 && angleToHorizontal <= PI * 15 / 8)
+    {
+        *pDirection = CharacterDirectionRight;
+        *pSpriteDirection = FieldCharacterDirectionDiagonalDown;
+    }
+}
+
 SharedUtilsStringType ParseRawDialog(IDialogEventsOwner *pDialogEventsOwner, const SharedUtilsStringType &rawDialog, RectangleWH textAreaRect, double desiredPadding, SharedUtilsFontType dialogFont)
 {
     double allowedWidth = textAreaRect.GetWidth() - desiredPadding * 2;

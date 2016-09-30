@@ -52,6 +52,7 @@ public:
 
 #ifdef CASE_CREATOR
     Vector2(const QPointF &qPointF);
+    Vector2(const QSizeF &qSizeF);
 #endif
 
     virtual ~Vector2() { }

@@ -59,7 +59,9 @@ using namespace std;
 #endif
 
 #ifndef LAUNCHER
+#include "enums.h"
 #include "Rectangle.h"
+#include "Vector2.h"
 
 class IDialogEventsOwner
 {
@@ -92,6 +94,7 @@ public:
     virtual void AddEndBreakdownPosition(int position) = 0;
 };
 
+extern Vector2 gameWindowSize;
 extern RectangleWH dialogTextArea;
 extern double dialogPadding;
 #endif
@@ -101,6 +104,8 @@ double Max(double a, double b);
 SharedUtilsStringListType split(const SharedUtilsStringType &s, SharedUtilsCharType delim);
 
 #ifndef LAUNCHER
+void GetCharacterDirectionFromDirectionVector(Vector2 directionVector, CharacterDirection *pDirection, FieldCharacterDirection *pSpriteDirection);
+
 SharedUtilsStringType ParseRawDialog(IDialogEventsOwner *pDialogEventsOwner, const SharedUtilsStringType &rawDialog, RectangleWH textAreaRect, double desiredPadding, SharedUtilsFontType dialogFont);
 SharedUtilsStringType StripDialogEvents(const SharedUtilsStringType &s);
 SharedUtilsStringType ParseDialogEvents(IDialogEventsOwner *pDialogEventsOwner, int lineOffset, const SharedUtilsStringType &stringToParse, SharedUtilsStringType *pStringToPrependOnNext);

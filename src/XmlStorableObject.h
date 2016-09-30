@@ -578,6 +578,42 @@ private:
             XmlList<T> *pList;
         };
 
+        template<class TEnum>
+        class ListStorageForEnum : public ListStorage<TEnum>
+        {
+        public:
+            ListStorageForEnum(XmlList<TEnum> *pList, XmlString (*pfnEnumToString)(TEnum), TEnum (*pfnStringToEnum)(const XmlString&))
+                : ListStorage<TEnum>(pList, XmlStorageType::Enum)
+            {
+                this->pfnEnumToString = pfnEnumToString;
+                this->pfnStringToEnum = pfnStringToEnum;
+            }
+
+            void SaveToXml(XmlWriter *pWriter)
+            {
+                for (TEnum listElement : *this->pList)
+                {
+                    ElementInformationForEnum<TEnum>("Entry", &listElement, pfnEnumToString, pfnStringToEnum).SaveToXml(pWriter);
+                }
+            }
+
+            void LoadFromXml(XmlReader *pReader)
+            {
+                pReader->StartList("Entry");
+
+                while (pReader->MoveToNextListItem())
+                {
+                    TEnum listElement;
+                    ElementInformationForEnum<TEnum>("", &listElement, pfnEnumToString, pfnStringToEnum).LoadFromXml(pReader);
+                    this->pList->push_back(listElement);
+                }
+            }
+
+        private:
+            XmlString (*pfnEnumToString)(TEnum);
+            TEnum (*pfnStringToEnum)(const XmlString&);
+        };
+
         template<class T>
         class ListStorageForCustomObject : public ListStorage<T>
         {
@@ -684,6 +720,51 @@ private:
             XmlMap<XmlString, T> *pMap;
         };
 
+        template<class TEnum>
+        class MapStorageForEnum : public MapStorage<TEnum>
+        {
+        public:
+            MapStorageForEnum(XmlMap<XmlString, TEnum> *pMap, XmlString (*pfnEnumToString)(TEnum), TEnum (*pfnStringToEnum)(const XmlString&))
+                : MapStorage<TEnum>(pMap, XmlStorageType::Enum)
+            {
+                this->pfnEnumToString = pfnEnumToString;
+                this->pfnStringToEnum = pfnStringToEnum;
+            }
+
+            void SaveToXml(XmlWriter *pWriter)
+            {
+                for (XmlString id : this->pMap->keys())
+                {
+                    pWriter->StartElement("Entry");
+
+                    ElementInformation("Id", XmlStorageType::Text, &id).SaveToXml(pWriter);
+                    ElementInformationForEnum<TEnum>("Value", &(*this->pMap)[id], pfnEnumToString, pfnStringToEnum).SaveToXml(pWriter);
+
+                    pWriter->EndElement();
+                }
+            }
+
+            void LoadFromXml(XmlReader *pReader)
+            {
+                pReader->StartList("Entry");
+
+                while (pReader->MoveToNextListItem())
+                {
+                    XmlString id;
+                    TEnum mapElement;
+
+                    ElementInformation("Id", XmlStorageType::Text, &id).LoadFromXml(pReader);
+                    ElementInformationForEnum<TEnum>("Value", &mapElement, pfnEnumToString, pfnStringToEnum).LoadFromXml(pReader);
+
+                    (*this->pMap)[id] = mapElement;
+                }
+            }
+
+        private:
+            XmlString (*pfnEnumToString)(TEnum);
+            TEnum (*pfnStringToEnum)(const XmlString&);
+        };
+
         template<class T>
         class MapStorageForCustomObject : public MapStorage<T>
         {
@@ -751,6 +832,12 @@ private:
             elementList.push_back(new ElementInformation(name, XmlStorageType::List, new ListStorage<T>(pList, listStorageType)));
         }
 
+        template <class TEnum>
+        void AddEnumList(XmlString name, XmlList<TEnum> *pMap, XmlString (*pfnEnumToString)(TEnum), TEnum (*pfnStringToEnum)(const XmlString&))
+        {
+            elementList.push_back(new ElementInformation(name, XmlStorageType::List, new ListStorageForEnum<TEnum>(pMap, pfnEnumToString, pfnStringToEnum)));
+        }
+
         template <class T>
         void AddCustomObjectList(XmlString name, XmlList<T> *pList, T (*pfnCreateObjectFromXml)(XmlReader *))
         {
@@ -761,6 +848,12 @@ private:
         void AddMap(XmlString name, XmlMap<XmlString, T> *pMap, XmlStorageType mapStorageType)
         {
             elementList.push_back(new ElementInformation(name, XmlStorageType::StringToObjectMap, new MapStorage<T>(pMap, mapStorageType)));
+        }
+
+        template <class TEnum>
+        void AddEnumMap(XmlString name, XmlMap<XmlString, TEnum> *pMap, XmlString (*pfnEnumToString)(TEnum), TEnum (*pfnStringToEnum)(const XmlString&))
+        {
+            elementList.push_back(new ElementInformation(name, XmlStorageType::StringToObjectMap, new MapStorageForEnum<TEnum>(pMap, pfnEnumToString, pfnStringToEnum)));
         }
 
         template <class T>
@@ -828,6 +921,9 @@ public:
     void AddFilePathList(XmlString name, XmlList<XmlString> *pList) { storageHandler.AddList(name, pList, XmlStorageHandler::XmlStorageType::FilePath); }
 #endif
 
+    template <class TEnum>
+    void AddEnumList(XmlString name, XmlList<TEnum> *pList, XmlString (*pfnEnumToString)(TEnum), TEnum (*pfnStringToEnum)(const XmlString&)) { storageHandler.AddEnumList(name, pList, pfnEnumToString, pfnStringToEnum); }
+
     template <class T>
     void AddCustomObjectList(XmlString name, XmlList<T> *pList, T (*pfnCreateObjectFromXml)(XmlReader *)) { storageHandler.AddCustomObjectList(name, pList, pfnCreateObjectFromXml); }
 
@@ -838,6 +934,9 @@ public:
 #ifdef CASE_CREATOR
     void AddFilePathMap(XmlString name, XmlMap<XmlString, XmlString> *pMap) { storageHandler.AddMap(name, pMap, XmlStorageHandler::XmlStorageType::FilePath); }
 #endif
+
+    template <class TEnum>
+    void AddEnumMap(XmlString name, XmlMap<XmlString, TEnum> *pMap, XmlString (*pfnEnumToString)(TEnum), TEnum (*pfnStringToEnum)(const XmlString&)) { storageHandler.AddEnumMap(name, pMap, pfnEnumToString, pfnStringToEnum); }
 
     template <class T>
     void AddCustomObjectMap(XmlString name, XmlMap<XmlString, T> *pMap, T (*pfnCreateObjectFromXml)(XmlReader *)) { storageHandler.AddCustomObjectMap(name, pMap, pfnCreateObjectFromXml); }
@@ -953,6 +1052,7 @@ protected: \
 #ifdef CASE_CREATOR
 #define XML_STORABLE_FILE_PATH_LIST(NAME) XML_STORABLE_LIST(FilePath, NAME)
 #endif
+#define XML_STORABLE_ENUM_LIST(NAME, PFN_ENUM_TO_STRING_NAME, PFN_STRING_TO_ENUM_NAME) AddEnumList(ToProperCase(#NAME), &NAME, PFN_ENUM_TO_STRING_NAME, PFN_STRING_TO_ENUM_NAME);
 #define XML_STORABLE_CUSTOM_OBJECT_LIST(NAME, PFN_CREATE_NAME) AddCustomObjectList(ToProperCase(#NAME), &NAME, PFN_CREATE_NAME);
 
 #define XML_STORABLE_INT_MAP(NAME) XML_STORABLE_MAP(Int, NAME)
@@ -962,6 +1062,7 @@ protected: \
 #ifdef CASE_CREATOR
 #define XML_STORABLE_FILE_PATH_MAP(NAME) XML_STORABLE_MAP(FilePath, NAME)
 #endif
+#define XML_STORABLE_ENUM_MAP(NAME, PFN_ENUM_TO_STRING_NAME, PFN_STRING_TO_ENUM_NAME) AddEnumMap(ToProperCase(#NAME), &NAME, PFN_ENUM_TO_STRING_NAME, PFN_STRING_TO_ENUM_NAME);
 #define XML_STORABLE_CUSTOM_OBJECT_MAP(NAME, PFN_CREATE_NAME) AddCustomObjectMap(ToProperCase(#NAME), &NAME, PFN_CREATE_NAME);
 
 #define END_XML_STORABLE_OBJECT() \
