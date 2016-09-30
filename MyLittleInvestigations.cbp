@@ -123,16 +123,20 @@
 					<Add directory="osx" />
 				</Linker>
 				<ExtraCommands>
-					<Add after="install_name_tool -change /usr/local/lib/libavcodec.55.39.101.dylib @loader_path/../Frameworks/libavcodec.dylib bin/Release/osx/MyLittleInvestigations" />
-					<Add after="install_name_tool -change /usr/local/lib/libavformat.55.19.104.dylib @loader_path/../Frameworks/libavformat.dylib bin/Release/osx/MyLittleInvestigations" />
-					<Add after="install_name_tool -change /usr/local/lib/libavutil.52.48.101.dylib @loader_path/../Frameworks/libavutil.dylib bin/Release/osx/MyLittleInvestigations" />
-					<Add after="install_name_tool -change /usr/local/lib/libswscale.2.5.101.dylib @loader_path/../Frameworks/libswscale.dylib bin/Release/osx/MyLittleInvestigations" />
+					<Add after="install_name_tool -change @rpath/SDL2.framework/Versions/A/SDL2 @loader_path/../Frameworks/SDL2.framework/Versions/A/SDL2 bin/Release/osx/MyLittleInvestigations" />
+					<Add after="install_name_tool -change @rpath/SDL2_image.framework/Versions/A/SDL2_image @loader_path/../Frameworks/SDL2_image.framework/Versions/A/SDL2_image bin/Release/osx/MyLittleInvestigations" />
+					<Add after="install_name_tool -change @rpath/SDL2_mixer.framework/Versions/A/SDL2_mixer @loader_path/../Frameworks/SDL2_mixer.framework/Versions/A/SDL2_mixer bin/Release/osx/MyLittleInvestigations" />
+					<Add after="install_name_tool -change @rpath/SDL2_ttf.framework/Versions/A/SDL2_ttf @loader_path/../Frameworks/SDL2_ttf.framework/Versions/A/SDL2_ttf bin/Release/osx/MyLittleInvestigations" />
+					<Add after="install_name_tool -change /usr/local/opt/ffmpeg/lib/libavcodec.57.dylib @loader_path/../Frameworks/libavcodec.dylib bin/Release/osx/MyLittleInvestigations" />
+					<Add after="install_name_tool -change /usr/local/opt/ffmpeg/lib/libavformat.57.dylib @loader_path/../Frameworks/libavformat.dylib bin/Release/osx/MyLittleInvestigations" />
+					<Add after="install_name_tool -change /usr/local/opt/ffmpeg/lib/libavutil.55.dylib @loader_path/../Frameworks/libavutil.dylib bin/Release/osx/MyLittleInvestigations" />
+					<Add after="install_name_tool -change /usr/local/opt/ffmpeg/lib/libswscale.4.dylib @loader_path/../Frameworks/libswscale.dylib bin/Release/osx/MyLittleInvestigations" />
 					<Add after="cp bin/Release/osx/MyLittleInvestigations osx/AppFileStaging/Contents/MacOS/MyLittleInvestigations" />
 					<Add after="cp bin/Release/osx/MyLittleInvestigationsLauncher osx/AppFileStaging/Contents/MacOS/MyLittleInvestigationsLauncher" />
 					<Add after="cp bin/Release/osx/MyLittleInvestigationsUpdater osx/AppFileStaging/Contents/MacOS/MyLittleInvestigationsUpdater" />
-					<Add after='rm -rf &quot;osx/Packaging/Files/Applications/My Little Investigations.app&quot;' />
-					<Add after='mkdir &quot;osx/Packaging/Files/Applications/My Little Investigations.app&quot;' />
-					<Add after='cp -R osx/AppFileStaging/* &quot;osx/Packaging/Files/Applications/My Little Investigations.app/&quot;' />
+					<Add after='rm -rf &quot;osx/DiskImageFolder/My Little Investigations.app&quot;' />
+					<Add after='mkdir &quot;osx/DiskImageFolder/My Little Investigations.app&quot;' />
+					<Add after='cp -R osx/AppFileStaging/* &quot;osx/DiskImageFolder/My Little Investigations.app/&quot;' />
 					<Mode after="always" />
 				</ExtraCommands>
 			</Target>
@@ -214,7 +218,7 @@
 			<Option compilerVar="CC" />
 			<Option compile="1" />
 			<Option link="1" />
-			<Option compiler="gcc" use="1" buildCommand="$compiler -Wall -DGAME_EXECUTABLE -D__STDC_CONSTANT_MACROS -g -DMACOSX_DEPLOYMENT_TARGET=10.6 -DMLI_DEBUG -D__OSX $includes -c $file -o $object" />
+			<Option compiler="gcc" use="1" buildCommand="$compiler -Wall -DGAME_EXECUTABLE -D__STDC_CONSTANT_MACROS -g -DMACOSX_DEPLOYMENT_TARGET=10.6 -D__OSX $includes -c $file -o $object" />
 			<Option compiler="clang" use="1" buildCommand="$compiler -Wall -DGAME_EXECUTABLE -D__STDC_CONSTANT_MACROS -g -DMACOSX_DEPLOYMENT_TARGET=10.6 -DMLI_DEBUG -D__OSX $includes -c $file -o $object" />
 			<Option target="Debug (OS X)" />
 			<Option target="Release (OS X)" />
@@ -223,7 +227,7 @@
 			<Option compilerVar="CC" />
 			<Option compile="1" />
 			<Option link="1" />
-			<Option compiler="gcc" use="1" buildCommand="$compiler -Wall -DGAME_EXECUTABLE -D__STDC_CONSTANT_MACROS -g -DMACOSX_DEPLOYMENT_TARGET=10.6 -DMLI_DEBUG -D__OSX $includes -c $file -o $object" />
+			<Option compiler="gcc" use="1" buildCommand="$compiler -Wall -DGAME_EXECUTABLE -D__STDC_CONSTANT_MACROS -g -DMACOSX_DEPLOYMENT_TARGET=10.6 -D__OSX $includes -c $file -o $object" />
 			<Option compiler="clang" use="1" buildCommand="$compiler -Wall -DGAME_EXECUTABLE -D__STDC_CONSTANT_MACROS -g -DMACOSX_DEPLOYMENT_TARGET=10.6 -DMLI_DEBUG -D__OSX $includes -c $file -o $object" />
 			<Option target="Debug (OS X)" />
 			<Option target="Release (OS X)" />

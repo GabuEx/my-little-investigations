@@ -492,7 +492,7 @@ string GetCommonResourcesFilePath()
 
 string GetLocalizedCommonResourcesDirectoryPath()
 {
-    return commonAppDataPath + pathSeparator + "Languages" + pathSeparator;
+    return commonAppDataPath + "Languages" + pathSeparator;
 }
 
 #ifdef __OSX
