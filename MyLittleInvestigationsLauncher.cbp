@@ -71,6 +71,7 @@
 					<Add option="-lcryptopp" />
 					<Add option="-lcurl" />
 					<Add option="-Wl,-rpath,@loader_path/../Frameworks" />
+					<Add option="-Wl,-rpath,@executable_path/../Frameworks" />
 					<Add directory="osx" />
 				</Linker>
 			</Target>
@@ -94,6 +95,7 @@
 					<Add option="-lcryptopp" />
 					<Add option="-lcurl" />
 					<Add option="-Wl,-rpath,@loader_path/../Frameworks" />
+					<Add option="-Wl,-rpath,@executable_path/../Frameworks" />
 					<Add directory="osx" />
 				</Linker>
 			</Target>
