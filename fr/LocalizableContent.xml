@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LocalizableContent>
+<Fonts>
+<Font Id="MouseOverFont" Filename="fonts/CelestiaMediumRedux1.5.ttf" Size="30" />
+<Font Id="DialogFont" Filename="fonts/FayesMousewriting_quotemapped.ttf" Size="37" />
+<Font Id="EvidenceSelectorNameFont" Filename="fonts/CelestiaMediumRedux1.5.ttf" Size="20" />
+<Font Id="EvidenceSelectorDescriptionFont" Filename="fonts/FayesMousewriting_quotemapped.ttf" Size="24" />
+<Font Id="PartnerInformationHeaderFont" Filename="fonts/CelestiaMediumRedux1.5.ttf" Size="21" />
+<Font Id="PartnerInformationContentFont" Filename="fonts/FayesMousewriting_quotemapped.ttf" Size="22" />
+<Font Id="ConfrontationNumberingFont" Filename="fonts/CelestiaMediumRedux1.5.ttf" Size="100" />
+<Font Id="TabFont" Filename="fonts/CelestiaMediumRedux1.5.ttf" Size="21" />
+<Font Id="HandwritingLargeFont" Filename="fonts/ShadowsIntoLight.ttf" Size="34" />
+<Font Id="HandwritingMediumFont" Filename="fonts/ShadowsIntoLight.ttf" Size="25" />
+<Font Id="HandwritingSmallFont" Filename="fonts/ShadowsIntoLight.ttf" Size="15" />
+<Font Id="PromptOverlayFont" Filename="fonts/FayesMousewriting_quotemapped.ttf" Size="42" />
+<Font Id="PromptOverlayTextFont" Filename="fonts/FayesMousewriting_quotemapped.ttf" Size="48" />
+<Font Id="DisclaimerFont" Filename="fonts/BLACKPLOTAN.otf" Size="36" />
+<Font Id="MenuFont" Filename="fonts/Nougat ExtraBlack.ttf" Size="40" />
+<Font Id="SkipArrowFont" Filename="fonts/Nougat ExtraBlack.ttf" Size="40" />
+<Font Id="UpdatingFont" Filename="fonts/CelestiaMediumRedux1.5.ttf" Size="30" />
+</Fonts>
+<TextContent>
+<Text Id="LanguageId">fr-FR</Text>
+<Text Id="LanguageName">Français (France)</Text>
+<Text Id="LogoScreen/DisclaimerText">Mon Petit Poney : Les Amies C'est Magique, l'univers et tous les personnages sont la propriété de Hasbro, Inc. Ceci est jeu créé par des fans simplement par amour de la série.
+
+Ses créateurs n'en retireront jamais aucun bénéfice et ne sont en aucun cas affilié à Hasbro, Inc.</Text>
+<Text Id="TitleScreen/NewGameText">Nouvelle Partie</Text>
+<Text Id="TitleScreen/LoadGameText">Charger</Text>
+<Text Id="TitleScreen/OptionsText">Options</Text>
+<Text Id="TitleScreen/SelectLanguageText">Selection de la langue</Text>
+<Text Id="TitleScreen/ExitText">Quitter</Text>
+<Text Id="TitleScreen/NoCasesText">Aucune affaire n'est installée !
+Vous devriez en installer une ou réinstaller My Little Investigations.</Text>
+<Text Id="GameScreen/LoadingFormatTextForWidth">Chargement %s</Text>
+<Text Id="GameScreen/LoadingFormatText0">Chargement %s .</Text>
+<Text Id="GameScreen/LoadingFormatText1">Chargement %s ..</Text>
+<Text Id="GameScreen/LoadingFormatText2">Chargement %s ...</Text>
+<Text Id="Case/AnimationsLoadStageText">animations</Text>
+<Text Id="Case/AudioLoadStageText">sons</Text>
+<Text Id="Case/CaseInformationLoadStageText">informations sur l'affaire</Text>
+<Text Id="Case/DialogResourcesLoadStageText">dialogues</Text>
+<Text Id="Case/EvidenceLoadStageText">indices</Text>
+<Text Id="Case/FieldResourcesLoadStageText">niveaux</Text>
+<Text Id="Case/FlagsLoadStageText">évènements</Text>
+<Text Id="Case/PartnerInformationLoadStageText">amis</Text>
+<Text Id="Case/SpriteSheetsLoadStageText">feuilles de sprites</Text>
+<Text Id="OptionsScreen/GameplayText">Jeu</Text>
+<Text Id="OptionsScreen/AudioText">Audio</Text>
+<Text Id="OptionsScreen/DefaultsText">Défauts</Text>
+<Text Id="OptionsScreen/BackText">Retour</Text>
+<Text Id="OptionsScreen/EnableTutorialsText">Activer les tutoriels</Text>
+<Text Id="OptionsScreen/EnableHintsText">Activer les indications de possibilité combiner des indices ou d'utilier des capacité d'amis</Text>
+<Text Id="OptionsScreen/FullscreenModeText">Plein écran</Text>
+<Text Id="OptionsScreen/EnableSkipText">Activer le passage rapide des dialogues non vus</Text>
+<Text Id="OptionsScreen/DebugModeText">Mode de débogage</Text>
+<Text Id="OptionsScreen/BackgroundMusicText">Musique</Text>
+<Text Id="OptionsScreen/SoundEffectsText">Effets sonnores</Text>
+<Text Id="OptionsScreen/VoiceText">Voix</Text>
+<Text Id="SelectionScreen/YesText">Oui</Text>
+<Text Id="SelectionScreen/NoText">Non</Text>
+<Text Id="SelectionScreen/StartCaseText">Commencer l'affaire</Text>
+<Text Id="SelectionScreen/SelectCaseText">Sélectionner</Text>
+<Text Id="SelectionScreen/SaveGameText">Sauvegarder</Text>
+<Text Id="SelectionScreen/LoadGameText">Charger</Text>
+<Text Id="SelectionScreen/DeleteGameText">Supprimer</Text>
+<Text Id="SelectionScreen/BackText">Retour</Text>
+<Text Id="SelectionScreen/DeleteConfirmationText">Êtes vous sûr ?</Text>
+<Text Id="SelectionScreen/SaveNamePromptText">Nom de la sauvegarde :</Text>
+
+<!--
+    NOTE: In order, the two "%s" placeholders in this string represent the current version number
+    and the required version number.
+-->
+<Text Id="SelectionScreen/CaseVersionIncompatibleText">Cette affaire est incompatible avec cette version de My Little Investigations.
+
+Version actuelle : %s
+Version requise : %s
+
+Veuillez mettre à jour à la dernière version pour jouer cette affaire.</Text>
+
+<!--
+    NOTE: In order, the two "%s" placeholders in this string represent the currently selected language
+    and the list of supported languages.
+-->
+<Text Id="SelectionScreen/CaseLanguageIncompatibleText">Cette affaire ne supporte pas la langue actuelle.
+
+Langue actuelle : %s
+Langues supportées : %s
+
+Veuillez choisir une autre affaire ou ajouter
+la traduction de l'affaire pour la langue actuelle.</Text>
+
+<Text Id="SelectionScreen/OKText">OK</Text>
+<Text Id="SelectionScreen/SaveFilesText">Sauvegardes</Text>
+<Text Id="SelectionScreen/AutosaveText">Sauvegarde Auto.</Text>
+<Text Id="SelectionScreen/NewSaveFileText">Nouvelle	sauvegarde</Text>
+
+<!--
+    NOTE: This string is formatted according to what the C++ function strftime() is expecting.
+    See documentation here for formatting options:
+    
+    http://www.cplusplus.com/reference/ctime/strftime/
+    
+    Any "%x" character will be replaced in the executable with that part of the timestamp
+    when displaying the time at which the save file was made.
+-->
+<Text Id="SelectionScreen/SaveFileDateTimeDisplayFormattingText">Sauvegarde faite le %d/%m/%Y à %T.</Text>
+
+<!--
+    NOTE: The default name for new saves is "Save X", where X is the number of saves made to date.
+    For example, if this is the fifth save we're making, its default name will be "Save 5".
+    "%d" is the stand-in for this number, which will be filled in the executable.
+    
+    If you don't want to have this number included in your localization, simply don't include
+    the "%d" in your localization.  Otherwise, keep it in.
+-->
+<Text Id="SelectionScreen/DefaultNewSaveNameText">Sauvegarde %d</Text>
+
+<Text Id="LanguageScreen/SelectLanguageText">Selection de la langue</Text>
+<Text Id="LanguageScreen/ApplyText">Appliquer</Text>
+<Text Id="LanguageScreen/BackText">Retour</Text>
+<Text Id="Selector/OfficialCasesText">Affaires Officielles</Text>
+<Text Id="Selector/CustomCasesText">Affaires Importées</Text>
+<Text Id="Selector/IncompatibleCasesText">Affaires Incompatibles</Text>
+<Text Id="NewSaveSelectorItem/NewSaveText">Nouvelle	Sauvegarde</Text>
+<Text Id="PromptOverlay/OKText">OK</Text>
+<Text Id="PromptOverlay/CancelText">Annuler</Text>
+<Text Id="ButtonArray/BackText">RETOUR</Text>
+<Text Id="ButtonArray/NoConversationOptionsText">(aucune option de dialogue)</Text>
+<Text Id="EvidenceSelector/PresentText">PRESENTER</Text>
+<Text Id="EvidenceSelector/CombineWithText">COMBINER AVEC</Text>
+<Text Id="EvidenceSelector/CombineText">COMBINER</Text>
+<Text Id="EvidenceSelector/CancelText">ANNULER</Text>
+<Text Id="EvidenceSelector/ToProfilesText">VOIR PROFILES</Text>
+<Text Id="EvidenceSelector/ToEvidenceText">VOIR INDICES</Text>
+<Text Id="PartnerInformation/PassiveAbilityText">Capacité passive</Text>
+<Text Id="PartnerInformation/ActiveAbilityText">Capacité active</Text>
+<Text Id="SkipArrow/FastForwardText">Av. Rap.</Text>
+<Text Id="SkipArrow/SkipText">Passer</Text>
+<Text Id="Conversation/FastForwardText">AVANCE RAPIDE</Text>
+<Text Id="Conversation/StopText">ARRETER</Text>
+<Text Id="Conversation/UnknownCharacterNameText">????</Text>
+<Text Id="Dialog/PressForInfoText">PRESS FOR INFO</Text>
+<Text Id="Dialog/PresentEvidenceText">PRESENTER INDICES</Text>
+<Text Id="Dialog/BackToTopicsText">RETOUR AUX SUJETS</Text>
+<Text Id="Dialog/EndInterrogationText">FINIR INTERROGATOIR</Text>
+<Text Id="Encounter/ExitText">QUITTER</Text>
+<Text Id="Encounter/PresentEvidenceText">PRESENTER INDICE</Text>
+<Text Id="Encounter/InterrogationDesignationFormatText">%s (Interroger)</Text>
+<Text Id="Encounter/ConfrontationDesignationFormatText">%s (Confronter)</Text>
+<Text Id="ForegroundElement/UnknownHiddenElementText">?</Text>
+<Text Id="Location/YesText">Oui</Text>
+<Text Id="Location/NoText">Non</Text>
+<Text Id="Location/EvidenceText">INDICES</Text>
+<Text Id="Location/PartnerText">AMIS</Text>
+<Text Id="Location/OKText">OK</Text>
+<Text Id="Location/SaveText">SAUVEGARDER</Text>
+<Text Id="Location/LoadText">CHARGER</Text>
+<Text Id="Location/OptionsText">OPTIONS</Text>
+<Text Id="Location/QuitText">QUITTER</Text>
+<Text Id="Location/QuitPromptText">Voulez vous vraiment quitter ? Votre partie sera sauvegardée.</Text>
+<Text Id="Location/LocationTransitionFormatText">Vers %s</Text>
+<Text Id="ZoomedView/ExitText">QUITTER</Text>
+
+<Text Id="Updater/AskToUpdateMessageBoxTitleText">Mise à jour disponible</Text>
+
+<!--
+    NOTE: In order, the three "%s" placeholders in this string represent the old version number,
+    the new version number, and the size of the available update.
+-->
+<Text Id="Updater/AskToUpdateMessageBoxBodyText">Une nouvelle version de My Little Investigations est disponible.
+
+Version actuelle : %s
+Nouvelle version : %s
+
+Télécharger la mise à jour ? (Taille : %s. Nécessite les privilèges administrateurs.)</Text>
+
+<!--
+    NOTE: In the following strings, the "%s" placeholders represent
+    the old version number and the new version number.
+-->
+<Text Id="Updater/UpdatingToVersionText">Mise à jour de %s vers %s ...</Text>
+
+<!--
+    NOTE: In the following strings, the "%s" placeholders represent file paths.
+-->
+<Text Id="Updater/PatchingText">Mise à jour %s ...</Text>
+<Text Id="Updater/UndoingPatchText">Annulation de la mise à jour %s ...</Text>
+<Text Id="Updater/AddingText">Ajout de %s ...</Text>
+<Text Id="Updater/UndoingAddText">Annulation de l'ajout de %s ...</Text>
+<Text Id="Updater/RemovingText">Retrait de %s ...</Text>
+<Text Id="Updater/UndoingRemoveText">Annulation du retrait de %s ...</Text>
+<Text Id="Updater/RemovingTemporaryFileText">Suppression des fichiers temporaires %s ...</Text>
+<Text Id="Updater/ErrorEncounteredMessageBoxTitleText">Erreur pendant la mise à jour</Text>
+<Text Id="Updater/ErrorEncounteredMessageBoxBodyText">Une erreur est survenue pendant le téléchargement. La mise à jour %s était corrompue.
+
+Désolé pour le dérangement, veuillez réessayer plus tard.</Text>
+
+<Text Id="Updater/CheckingForUpdatesTextForWidth">Vérification de mise à jour</Text>
+<Text Id="Updater/CheckingForUpdatesText0">Vérification de mise à jour .</Text>
+<Text Id="Updater/CheckingForUpdatesText1">Vérification de mise à jour ..</Text>
+<Text Id="Updater/CheckingForUpdatesText2">Vérification de mise à jour ...</Text>
+
+<!--
+    NOTE: In the following strings, the "%s" placeholders represent the
+    amount downloaded to date and the total amount to be downloaded.
+-->
+<Text Id="Updater/DownloadingUpdatesText">Téléchargement de la mise à jour (%s of %s)</Text>
+
+<Text Id="Updater/CancelingUpdatesTextForWidth">Annulation de la mise à jour</Text>
+<Text Id="Updater/CancelingUpdatesText0">Annulation de la mise à jour .</Text>
+<Text Id="Updater/CancelingUpdatesText1">Annulation de la mise à jour ..</Text>
+<Text Id="Updater/CancelingUpdatesText2">Annulation de la mise à jour ...</Text>
+<Text Id="Updater/UpdateWarningText">NE FERMEZ PAS CETTE FENETRE ! VOUS RISQUEZ DE DE VOIR RÉINSTALLER MY LITTLE INVESTIGATIONS	SI VOUS LE FAITES !</Text>
+<Text Id="Updater/WaitingForProcessToCompleteText">Attente de la fin du processus de téléchargement des mises à jour ...</Text>
+<Text Id="Updater/UpdateCompleteText">Mise à jour terminée !</Text>
+<Text Id="Updater/UpdateFailedText">Mise à jour échouée ! Désolé pour le dérangement, veuillez réessayer plus tard.</Text>
+<Text Id="Updater/PressEnterToContinueText">Appuyez sur entrée pour continuer ...</Text>
+<Text Id="Updater/StartingExecutableText">Lancement de My Little Investigations ...</Text>
+</TextContent>
+<Settings>
+<Setting Id="ShouldCapitalizeSpeakerNames" Type="Boolean" Value="True" />
+</Settings>
+</LocalizableContent>
