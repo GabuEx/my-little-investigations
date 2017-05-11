@@ -453,7 +453,7 @@ vector<string> GetLanguageResourcesFilePaths()
             }
         }
 #elif __unix
-        FOR_EACH_FILE(localizedCommonResourcesFilePath,localizedCommonResourcesFilePaths)
+        FOR_EACH_FILE(localizedCommonResourcesFilePath,GetLocalizedCommonResourcesDirectoryPath())
         {
             if (localizedCommonResourcesFilePath.find(".dat") != string::npos)
             {
