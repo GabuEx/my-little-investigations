@@ -54,7 +54,6 @@ mli-versions.xml
 *.pro
 *.pro.user
 build-*
-src/CaseCreator/*
 *.0cf0304
 *.save-failed
 osx/AppFileStaging/Contents/Resources/Cases/
