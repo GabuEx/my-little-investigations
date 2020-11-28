@@ -388,7 +388,11 @@ void FieldCharacter::Draw()
 
 void FieldCharacter::Draw(Vector2 offsetVector)
 {
-    pCurrentAnimation->Draw(GetPosition() - offsetVector - Vector2(0, extraHeight), GetDirection() == CharacterDirectionRight, 1.0);
+    if (pCurrentAnimation!=NULL) {
+        pCurrentAnimation->Draw(GetPosition() - offsetVector - Vector2(0, extraHeight), GetDirection() == CharacterDirectionRight, 1.0);
+    } else {
+        std::cerr << "FieldCharacter::Draw(Vector2 offsetVector) : pCurrentAnimation is NULL\n";
+    };
 }
 
 void FieldCharacter::Reset()
